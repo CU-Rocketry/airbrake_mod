@@ -1,0 +1,14 @@
+(kicad_sch
+	(version 20231120)
+	(generator "eeschema")
+	(generator_version "8.0")
+	(uuid "f54ffd20-48e9-4ce5-8fc5-5e7147f6f60b")
+	(paper "B")
+	(title_block
+		(title "Airbrakes PCB - Earendel")
+		(date "2024-11-14")
+		(rev "v2025.00A")
+		(company "Clarkson University Rocketry")
+	)
+	(lib_symbols)
+)
