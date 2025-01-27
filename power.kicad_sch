@@ -2271,6 +2271,17 @@
 		)
 		(uuid "7822b5ee-3e22-443f-b0c2-6e98633670a1")
 	)
+	(text "Add Primary UVLO IC to prevent discharge below 6V2!"
+		(exclude_from_sim no)
+		(at 48.768 71.12 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(color 255 0 0 1)
+			)
+		)
+		(uuid "8ad4ef2a-dcb8-490d-9fdf-4ed3dddccd22")
+	)
 	(text "Header (likely DNP) for battery charging."
 		(exclude_from_sim no)
 		(at 50.8 26.67 0)
@@ -2280,6 +2291,17 @@
 			)
 		)
 		(uuid "909b9b28-85fe-45bb-beb4-dd5408a2fe98")
+	)
+	(text "Select C17 voltage rating >10V per datasheet"
+		(exclude_from_sim no)
+		(at 242.316 77.724 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(color 255 127 0 1)
+			)
+		)
+		(uuid "965d2ba7-d850-435a-b03b-52e34709cb52")
 	)
 	(text "Replace with toggle version?"
 		(exclude_from_sim no)
@@ -2703,7 +2725,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "C"
+		(property "Value" "47u"
 			(at 278.13 109.22 0)
 			(effects
 				(font
@@ -2721,7 +2743,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "~"
+		(property "Datasheet" "https://calchip.com/wp-content/uploads/2023/09/GMC-Series-2.pdf"
 			(at 275.59 107.95 0)
 			(effects
 				(font
@@ -2730,7 +2752,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Unpolarized capacitor"
+		(property "Description" "GMC21X5R476M10NT"
 			(at 275.59 107.95 0)
 			(effects
 				(font
@@ -3129,7 +3151,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "R_US"
+		(property "Value" "62k"
 			(at 312.42 110.4899 0)
 			(effects
 				(font
@@ -3198,7 +3220,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "C"
+		(property "Value" "47u"
 			(at 295.91 109.22 0)
 			(effects
 				(font
@@ -3216,7 +3238,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "~"
+		(property "Datasheet" "https://calchip.com/wp-content/uploads/2023/09/GMC-Series-2.pdf"
 			(at 293.37 107.95 0)
 			(effects
 				(font
@@ -3225,7 +3247,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Unpolarized capacitor"
+		(property "Description" "GMC21X5R476M10NT"
 			(at 293.37 107.95 0)
 			(effects
 				(font
@@ -3958,7 +3980,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "R_US"
+		(property "Value" "82k"
 			(at 209.55 116.8399 0)
 			(effects
 				(font
@@ -4168,7 +4190,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "R_US"
+		(property "Value" "18k"
 			(at 312.42 123.1899 0)
 			(effects
 				(font
@@ -4575,7 +4597,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "C"
+		(property "Value" "47u"
 			(at 269.24 109.22 0)
 			(effects
 				(font
@@ -4593,7 +4615,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "~"
+		(property "Datasheet" "https://calchip.com/wp-content/uploads/2023/09/GMC-Series-2.pdf"
 			(at 266.7 107.95 0)
 			(effects
 				(font
@@ -4602,7 +4624,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Unpolarized capacitor"
+		(property "Description" "GMC21X5R476M10NT"
 			(at 266.7 107.95 0)
 			(effects
 				(font
@@ -5000,7 +5022,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "C"
+		(property "Value" "47u"
 			(at 287.02 109.22 0)
 			(effects
 				(font
@@ -5018,7 +5040,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "~"
+		(property "Datasheet" "https://calchip.com/wp-content/uploads/2023/09/GMC-Series-2.pdf"
 			(at 284.48 107.95 0)
 			(effects
 				(font
@@ -5027,7 +5049,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Unpolarized capacitor"
+		(property "Description" "GMC21X5R476M10NT"
 			(at 284.48 107.95 0)
 			(effects
 				(font
@@ -5069,7 +5091,7 @@
 				)
 			)
 		)
-		(property "Value" "L"
+		(property "Value" "22u"
 			(at 254 101.6 90)
 			(effects
 				(font
@@ -5086,7 +5108,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "~"
+		(property "Datasheet" "https://www.we-online.com/components/products/datasheet/78404084220.pdf"
 			(at 254 104.14 0)
 			(effects
 				(font
@@ -5430,7 +5452,7 @@
 				)
 			)
 		)
-		(property "Value" "C"
+		(property "Value" "0.1u"
 			(at 238.76 93.98 90)
 			(effects
 				(font
