@@ -1,0 +1,138 @@
+(footprint "SLW-88229-2-SMT-TR"
+	(version 20240108)
+	(generator "pcbnew")
+	(generator_version "8.0")
+	(layer "F.Cu")
+	(property "Reference" "REF**"
+		(at 0 -0.5 0)
+		(unlocked yes)
+		(layer "F.SilkS")
+		(uuid "356f6599-51aa-4ece-b41d-b10007b416a5")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+		)
+	)
+	(property "Value" "SLW-88229-2-SMT-TR"
+		(at 0 1 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(uuid "9c9863e1-bf4e-43b3-a6f3-d9880739b7b7")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Footprint" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "ca197bce-6a60-4a2e-99bf-89b9787d5603")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" "https://www.sameskydevices.com/product/resource/slw-88229-2-smt-tr.pdf"
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "26de5f57-d6a9-44a6-abb0-6f5b5d1f7e1b")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "b1d20aa5-fd5b-4eee-a434-9251ea4365ed")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr smd)
+	(fp_rect
+		(start -5.4 5)
+		(end 3.4 7.9)
+		(stroke
+			(width 0.1)
+			(type dot)
+		)
+		(fill none)
+		(layer "F.SilkS")
+		(uuid "04f86c9e-aa51-4ab1-a4f3-fc8a28d1dd83")
+	)
+	(fp_rect
+		(start -5.4 3)
+		(end 3.4 7.9)
+		(stroke
+			(width 0.05)
+			(type default)
+		)
+		(fill none)
+		(layer "F.CrtYd")
+		(uuid "68c50ea6-90aa-4335-91ee-4cc90ecc0389")
+	)
+	(fp_text user "${REFERENCE}"
+		(at 0 2.5 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(uuid "0153008d-8dbe-4e88-8630-cdb28a048f2c")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(pad "" thru_hole circle
+		(at -4.15 5)
+		(size 1 1)
+		(drill 0.8)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "dc4649d4-bf2b-4975-bcb0-34c2c173c5bf")
+	)
+	(pad "" thru_hole circle
+		(at 2.15 5)
+		(size 1 1)
+		(drill 0.8)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "2cd70fbc-9394-450b-bb54-bc0b1879733d")
+	)
+	(pad "1" smd rect
+		(at -2 8.8)
+		(size 1 1.8)
+		(layers "F.Cu" "F.Paste" "F.Mask")
+		(uuid "74b3e51f-f21a-4f41-98ff-99bd0fd79316")
+	)
+	(pad "2" smd rect
+		(at 0 8.8)
+		(size 1 1.8)
+		(layers "F.Cu" "F.Paste" "F.Mask")
+		(uuid "63d7877d-f06b-46a5-b7b2-d8a24d849818")
+	)
+	(pad "3" smd rect
+		(at 2 8.8)
+		(size 1 1.8)
+		(layers "F.Cu" "F.Paste" "F.Mask")
+		(uuid "769fc21b-9335-4d20-9725-1e98a0f16951")
+	)
+)
