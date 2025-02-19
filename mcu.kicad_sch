@@ -1980,6 +1980,169 @@
 				)
 			)
 		)
+		(symbol "Device:D_Filled"
+			(pin_numbers hide)
+			(pin_names
+				(offset 1.016) hide)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "D"
+				(at 0 2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "D_Filled"
+				(at 0 -2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Diode, filled shape"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Sim.Device" "D"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Sim.Pins" "1=K 2=A"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "diode"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "TO-???* *_Diode_* *SingleDiode* D_*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "D_Filled_0_1"
+				(polyline
+					(pts
+						(xy -1.27 1.27) (xy -1.27 -1.27)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 0) (xy -1.27 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 1.27) (xy 1.27 -1.27) (xy -1.27 0) (xy 1.27 1.27)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+			)
+			(symbol "D_Filled_1_1"
+				(pin passive line
+					(at -3.81 0 0)
+					(length 2.54)
+					(name "K"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 3.81 0 180)
+					(length 2.54)
+					(name "A"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+		)
 		(symbol "Device:LED_Filled"
 			(pin_numbers hide)
 			(pin_names
@@ -6454,10 +6617,22 @@
 		(uuid "a66f866c-39ef-4cd9-b0b2-1abc12725037")
 	)
 	(junction
+		(at 325.12 184.15)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "df2636ec-0d3d-4e14-b933-49c525ea5c25")
+	)
+	(junction
 		(at 199.39 52.07)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "ead35b4c-1253-4a8a-b3d3-7c69c1dcabd0")
+	)
+	(junction
+		(at 321.31 176.53)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "eb0093a7-7fcd-415e-9740-b632c5bb118c")
 	)
 	(no_connect
 		(at 171.45 69.85)
@@ -6617,6 +6792,16 @@
 	)
 	(wire
 		(pts
+			(xy 325.12 176.53) (xy 325.12 179.07)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "410419f1-b2e9-4c85-8e15-f055b023b96f")
+	)
+	(wire
+		(pts
 			(xy 74.93 93.98) (xy 82.55 93.98)
 		)
 		(stroke
@@ -6624,6 +6809,16 @@
 			(type default)
 		)
 		(uuid "4de4eb70-b042-4233-b32b-be14507f936a")
+	)
+	(wire
+		(pts
+			(xy 321.31 184.15) (xy 325.12 184.15)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "544a633a-8dc0-472e-bcf6-03ee516584b8")
 	)
 	(wire
 		(pts
@@ -6707,6 +6902,16 @@
 	)
 	(wire
 		(pts
+			(xy 317.5 176.53) (xy 321.31 176.53)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ab1a4687-7543-495c-9573-26887df4630b")
+	)
+	(wire
+		(pts
 			(xy 346.71 138.43) (xy 350.52 138.43)
 		)
 		(stroke
@@ -6714,6 +6919,16 @@
 			(type default)
 		)
 		(uuid "ac74af87-2403-4476-9e26-fb016fd2435e")
+	)
+	(wire
+		(pts
+			(xy 321.31 176.53) (xy 325.12 176.53)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "aded4529-917f-41f8-b2dd-54aaec3e4a91")
 	)
 	(wire
 		(pts
@@ -6891,7 +7106,7 @@
 	)
 	(rectangle
 		(start 293.37 166.37)
-		(end 328.93 201.93)
+		(end 341.63 201.93)
 		(stroke
 			(width 0)
 			(type default)
@@ -7227,7 +7442,7 @@
 	)
 	(text "Status LEDs"
 		(exclude_from_sim no)
-		(at 304.8 80.01 0)
+		(at 306.07 81.28 0)
 		(effects
 			(font
 				(size 2.54 2.54)
@@ -8477,7 +8692,7 @@
 			)
 		)
 	)
-	(global_label "STATUS1"
+	(global_label "STATUS2"
 		(shape input)
 		(at 313.69 97.79 90)
 		(fields_autoplaced yes)
@@ -8699,28 +8914,6 @@
 			)
 		)
 	)
-	(global_label "GPS_TP"
-		(shape input)
-		(at 214.63 130.81 0)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "5f21119e-d70e-4f2b-9086-c1892ce62ced")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 224.5699 130.81 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-	)
 	(global_label "XTAL_1"
 		(shape input)
 		(at 171.45 77.47 180)
@@ -8912,6 +9105,28 @@
 		(uuid "6d0bd3d4-d217-40a3-9167-656b9e4c9e8a")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 277.7285 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "GPS_TIME"
+		(shape input)
+		(at 214.63 130.81 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "76ab0511-f864-4b32-81ee-eac8e9e9d628")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 226.5051 130.81 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9585,7 +9800,7 @@
 	)
 	(global_label "3V6_SWITCHING"
 		(shape input)
-		(at 313.69 177.8 180)
+		(at 317.5 176.53 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -9595,7 +9810,7 @@
 		)
 		(uuid "c25823f1-ab63-48e8-8aae-c11f829f9953")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 296.1905 177.8 0)
+			(at 300.0005 176.53 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9650,7 +9865,7 @@
 			)
 		)
 	)
-	(global_label "STATUS1"
+	(global_label "STATUS2"
 		(shape input)
 		(at 214.63 102.87 0)
 		(fields_autoplaced yes)
@@ -9719,7 +9934,7 @@
 	)
 	(global_label "Buzzer_H"
 		(shape input)
-		(at 306.07 187.96 180)
+		(at 317.5 189.23 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -9730,7 +9945,7 @@
 		)
 		(uuid "cbbf47e9-6836-4ba4-bb42-7c57690f94ae")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 294.4367 187.96 0)
+			(at 305.8667 189.23 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12562,7 +12777,7 @@
 	)
 	(symbol
 		(lib_id "Transistor_FET:DMG2302U")
-		(at 311.15 187.96 0)
+		(at 322.58 189.23 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -12570,7 +12785,7 @@
 		(dnp no)
 		(uuid "6320bc5e-7b5e-4edd-aac3-205f7f2542d0")
 		(property "Reference" "Q3"
-			(at 308.61 191.77 0)
+			(at 320.04 193.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12579,7 +12794,7 @@
 			)
 		)
 		(property "Value" "DMG2302U"
-			(at 300.99 194.31 0)
+			(at 312.42 195.58 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12588,7 +12803,7 @@
 			)
 		)
 		(property "Footprint" "Package_TO_SOT_SMD:SOT-23"
-			(at 316.23 189.865 0)
+			(at 327.66 191.135 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12599,7 +12814,7 @@
 			)
 		)
 		(property "Datasheet" "http://www.diodes.com/assets/Datasheets/DMG2302U.pdf"
-			(at 316.23 191.77 0)
+			(at 327.66 193.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12609,7 +12824,7 @@
 			)
 		)
 		(property "Description" "4.2A Id, 20V Vds, N-Channel MOSFET, SOT-23"
-			(at 311.15 187.96 0)
+			(at 322.58 189.23 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14346,7 +14561,7 @@
 	)
 	(symbol
 		(lib_id "Device:Buzzer")
-		(at 316.23 180.34 0)
+		(at 327.66 181.61 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -14355,7 +14570,7 @@
 		(fields_autoplaced yes)
 		(uuid "a80b0225-b03f-413a-a78e-f152bba21538")
 		(property "Reference" "BZ1"
-			(at 320.04 179.0699 0)
+			(at 331.47 180.3399 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14364,7 +14579,7 @@
 			)
 		)
 		(property "Value" "Buzzer"
-			(at 320.04 181.6099 0)
+			(at 331.47 182.8799 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14373,7 +14588,7 @@
 			)
 		)
 		(property "Footprint" "0_airbrake_footprints:CMT-322-65-SMT-TR"
-			(at 315.595 177.8 90)
+			(at 327.025 179.07 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14382,7 +14597,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 315.595 177.8 90)
+			(at 327.025 179.07 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14391,7 +14606,7 @@
 			)
 		)
 		(property "Description" "Buzzer, polarized"
-			(at 316.23 180.34 0)
+			(at 327.66 181.61 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16456,6 +16671,93 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:D_Filled")
+		(at 321.31 180.34 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "ede80dc2-7ffc-4e01-98af-dffbf255f472")
+		(property "Reference" "D10"
+			(at 314.96 179.07 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "NRVB120VLSFT1G"
+			(at 302.26 181.61 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SOD-123F"
+			(at 321.31 180.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 321.31 180.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Diode, filled shape"
+			(at 321.31 180.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" "D"
+			(at 321.31 180.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Pins" "1=K 2=A"
+			(at 321.31 180.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "4ef746b0-a3aa-4bcc-bc6f-413d379693c0")
+		)
+		(pin "2"
+			(uuid "6db665b4-741c-4f20-8cf1-554701e160cd")
+		)
+		(instances
+			(project "airbrake_mod"
+				(path "/b8365613-e621-4ec6-998b-f60341596878/1da62f80-fb6d-4565-8f94-99dca1874ea1"
+					(reference "D10")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:R_US")
 		(at 300.99 101.6 0)
 		(unit 1)
@@ -16731,7 +17033,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 313.69 193.04 0)
+		(at 325.12 194.31 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -16740,7 +17042,7 @@
 		(fields_autoplaced yes)
 		(uuid "fb88d2b0-02fc-4ce7-9d06-111e10eb0d0c")
 		(property "Reference" "#PWR068"
-			(at 313.69 199.39 0)
+			(at 325.12 200.66 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16749,7 +17051,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 313.69 198.12 0)
+			(at 325.12 199.39 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16757,7 +17059,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 313.69 193.04 0)
+			(at 325.12 194.31 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16766,7 +17068,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 313.69 193.04 0)
+			(at 325.12 194.31 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16775,7 +17077,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 313.69 193.04 0)
+			(at 325.12 194.31 0)
 			(effects
 				(font
 					(size 1.27 1.27)
