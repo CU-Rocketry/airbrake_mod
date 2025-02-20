@@ -37,5 +37,5 @@ bom/*
 *.SLDASM
 *.err
 
-## Documents--Subject to Change
-*.pdf       
+## Documents
+/*.pdf
