@@ -1,4 +1,6 @@
-## KICAD
+# For PCBs designed using KiCad: https://www.kicad.org/
+# Format documentation: https://kicad.org/help/file-formats/
+
 # Temporary files
 *.000
 *.bak
@@ -6,17 +8,19 @@
 *.kicad_pcb-bak
 *.kicad_sch-bak
 *-backups
-*.kicad_prl
-*.sch-bak
+*-cache*
+*-bak
+*-bak*
 *~
-*.lck
+~*
 _autosave-*
+\#auto_saved_files\#
 *.tmp
 *-save.pro
 *-save.kicad_pcb
 fp-info-cache
-\#auto_saved_files\#
-bom/*
+~*.lck
+\#auto_saved_files#
 
 # Netlist files (exported from Eeschema)
 *.net
@@ -29,13 +33,8 @@ bom/*
 *.xml
 *.csv
 
-## MCAD
-# Generic
-*.step
-# Solidworks
-*.SLDPRT
-*.SLDASM
-*.err
+# Archived Backups (KiCad 6.0)
+**/*-backups/*.zip
 
-## Documents
-/*.pdf
+# Local project settings
+*.kicad_prl
