@@ -38,3 +38,9 @@ fp-info-cache
 
 # Local project settings
 *.kicad_prl
+
+# zipped backups
+*-backups/*.zip
+
+# lock file just because inconvenient
+*.lck
