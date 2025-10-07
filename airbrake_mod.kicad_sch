@@ -5,9 +5,9 @@
 	(uuid "b8365613-e621-4ec6-998b-f60341596878")
 	(paper "B")
 	(title_block
-		(title "Airbrakes PCB - Earendel")
-		(date "2024-11-14")
-		(rev "v2025.00A")
+		(title "Airbrakes PCB - Veðrfölnir ")
+		(date "2025-02-18")
+		(rev "v2025.01A")
 		(company "Clarkson University Rocketry")
 	)
 	(lib_symbols
