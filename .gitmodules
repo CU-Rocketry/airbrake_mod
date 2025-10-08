@@ -1,0 +1,3 @@
+[submodule "pcb/kicad-library"]
+	path = pcb/kicad-library
+	url = git@github.com:CU-Rocketry/kicad-library
