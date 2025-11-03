@@ -2,7 +2,7 @@
 	(version 20250114)
 	(generator "eeschema")
 	(generator_version "9.0")
-	(uuid "89fe7a69-33bb-404a-acec-791a17a44f59")
+	(uuid "4b0e8041-22cb-4c9b-af81-c72459a0c2c0")
 	(paper "A4")
 	(lib_symbols
 		(symbol "Connector:Conn_ARM_SWD_TagConnect_TC2030"
