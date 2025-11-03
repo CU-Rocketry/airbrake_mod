@@ -2,7 +2,7 @@
 	(version 20250114)
 	(generator "eeschema")
 	(generator_version "9.0")
-	(uuid "ccbd3c50-11a1-4f61-8176-a59cb15a43b4")
+	(uuid "3fdf1090-d606-42a2-a0e0-4e42a346bd1a")
 	(paper "A4")
 	(lib_symbols
 		(symbol "Connector:Conn_ARM_SWD_TagConnect_TC2030"
@@ -4555,6 +4555,16 @@
 	)
 	(wire
 		(pts
+			(xy 119.38 68.58) (xy 139.7 68.58)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "00ea4e29-6c2b-4db6-96f7-7b9cd9ffedfd")
+	)
+	(wire
+		(pts
 			(xy 88.9 175.26) (xy 91.44 175.26)
 		)
 		(stroke
@@ -5585,6 +5595,16 @@
 	)
 	(wire
 		(pts
+			(xy 119.38 66.04) (xy 139.7 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f8926e77-c373-4b43-b0f0-68106152085b")
+	)
+	(wire
+		(pts
 			(xy 215.9 107.95) (xy 222.25 107.95)
 		)
 		(stroke
@@ -5592,6 +5612,16 @@
 			(type default)
 		)
 		(uuid "fbff87f1-6fd1-482a-8659-518e70129790")
+	)
+	(wire
+		(pts
+			(xy 119.38 60.96) (xy 139.7 60.96)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ff887540-3a51-4e78-ad1f-0a11057c4db2")
 	)
 	(label "SWCLK"
 		(at 139.7 73.66 180)
@@ -5746,6 +5776,39 @@
 			(justify right bottom)
 		)
 		(uuid "eedfe160-d4ba-40d8-8121-3af9a7017e23")
+	)
+	(hierarchical_label "USB_DM"
+		(shape bidirectional)
+		(at 139.7 66.04 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "13159b70-9e70-4dd0-818e-f00f2b83b62f")
+	)
+	(hierarchical_label "USB_VBUS_SENSE"
+		(shape input)
+		(at 139.7 60.96 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "73dbc122-2cc9-4ab9-9ef9-386979a03505")
+	)
+	(hierarchical_label "USB_DP"
+		(shape bidirectional)
+		(at 139.7 68.58 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "c3c3ed15-bcbf-4fba-9064-50f18a0ce035")
 	)
 	(symbol
 		(lib_id "power:+3V3")
@@ -7144,6 +7207,7 @@
 		)
 		(pin "70"
 			(uuid "8941cd1d-8d81-4b43-a462-fb41d50ab668")
+			(alternate "USB_OTG_HS_DM")
 		)
 		(pin "49"
 			(uuid "3831db1d-0470-4a4f-bfdf-d00dd4ceb4ac")
@@ -7285,6 +7349,7 @@
 		)
 		(pin "71"
 			(uuid "f03d7696-c735-460b-9fbf-ac4437bddcec")
+			(alternate "USB_OTG_HS_DP")
 		)
 		(pin "91"
 			(uuid "94a1cff6-fc65-439a-bf8e-5d3dc7b3eae0")
