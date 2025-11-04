@@ -2,7 +2,7 @@
 	(version 20250114)
 	(generator "eeschema")
 	(generator_version "9.0")
-	(uuid "5f1dcfda-cd69-4172-8420-b4e8bf77e3a5")
+	(uuid "28143584-c6b7-4a9d-a9e6-0c5bca5d45a3")
 	(paper "A4")
 	(lib_symbols
 		(symbol "Connector:Conn_01x02_Pin"
@@ -1773,6 +1773,131 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "power:VBUS"
+			(power)
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "#PWR"
+				(at 0 -3.81 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Value" "VBUS"
+				(at 0 3.556 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Power symbol creates a global label with name \"VBUS\""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "global power"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "VBUS_0_1"
+				(polyline
+					(pts
+						(xy -0.762 1.27) (xy 0 2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 2.54) (xy 0.762 1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 0) (xy 0 2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "VBUS_1_1"
+				(pin power_in line
+					(at 0 0 90)
+					(length 0)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 	)
 	(rectangle
 		(start 165.1 50.8)
@@ -1868,6 +1993,17 @@
 			(justify top)
 		)
 		(uuid "a1c517fa-da27-4ca7-868d-fdba32a0cb62")
+	)
+	(text "TODO: calculate resistor divider\nBATT_SENSE must go from 0 to 3.3V max"
+		(exclude_from_sim no)
+		(at 76.454 92.964 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify top)
+		)
+		(uuid "a3c739a7-9dc6-4c34-9db2-0ac3b60e4bf8")
 	)
 	(text "Vout = (Iload * Rshunt) * GAIN\nGAIN = 100V/V Rshunt = 0.005 ohm\nIload | Vout\n100mA | 25mV\n500mA | 125mV\n1A    | 250mV\n5A    | 1250mV\n10A   | 2500mV\n13.2A | 3300mV"
 		(exclude_from_sim no)
@@ -3328,7 +3464,25 @@
 			"eDDheQAASGWmpsCMKCgoWLFixSU8sLi4OOFhAABIcaamAAAABGZqCiTPoUOHRkdHz10pLCwsLCwM"
 			"lQcAgBRhagokz4033rh///5zVxobGxN+vRkAAP52TE2B5MnNzZ09e/a5Kzk5XoUAADA1BQAAILSs"
 			"0AEAAADIdKopAAAAgammAAAABKaaAgAAEJhqCgAAQGCqKQAAAIGppgAAAASmmgIAABCYagoAAEBg"
-			"qikAAACBqaYAAAAEppoCAAAQmGoKAABAYP8FmIdzdeukvC0AAAAASUVORK5CYII="
+			"qikAAACBqaYAAAAEppoCAAAQmGoKAABAYP8FmIdzdeukvC0AAAAASUVORK5CYIIAAAAAAwAAAAAA"
+			"AAAAEB02oAEAAAEAAAAAAAAAAAAAAAAAAACzjGX6ABgFgAAAAAAAAAAAAwAAAAAAAAAgDx02oAEA"
+			"AAEAAAAAAAAAAAAAAAAAAAC2jGj6ABkFgAAAAAAAAAAAAwAAAAAAAADADh02oAEAAAEAAAAAAAAA"
+			"AAAAAAAAAAC1jG/6ABoFgAAAAAAAAAAACAAAAAAAAADwWAI2oAEAAAEAAAAAAAAAAAAAAAAAAACI"
+			"jFL6ABsFgAAAAAAAAAAAAwAAAAAAAAAgmBY2oAEAAAEAAAAAAAAAAAAAAAAAAACPjFH6ABwFgAAA"
+			"AAAAAAAAAwAAAAAAAABwyQY2oAEAAAEAAAAAAAAAAAAAAAAAAACCjFT6AB0FgAAAAAAAAAAAAwAA"
+			"AAAAAADw3Bw2oAEAAAEAAAAAAAAAAAAAAAAAAACBjFv6AB4FgIDUHDagAQAAAwAAAAAAAACwzAY2"
+			"oAEAAAEAAAAAAAAAAAAAAAAAAACEjF76AB8FgAAAAAAAAAAAAwAAAAAAAADwVQI2oAEAAAEAAAAA"
+			"AAAAAAAAAAAAAACbjF36ACAFgMDZHDagAQAAAwAAAAAAAADQzAY2oAEAAAEAAAAAAAAAAAAAAAAA"
+			"AACejED6ACEFgODRHDagAQAAAwAAAAAAAAAQDh02oAEAAAEAAAAAAAAAAAAAAAAAAACdjEf6ACIF"
+			"gEpldEJyYWluc01vbm8gTkYgRXh0cmFCb2xkAAAAAAAAAAAAAAAAAACQjEr6ACMFgAAAAAAAAAAA"
+			"AwAAAAAAAABw2Bw2oAEAAAEAAAAAAAAAAAAAAAAAAACXjEn6ACQFgEDYHDagAQAAAwAAAAAAAAAw"
+			"0QY2oAEAAAEAAAAAAAAAAAAAAAAAAABqjEz6ACUFgEpldEJyYWluc01vbm9OTCBORlAgVGhpbgAA"
+			"AAAAAAAAAAAAAAAAAABpjLP6ACYFgAAAAAAAAAAAAwAAAAAAAACwzgY2oAEAAAEAAAAAAAAAAAAA"
+			"AAAAAABsjLb6ACcFgEpldEJyYWluc01vbm8gTkYgRXh0cmFMaWdodAAAAAAAAAAAAAAAAABjjLX6"
+			"ACgFgADZHDagAQAAAwAAAAAAAABgFPU1oAEAAAEAAAAAAAAAAAAAAAAAAABmjLj6ACkFgAAAAAAA"
+			"AAAAAwAAAAAAAAAwDR02oAEAAAEAAAAAAAAAAAAAAAAAAABljL/6ACoFgAAAAAAAAAAAAwAAAAAA"
+			"AABADx02oAEAAAEAAAAAAAAAAAAAAAAAAAB4jKL6ACsFgAAAAAAAAAAABAAAAAAAAAABAAAAAAAA"
+			"AAEAAAAAAAAAAAAAAAAAAAB/jKH6ACwFgAAAAAAAAAAAAwAAAAAAAABwWgI2oA=="
 		)
 	)
 	(label "BATT_MEAS"
@@ -3819,6 +3973,72 @@
 			(project ""
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/3ce152e6-c1c9-4db1-8237-913c82724d53"
 					(reference "C19")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+BATT")
+		(at 35.56 133.35 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "10e08bb4-b9c1-45e8-b45a-4b1ec3f0513f")
+		(property "Reference" "#PWR042"
+			(at 35.56 137.16 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+BATT"
+			(at 35.56 128.27 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 35.56 133.35 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 35.56 133.35 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+BATT\""
+			(at 35.56 133.35 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "a5dabb8c-1f87-460b-86aa-0835e77c549d")
+		)
+		(instances
+			(project ""
+				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/3ce152e6-c1c9-4db1-8237-913c82724d53"
+					(reference "#PWR042")
 					(unit 1)
 				)
 			)
@@ -5197,6 +5417,72 @@
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/3ce152e6-c1c9-4db1-8237-913c82724d53"
 					(reference "J4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:VBUS")
+		(at 25.4 133.35 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "a0673e97-3aec-444e-8bb3-808df6853875")
+		(property "Reference" "#PWR041"
+			(at 25.4 137.16 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "VBUS"
+			(at 25.4 128.27 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 25.4 133.35 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 25.4 133.35 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"VBUS\""
+			(at 25.4 133.35 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "9bfbe467-e27a-4084-9a19-ed8a0ccffa60")
+		)
+		(instances
+			(project ""
+				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/3ce152e6-c1c9-4db1-8237-913c82724d53"
+					(reference "#PWR041")
 					(unit 1)
 				)
 			)

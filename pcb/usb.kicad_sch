@@ -2,7 +2,7 @@
 	(version 20250114)
 	(generator "eeschema")
 	(generator_version "9.0")
-	(uuid "ca753d7d-aeff-42c3-a566-4305aa6592b9")
+	(uuid "5e346375-707e-470c-8669-e94b19e8d44b")
 	(paper "A4")
 	(lib_symbols
 		(symbol "Connector:USB_C_Receptacle_USB2.0_16P"
@@ -1772,6 +1772,16 @@
 			(justify left top)
 		)
 		(uuid "52735019-5869-427d-bfbe-4ec53e7f9156")
+	)
+	(text "VBUS_SENSE must be <= 4V\nto remain within absolute maximums"
+		(exclude_from_sim no)
+		(at 38.608 148.336 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "74eed1e7-32d0-4b58-ae80-0aaaa73da809")
 	)
 	(text "USB-C connector"
 		(exclude_from_sim no)
