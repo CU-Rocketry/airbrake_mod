@@ -89,6 +89,16 @@
 			(embedded_fonts no)
 		)
 	)
+	(text "requires pin with TIM peripheral\nrequires GPIO output"
+		(exclude_from_sim no)
+		(at 159.766 120.396 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "2b649d1f-3a1d-4b9e-94bf-cee783e97680")
+	)
 	(wire
 		(pts
 			(xy 50.8 35.56) (xy 63.5 35.56)
@@ -535,6 +545,26 @@
 					(size 1.27 1.27)
 				)
 				(justify left top)
+			)
+		)
+		(pin "EN" input
+			(at 114.3 119.38 180)
+			(uuid "64795a2d-aa75-4c39-b8f2-18ae05c8a82c")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "PWM" input
+			(at 114.3 116.84 180)
+			(uuid "3657f871-0621-4a6d-8a42-9684e00cd696")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
 			)
 		)
 		(instances
