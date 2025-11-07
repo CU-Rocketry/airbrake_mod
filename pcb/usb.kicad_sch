@@ -1796,6 +1796,16 @@
 		)
 		(uuid "895376ce-d14d-44aa-a0e4-75fdb36b92b1")
 	)
+	(text "or 47k would probably work fine too"
+		(exclude_from_sim no)
+		(at 44.45 117.348 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "bd03da7f-0cf3-4093-a5ef-bf38242654d4")
+	)
 	(text "ESD protection\nplace close to connector"
 		(exclude_from_sim no)
 		(at 102.362 61.214 0)
@@ -2947,7 +2957,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "47k"
+		(property "Value" "30k"
 			(at 27.94 123.1899 0)
 			(effects
 				(font

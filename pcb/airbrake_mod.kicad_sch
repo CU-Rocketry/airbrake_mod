@@ -382,6 +382,48 @@
 		)
 	)
 	(sheet
+		(at 25.4 114.3)
+		(size 25.4 12.7)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 255 255 194 1.0000)
+		)
+		(uuid "0a32b07f-7988-40ae-8006-b298a5ae2a50")
+		(property "Sheetname" "User Interface"
+			(at 25.4 113.5884 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "user_interface.kicad_sch"
+			(at 25.4 127.5846 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "airbrake_mod"
+				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936"
+					(page "7")
+				)
+			)
+		)
+	)
+	(sheet
 		(at 63.5 25.4)
 		(size 38.1 101.6)
 		(exclude_from_sim no)

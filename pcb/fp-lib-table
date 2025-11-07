@@ -1,4 +1,6 @@
 (fp_lib_table
   (version 7)
   (lib (name "PTS815_SJM_250_SMTR_LFS")(type "KiCad")(uri "${KIPRJMOD}/kicad-library/footprints/PTS815_SJM_250_SMTR_LFS.pretty")(options "")(descr ""))
+  (lib (name "B38G3RGB")(type "KiCad")(uri "${KIPRJMOD}/kicad-library/footprints/B38G3RGB.pretty")(options "")(descr ""))
+  (lib (name "Connector_CNC_Tech")(type "KiCad")(uri "${KIPRJMOD}/kicad-library/footprints/Connector_CNC_Tech.pretty")(options "")(descr ""))
 )
