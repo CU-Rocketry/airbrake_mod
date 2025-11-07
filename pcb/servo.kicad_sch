@@ -1215,17 +1215,33 @@
 		)
 		(uuid "574b54f6-1b70-41cc-8102-5e6ac274cbe0")
 	)
-	(junction
-		(at 63.5 50.8)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "4d946933-933f-4f1b-8a7a-951d3e6bf657")
+	(text "TODO: check keying on last year's"
+		(exclude_from_sim no)
+		(at 153.67 64.262 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "82873c38-77fd-4b6f-8bd5-05366eefd51f")
 	)
 	(junction
 		(at 50.8 63.5)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "4f4ed637-7f25-48e8-8787-f681001f005b")
+	)
+	(junction
+		(at 88.9 38.1)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "6a3b38be-ccad-4622-939c-7a8aaedd6938")
+	)
+	(junction
+		(at 76.2 50.8)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "e5a17247-7aeb-4449-8be3-0ccca5cdf7cb")
 	)
 	(wire
 		(pts
@@ -1259,13 +1275,13 @@
 	)
 	(wire
 		(pts
-			(xy 63.5 38.1) (xy 63.5 41.91)
+			(xy 88.9 38.1) (xy 88.9 45.72)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "2c41a5da-c83c-48af-b3f2-e92056c3e201")
+		(uuid "2ad52fc6-d0b7-439d-b7ef-c1653395ba58")
 	)
 	(wire
 		(pts
@@ -1319,13 +1335,13 @@
 	)
 	(wire
 		(pts
-			(xy 83.82 38.1) (xy 83.82 45.72)
+			(xy 76.2 50.8) (xy 81.28 50.8)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "7423fc8c-0c05-421b-a62a-49e6902c9f4e")
+		(uuid "793013ef-b779-45e7-828c-64bab3217d21")
 	)
 	(wire
 		(pts
@@ -1359,6 +1375,16 @@
 	)
 	(wire
 		(pts
+			(xy 76.2 38.1) (xy 76.2 41.91)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "984b890b-a075-45a8-b9ae-4496776cbc0a")
+	)
+	(wire
+		(pts
 			(xy 129.54 59.69) (xy 132.08 59.69)
 		)
 		(stroke
@@ -1366,6 +1392,26 @@
 			(type default)
 		)
 		(uuid "c5c49ce1-f558-4a34-ad84-651ee5f1e5b3")
+	)
+	(wire
+		(pts
+			(xy 76.2 38.1) (xy 88.9 38.1)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "cd60c081-f877-4325-b418-c9f84b6dfd53")
+	)
+	(wire
+		(pts
+			(xy 88.9 35.56) (xy 88.9 38.1)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d1824ad0-1ee7-41d6-830b-a2f09a7b9cbe")
 	)
 	(wire
 		(pts
@@ -1379,7 +1425,7 @@
 	)
 	(wire
 		(pts
-			(xy 63.5 46.99) (xy 63.5 50.8)
+			(xy 76.2 46.99) (xy 76.2 50.8)
 		)
 		(stroke
 			(width 0)
@@ -1389,7 +1435,7 @@
 	)
 	(wire
 		(pts
-			(xy 83.82 55.88) (xy 83.82 76.2)
+			(xy 88.9 55.88) (xy 88.9 76.2)
 		)
 		(stroke
 			(width 0)
@@ -1408,7 +1454,7 @@
 		(uuid "1fbe4fad-4256-45cb-a70d-2010abfe4fb5")
 	)
 	(label "SERVO_PWR"
-		(at 83.82 76.2 90)
+		(at 88.9 76.2 90)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -1441,8 +1487,7 @@
 	)
 	(symbol
 		(lib_id "Device:R_Small_US")
-		(at 63.5 44.45 0)
-		(mirror y)
+		(at 76.2 44.45 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1450,7 +1495,7 @@
 		(dnp no)
 		(uuid "1550330c-d6bd-4cfd-978c-e97f5874433c")
 		(property "Reference" "R20"
-			(at 60.96 43.1799 0)
+			(at 78.74 43.1799 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1459,7 +1504,7 @@
 			)
 		)
 		(property "Value" "47k"
-			(at 60.96 45.7199 0)
+			(at 78.74 45.7199 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1468,7 +1513,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 63.5 44.45 0)
+			(at 76.2 44.45 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1477,7 +1522,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 63.5 44.45 0)
+			(at 76.2 44.45 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1486,7 +1531,7 @@
 			)
 		)
 		(property "Description" "Resistor, small US symbol"
-			(at 63.5 44.45 0)
+			(at 76.2 44.45 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1959,7 +2004,7 @@
 	)
 	(symbol
 		(lib_id "power:+BATT")
-		(at 83.82 38.1 0)
+		(at 88.9 35.56 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1968,7 +2013,7 @@
 		(fields_autoplaced yes)
 		(uuid "97f4d212-659f-49dd-bafd-09354fe0b9fa")
 		(property "Reference" "#PWR050"
-			(at 83.82 41.91 0)
+			(at 88.9 39.37 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1977,7 +2022,7 @@
 			)
 		)
 		(property "Value" "+BATT"
-			(at 83.82 33.02 0)
+			(at 88.9 30.48 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1985,7 +2030,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 83.82 38.1 0)
+			(at 88.9 35.56 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1994,7 +2039,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 83.82 38.1 0)
+			(at 88.9 35.56 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2003,7 +2048,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+BATT\""
-			(at 83.82 38.1 0)
+			(at 88.9 35.56 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2097,7 +2142,7 @@
 	)
 	(symbol
 		(lib_id "Vishay_FET:Si3407DV")
-		(at 81.28 50.8 0)
+		(at 86.36 50.8 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2105,7 +2150,7 @@
 		(dnp no)
 		(uuid "bde3c779-44e4-4273-9638-1d936caffb5c")
 		(property "Reference" "Q1"
-			(at 86.36 49.53 0)
+			(at 91.44 49.53 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2114,7 +2159,7 @@
 			)
 		)
 		(property "Value" "Si3407DV"
-			(at 86.36 52.07 0)
+			(at 91.44 52.07 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2123,7 +2168,7 @@
 			)
 		)
 		(property "Footprint" "Package_SO:TSOP-6_1.65x3.05mm_P0.95mm"
-			(at 81.28 29.972 0)
+			(at 86.36 29.972 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2132,7 +2177,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.vishay.com/docs/69987/si3407dv.pdf"
-			(at 81.28 29.972 0)
+			(at 86.36 29.972 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2141,7 +2186,7 @@
 			)
 		)
 		(property "Description" "P-Channel 20-V (D-S) MOSFET 24mOhm Rds(on) 8A Vishay Siliconix"
-			(at 81.28 29.972 0)
+			(at 86.36 29.972 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2171,72 +2216,6 @@
 			(project ""
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/27a1e4e9-ed52-4396-b65c-2ca15ccf5a1d"
 					(reference "Q1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:+BATT")
-		(at 63.5 38.1 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "d000e2db-9eba-4dcc-9473-2306827e6e88")
-		(property "Reference" "#PWR054"
-			(at 63.5 41.91 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+BATT"
-			(at 63.5 33.02 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 63.5 38.1 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 63.5 38.1 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+BATT\""
-			(at 63.5 38.1 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "5327d3ac-f88f-4cf7-a7cb-727437ffcad9")
-		)
-		(instances
-			(project "airbrake_mod"
-				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/27a1e4e9-ed52-4396-b65c-2ca15ccf5a1d"
-					(reference "#PWR054")
 					(unit 1)
 				)
 			)
