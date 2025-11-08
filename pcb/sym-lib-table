@@ -2,4 +2,5 @@
   (version 7)
   (lib (name "TI_DCDC")(type "KiCad")(uri "${KIPRJMOD}/kicad-library/symbols/TI_DCDC.kicad_sym")(options "")(descr ""))
   (lib (name "Vishay_FET")(type "KiCad")(uri "${KIPRJMOD}/kicad-library/symbols/Vishay_FET.kicad_sym")(options "")(descr ""))
+  (lib (name "ST_Sensor_IMU")(type "KiCad")(uri "${KIPRJMOD}/kicad-library/symbols/ST_Sensor_IMU.kicad_sym")(options "")(descr ""))
 )
