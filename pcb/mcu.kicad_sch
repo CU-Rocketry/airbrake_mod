@@ -2478,7 +2478,6 @@
 					(alternate "I2S6_WS" bidirectional line)
 					(alternate "LTDC_B6" bidirectional line)
 					(alternate "LTDC_R3" bidirectional line)
-					(alternate "" input line)
 					(alternate "SPI1_NSS" bidirectional line)
 					(alternate "SPI3_NSS" bidirectional line)
 					(alternate "SPI6_NSS" bidirectional line)
