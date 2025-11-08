@@ -928,7 +928,7 @@
 		)
 		(uuid "e7c5ff72-ed43-4057-a620-f7bcbfc46aea")
 	)
-	(hierarchical_label "LED_R"
+	(hierarchical_label "LED0_R"
 		(shape input)
 		(at 38.1 50.8 270)
 		(effects
@@ -939,7 +939,7 @@
 		)
 		(uuid "70deae48-67a3-4110-97fc-6bf40e25e26d")
 	)
-	(hierarchical_label "LED_G"
+	(hierarchical_label "LED0_G"
 		(shape input)
 		(at 50.8 50.8 270)
 		(effects
@@ -950,7 +950,7 @@
 		)
 		(uuid "c51f4ea3-4983-4bbd-b3c1-29e935b3f882")
 	)
-	(hierarchical_label "LED_B"
+	(hierarchical_label "LED0_B"
 		(shape input)
 		(at 63.5 50.8 270)
 		(effects

@@ -635,6 +635,14 @@
     [
       "0a32b07f-7988-40ae-8006-b298a5ae2a50",
       "User Interface"
+    ],
+    [
+      "3d511e99-5228-4ca9-8dfb-1c1192a39280",
+      "Debug"
+    ],
+    [
+      "f60eb89b-e788-45de-b3de-5493c9ad1c56",
+      "Sensors"
     ]
   ],
   "text_variables": {}

@@ -111,6 +111,36 @@
 	)
 	(wire
 		(pts
+			(xy 101.6 119.38) (xy 114.3 119.38)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2962a0e4-32b0-4a2a-aa9f-931dfe60be9d")
+	)
+	(wire
+		(pts
+			(xy 50.8 83.82) (xy 63.5 83.82)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2ccb44ef-c4a9-4a9a-8dfb-6f80bcfa5db6")
+	)
+	(wire
+		(pts
+			(xy 50.8 88.9) (xy 63.5 88.9)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3530e4db-fb91-4646-a2df-2ce504de4cbe")
+	)
+	(wire
+		(pts
 			(xy 101.6 41.91) (xy 114.3 41.91)
 		)
 		(stroke
@@ -161,6 +191,36 @@
 	)
 	(wire
 		(pts
+			(xy 50.8 86.36) (xy 63.5 86.36)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "81e75243-a644-47e6-b3f9-e32443726b3f")
+	)
+	(wire
+		(pts
+			(xy 50.8 91.44) (xy 63.5 91.44)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8fdf3832-9ac2-4aaf-a8f3-506ad4b3305e")
+	)
+	(wire
+		(pts
+			(xy 101.6 116.84) (xy 114.3 116.84)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9e8bb1c7-de50-4b90-ac0a-3eeac16dd93c")
+	)
+	(wire
+		(pts
 			(xy 50.8 30.48) (xy 63.5 30.48)
 		)
 		(stroke
@@ -171,6 +231,26 @@
 	)
 	(wire
 		(pts
+			(xy 50.8 78.74) (xy 63.5 78.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b2c84fab-8dd0-4139-966f-59b10664fee6")
+	)
+	(wire
+		(pts
+			(xy 50.8 99.06) (xy 63.5 99.06)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b350f0e6-72b4-4ddc-b320-fe549d47b6ae")
+	)
+	(wire
+		(pts
 			(xy 101.6 34.29) (xy 114.3 34.29)
 		)
 		(stroke
@@ -178,6 +258,16 @@
 			(type default)
 		)
 		(uuid "b640f320-daae-4607-adee-557f4dc42a0f")
+	)
+	(wire
+		(pts
+			(xy 50.8 96.52) (xy 63.5 96.52)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c3dfe67d-35b4-407e-bdc0-1dae4bbfaf8b")
 	)
 	(wire
 		(pts
@@ -415,6 +505,36 @@
 				(justify left top)
 			)
 		)
+		(pin "LED0_R" input
+			(at 50.8 116.84 0)
+			(uuid "6830d102-7977-4ef4-85fb-17295407a4fd")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "LED0_G" input
+			(at 50.8 119.38 0)
+			(uuid "0c9034ff-e01f-4d59-a3b1-282c7150c190")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "LED0_B" input
+			(at 50.8 121.92 0)
+			(uuid "7ed9f885-0f27-4953-958a-3b52d7dbcd58")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936"
@@ -547,6 +667,96 @@
 				(justify right)
 			)
 		)
+		(pin "DEBUG_JTCK-SWCLK" input
+			(at 63.5 83.82 180)
+			(uuid "8cc322f8-7856-4c3d-bb77-6b3dabca0f2e")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "DEBUG_JTMS-SWDIO" bidirectional
+			(at 63.5 86.36 180)
+			(uuid "398e740f-4a0e-41fc-9440-498b543f4345")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "DEBUG_JTDO-SWO" output
+			(at 63.5 88.9 180)
+			(uuid "102d642e-2c42-41bb-b5e8-2ef94a1a7b8c")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "SERVO_SIG" output
+			(at 101.6 116.84 0)
+			(uuid "851c10b4-0bc6-4658-86cc-16b3cbf98550")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "SERVO_EN" output
+			(at 101.6 119.38 0)
+			(uuid "3d41b253-fd4b-4176-bc3d-527dddbfb052")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "DEBUG_JTDI" input
+			(at 63.5 91.44 180)
+			(uuid "c4850122-e0ad-41fe-b128-ece371e4da0e")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "NRST" input
+			(at 63.5 78.74 180)
+			(uuid "6f0770b3-5c28-45c6-bc35-b663c128b270")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "VCP_TX" output
+			(at 63.5 96.52 180)
+			(uuid "8b61d18c-66a6-4a51-a8d9-4b1ed2ea43b9")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "VCP_RX" input
+			(at 63.5 99.06 180)
+			(uuid "19b9cb20-5bda-4068-9a23-ecfb359bcdca")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936"
@@ -655,6 +865,118 @@
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936"
 					(page "3")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 25.4 76.2)
+		(size 25.4 25.4)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 255 255 194 1.0000)
+		)
+		(uuid "3d511e99-5228-4ca9-8dfb-1c1192a39280")
+		(property "Sheetname" "Debug"
+			(at 25.4 75.4884 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "debug.kicad_sch"
+			(at 25.4 102.1846 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "JCLK/SWCLK" output
+			(at 50.8 83.82 0)
+			(uuid "7a28ac7d-d8e0-4d9b-83bd-f8a8413357d2")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "VCP_TX" input
+			(at 50.8 96.52 0)
+			(uuid "e8bee36b-b4e1-477e-93b1-af526ac771c9")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "VCP_RX" output
+			(at 50.8 99.06 0)
+			(uuid "15a492f5-3a66-4d72-87b1-62dcbca5cd12")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "~{RESET}" output
+			(at 50.8 78.74 0)
+			(uuid "ce4e68e5-2315-4f66-a197-490dacc9001c")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "JTMS/SWDIO" bidirectional
+			(at 50.8 86.36 0)
+			(uuid "3502e84b-c6c3-49d8-9c81-9d872a1e41e0")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "JTDO/SWO" input
+			(at 50.8 88.9 0)
+			(uuid "6a00ec08-00d8-4946-b56e-391f13fa5dea")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "JTDI" output
+			(at 50.8 91.44 0)
+			(uuid "5f74dd7a-efe8-44ae-ab0d-52f4c2778b34")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(instances
+			(project "airbrake_mod"
+				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936"
+					(page "8")
 				)
 			)
 		)
@@ -829,6 +1151,48 @@
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936"
 					(page "4")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 114.3 50.8)
+		(size 25.4 38.1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 255 255 194 1.0000)
+		)
+		(uuid "f60eb89b-e788-45de-b3de-5493c9ad1c56")
+		(property "Sheetname" "Sensors"
+			(at 114.3 50.0884 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "sensors.kicad_sch"
+			(at 114.3 89.4846 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "airbrake_mod"
+				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936"
+					(page "9")
 				)
 			)
 		)
