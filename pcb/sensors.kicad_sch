@@ -145,6 +145,627 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "ST_Sensor_IMU:IIS2MDC"
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "U"
+				(at 11.176 3.81 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "IIS2MDC"
+				(at 14.478 1.27 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" "ST_IIS2MDC:LGA-12_2X2X0P7_STM"
+				(at -0.508 14.478 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "https://www.st.com/content/ccc/resource/technical/document/datasheet/group3/06/f2/a3/a7/74/fe/4b/16/DM00431721/files/DM00431721.pdf/jcr:content/translations/en.DM00431721.pdf"
+				(at 2.794 14.986 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "High-accuracy, ultra-low-power, 3-axis digital output magnetometer 50 gauss"
+				(at 2.794 14.986 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "ST STMIcroelectronics IIS2MDC High-accuracy, ultra-low-power, 3-axis digital output magnetometer 50 gauss"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "IIS2MDC_0_0"
+				(pin unspecified line
+					(at -12.7 -2.54 0)
+					(length 2.54)
+					(name "SCL"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin unspecified line
+					(at -12.7 -5.08 0)
+					(length 2.54)
+					(name "SDA"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin unspecified line
+					(at -12.7 -7.62 0)
+					(length 2.54)
+					(name "CS"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin unspecified line
+					(at -12.7 -12.7 0)
+					(length 2.54)
+					(name "INT/DRDY"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "7"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin unspecified line
+					(at 0 2.54 270)
+					(length 2.54)
+					(name "Vdd"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "9"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin unspecified line
+					(at 0 -22.86 90)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "6"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin unspecified line
+					(at 0 -22.86 90)
+					(length 2.54)
+					(hide yes)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "8"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin unspecified line
+					(at 2.54 2.54 270)
+					(length 2.54)
+					(name "Vdd_IO"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "10"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin no_connect line
+					(at 7.62 -22.86 90)
+					(length 2.54)
+					(hide yes)
+					(name "NC"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "11"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin no_connect line
+					(at 7.62 -22.86 90)
+					(length 2.54)
+					(hide yes)
+					(name "NC"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "12"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin no_connect line
+					(at 7.62 -22.86 90)
+					(length 2.54)
+					(hide yes)
+					(name "NC"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin unspecified line
+					(at 12.7 -12.7 180)
+					(length 2.54)
+					(name "C1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(symbol "IIS2MDC_1_1"
+				(rectangle
+					(start -10.16 0)
+					(end 10.16 -20.32)
+					(stroke
+						(width 0)
+						(type solid)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "ST_Sensor_IMU:LSM6DSV80X"
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "U"
+				(at 11.43 3.81 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "LSM6DSV80X"
+				(at 17.018 1.524 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" "Package_LGA:LGA-14_3x2.5mm_P0.5mm_LayoutBorder3x4y"
+				(at 0 14.986 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "https://www.st.com/resource/en/datasheet/lsm6dsv80x.pdf"
+				(at 0 14.986 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "6 axis IMU with high-g and low-g accelerometer, 16g/80g full scale, 4000 dps full scale gyroscope"
+				(at 0 14.986 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "LSM6DSV80X STMicroelectronics 6 axis IMU with high-g and low-g accelerometer, 16g/80g full scale, 4000 dps full scale gyroscope"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "LSM6DSV80X_0_0"
+				(pin input line
+					(at -12.7 -2.54 0)
+					(length 2.54)
+					(name "CS"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "12"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at -12.7 -5.08 0)
+					(length 2.54)
+					(name "SCL"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "13"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin bidirectional line
+					(at -12.7 -7.62 0)
+					(length 2.54)
+					(name "SDA"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "14"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin output line
+					(at -12.7 -10.16 0)
+					(length 2.54)
+					(name "SDO"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at 0 2.54 270)
+					(length 2.54)
+					(name "VDD"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "8"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at 0 -17.78 90)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "6"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at 0 -17.78 90)
+					(length 2.54)
+					(hide yes)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "7"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at 2.54 2.54 270)
+					(length 2.54)
+					(name "VDDIO"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin no_connect line
+					(at 2.54 -17.78 90)
+					(length 2.54)
+					(hide yes)
+					(name "NC"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "10"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin no_connect line
+					(at 2.54 -17.78 90)
+					(length 2.54)
+					(hide yes)
+					(name "NC"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "11"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin bidirectional line
+					(at 12.7 -2.54 180)
+					(length 2.54)
+					(name "SDx"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin output line
+					(at 12.7 -5.08 180)
+					(length 2.54)
+					(name "SCx"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin output line
+					(at 12.7 -10.16 180)
+					(length 2.54)
+					(name "INT1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin output line
+					(at 12.7 -12.7 180)
+					(length 2.54)
+					(name "INT2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "9"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(symbol "LSM6DSV80X_1_1"
+				(rectangle
+					(start -10.16 0)
+					(end 10.16 -15.24)
+					(stroke
+						(width 0)
+						(type solid)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Sensor_Pressure:LPS22DF"
 			(exclude_from_sim no)
 			(in_bom yes)
@@ -689,107 +1310,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "power:GND1"
-			(power)
-			(pin_numbers
-				(hide yes)
-			)
-			(pin_names
-				(offset 0)
-				(hide yes)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "#PWR"
-				(at 0 -6.35 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Value" "GND1"
-				(at 0 -3.81 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" "Power symbol creates a global label with name \"GND1\" , ground"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_keywords" "global power"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "GND1_0_1"
-				(polyline
-					(pts
-						(xy 0 0) (xy 0 -1.27) (xy 1.27 -1.27) (xy 0 -2.54) (xy -1.27 -1.27) (xy 0 -1.27)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "GND1_1_1"
-				(pin power_in line
-					(at 0 0 270)
-					(length 0)
-					(name "~"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 	)
 	(text "MOSI/MISO swap can be achieved if needed\nRM0468 page 2261 bit 15 IOSWP"
 		(exclude_from_sim no)
@@ -800,26 +1320,6 @@
 			)
 		)
 		(uuid "1ac67072-5bb4-4dde-8ef2-811e20efbc54")
-	)
-	(text "TODO: symbol for LSM6DSV80X"
-		(exclude_from_sim no)
-		(at 103.886 101.346 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "ca7bc544-df43-4176-b627-091631c8cb03")
-	)
-	(text "TODO: symbol for IIS2MDCTR"
-		(exclude_from_sim no)
-		(at 167.64 101.854 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "daff799e-70c6-4855-901d-a2ea5345bbcc")
 	)
 	(junction
 		(at 46.99 118.11)
@@ -864,16 +1364,6 @@
 			(type default)
 		)
 		(uuid "104e40d2-7942-4bad-99d2-9cb6979567d1")
-	)
-	(wire
-		(pts
-			(xy 81.28 101.6) (xy 81.28 90.17)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "174e8bfa-15cb-4f47-b16c-80d075195d1f")
 	)
 	(wire
 		(pts
@@ -1007,7 +1497,7 @@
 	)
 	(wire
 		(pts
-			(xy 63.5 101.6) (xy 81.28 101.6)
+			(xy 63.5 101.6) (xy 73.66 101.6)
 		)
 		(stroke
 			(width 0)
@@ -1047,7 +1537,7 @@
 	)
 	(wire
 		(pts
-			(xy 63.5 106.68) (xy 71.12 106.68)
+			(xy 63.5 106.68) (xy 73.66 106.68)
 		)
 		(stroke
 			(width 0)
@@ -1085,16 +1575,6 @@
 		)
 		(uuid "ff452357-1f39-41e1-b6f8-bb4ff4f2f3de")
 	)
-	(label "baro_int"
-		(at 71.12 106.68 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "35942d2f-c284-4bcb-9ad6-81dcc1da338d")
-	)
 	(label "SCLK"
 		(at 73.66 99.06 180)
 		(effects
@@ -1106,7 +1586,7 @@
 		(uuid "44972abf-6ced-44ae-9277-f1b97c265efb")
 	)
 	(label "MISO"
-		(at 73.66 93.98 180)
+		(at 73.66 96.52 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -1116,7 +1596,7 @@
 		(uuid "4b7cc1c0-6a89-4cf0-baaf-7b7d0885d341")
 	)
 	(label "MOSI"
-		(at 73.66 96.52 180)
+		(at 73.66 93.98 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -1124,16 +1604,6 @@
 			(justify right bottom)
 		)
 		(uuid "a36a2744-5f26-40f4-b3a1-7b20232b32d5")
-	)
-	(label "baro_CS"
-		(at 81.28 90.17 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "cdde287a-8d0b-4b33-bb87-8dfa79445ab4")
 	)
 	(label "SCLK"
 		(at 50.8 30.48 180)
@@ -1176,6 +1646,17 @@
 		)
 		(uuid "6eeae988-2352-4d2d-96aa-1f065278036d")
 	)
+	(hierarchical_label "BARO_CS"
+		(shape output)
+		(at 73.66 101.6 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "80f70289-3caa-4565-a8df-387cc899ec84")
+	)
 	(hierarchical_label "SPI_MOSI"
 		(shape input)
 		(at 38.1 25.4 180)
@@ -1197,6 +1678,17 @@
 			(justify right)
 		)
 		(uuid "aa80268f-f2a8-4509-82ff-c155786b797b")
+	)
+	(hierarchical_label "BARO_INT"
+		(shape output)
+		(at 73.66 106.68 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "eb149ac1-3a53-4ad8-b5b2-eed3dc6baf68")
 	)
 	(symbol
 		(lib_id "Sensor_Pressure:LPS22DF")
@@ -1297,6 +1789,112 @@
 		)
 	)
 	(symbol
+		(lib_id "ST_Sensor_IMU:LSM6DSV80X")
+		(at 152.4 91.44 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "4e304402-4812-4f6e-ae10-327baa8de82a")
+		(property "Reference" "U6"
+			(at 154.5433 109.22 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "LSM6DSV80X"
+			(at 154.5433 111.76 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Package_LGA:LGA-14_3x2.5mm_P0.5mm_LayoutBorder3x4y"
+			(at 152.4 76.454 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.st.com/resource/en/datasheet/lsm6dsv80x.pdf"
+			(at 152.4 76.454 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "6 axis IMU with high-g and low-g accelerometer, 16g/80g full scale, 4000 dps full scale gyroscope"
+			(at 152.4 76.454 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "8"
+			(uuid "6ef7e243-808d-4c96-ace5-a939d3ab2b90")
+		)
+		(pin "7"
+			(uuid "d1d33df7-41d6-4cf4-b2ab-911625ab1727")
+		)
+		(pin "10"
+			(uuid "f7f2c099-8194-4724-81c6-f16819c059fc")
+		)
+		(pin "3"
+			(uuid "da8c723c-5fb4-47ce-87dd-84b43735d01a")
+		)
+		(pin "12"
+			(uuid "08dc6ffd-90ba-4273-91bf-a31d309e2609")
+		)
+		(pin "1"
+			(uuid "203952a1-523f-4ff3-a2dc-be4ae5f1d35a")
+		)
+		(pin "13"
+			(uuid "278f1d9d-db8d-44d0-8386-fd7cea3bd837")
+		)
+		(pin "14"
+			(uuid "5a118ce3-9990-4352-975e-c9593de9294c")
+		)
+		(pin "6"
+			(uuid "a0ba0d39-b520-437a-ac51-4f8fc6cd153e")
+		)
+		(pin "5"
+			(uuid "0ac88855-433e-4a5b-80b1-26a984a91d83")
+		)
+		(pin "11"
+			(uuid "a2803655-e77c-4a75-81da-5148d01f0072")
+		)
+		(pin "2"
+			(uuid "18345c5b-46df-45c2-a7ac-9192f37732b7")
+		)
+		(pin "4"
+			(uuid "882d86c4-e1ab-4a6c-b505-aaf76d393115")
+		)
+		(pin "9"
+			(uuid "07b79d78-1c09-42b7-b090-eb3bbb964c2a")
+		)
+		(instances
+			(project ""
+				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/f60eb89b-e788-45de-b3de-5493c9ad1c56"
+					(reference "U6")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:C_Small")
 		(at 36.83 83.82 0)
 		(unit 1)
@@ -1361,6 +1959,103 @@
 			(project ""
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/f60eb89b-e788-45de-b3de-5493c9ad1c56"
 					(reference "C21")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "ST_Sensor_IMU:IIS2MDC")
+		(at 241.3 91.44 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "83b9ec4d-d382-425f-81dd-83d2415288ea")
+		(property "Reference" "U7"
+			(at 256.032 88.392 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "IIS2MDC"
+			(at 256.032 90.932 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "ST_IIS2MDC:LGA-12_2X2X0P7_STM"
+			(at 240.792 76.962 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.st.com/content/ccc/resource/technical/document/datasheet/group3/06/f2/a3/a7/74/fe/4b/16/DM00431721/files/DM00431721.pdf/jcr:content/translations/en.DM00431721.pdf"
+			(at 244.094 76.454 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "High-accuracy, ultra-low-power, 3-axis digital output magnetometer 50 gauss"
+			(at 244.094 76.454 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "5"
+			(uuid "2a9cb1a8-427e-4bdf-b6d1-569696f792ee")
+		)
+		(pin "10"
+			(uuid "875a2626-1e69-4244-aab1-28cc0c31fd6d")
+		)
+		(pin "8"
+			(uuid "b0f94427-f1e4-40d6-9db5-cadd71861da8")
+		)
+		(pin "4"
+			(uuid "68bc625e-88aa-43c5-8e36-170d06603d11")
+		)
+		(pin "3"
+			(uuid "27321b81-fd7f-484a-932b-16b427b1dc7a")
+		)
+		(pin "6"
+			(uuid "91969205-d03c-4927-8607-bc3b4cadbda5")
+		)
+		(pin "11"
+			(uuid "9b3c650e-0315-468d-8b26-7cc3139bde27")
+		)
+		(pin "12"
+			(uuid "746e7aa1-ad22-4412-8244-079d94b1d379")
+		)
+		(pin "7"
+			(uuid "1f546198-5b73-484f-95a1-587bbd03ec74")
+		)
+		(pin "1"
+			(uuid "2692f9ec-a9db-48d9-80a6-502656e13203")
+		)
+		(pin "9"
+			(uuid "33c48ebf-d754-4c1c-bb7c-51628d7059d5")
+		)
+		(pin "2"
+			(uuid "94efef2d-4cd2-4165-9417-1cacf5334c85")
+		)
+		(instances
+			(project ""
+				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/f60eb89b-e788-45de-b3de-5493c9ad1c56"
+					(reference "U7")
 					(unit 1)
 				)
 			)
@@ -1433,72 +2128,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:GND1")
-		(at 36.83 80.01 180)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "adc76303-c010-4c13-98c0-ba2674a422cd")
-		(property "Reference" "#PWR017"
-			(at 36.83 73.66 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND1"
-			(at 36.83 74.93 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 36.83 80.01 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 36.83 80.01 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND1\" , ground"
-			(at 36.83 80.01 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "bffb057d-63f9-424b-ad8c-3056e3e9d1f6")
-		)
-		(instances
-			(project ""
-				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/f60eb89b-e788-45de-b3de-5493c9ad1c56"
-					(reference "#PWR017")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:+3V3")
 		(at 27.94 78.74 0)
 		(unit 1)
@@ -1559,6 +2188,72 @@
 			(project ""
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/f60eb89b-e788-45de-b3de-5493c9ad1c56"
 					(reference "#PWR018")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 36.83 80.01 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "e0f76b6e-b724-49d8-aff2-977936692660")
+		(property "Reference" "#PWR066"
+			(at 36.83 73.66 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 36.83 74.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 36.83 80.01 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 36.83 80.01 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 36.83 80.01 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "a3155fdf-9578-45af-b839-bdfcdf6b8320")
+		)
+		(instances
+			(project "airbrake_mod"
+				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/f60eb89b-e788-45de-b3de-5493c9ad1c56"
+					(reference "#PWR066")
 					(unit 1)
 				)
 			)
