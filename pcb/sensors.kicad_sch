@@ -1969,7 +1969,7 @@
 		(uuid "72adb459-952d-4d38-8471-230c5cda3ad5")
 	)
 	(hierarchical_label "BARO_CS"
-		(shape output)
+		(shape input)
 		(at 73.66 101.6 0)
 		(effects
 			(font

@@ -101,6 +101,16 @@
 	)
 	(wire
 		(pts
+			(xy 101.6 71.12) (xy 114.3 71.12)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0e6a4696-f709-420c-ad7d-0c930281e06f")
+	)
+	(wire
+		(pts
 			(xy 50.8 35.56) (xy 63.5 35.56)
 		)
 		(stroke
@@ -111,6 +121,26 @@
 	)
 	(wire
 		(pts
+			(xy 101.6 53.34) (xy 114.3 53.34)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1aff7736-b112-4d62-8a90-4ffffe1888d1")
+	)
+	(wire
+		(pts
+			(xy 101.6 63.5) (xy 114.3 63.5)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "268cf6bb-26ac-4e3d-8da8-25302bfa6a14")
+	)
+	(wire
+		(pts
 			(xy 101.6 119.38) (xy 114.3 119.38)
 		)
 		(stroke
@@ -118,6 +148,16 @@
 			(type default)
 		)
 		(uuid "2962a0e4-32b0-4a2a-aa9f-931dfe60be9d")
+	)
+	(wire
+		(pts
+			(xy 101.6 76.2) (xy 114.3 76.2)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2a041e9d-000c-4b61-85d8-402cc7cac0cf")
 	)
 	(wire
 		(pts
@@ -161,6 +201,16 @@
 	)
 	(wire
 		(pts
+			(xy 101.6 73.66) (xy 114.3 73.66)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "44e74b54-0da0-431d-8c23-476073a6e181")
+	)
+	(wire
+		(pts
 			(xy 101.6 39.37) (xy 114.3 39.37)
 		)
 		(stroke
@@ -198,6 +248,16 @@
 			(type default)
 		)
 		(uuid "81e75243-a644-47e6-b3f9-e32443726b3f")
+	)
+	(wire
+		(pts
+			(xy 101.6 55.88) (xy 114.3 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8c5bb8b9-e012-433e-ac71-8d8b3946b1c3")
 	)
 	(wire
 		(pts
@@ -278,6 +338,26 @@
 			(type default)
 		)
 		(uuid "e347e7ff-8531-46cc-acba-748c1f7b4c3f")
+	)
+	(wire
+		(pts
+			(xy 101.6 66.04) (xy 114.3 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f20e6619-8ead-4826-8655-bb0e9accb4b9")
+	)
+	(wire
+		(pts
+			(xy 101.6 58.42) (xy 114.3 58.42)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f6ba5a9b-32b2-498d-bd51-42392514b79e")
 	)
 	(symbol
 		(lib_id "Mechanical:MountingHole")
@@ -757,6 +837,86 @@
 				(justify left)
 			)
 		)
+		(pin "SENSOR_SPI_SCLK" output
+			(at 101.6 53.34 0)
+			(uuid "1b6789f1-7187-4ded-98e8-ae0ae72e426b")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "SENSOR_SPI_MISO" input
+			(at 101.6 58.42 0)
+			(uuid "16923bf6-c4a5-463d-ae63-cb90e7ddc8d8")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "SENSOR_SPI_MOSI" output
+			(at 101.6 55.88 0)
+			(uuid "27f35741-6843-47c2-8583-e714c12a0426")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "IMU_INT1" input
+			(at 101.6 73.66 0)
+			(uuid "2294ce25-f6ea-4f83-9182-ddf57c45e08b")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "IMU_INT2" input
+			(at 101.6 76.2 0)
+			(uuid "cbd644a6-a71a-42bc-8d72-c0a0d2486718")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "BARO_CS" output
+			(at 101.6 63.5 0)
+			(uuid "ae3b075f-614c-4786-9258-280d7cd971d5")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "BARO_INT" input
+			(at 101.6 66.04 0)
+			(uuid "0a84a67a-5b46-4b38-b81f-a442ed8581f7")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "IMU_CS" output
+			(at 101.6 71.12 0)
+			(uuid "e33dcdb8-6957-4a0f-920a-f3896292a661")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936"
@@ -1157,7 +1317,7 @@
 	)
 	(sheet
 		(at 114.3 50.8)
-		(size 25.4 38.1)
+		(size 25.4 49.53)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
@@ -1181,12 +1341,92 @@
 			)
 		)
 		(property "Sheetfile" "sensors.kicad_sch"
-			(at 114.3 89.4846 0)
+			(at 114.3 100.9146 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify left top)
+			)
+		)
+		(pin "IMU_CS" input
+			(at 114.3 71.12 180)
+			(uuid "1583ae51-5a72-4843-8528-eea667c085a1")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "IMU_INT1" output
+			(at 114.3 73.66 180)
+			(uuid "3cf11013-24a3-47da-85b0-f33e75ad398b")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "IMU_INT2" output
+			(at 114.3 76.2 180)
+			(uuid "4fc6832b-b327-4d62-ba3a-def2c16ccb40")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "SPI_SCLK" input
+			(at 114.3 53.34 180)
+			(uuid "428200bf-4aab-4c76-864e-d281dd4fc66d")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "SPI_MOSI" input
+			(at 114.3 55.88 180)
+			(uuid "940a2a4f-4445-48e0-b37c-78fb4b8aa460")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "SPI_MISO" output
+			(at 114.3 58.42 180)
+			(uuid "c15720c0-1da3-42b0-9fa4-57357f2c9731")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "BARO_INT" output
+			(at 114.3 66.04 180)
+			(uuid "6cdbaace-b64c-4a48-af30-3f793144ba7a")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "BARO_CS" input
+			(at 114.3 63.5 180)
+			(uuid "c525f8e8-2395-4331-975c-00592037cdc2")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
 			)
 		)
 		(instances
