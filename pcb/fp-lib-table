@@ -4,4 +4,5 @@
   (lib (name "B38G3RGB")(type "KiCad")(uri "${KIPRJMOD}/kicad-library/footprints/B38G3RGB.pretty")(options "")(descr ""))
   (lib (name "Connector_CNC_Tech")(type "KiCad")(uri "${KIPRJMOD}/kicad-library/footprints/Connector_CNC_Tech.pretty")(options "")(descr ""))
   (lib (name "ST_IIS2MDC")(type "KiCad")(uri "${KIPRJMOD}/kicad-library/footprints/ST_IIS2MDC.pretty")(options "")(descr ""))
+  (lib (name "Connector_AMASS_XT")(type "KiCad")(uri "${KIPRJMOD}/kicad-library/footprints/Connector_AMASS_XT.pretty")(options "")(descr ""))
 )
