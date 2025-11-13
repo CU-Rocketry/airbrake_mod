@@ -646,6 +646,210 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "SW_SameSky_RDS4-8S-1012-73-RA-254-D-67:RDS4-8S-1012-73-RA-254-D-67"
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "S"
+				(at -3.81 2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left bottom)
+				)
+			)
+			(property "Value" "RDS4-8S-1012-73-RA-254-D-67"
+				(at -3.81 0.508 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left bottom)
+				)
+			)
+			(property "Footprint" "SW_SameSky_RDS4-8S-1012-73-RA-254-D-67:SW_RDS4-8S-1012-73-RA-254-D-67"
+				(at 0 5.08 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify bottom)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "https://www.sameskydevices.com/product/resource/rds4-1012-ra-67.pdf"
+				(at -1.27 5.842 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "8 Position, Through Hole, 2.54 mm Pitch, IP67, Right Angle, 7.3 mm Raised Actuator, DIP Switch"
+				(at -1.27 5.842 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "8 Position, Through Hole, 2.54 mm Pitch, IP67, Right Angle, 7.3 mm Raised Actuator, DIP Switch"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "RDS4-8S-1012-73-RA-254-D-67_0_0"
+				(pin passive line
+					(at -6.35 -3.81 0)
+					(length 2.54)
+					(name "C"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "C"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin no_connect line
+					(at 0 -10.16 90)
+					(length 2.54)
+					(hide yes)
+					(name "NC"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "NC"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 6.35 -1.27 180)
+					(length 2.54)
+					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 6.35 -3.81 180)
+					(length 2.54)
+					(name "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 6.35 -6.35 180)
+					(length 2.54)
+					(name "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(symbol "RDS4-8S-1012-73-RA-254-D-67_0_1"
+				(polyline
+					(pts
+						(xy -0.762 -3.81) (xy -0.254 -4.318)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 0 -3.81)
+					(radius 1.27)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.762 -3.81) (xy -0.762 -3.81) (xy -0.254 -3.302)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "RDS4-8S-1012-73-RA-254-D-67_1_1"
+				(rectangle
+					(start -3.81 0)
+					(end 3.81 -7.62)
+					(stroke
+						(width 0)
+						(type solid)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "power:+BATT"
 			(power)
 			(pin_numbers
@@ -784,6 +988,18 @@
 		)
 		(uuid 3cc82aeb-4e2b-4d9a-ba59-0568d932f376)
 	)
+	(rectangle
+		(start 12.7 63.5)
+		(end 88.9 114.3)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(fill
+			(type none)
+		)
+		(uuid b44073c2-1690-4eb9-8dcc-692209a623b0)
+	)
 	(text "RGB LED\nHarvatek B38G3RGB"
 		(exclude_from_sim no)
 		(at 13.462 14.732 0)
@@ -808,6 +1024,19 @@
 		)
 		(uuid "7103ad69-e6a8-4f52-89cb-93a2210c5167")
 	)
+	(text "Mode switch"
+		(exclude_from_sim no)
+		(at 13.462 64.77 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+				(bold yes)
+			)
+			(justify left top)
+		)
+		(uuid "ac41daf9-e979-4c1b-a6c0-31fe24d1ce5d")
+	)
 	(text "7-8.4V"
 		(exclude_from_sim no)
 		(at 59.182 23.622 0)
@@ -817,6 +1046,18 @@
 			)
 		)
 		(uuid "cbaf2947-2b85-4cbd-85c1-4da9563f8914")
+	)
+	(text "8 position BCD output\nIn this case, simply binary output"
+		(exclude_from_sim no)
+		(at 36.576 104.648 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.1588)
+			)
+			(justify left top)
+		)
+		(uuid "fc913986-9d4b-425c-a9d6-6ab4f612618b")
 	)
 	(wire
 		(pts
@@ -1101,6 +1342,83 @@
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
 					(reference "D3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "SW_SameSky_RDS4-8S-1012-73-RA-254-D-67:RDS4-8S-1012-73-RA-254-D-67")
+		(at 50.8 85.09 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "a5cf8299-2bdc-44c8-a98c-9299430f4f04")
+		(property "Reference" "S1"
+			(at 50.8 94.234 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "RDS4-8S-1012-73-RA-254-D-67"
+			(at 50.8 96.774 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "SW_SameSky_RDS4-8S-1012-73-RA-254-D-67:SW_RDS4-8S-1012-73-RA-254-D-67"
+			(at 50.8 80.01 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify bottom)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.sameskydevices.com/product/resource/rds4-1012-ra-67.pdf"
+			(at 49.53 79.248 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "8 Position, Through Hole, 2.54 mm Pitch, IP67, Right Angle, 7.3 mm Raised Actuator, DIP Switch"
+			(at 49.53 79.248 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "NC"
+			(uuid "1f575b5c-d752-462f-ba18-8dd9ea7b7c7f")
+		)
+		(pin "2"
+			(uuid "046de2a1-e559-42c4-b803-b8454ed7d521")
+		)
+		(pin "C"
+			(uuid "fa3590c7-de5f-43fd-84ab-7f6c35c6bf84")
+		)
+		(pin "1"
+			(uuid "cfcda10e-c369-420f-9c02-c4f3c0de08b0")
+		)
+		(pin "4"
+			(uuid "39aa5ef3-2a4b-49a9-afc8-e5607cc56d03")
+		)
+		(instances
+			(project ""
+				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
+					(reference "S1")
 					(unit 1)
 				)
 			)

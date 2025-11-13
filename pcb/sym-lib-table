@@ -3,4 +3,5 @@
   (lib (name "TI_DCDC")(type "KiCad")(uri "${KIPRJMOD}/kicad-library/symbols/TI_DCDC.kicad_sym")(options "")(descr ""))
   (lib (name "Vishay_FET")(type "KiCad")(uri "${KIPRJMOD}/kicad-library/symbols/Vishay_FET.kicad_sym")(options "")(descr ""))
   (lib (name "ST_Sensor_IMU")(type "KiCad")(uri "${KIPRJMOD}/kicad-library/symbols/ST_Sensor_IMU.kicad_sym")(options "")(descr ""))
+  (lib (name "SW_SameSky_RDS4-8S-1012-73-RA-254-D-67")(type "KiCad")(uri "${KIPRJMOD}/kicad-library/symbols/SW_SameSky_RDS4-8S-1012-73-RA-254-D-67.kicad_sym")(options "")(descr ""))
 )
