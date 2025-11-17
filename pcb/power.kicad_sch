@@ -2202,17 +2202,6 @@
 		)
 		(uuid "a1c517fa-da27-4ca7-868d-fdba32a0cb62")
 	)
-	(text "TODO: calculate voltage divider resistors\n+BATT max is 8.4V, BATT_SENSE max is 3.3V\ntip, keep the lower resistor constant\nand adjust only the top\n"
-		(exclude_from_sim no)
-		(at 65.786 23.368 0)
-		(effects
-			(font
-				(size 1.016 1.016)
-			)
-			(justify left top)
-		)
-		(uuid "a3c739a7-9dc6-4c34-9db2-0ac3b60e4bf8")
-	)
 	(text "Battery power switch"
 		(exclude_from_sim no)
 		(at 13.97 65.024 0)
@@ -10528,7 +10517,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "47k"
+		(property "Value" "82k"
 			(at 60.96 33.0199 0)
 			(effects
 				(font
