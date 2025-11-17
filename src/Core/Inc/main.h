@@ -59,6 +59,14 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define SERVO_EN_Pin GPIO_PIN_2
+#define SERVO_EN_GPIO_Port GPIOA
+#define BARO_INT_Pin GPIO_PIN_4
+#define BARO_INT_GPIO_Port GPIOC
+#define IMU_INT1_Pin GPIO_PIN_8
+#define IMU_INT1_GPIO_Port GPIOD
+#define IMU_INT2_Pin GPIO_PIN_9
+#define IMU_INT2_GPIO_Port GPIOD
 
 /* USER CODE BEGIN Private defines */
 
