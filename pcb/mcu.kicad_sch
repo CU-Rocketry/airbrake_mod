@@ -8202,6 +8202,17 @@
 		)
 		(uuid "2ee9cf6a-3814-4652-b15b-741edbaa9576")
 	)
+	(hierarchical_label "MODE_C"
+		(shape output)
+		(at 0 111.76 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "31233902-3ebf-4d8d-a32d-dba0f9e2abd0")
+	)
 	(hierarchical_label "DEBUG_JTMS-SWDIO"
 		(shape bidirectional)
 		(at 139.7 71.12 0)
@@ -8323,6 +8334,17 @@
 		)
 		(uuid "785f9591-a68b-4338-8ddd-aafc3ca3a764")
 	)
+	(hierarchical_label "MODE_4"
+		(shape input)
+		(at 0 119.38 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "85cad5d9-c2a3-444b-b637-00874b68eb9f")
+	)
 	(hierarchical_label "SPI4_MISO"
 		(shape input)
 		(at 38.1 93.98 180)
@@ -8411,6 +8433,17 @@
 		)
 		(uuid "9a0864d2-3b6f-412c-a3c0-4882aa076d2b")
 	)
+	(hierarchical_label "MODE_1"
+		(shape input)
+		(at 0 114.3 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "a5138d3a-4e4f-4530-8e5b-543c2de24a88")
+	)
 	(hierarchical_label "SPI1_NSS"
 		(shape output)
 		(at 139.7 48.26 0)
@@ -8432,6 +8465,17 @@
 			(justify left)
 		)
 		(uuid "b509f0a7-2065-4d2d-960d-50a7589c0f94")
+	)
+	(hierarchical_label "MODE_2"
+		(shape input)
+		(at 0 116.84 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "b56baf54-1463-4a6e-b882-cfce230970bd")
 	)
 	(hierarchical_label "TIM3_CH2"
 		(shape output)
