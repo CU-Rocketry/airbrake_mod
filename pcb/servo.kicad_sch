@@ -1494,7 +1494,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "1550330c-d6bd-4cfd-978c-e97f5874433c")
-		(property "Reference" "R20"
+		(property "Reference" "R31"
 			(at 78.74 43.1799 0)
 			(effects
 				(font
@@ -1512,7 +1512,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 76.2 44.45 0)
 			(effects
 				(font
@@ -1548,7 +1548,7 @@
 		(instances
 			(project ""
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/27a1e4e9-ed52-4396-b65c-2ca15ccf5a1d"
-					(reference "R20")
+					(reference "R31")
 					(unit 1)
 				)
 			)
@@ -1564,7 +1564,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "1e756c1b-88c7-4d9f-858f-03e60f36ebaa")
-		(property "Reference" "R21"
+		(property "Reference" "R30"
 			(at 69.85 44.45 90)
 			(effects
 				(font
@@ -1580,7 +1580,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 69.85 50.8 0)
 			(effects
 				(font
@@ -1616,7 +1616,7 @@
 		(instances
 			(project ""
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/27a1e4e9-ed52-4396-b65c-2ca15ccf5a1d"
-					(reference "R21")
+					(reference "R30")
 					(unit 1)
 				)
 			)
@@ -1632,7 +1632,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "37d7387b-9926-4cb0-b054-15eb1404ccce")
-		(property "Reference" "R22"
+		(property "Reference" "R28"
 			(at 44.45 57.15 90)
 			(effects
 				(font
@@ -1648,7 +1648,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 44.45 63.5 0)
 			(effects
 				(font
@@ -1684,7 +1684,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/27a1e4e9-ed52-4396-b65c-2ca15ccf5a1d"
-					(reference "R22")
+					(reference "R28")
 					(unit 1)
 				)
 			)
@@ -1766,7 +1766,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "41e34583-03a7-4b30-a6ce-e1d964ef0e61")
-		(property "Reference" "R23"
+		(property "Reference" "R29"
 			(at 48.26 68.5799 0)
 			(effects
 				(font
@@ -1784,7 +1784,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 50.8 69.85 0)
 			(effects
 				(font
@@ -1820,7 +1820,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/27a1e4e9-ed52-4396-b65c-2ca15ccf5a1d"
-					(reference "R23")
+					(reference "R29")
 					(unit 1)
 				)
 			)
@@ -1836,7 +1836,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "4c3aff06-c9a9-4bea-b290-023219b90dbd")
-		(property "Reference" "Q3"
+		(property "Reference" "Q4"
 			(at 67.31 62.2299 0)
 			(effects
 				(font
@@ -1929,7 +1929,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/27a1e4e9-ed52-4396-b65c-2ca15ccf5a1d"
-					(reference "Q3")
+					(reference "Q4")
 					(unit 1)
 				)
 			)
@@ -1946,7 +1946,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "5b0cadc7-8b5d-4e56-932a-bda0b42f6184")
-		(property "Reference" "#PWR046"
+		(property "Reference" "#PWR058"
 			(at 129.54 68.58 0)
 			(effects
 				(font
@@ -1996,7 +1996,7 @@
 		(instances
 			(project ""
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/27a1e4e9-ed52-4396-b65c-2ca15ccf5a1d"
-					(reference "#PWR046")
+					(reference "#PWR058")
 					(unit 1)
 				)
 			)
@@ -2012,7 +2012,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "97f4d212-659f-49dd-bafd-09354fe0b9fa")
-		(property "Reference" "#PWR050"
+		(property "Reference" "#PWR057"
 			(at 88.9 39.37 0)
 			(effects
 				(font
@@ -2062,7 +2062,7 @@
 		(instances
 			(project ""
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/27a1e4e9-ed52-4396-b65c-2ca15ccf5a1d"
-					(reference "#PWR050")
+					(reference "#PWR057")
 					(unit 1)
 				)
 			)
@@ -2079,7 +2079,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "bc4a4f30-c58b-4d09-b787-6c6c45a0af56")
-		(property "Reference" "J5"
+		(property "Reference" "J3"
 			(at 136.525 49.53 0)
 			(effects
 				(font
@@ -2095,7 +2095,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Connector_Molex:Molex_Micro-Fit_3.0_43650-0315_1x03_P3.00mm_Vertical"
 			(at 137.16 57.15 0)
 			(effects
 				(font
@@ -2104,7 +2104,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "~"
+		(property "Datasheet" "https://www.molex.com/pdm_docs/sd/436500315_sd.pdf"
 			(at 137.16 57.15 0)
 			(effects
 				(font
@@ -2113,7 +2113,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Generic connector, single row, 01x03, script generated"
+		(property "Description" "Connector Header Through Hole 3 position 0.118\" (3.00mm) Molex Micro Fit"
 			(at 137.16 57.15 0)
 			(effects
 				(font
@@ -2134,7 +2134,7 @@
 		(instances
 			(project ""
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/27a1e4e9-ed52-4396-b65c-2ca15ccf5a1d"
-					(reference "J5")
+					(reference "J3")
 					(unit 1)
 				)
 			)
@@ -2149,7 +2149,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "bde3c779-44e4-4273-9638-1d936caffb5c")
-		(property "Reference" "Q1"
+		(property "Reference" "Q5"
 			(at 91.44 49.53 0)
 			(effects
 				(font
@@ -2215,7 +2215,7 @@
 		(instances
 			(project ""
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/27a1e4e9-ed52-4396-b65c-2ca15ccf5a1d"
-					(reference "Q1")
+					(reference "Q5")
 					(unit 1)
 				)
 			)
@@ -2231,7 +2231,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "f4eade33-348b-4cbd-847e-00748520bb61")
-		(property "Reference" "#PWR051"
+		(property "Reference" "#PWR056"
 			(at 63.5 82.55 0)
 			(effects
 				(font
@@ -2281,7 +2281,7 @@
 		(instances
 			(project ""
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/27a1e4e9-ed52-4396-b65c-2ca15ccf5a1d"
-					(reference "#PWR051")
+					(reference "#PWR056")
 					(unit 1)
 				)
 			)

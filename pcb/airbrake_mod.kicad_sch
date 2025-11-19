@@ -305,6 +305,16 @@
 	)
 	(wire
 		(pts
+			(xy 50.8 55.88) (xy 63.5 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "647ca459-3d1a-426a-86b1-f5e797be3600")
+	)
+	(wire
+		(pts
 			(xy 101.6 60.96) (xy 114.3 60.96)
 		)
 		(stroke
@@ -611,7 +621,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3"
 			(at 214.63 25.4 0)
 			(effects
 				(font
@@ -675,7 +685,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3"
 			(at 214.63 38.1 0)
 			(effects
 				(font
@@ -739,7 +749,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3"
 			(at 214.63 31.75 0)
 			(effects
 				(font
@@ -1491,14 +1501,44 @@
 				(justify left)
 			)
 		)
-		(pin "BATT_SENSE" input
+		(pin "BATT_VSENSE" input
 			(at 63.5 53.34 180)
-			(uuid "9992869e-ee10-4a68-a04d-53170df2c739")
+			(uuid "1ee78383-4be8-4daa-9825-654f5932aaf7")
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(justify left)
+			)
+		)
+		(pin "BATT_ISENSE" input
+			(at 63.5 55.88 180)
+			(uuid "c75f4bea-71d4-4e55-a77b-c534114bc727")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "I2C1_SDA" bidirectional
+			(at 101.6 142.24 0)
+			(uuid "0fe45e09-9517-4fe8-87f4-5066578ecb49")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "I2C1_SCL" output
+			(at 101.6 144.78 0)
+			(uuid "246457c1-ebe5-48ff-b04f-56b08bea063d")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
 			)
 		)
 		(instances
@@ -1605,9 +1645,19 @@
 				(justify left top)
 			)
 		)
-		(pin "BATT_SENSE" output
+		(pin "BATT_VSENSE" output
 			(at 50.8 53.34 0)
-			(uuid "48ef9c80-9628-4c98-ba0e-60bb25b8b400")
+			(uuid "c7e614fa-8d26-4dc5-a73b-112b4489e7dd")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "BATT_ISENSE" output
+			(at 50.8 55.88 0)
+			(uuid "0b040192-abd6-4a02-aa28-1ac5c82e2fa7")
 			(effects
 				(font
 					(size 1.27 1.27)

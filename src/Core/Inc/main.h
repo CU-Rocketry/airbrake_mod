@@ -59,6 +59,24 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define BTN_0_Pin GPIO_PIN_3
+#define BTN_0_GPIO_Port GPIOE
+#define BTN_1_Pin GPIO_PIN_4
+#define BTN_1_GPIO_Port GPIOE
+#define BTN_2_Pin GPIO_PIN_5
+#define BTN_2_GPIO_Port GPIOE
+#define BTN_3_Pin GPIO_PIN_6
+#define BTN_3_GPIO_Port GPIOE
+#define MODE_C_Pin GPIO_PIN_0
+#define MODE_C_GPIO_Port GPIOC
+#define MODE_1_Pin GPIO_PIN_1
+#define MODE_1_GPIO_Port GPIOC
+#define MODE_2_Pin GPIO_PIN_2
+#define MODE_2_GPIO_Port GPIOC
+#define MODE_4_Pin GPIO_PIN_3
+#define MODE_4_GPIO_Port GPIOC
+#define BATT_SENSE_Pin GPIO_PIN_0
+#define BATT_SENSE_GPIO_Port GPIOA
 #define BARO_INT_Pin GPIO_PIN_4
 #define BARO_INT_GPIO_Port GPIOC
 #define BARO_INT_EXTI_IRQn EXTI4_IRQn

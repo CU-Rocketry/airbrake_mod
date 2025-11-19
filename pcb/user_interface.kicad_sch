@@ -2903,7 +2903,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "1531c998-2ffc-494a-b8dc-444953048b55")
-		(property "Reference" "R32"
+		(property "Reference" "R34"
 			(at 45.212 44.45 0)
 			(effects
 				(font
@@ -2957,7 +2957,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
-					(reference "R32")
+					(reference "R34")
 					(unit 1)
 				)
 			)
@@ -2973,7 +2973,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "19f2adb6-6fb0-466b-9b99-1fc11d1b07ae")
-		(property "Reference" "#PWR077"
+		(property "Reference" "#PWR067"
 			(at 158.75 80.01 0)
 			(effects
 				(font
@@ -3023,7 +3023,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
-					(reference "#PWR077")
+					(reference "#PWR067")
 					(unit 1)
 				)
 			)
@@ -3127,7 +3127,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Diode_SMD:D_SMA"
 			(at 60.96 133.35 90)
 			(effects
 				(font
@@ -3179,7 +3179,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "294b5531-9662-4ef0-9991-71444081a02f")
-		(property "Reference" "#PWR081"
+		(property "Reference" "#PWR062"
 			(at 63.5 171.45 0)
 			(effects
 				(font
@@ -3229,7 +3229,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
-					(reference "#PWR081")
+					(reference "#PWR062")
 					(unit 1)
 				)
 			)
@@ -3245,7 +3245,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "340bd8c9-769f-4ec3-a259-fd0cbbc67b55")
-		(property "Reference" "#PWR069"
+		(property "Reference" "#PWR061"
 			(at 63.5 130.81 0)
 			(effects
 				(font
@@ -3295,7 +3295,7 @@
 		(instances
 			(project ""
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
-					(reference "#PWR069")
+					(reference "#PWR061")
 					(unit 1)
 				)
 			)
@@ -3311,7 +3311,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "3d1db5b8-30c6-4d68-8976-7a993f5655fc")
-		(property "Reference" "R38"
+		(property "Reference" "R35"
 			(at 53.34 157.4799 0)
 			(effects
 				(font
@@ -3329,7 +3329,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 50.8 158.75 0)
 			(effects
 				(font
@@ -3365,7 +3365,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
-					(reference "R38")
+					(reference "R35")
 					(unit 1)
 				)
 			)
@@ -3457,7 +3457,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "428425a0-e55f-485f-82da-3dbc026b7b7b")
-		(property "Reference" "#PWR080"
+		(property "Reference" "#PWR060"
 			(at 50.8 171.45 0)
 			(effects
 				(font
@@ -3507,7 +3507,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
-					(reference "#PWR080")
+					(reference "#PWR060")
 					(unit 1)
 				)
 			)
@@ -3523,7 +3523,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "76a834e1-1db8-4b71-8eb9-c3d2788d6dad")
-		(property "Reference" "#PWR075"
+		(property "Reference" "#PWR064"
 			(at 120.65 80.01 0)
 			(effects
 				(font
@@ -3573,7 +3573,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
-					(reference "#PWR075")
+					(reference "#PWR064")
 					(unit 1)
 				)
 			)
@@ -3658,7 +3658,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "82d0055a-5037-4b9f-99d5-6431e9776fec")
-		(property "Reference" "R35"
+		(property "Reference" "R38"
 			(at 121.412 44.45 0)
 			(effects
 				(font
@@ -3712,7 +3712,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
-					(reference "R35")
+					(reference "R38")
 					(unit 1)
 				)
 			)
@@ -3728,7 +3728,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "8ec385a0-b041-4c9e-9884-676e1a95fd20")
-		(property "Reference" "#PWR076"
+		(property "Reference" "#PWR066"
 			(at 139.7 80.01 0)
 			(effects
 				(font
@@ -3778,7 +3778,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
-					(reference "#PWR076")
+					(reference "#PWR066")
 					(unit 1)
 				)
 			)
@@ -3793,7 +3793,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "935236ec-bc02-4a3c-b0c1-205cca652b93")
-		(property "Reference" "R34"
+		(property "Reference" "R37"
 			(at 108.712 44.45 0)
 			(effects
 				(font
@@ -3847,7 +3847,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
-					(reference "R34")
+					(reference "R37")
 					(unit 1)
 				)
 			)
@@ -3862,7 +3862,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "98fde326-0067-4528-b85d-3509f6d73397")
-		(property "Reference" "R36"
+		(property "Reference" "R39"
 			(at 134.112 44.45 0)
 			(effects
 				(font
@@ -3916,7 +3916,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
-					(reference "R36")
+					(reference "R39")
 					(unit 1)
 				)
 			)
@@ -4225,7 +4225,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "b36f3fb2-7e2f-4206-991c-373f25abadde")
-		(property "Reference" "R37"
+		(property "Reference" "R33"
 			(at 44.45 146.05 90)
 			(effects
 				(font
@@ -4241,7 +4241,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 44.45 152.4 0)
 			(effects
 				(font
@@ -4277,7 +4277,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
-					(reference "R37")
+					(reference "R33")
 					(unit 1)
 				)
 			)
@@ -4293,7 +4293,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "b3f030ab-80a2-4f1b-b869-4fc434022463")
-		(property "Reference" "#PWR052"
+		(property "Reference" "#PWR059"
 			(at 50.8 29.21 0)
 			(effects
 				(font
@@ -4343,7 +4343,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
-					(reference "#PWR052")
+					(reference "#PWR059")
 					(unit 1)
 				)
 			)
@@ -4468,7 +4468,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "cf4c099e-adb6-4631-924c-d154e9d5b0bb")
-		(property "Reference" "#PWR074"
+		(property "Reference" "#PWR063"
 			(at 101.6 80.01 0)
 			(effects
 				(font
@@ -4518,7 +4518,7 @@
 		(instances
 			(project ""
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
-					(reference "#PWR074")
+					(reference "#PWR063")
 					(unit 1)
 				)
 			)
@@ -4534,7 +4534,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "d2492dd0-4c57-43f1-a512-011354f15ddd")
-		(property "Reference" "#PWR078"
+		(property "Reference" "#PWR065"
 			(at 127 29.21 0)
 			(effects
 				(font
@@ -4584,7 +4584,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
-					(reference "#PWR078")
+					(reference "#PWR065")
 					(unit 1)
 				)
 			)
@@ -4599,7 +4599,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "ded20e14-90ff-4d4c-b055-499434e9e15f")
-		(property "Reference" "R17"
+		(property "Reference" "R32"
 			(at 32.512 44.45 0)
 			(effects
 				(font
@@ -4653,7 +4653,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
-					(reference "R17")
+					(reference "R32")
 					(unit 1)
 				)
 			)
@@ -4668,7 +4668,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "e4b96078-7372-42e3-8a1c-ff0c2c3f94a5")
-		(property "Reference" "R33"
+		(property "Reference" "R36"
 			(at 57.912 44.45 0)
 			(effects
 				(font
@@ -4722,7 +4722,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
-					(reference "R33")
+					(reference "R36")
 					(unit 1)
 				)
 			)
