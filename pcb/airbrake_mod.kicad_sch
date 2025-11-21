@@ -1011,26 +1011,6 @@
 				(justify left top)
 			)
 		)
-		(pin "USB_DP" bidirectional
-			(at 63.5 27.94 180)
-			(uuid "7854c917-2f26-4314-afa3-ec1c43e82f7a")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(pin "USB_DM" bidirectional
-			(at 63.5 30.48 180)
-			(uuid "1b58346c-d80c-495b-9401-68905cf9ce25")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
 		(pin "USB_VBUS_SENSE" input
 			(at 63.5 35.56 180)
 			(uuid "ad8327f7-1d8d-4c76-99af-9fd63109b9e0")
@@ -1539,6 +1519,26 @@
 					(size 1.27 1.27)
 				)
 				(justify right)
+			)
+		)
+		(pin "USB_D-" bidirectional
+			(at 63.5 30.48 180)
+			(uuid "e825775a-b36b-407a-bea8-cb0574f3f3ac")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "USB_D+" bidirectional
+			(at 63.5 27.94 180)
+			(uuid "e4e4ec06-1e17-4924-8af6-6710e6d3e2dd")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
 			)
 		)
 		(instances

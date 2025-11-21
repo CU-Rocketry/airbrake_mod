@@ -168,6 +168,113 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Connector:TestPoint"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0.762)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "TP"
+				(at 0 6.858 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "TestPoint"
+				(at 0 5.08 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 5.08 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 5.08 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "test point"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "test point tp"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "Pin* Test*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "TestPoint_0_1"
+				(circle
+					(center 0 3.302)
+					(radius 0.762)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "TestPoint_1_1"
+				(pin passive line
+					(at 0 0 90)
+					(length 2.54)
+					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "DI_ZXCT180:ZXCT180A4"
 			(exclude_from_sim no)
 			(in_bom yes)
@@ -2380,7 +2487,7 @@
 	)
 	(rectangle
 		(start 127 12.7)
-		(end 228.6 63.5)
+		(end 241.3 63.5)
 		(stroke
 			(width 0)
 			(type default)
@@ -2440,7 +2547,7 @@
 	)
 	(rectangle
 		(start 12.7 63.5)
-		(end 152.4 139.7)
+		(end 176.53 139.7)
 		(stroke
 			(width 0)
 			(type default)
@@ -2519,7 +2626,7 @@
 	)
 	(text "Cbypass"
 		(exclude_from_sim no)
-		(at 216.662 31.242 0)
+		(at 203.962 26.162 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2694,6 +2801,12 @@
 		(uuid "3fb800a4-b9bc-4043-81f4-fcb0717201d1")
 	)
 	(junction
+		(at 184.15 21.59)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "476d481b-369a-442a-8672-97d8c455cbab")
+	)
+	(junction
 		(at 133.35 152.4)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2760,6 +2873,12 @@
 		(uuid "dd34c2ff-5d95-485b-a63c-3b30d35577bd")
 	)
 	(junction
+		(at 203.2 43.18)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "df1111a3-36b2-4dcf-b7df-f9fe2a27844d")
+	)
+	(junction
 		(at 133.35 165.1)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2774,6 +2893,16 @@
 	(no_connect
 		(at 72.39 161.29)
 		(uuid "65462f7c-73a3-4905-bef9-5e30c0c8b3fe")
+	)
+	(wire
+		(pts
+			(xy 88.9 104.14) (xy 88.9 101.6)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "00db29a1-d60c-4d98-a73f-e4ba21e5faca")
 	)
 	(wire
 		(pts
@@ -2837,6 +2966,16 @@
 	)
 	(wire
 		(pts
+			(xy 86.36 38.1) (xy 88.9 38.1)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0b404709-9950-4ae6-80c4-7a8895a3fb6d")
+	)
+	(wire
+		(pts
 			(xy 88.9 101.6) (xy 93.98 101.6)
 		)
 		(stroke
@@ -2864,6 +3003,16 @@
 			(type default)
 		)
 		(uuid "12610953-6b70-4910-849e-a885eb112dd0")
+	)
+	(wire
+		(pts
+			(xy 203.2 40.64) (xy 203.2 43.18)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "157b6a33-1b5e-466a-b135-e577c744a88e")
 	)
 	(wire
 		(pts
@@ -2927,7 +3076,7 @@
 	)
 	(wire
 		(pts
-			(xy 203.2 33.02) (xy 203.2 34.29)
+			(xy 190.5 27.94) (xy 190.5 29.21)
 		)
 		(stroke
 			(width 0)
@@ -3047,6 +3196,16 @@
 	)
 	(wire
 		(pts
+			(xy 154.94 152.4) (xy 152.4 152.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4ee3e645-5d7d-48a3-a66f-c39debabe466")
+	)
+	(wire
+		(pts
 			(xy 69.85 166.37) (xy 72.39 166.37)
 		)
 		(stroke
@@ -3137,7 +3296,7 @@
 	)
 	(wire
 		(pts
-			(xy 184.15 35.56) (xy 184.15 38.1)
+			(xy 184.15 20.32) (xy 184.15 21.59)
 		)
 		(stroke
 			(width 0)
@@ -3407,6 +3566,16 @@
 	)
 	(wire
 		(pts
+			(xy 114.3 91.44) (xy 114.3 88.9)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a75eebcf-848f-42c0-afc9-ec09c9ea1b70")
+	)
+	(wire
+		(pts
 			(xy 130.81 152.4) (xy 133.35 152.4)
 		)
 		(stroke
@@ -3467,6 +3636,16 @@
 	)
 	(wire
 		(pts
+			(xy 45.72 149.86) (xy 45.72 152.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b36441e0-3ca7-4671-b759-011e91ed8858")
+	)
+	(wire
+		(pts
 			(xy 63.5 123.19) (xy 63.5 127)
 		)
 		(stroke
@@ -3484,6 +3663,16 @@
 			(type default)
 		)
 		(uuid "b75c83e3-15c5-4dfe-a74a-f4bea14f2549")
+	)
+	(wire
+		(pts
+			(xy 184.15 21.59) (xy 190.5 21.59)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ba86d300-7d3e-4cbe-ba9f-0583a6b47ae2")
 	)
 	(wire
 		(pts
@@ -3577,6 +3766,16 @@
 	)
 	(wire
 		(pts
+			(xy 63.5 111.76) (xy 63.5 114.3)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e3e7e454-8e91-41a9-97af-b25fa2d824cf")
+	)
+	(wire
+		(pts
 			(xy 123.19 152.4) (xy 125.73 152.4)
 		)
 		(stroke
@@ -3607,7 +3806,7 @@
 	)
 	(wire
 		(pts
-			(xy 203.2 27.94) (xy 203.2 26.67)
+			(xy 190.5 22.86) (xy 190.5 21.59)
 		)
 		(stroke
 			(width 0)
@@ -3637,6 +3836,16 @@
 	)
 	(wire
 		(pts
+			(xy 203.2 43.18) (xy 215.9 43.18)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f25a7cec-97f7-49b8-989e-160a98ee1aaa")
+	)
+	(wire
+		(pts
 			(xy 165.1 46.99) (xy 165.1 50.8)
 		)
 		(stroke
@@ -3654,6 +3863,16 @@
 			(type default)
 		)
 		(uuid "f4e3482a-b0ee-465a-b091-b3c8707643c2")
+	)
+	(wire
+		(pts
+			(xy 184.15 21.59) (xy 184.15 38.1)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f51b0ed7-16b0-4891-8a52-682779f0d778")
 	)
 	(wire
 		(pts
@@ -4584,7 +4803,25 @@
 			"AAAAAAAAAwAAAAAAAAAwiKO6PQIAAAEAAAAAAAAAAAAAAAAAAABNr6TpAP8EgAAAAAAAAAAAAwAA"
 			"AAAAAACACqW6PQIAAAEAAAAAAAAAAAAAAAAAAABSr6fpAAAFgAAAAAAAAAAACAAAAAAAAAAgshy0"
 			"PQIAAAEAAAAAAAAAAAAAAAAAAABXr7rpAAEFgAAAAAAAAAAAAwAAAAAAAACwC6W6PQIAAAEAAAAA"
-			"AAAAAAAAAAAAAABUr73pAAIFgAAAAAAAAAAAAwAAAAAAAADgF6a6PQIAAAEAAA=="
+			"AAAAAAAAAAAAAABUr73pAAIFgAAAAAAAAAAAAwAAAAAAAADgF6a6PQIAAAEAAGYAAAAAAAAAAAAA"
+			"AAAxYIIUABcEgAAAAAAAAAAAAwAAAAAAAAAAotMzEgIAAAEAAAAAAAAAAAAAAAAAAAA+YIEUABgE"
+			"gAAAAAAAAAAAAwAAAAAAAACwGqgzEgIAAAEAAAAAAAAAAAAAAAAAAAA7YIwUABkEgPCj0jMSAgAA"
+			"AwAAAAAAAACAodMzEgIAAAEAAAAAAAAAAAAAAAAAAAA4YIsUABoEgAAAAAAAAAAABAAAAAAAAAAB"
+			"AAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAFYLYUABsEgAAAAAAAAAAAAwAAAAAAAAAQGqgzEgIAAAEA"
+			"AAAAAAAAAAAAAAAAAAACYLUUABwEgAAAAAAAAAAAAwAAAAAAAADAstIzEgIAAAEAAAAAAAAAAAAA"
+			"AAAAAAAPYLAUAB0EgDCj0jMSAgAAAwAAAAAAAABAGagzEgIAAAEAAAAAAAAAAAAAAAAAAAAMYL8U"
+			"AB4EgAAAAAAAAAAABAAAAAAAAAABAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAJYLoUAB8EgKCr0jMS"
+			"AgAAAwAAAAAAAAAQq9IzEgIAAAEAAAAAAAAAAAAAAAAAAAAWYLkUACAEgAAAAAAAAAAABAAAAAAA"
+			"AAABAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAATYKQUACEEgAAAAAAAAAAAAwAAAAAAAAAgrNMzEgIA"
+			"AAEAAAAAAAAAAAAAAAAAAAAQYKMUACIEgAAAAAAAAAAAAwAAAAAAAABAHKgzEgIAAAEAAAAAAAAA"
+			"AAAAAAAAAAAdYK4UACMEgEM6L1dJTkRPV1MvZm9udHNcc2Vnb2V1aXNsLnR0ZgAAAAAAAAAAAAAa"
+			"YK0UACQEgAAAAAAAAAAAAwAAAAAAAACwp9IzEgIAAAEAAAAAAAAAAAAAAAAAAADnYKgUACUEgDCs"
+			"0jMSAgAAAwAAAAAAAACgodMzEgIAAAEAAAAAAAAAAAAAAAAAAADkYFcUACYEgDCm0jMSAgAAAwAA"
+			"AAAAAABgG6gzEgIAAAEAAAAAAAAAAAAAAAAAAADhYFIUACcEgNCo0jMSAgAAAwAAAAAAAABgqNMz"
+			"EgIAAAEAAAAAAAAAAAAAAAAAAADuYFEUACgEgHCl0jMSAgAAAwAAAAAAAAAAqdMzEgIAAAEAAAAA"
+			"AAAAAAAAAAAAAADrYFwUACkEgBCo0jMSAgAAAwAAAAAAAACgpNMzEgIAAAEAAAAAAAAAAAAAAAAA"
+			"AADoYFsUACoEgACs0jMSAgAAAwAAAAAAAADAo9MzEgIAAAEAAAAAAAAAAAAAAAAAAAD1YEYUACsE"
+			"gAAAAAAAAAAACAAAAAAAAACAvIwzEgIAAAEAAAAAAAAAAAAAAAAAAADyYEUUAA=="
 		)
 	)
 	(image
@@ -5001,7 +5238,25 @@
 			"QUFBQUFBQUFBQUFBQUFBQUFKV1g5UUFBNUJZQUFBQUFBQUFBQUFBTUFBQUFBQUFBQXdHMzBwRHdD"
 			"QUFBQkFBQUFBQUFBQUFBQUFBQUFBQUFBV0dYNlFBQTZCWUFBQUFBQUFBQUFBQU1BQUFBQUFBQUFB"
 			"QzMwcER3Q0FBQUJBQUFBQUFBQUFBQUFBQUFBQUFBQVcyV0hRQUE3QllBQUFBQUFBQUFBQUFNQUFB"
-			"QUFBQUFBY0cvMHBEd0NBQUFCQUFBQUFBQUFBQUFBQUFBQUFBQUFYbVdFUUFBOEJZQQ=="
+			"QUFBQUFBY0cvMHBEd0NBQUFCQUFBQUFBQUFBQUFBQUFBQUFBQUFYbVdFUUFBOEJZQQAAAAAAAAAA"
+			"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+			"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+			"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+			"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+			"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+			"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+			"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+			"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+			"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+			"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+			"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+			"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+			"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+			"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+			"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+			"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+			"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+			"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
 		)
 	)
 	(image
@@ -10385,7 +10640,25 @@
 			"VQBIAEcAQQBJAGgAVwBHAEgAVgBkAFQAOABNAEoATQBHAGMAawBwADcAVgBGAGIASAA4AG4AawBB"
 			"AEkASwBmADUAUgAxAEUAMQBEAG0AUQBLAE8AZwBIAC8AKwAxAFoAOAB5AEIASgAvAC8AdAAxAHMA"
 			"cQBhADIAdAA1AE0ARQBqACsAZABOAGQAZQBlAGUAZQBlAHIARwB1AHUAdwBlAGEAYwB6AFkANQB5"
-			"AFIAWQBYACsATQBVAEwANABvAHYAUA=="
+			"AFIAWQBYACsATQBVAEwANABvAHYAUAAwAGkAcgBjAHYATQA0AHUAWABXAFQAegBzADYAeABTAGYA"
+			"dAA4AFUAagB4ADIAdABXAEcAOQBIACsAbgA1AFgAUABmAFgAMQBWAHEAZwBDAHEAUgBkAGMAZgBx"
+			"AFgAQwBQADUAawBRAFoAegB6AHUARgB2ADcAZgByAHgATwBuAEoANwBCAHYAdAA5AHUAUABIAGoA"
+			"MQA2AC8AUABqAHgANwB1ADYAdQAxAHIAcgBSAGEATQB6AE8AegBrADUAUABUADUAZABLAHAAVgBh"
+			"AHIAMQBXAHcAMgB0ADcAZQAzADkALwBiADIAMQB0AGYAWABBAGUARABqAGoAegArAGUAbQBaAG4A"
+			"WgAyAGQAbAA1ACsAUABEAGgAKwB2AHIANgB5ADUAYwB2AE8ANQAyAE8ANwAvAHYAbABjAG4AbABt"
+			"AFoAdQBiAHMAMgBiAE0AWABMAGwAeABZAFcAbABwAHEATgBCAHIAdgB1ADEAbwBGAEMAcgB4AGwA"
+			"TQBBAEMAWAB3ADYAUQBOAHQANgBxAHEAbgBzAGgALwAzADIAZQArAGcAcABjAGgAQgBCAEcAcwAr"
+			"ADcAcQBkAHkASQBOAEUAYQAyADEARgBEAFgAMgBqAEoAbwA0ADgAbABLAEoAQQBnAGIAYwBJAHgA"
+			"bABpAHAAeABHAHgATABmAEgAcQBEAG4ANQBsAG4AdgAvADkAVABmAEgARABBAE4AagBRAGsAaQBk"
+			"AHAANABIAFgAZgAvAG8ARgBvAHQAaAAzAEgAZwBEAE0AUQBLAEwAdwBMADcAQQBnAFUASwBGAEMA"
+			"ZwB3AEUAcQBJAFkAbwBrAGoAZAB1AHgAOQAvACsANwAxADYAdABDAGIAWABIAHUAdABtAFcALwBz"
+			"ACsAcQAxAFQARgB3AHIAeQA4AHYASwBvAC8AKwAxAFIAZAB1AGMAUQBYAEYAdABqAE0ATgBIAGkA"
+			"bAA5ADAAMwB1AHUAOABCAFcAcQBMADkAdAB5ACsALwAzADUAVQB0AGYAZABoAEkAdABBAFMAWgBz"
+			"ADkAdgBHAEUAKwBLAHgAaAB6AFQAagBGAFoAUAAyAHYARgBhAGMAbgBzAFAAZAA5AGYAMwBOAHoA"
+			"cwA5AGwAcwBDAGkARQBtAEoAaQBiAE8AbgBUAHUASABrAGIAbgBuAGUAZgB2ADcAKwA2ADEAVwBD"
+			"ADIAOQBRAGkASwBMAG8ANgBkAE8AbgB0AFYAcQB0ADAAVwBnADgAZgAvADcAOAB5AFoATQBuADIA"
+			"OQB2AGIANwBYAFoAYgBDAEQARQAvAFAAegA4AHoATQA3AE8ANAB1AEwAaQAwAHQATABTADgAdgBE"
+			"AHcANQBPAGYAawBPAEQAbgBFAHAAOA=="
 		)
 	)
 	(label "BUCK_IN"
@@ -10450,7 +10723,7 @@
 	)
 	(hierarchical_label "BATT_ISENSE"
 		(shape output)
-		(at 203.2 43.18 0)
+		(at 215.9 43.18 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -10955,7 +11228,7 @@
 	)
 	(symbol
 		(lib_id "Device:C_Small")
-		(at 203.2 30.48 0)
+		(at 190.5 25.4 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -10964,7 +11237,7 @@
 		(fields_autoplaced yes)
 		(uuid "20912aa6-9282-418e-b2e7-3a5e775c1005")
 		(property "Reference" "C22"
-			(at 205.74 29.2162 0)
+			(at 193.04 24.1362 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10973,7 +11246,7 @@
 			)
 		)
 		(property "Value" "100n"
-			(at 205.74 31.7562 0)
+			(at 193.04 26.6762 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10982,7 +11255,7 @@
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
-			(at 203.2 30.48 0)
+			(at 190.5 25.4 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10991,7 +11264,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 203.2 30.48 0)
+			(at 190.5 25.4 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11000,7 +11273,7 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor, small symbol"
-			(at 203.2 30.48 0)
+			(at 190.5 25.4 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11555,6 +11828,73 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 114.3 91.44 0)
+		(mirror x)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "3e58c962-6087-4535-be8a-591a0f052e91")
+		(property "Reference" "TP10"
+			(at 116.84 96.0121 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "RCUCTE"
+			(at 116.84 93.4721 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint_KOASpeer:TestPoint_Chip_RCUCTE_0603"
+			(at 119.38 91.44 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.koaspeer.com/pdfs/RC.pdf"
+			(at 119.38 91.44 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point"
+			(at 114.3 91.44 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "35fb0940-6a9a-456c-8d88-0dae83f976fa")
+		)
+		(instances
+			(project "airbrake_mod"
+				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/3ce152e6-c1c9-4db1-8237-913c82724d53"
+					(reference "TP10")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:C_Small")
 		(at 152.4 165.1 0)
 		(unit 1)
@@ -11965,71 +12305,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:+3V3")
-		(at 203.2 26.67 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "5d74cdf7-1239-4ee1-aea9-1272e7bdd770")
-		(property "Reference" "#PWR042"
-			(at 203.2 30.48 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+3V3"
-			(at 203.2 22.606 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 203.2 26.67 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 203.2 26.67 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+3V3\""
-			(at 203.2 26.67 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "e4c0d0bb-08bb-415a-9230-d06a3fb4961f")
-		)
-		(instances
-			(project "airbrake_mod"
-				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/3ce152e6-c1c9-4db1-8237-913c82724d53"
-					(reference "#PWR042")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 152.4 177.8 0)
 		(unit 1)
@@ -12090,6 +12365,72 @@
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/3ce152e6-c1c9-4db1-8237-913c82724d53"
 					(reference "#PWR038")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 63.5 111.76 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "6a8a8fe9-e11c-4303-b016-dfcbcb2182b0")
+		(property "Reference" "TP8"
+			(at 66.04 107.1879 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "RCUCTE"
+			(at 66.04 109.7279 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint_KOASpeer:TestPoint_Chip_RCUCTE_0603"
+			(at 68.58 111.76 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.koaspeer.com/pdfs/RC.pdf"
+			(at 68.58 111.76 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point"
+			(at 63.5 111.76 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "5d9073a4-4a98-4afd-8893-01732b0cef8f")
+		)
+		(instances
+			(project "airbrake_mod"
+				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/3ce152e6-c1c9-4db1-8237-913c82724d53"
+					(reference "TP8")
 					(unit 1)
 				)
 			)
@@ -12222,6 +12563,72 @@
 			(project ""
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/3ce152e6-c1c9-4db1-8237-913c82724d53"
 					(reference "#PWR029")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 45.72 149.86 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "7a15179d-db8f-494b-888f-dc5b8257ea0c")
+		(property "Reference" "TP11"
+			(at 48.26 145.2879 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "RCUCTE"
+			(at 48.26 147.8279 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint_KOASpeer:TestPoint_Chip_RCUCTE_0603"
+			(at 50.8 149.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.koaspeer.com/pdfs/RC.pdf"
+			(at 50.8 149.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point"
+			(at 45.72 149.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "dac4dd55-ec56-46d4-99dc-d670132aafc5")
+		)
+		(instances
+			(project "airbrake_mod"
+				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/3ce152e6-c1c9-4db1-8237-913c82724d53"
+					(reference "TP11")
 					(unit 1)
 				)
 			)
@@ -12917,15 +13324,117 @@
 		)
 	)
 	(symbol
-		(lib_id "power:GND")
-		(at 203.2 34.29 0)
+		(lib_id "Connector:TestPoint")
+		(at 154.94 152.4 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "a2099c70-436c-4d05-8bac-16f5a5d14cfc")
-		(property "Reference" "#PWR043"
+		(uuid "9b8ae8af-00b0-4b89-9d01-920fcca2e8a1")
+		(property "Reference" "TP6"
+			(at 160.528 151.638 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "RCUCTE"
+			(at 160.528 153.67 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint_KOASpeer:TestPoint_Chip_RCUCTE_0603"
+			(at 154.94 157.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.koaspeer.com/pdfs/RC.pdf"
+			(at 154.94 157.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point"
+			(at 154.94 152.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "710f8c18-6a44-4b64-a71c-46c4f4eb7f69")
+		)
+		(instances
+			(project "airbrake_mod"
+				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/3ce152e6-c1c9-4db1-8237-913c82724d53"
+					(reference "TP6")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 203.2 40.64 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "9c56e36c-c57c-4566-88a6-a651b95ccd7f")
+		(property "Reference" "TP7"
+			(at 205.74 36.0679 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "RCUCTE"
+			(at 205.74 38.6079 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint_KOASpeer:TestPoint_Chip_RCUCTE_0603"
+			(at 208.28 40.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.koaspeer.com/pdfs/RC.pdf"
+			(at 208.28 40.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point"
 			(at 203.2 40.64 0)
 			(effects
 				(font
@@ -12934,8 +13443,38 @@
 				(hide yes)
 			)
 		)
+		(pin "1"
+			(uuid "c6dedfcb-5e34-45da-941e-819148575910")
+		)
+		(instances
+			(project "airbrake_mod"
+				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/3ce152e6-c1c9-4db1-8237-913c82724d53"
+					(reference "TP7")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 190.5 29.21 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "a2099c70-436c-4d05-8bac-16f5a5d14cfc")
+		(property "Reference" "#PWR043"
+			(at 190.5 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(property "Value" "GND"
-			(at 203.2 38.1 0)
+			(at 190.5 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12943,7 +13482,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 203.2 34.29 0)
+			(at 190.5 29.21 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12952,7 +13491,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 203.2 34.29 0)
+			(at 190.5 29.21 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12961,7 +13500,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 203.2 34.29 0)
+			(at 190.5 29.21 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12983,7 +13522,7 @@
 	)
 	(symbol
 		(lib_id "power:+3V3")
-		(at 184.15 35.56 0)
+		(at 184.15 20.32 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -12991,7 +13530,7 @@
 		(dnp no)
 		(uuid "a27f8872-9e4d-4b72-bcd8-10c341dbc564")
 		(property "Reference" "#PWR040"
-			(at 184.15 39.37 0)
+			(at 184.15 24.13 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13000,7 +13539,7 @@
 			)
 		)
 		(property "Value" "+3V3"
-			(at 184.15 31.242 0)
+			(at 184.15 16.002 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13008,7 +13547,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 184.15 35.56 0)
+			(at 184.15 20.32 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13017,7 +13556,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 184.15 35.56 0)
+			(at 184.15 20.32 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13026,7 +13565,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+3V3\""
-			(at 184.15 35.56 0)
+			(at 184.15 20.32 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13041,6 +13580,73 @@
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/3ce152e6-c1c9-4db1-8237-913c82724d53"
 					(reference "#PWR040")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 88.9 104.14 0)
+		(mirror x)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "a869288e-1897-40ae-bf56-5fc4cfe466cd")
+		(property "Reference" "TP9"
+			(at 91.44 108.7121 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "RCUCTE"
+			(at 91.44 106.1721 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint_KOASpeer:TestPoint_Chip_RCUCTE_0603"
+			(at 93.98 104.14 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.koaspeer.com/pdfs/RC.pdf"
+			(at 93.98 104.14 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point"
+			(at 88.9 104.14 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "6382b714-c176-4fd3-8af8-d28d7286286f")
+		)
+		(instances
+			(project "airbrake_mod"
+				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/3ce152e6-c1c9-4db1-8237-913c82724d53"
+					(reference "TP9")
 					(unit 1)
 				)
 			)
@@ -13458,78 +14064,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Switch:SW_SPDT")
-		(at -26.67 135.89 0)
-		(mirror y)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "d38f9029-68a6-4492-8707-0d0b431c9524")
-		(property "Reference" "SW7"
-			(at -26.67 127 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "SW_SPDT"
-			(at -26.67 129.54 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at -26.67 135.89 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at -26.67 143.51 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Switch, single pole double throw"
-			(at -26.67 135.89 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "7d147831-e4c6-4e65-8e0f-de7cf9fdba95")
-		)
-		(pin "1"
-			(uuid "f0512db7-210e-4730-9b2c-1f41ed51a068")
-		)
-		(pin "3"
-			(uuid "ab32c853-2d33-476d-8ae1-079cf64a594b")
-		)
-		(instances
-			(project ""
-				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/3ce152e6-c1c9-4db1-8237-913c82724d53"
-					(reference "SW7")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 101.6 50.8 0)
 		(unit 1)
@@ -13869,6 +14403,73 @@
 			(project ""
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/3ce152e6-c1c9-4db1-8237-913c82724d53"
 					(reference "SW8")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 86.36 38.1 90)
+		(mirror x)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "ea3e70c1-7843-492e-89f8-7d05a5479a5f")
+		(property "Reference" "TP5"
+			(at 80.772 37.338 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "RCUCTE"
+			(at 80.772 39.37 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint_KOASpeer:TestPoint_Chip_RCUCTE_0603"
+			(at 86.36 43.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.koaspeer.com/pdfs/RC.pdf"
+			(at 86.36 43.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point"
+			(at 86.36 38.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "f52e62e7-9b71-4c3a-aede-8704c5a74584")
+		)
+		(instances
+			(project "airbrake_mod"
+				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/3ce152e6-c1c9-4db1-8237-913c82724d53"
+					(reference "TP5")
 					(unit 1)
 				)
 			)

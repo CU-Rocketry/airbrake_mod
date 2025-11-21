@@ -9,4 +9,5 @@
   (lib (name "Buzzer_SameSky")(type "KiCad")(uri "${KIPRJMOD}/kicad-library/footprints/Buzzer_SameSky.pretty")(options "")(descr ""))
   (lib (name "SAMESKY_UJ20-C-H-G-SMT-P16-TR")(type "KiCad")(uri "${KIPRJMOD}/kicad-library/footprints/SAMESKY_UJ20-C-H-G-SMT-P16-TR.pretty")(options "")(descr ""))
   (lib (name "L_Arlitech")(type "KiCad")(uri "${KIPRJMOD}/kicad-library/footprints/L_Arlitech.pretty")(options "")(descr ""))
+  (lib (name "TestPoint_KOASpeer")(type "KiCad")(uri "${KIPRJMOD}/kicad-library/footprints/TestPoint_KOASpeer.pretty")(options "")(descr ""))
 )

@@ -2180,6 +2180,26 @@
 		)
 		(uuid "fecc02d7-89f8-4b0d-9384-ad37b1b9efac")
 	)
+	(label "USB_D+"
+		(at 53.34 58.42 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "965c58f9-66a1-4c04-a002-cd537c2e1c47")
+	)
+	(label "USB_D-"
+		(at 53.34 53.34 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "b623cb08-6938-474c-86ab-f78fa889d88e")
+	)
 	(hierarchical_label "USB_D+"
 		(shape bidirectional)
 		(at 101.6 55.88 0)

@@ -209,6 +209,113 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Connector:TestPoint"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0.762)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "TP"
+				(at 0 6.858 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "TestPoint"
+				(at 0 5.08 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 5.08 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 5.08 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "test point"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "test point tp"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "Pin* Test*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "TestPoint_0_1"
+				(circle
+					(center 0 3.302)
+					(radius 0.762)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "TestPoint_1_1"
+				(pin passive line
+					(at 0 0 90)
+					(length 2.54)
+					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Device:R_Small_US"
 			(pin_numbers
 				(hide yes)
@@ -1206,7 +1313,7 @@
 	)
 	(text "3 position Molex\nMicro-Fit 3.0 43650"
 		(exclude_from_sim no)
-		(at 153.416 57.15 0)
+		(at 149.606 57.658 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -1217,7 +1324,7 @@
 	)
 	(text "TODO: check keying on last year's"
 		(exclude_from_sim no)
-		(at 153.67 64.262 0)
+		(at 155.956 64.516 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -1238,6 +1345,18 @@
 		(uuid "6a3b38be-ccad-4622-939c-7a8aaedd6938")
 	)
 	(junction
+		(at 88.9 63.5)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "735afa46-43e0-47f8-9772-217f9a1a4b27")
+	)
+	(junction
+		(at 127 54.61)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "d34bf539-dc42-4119-815f-5c8adc61ac87")
+	)
+	(junction
 		(at 76.2 50.8)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -1255,6 +1374,26 @@
 	)
 	(wire
 		(pts
+			(xy 101.6 63.5) (xy 88.9 63.5)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "13a9327d-0282-42d3-a617-55e4d6e7d68f")
+	)
+	(wire
+		(pts
+			(xy 88.9 63.5) (xy 88.9 76.2)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1445ade2-81b2-495d-b193-902a4e0a63f0")
+	)
+	(wire
+		(pts
 			(xy 132.08 57.15) (xy 119.38 57.15)
 		)
 		(stroke
@@ -1265,7 +1404,17 @@
 	)
 	(wire
 		(pts
-			(xy 38.1 63.5) (xy 41.91 63.5)
+			(xy 76.2 53.34) (xy 76.2 50.8)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "183a52b6-3ffe-4bee-92a5-ac9b3d6aa6a6")
+	)
+	(wire
+		(pts
+			(xy 25.4 63.5) (xy 41.91 63.5)
 		)
 		(stroke
 			(width 0)
@@ -1305,7 +1454,7 @@
 	)
 	(wire
 		(pts
-			(xy 132.08 54.61) (xy 119.38 54.61)
+			(xy 132.08 54.61) (xy 127 54.61)
 		)
 		(stroke
 			(width 0)
@@ -1335,6 +1484,16 @@
 	)
 	(wire
 		(pts
+			(xy 127 52.07) (xy 127 54.61)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "74ec2262-1136-4b01-8f2d-757b0a3500e8")
+	)
+	(wire
+		(pts
 			(xy 76.2 50.8) (xy 81.28 50.8)
 		)
 		(stroke
@@ -1352,6 +1511,16 @@
 			(type default)
 		)
 		(uuid "79fea607-b77f-4714-bf38-7181bd262f56")
+	)
+	(wire
+		(pts
+			(xy 101.6 60.96) (xy 101.6 63.5)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8c39673a-0187-4f42-ad07-436a3bbaa54d")
 	)
 	(wire
 		(pts
@@ -1382,6 +1551,26 @@
 			(type default)
 		)
 		(uuid "984b890b-a075-45a8-b9ae-4496776cbc0a")
+	)
+	(wire
+		(pts
+			(xy 50.8 60.96) (xy 50.8 63.5)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "aa99ceca-ca4e-4cf9-affc-611646f38a06")
+	)
+	(wire
+		(pts
+			(xy 127 54.61) (xy 119.38 54.61)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "acdd7efa-0dd8-41e7-ace3-0c6ed474e5e0")
 	)
 	(wire
 		(pts
@@ -1435,7 +1624,7 @@
 	)
 	(wire
 		(pts
-			(xy 88.9 55.88) (xy 88.9 76.2)
+			(xy 88.9 55.88) (xy 88.9 63.5)
 		)
 		(stroke
 			(width 0)
@@ -1465,7 +1654,7 @@
 	)
 	(hierarchical_label "EN"
 		(shape input)
-		(at 38.1 63.5 180)
+		(at 25.4 63.5 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -1484,6 +1673,73 @@
 			(justify right)
 		)
 		(uuid "ffaf0493-5e94-4e80-9ef3-e482be7cf920")
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 76.2 53.34 0)
+		(mirror x)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "0afbdd72-7cc7-40f4-b1c9-18de9667b15b")
+		(property "Reference" "TP2"
+			(at 78.74 57.9121 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "RCUCTE"
+			(at 78.74 55.3721 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint_KOASpeer:TestPoint_Chip_RCUCTE_0603"
+			(at 81.28 53.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.koaspeer.com/pdfs/RC.pdf"
+			(at 81.28 53.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point"
+			(at 76.2 53.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "e284f7ad-1698-4362-9048-8cf8d662832c")
+		)
+		(instances
+			(project "airbrake_mod"
+				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/27a1e4e9-ed52-4396-b65c-2ca15ccf5a1d"
+					(reference "TP2")
+					(unit 1)
+				)
+			)
+		)
 	)
 	(symbol
 		(lib_id "Device:R_Small_US")
@@ -1549,6 +1805,72 @@
 			(project ""
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/27a1e4e9-ed52-4396-b65c-2ca15ccf5a1d"
 					(reference "R31")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 50.8 60.96 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "197231e6-dc7b-4680-a925-adf95500aa36")
+		(property "Reference" "TP1"
+			(at 53.34 56.3879 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "RCUCTE"
+			(at 53.34 58.9279 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint_KOASpeer:TestPoint_Chip_RCUCTE_0603"
+			(at 55.88 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.koaspeer.com/pdfs/RC.pdf"
+			(at 55.88 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point"
+			(at 50.8 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "5b74dc13-082c-4c7f-8a96-59f0f46fa06d")
+		)
+		(instances
+			(project ""
+				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/27a1e4e9-ed52-4396-b65c-2ca15ccf5a1d"
+					(reference "TP1")
 					(unit 1)
 				)
 			)
@@ -2003,6 +2325,72 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 101.6 60.96 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "7d906528-52dd-40dd-b759-377285359276")
+		(property "Reference" "TP4"
+			(at 104.14 56.3879 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "RCUCTE"
+			(at 104.14 58.9279 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint_KOASpeer:TestPoint_Chip_RCUCTE_0603"
+			(at 106.68 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.koaspeer.com/pdfs/RC.pdf"
+			(at 106.68 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point"
+			(at 101.6 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "5eaa8d3d-173e-48e4-b069-9caf2ee0c07d")
+		)
+		(instances
+			(project "airbrake_mod"
+				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/27a1e4e9-ed52-4396-b65c-2ca15ccf5a1d"
+					(reference "TP4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:+BATT")
 		(at 88.9 35.56 0)
 		(unit 1)
@@ -2069,6 +2457,72 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 127 52.07 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "a20188e9-eae9-480e-bdb0-0d280b03584b")
+		(property "Reference" "TP3"
+			(at 129.54 47.4979 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "RCUCTE"
+			(at 129.54 50.0379 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint_KOASpeer:TestPoint_Chip_RCUCTE_0603"
+			(at 132.08 52.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.koaspeer.com/pdfs/RC.pdf"
+			(at 132.08 52.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point"
+			(at 127 52.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "be8c400a-9be4-4986-b0f3-772066fe8770")
+		)
+		(instances
+			(project "airbrake_mod"
+				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/27a1e4e9-ed52-4396-b65c-2ca15ccf5a1d"
+					(reference "TP3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Connector:Conn_01x03_Pin")
 		(at 137.16 57.15 0)
 		(mirror y)
@@ -2077,10 +2531,9 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "bc4a4f30-c58b-4d09-b787-6c6c45a0af56")
 		(property "Reference" "J3"
-			(at 136.525 49.53 0)
+			(at 149.352 51.308 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2088,7 +2541,7 @@
 			)
 		)
 		(property "Value" "0436500315"
-			(at 136.525 52.07 0)
+			(at 149.352 53.848 0)
 			(effects
 				(font
 					(size 1.27 1.27)
