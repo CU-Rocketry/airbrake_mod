@@ -5,6 +5,113 @@
 	(uuid "cd60460d-2e09-4b3f-a7e4-47e8293299b9")
 	(paper "A4")
 	(lib_symbols
+		(symbol "Connector:TestPoint_Small"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0.762)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "TP"
+				(at 0 3.81 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "TestPoint_Small"
+				(at 0 2.032 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 5.08 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 5.08 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "test point"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "test point tp"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "Pin* Test*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "TestPoint_Small_0_1"
+				(circle
+					(center 0 0)
+					(radius 0.508)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "TestPoint_Small_1_1"
+				(pin passive line
+					(at 0 0 90)
+					(length 0)
+					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Device:C_Small"
 			(pin_numbers
 				(hide yes)
@@ -736,16 +843,6 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "close to MCU\nTODO: check this tho"
-		(exclude_from_sim no)
-		(at 57.404 93.472 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "0b2fccd1-6c46-43e0-811a-5f408d84d4ae")
-	)
 	(text "or larger is OK"
 		(exclude_from_sim no)
 		(at 132.334 50.546 0)
@@ -769,10 +866,34 @@
 		(uuid "35ac1753-cc75-45f1-8993-02b5c4697e6e")
 	)
 	(junction
+		(at 63.5 88.9)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "4a479820-671a-43ae-9504-cd7b19c21690")
+	)
+	(junction
 		(at 88.9 45.72)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "6e0601cc-ac9f-49fb-93cd-fae7e7c9a83a")
+	)
+	(junction
+		(at 63.5 83.82)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "7bec2a2a-666a-4c1d-93fe-8bf5b78a6db7")
+	)
+	(junction
+		(at 63.5 68.58)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "93bee494-5eff-4aab-a3fb-3ea5a5e9ba2b")
+	)
+	(junction
+		(at 63.5 63.5)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "abfacfb8-31ce-475d-af8c-4f14169bc47b")
 	)
 	(junction
 		(at 101.6 45.72)
@@ -792,6 +913,28 @@
 		(color 0 0 0 0)
 		(uuid "dc05e285-9a53-4209-a01d-d74abd9619a7")
 	)
+	(junction
+		(at 63.5 78.74)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "ece97e08-77a5-40b3-9cf9-edd42b003ce9")
+	)
+	(junction
+		(at 63.5 73.66)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "f7370158-5762-498b-8258-0cf71566b3a7")
+	)
+	(wire
+		(pts
+			(xy 63.5 73.66) (xy 91.44 73.66)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0e5a3516-3ebb-4b1a-836d-2438fb78b909")
+	)
 	(wire
 		(pts
 			(xy 76.2 53.34) (xy 76.2 68.58)
@@ -801,6 +944,16 @@
 			(type default)
 		)
 		(uuid "1537513e-c76d-41c1-a457-4dec169dab32")
+	)
+	(wire
+		(pts
+			(xy 63.5 63.5) (xy 72.39 63.5)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1fc4df0f-b6e7-4052-b61e-8ec7e6033ce7")
 	)
 	(wire
 		(pts
@@ -894,26 +1047,6 @@
 	)
 	(wire
 		(pts
-			(xy 69.85 78.74) (xy 59.69 78.74)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "482c4f80-3581-4bd4-b03c-5f16316214dd")
-	)
-	(wire
-		(pts
-			(xy 59.69 73.66) (xy 91.44 73.66)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "48aa5bfb-db6c-40a8-b3ca-02fb97295934")
-	)
-	(wire
-		(pts
 			(xy 101.6 45.72) (xy 101.6 63.5)
 		)
 		(stroke
@@ -924,7 +1057,7 @@
 	)
 	(wire
 		(pts
-			(xy 50.8 73.66) (xy 54.61 73.66)
+			(xy 50.8 73.66) (xy 63.5 73.66)
 		)
 		(stroke
 			(width 0)
@@ -941,6 +1074,16 @@
 			(type default)
 		)
 		(uuid "6060210d-5563-4f6b-83b8-727a0fe4dc02")
+	)
+	(wire
+		(pts
+			(xy 63.5 68.58) (xy 69.85 68.58)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6e06fdc3-c5cc-426d-a94b-f66aa23649e9")
 	)
 	(wire
 		(pts
@@ -974,6 +1117,16 @@
 	)
 	(wire
 		(pts
+			(xy 63.5 88.9) (xy 74.93 88.9)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "79512c4c-7dd6-4567-a56e-2d31cb83cd23")
+	)
+	(wire
+		(pts
 			(xy 72.39 68.58) (xy 76.2 68.58)
 		)
 		(stroke
@@ -981,16 +1134,6 @@
 			(type default)
 		)
 		(uuid "7d45e4f2-4b3c-4890-abf3-e864ae6c567b")
-	)
-	(wire
-		(pts
-			(xy 59.69 88.9) (xy 74.93 88.9)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "858c92e1-084a-419b-8d22-ab8f759a4fbc")
 	)
 	(wire
 		(pts
@@ -1004,6 +1147,16 @@
 	)
 	(wire
 		(pts
+			(xy 63.5 78.74) (xy 69.85 78.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "942edc2f-7604-4d58-9bd8-a4a649a12574")
+	)
+	(wire
+		(pts
 			(xy 74.93 81.28) (xy 88.9 81.28)
 		)
 		(stroke
@@ -1014,7 +1167,7 @@
 	)
 	(wire
 		(pts
-			(xy 50.8 68.58) (xy 54.61 68.58)
+			(xy 50.8 68.58) (xy 63.5 68.58)
 		)
 		(stroke
 			(width 0)
@@ -1054,7 +1207,17 @@
 	)
 	(wire
 		(pts
-			(xy 50.8 83.82) (xy 54.61 83.82)
+			(xy 63.5 83.82) (xy 72.39 83.82)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c717f9cf-d982-43b2-8b91-8c61652b7420")
+	)
+	(wire
+		(pts
+			(xy 50.8 83.82) (xy 63.5 83.82)
 		)
 		(stroke
 			(width 0)
@@ -1074,7 +1237,7 @@
 	)
 	(wire
 		(pts
-			(xy 50.8 63.5) (xy 72.39 63.5)
+			(xy 50.8 63.5) (xy 63.5 63.5)
 		)
 		(stroke
 			(width 0)
@@ -1114,26 +1277,6 @@
 	)
 	(wire
 		(pts
-			(xy 59.69 83.82) (xy 72.39 83.82)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "deece69b-2389-4d5a-889f-c6daa47cbf3b")
-	)
-	(wire
-		(pts
-			(xy 59.69 68.58) (xy 69.85 68.58)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e3c23a80-d972-4968-b6ae-34775e88b66d")
-	)
-	(wire
-		(pts
 			(xy 82.55 78.74) (xy 91.44 78.74)
 		)
 		(stroke
@@ -1154,7 +1297,7 @@
 	)
 	(wire
 		(pts
-			(xy 50.8 88.9) (xy 54.61 88.9)
+			(xy 50.8 88.9) (xy 63.5 88.9)
 		)
 		(stroke
 			(width 0)
@@ -1164,7 +1307,7 @@
 	)
 	(wire
 		(pts
-			(xy 50.8 78.74) (xy 54.61 78.74)
+			(xy 50.8 78.74) (xy 63.5 78.74)
 		)
 		(stroke
 			(width 0)
@@ -1249,32 +1392,36 @@
 		(uuid "bb4cce78-8f6f-4a43-925b-f3626e641a0c")
 	)
 	(symbol
-		(lib_id "Device:R_Small_US")
-		(at 57.15 78.74 90)
+		(lib_id "Connector:TestPoint_Small")
+		(at 63.5 73.66 0)
+		(mirror y)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "2173c2be-404d-4976-8644-185360320d49")
-		(property "Reference" "R22"
-			(at 55.372 75.946 90)
+		(fields_autoplaced yes)
+		(uuid "131da973-e8c5-4474-b763-5298fc0ea251")
+		(property "Reference" "TP10"
+			(at 62.23 72.3899 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
-		(property "Value" "22"
-			(at 59.69 75.946 90)
+		(property "Value" "RCUCTE"
+			(at 62.23 74.9299 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 57.15 78.74 0)
+		(property "Footprint" "TestPoint_KOASpeer:TestPoint_Chip_RCUCTE_0603"
+			(at 58.42 73.66 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1283,7 +1430,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 57.15 78.74 0)
+			(at 58.42 73.66 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1291,8 +1438,8 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Resistor, small US symbol"
-			(at 57.15 78.74 0)
+		(property "Description" "test point"
+			(at 63.5 73.66 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1301,15 +1448,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "ce70591f-548b-4f5f-aeda-d86d773be10e")
-		)
-		(pin "2"
-			(uuid "e32a4093-a6f3-48a7-885f-386852ad8ad9")
+			(uuid "84e00cde-956e-4b8d-a5c4-bebe547e7785")
 		)
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/676f83b0-0619-4d44-bbd6-46e3265a2238"
-					(reference "R22")
+					(reference "TP10")
 					(unit 1)
 				)
 			)
@@ -1382,6 +1526,74 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector:TestPoint_Small")
+		(at 63.5 63.5 0)
+		(mirror y)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "408f9098-b30e-43de-8401-fa195f851353")
+		(property "Reference" "TP8"
+			(at 62.23 62.2299 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "RCUCTE"
+			(at 62.23 64.7699 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint_KOASpeer:TestPoint_Chip_RCUCTE_0603"
+			(at 58.42 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 58.42 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point"
+			(at 63.5 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "01d8f21a-0443-4f33-9d86-eed8d87c1063")
+		)
+		(instances
+			(project ""
+				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/676f83b0-0619-4d44-bbd6-46e3265a2238"
+					(reference "TP8")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:+3V3")
 		(at 101.6 43.18 0)
 		(unit 1)
@@ -1442,207 +1654,6 @@
 			(project ""
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/676f83b0-0619-4d44-bbd6-46e3265a2238"
 					(reference "#PWR052")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R_Small_US")
-		(at 57.15 73.66 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "57b0bdee-817c-4191-8dbe-b62de2797d9c")
-		(property "Reference" "R21"
-			(at 55.372 70.866 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "22"
-			(at 59.69 70.866 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 57.15 73.66 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 57.15 73.66 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor, small US symbol"
-			(at 57.15 73.66 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "ba51f405-ac7c-4905-a7b9-358084b765f1")
-		)
-		(pin "2"
-			(uuid "12dddc8d-2a6f-44a4-bd7f-4d85cae24c90")
-		)
-		(instances
-			(project "airbrake_mod"
-				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/676f83b0-0619-4d44-bbd6-46e3265a2238"
-					(reference "R21")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R_Small_US")
-		(at 57.15 83.82 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "89a1c003-f71c-4e53-8773-281d4ecbf07d")
-		(property "Reference" "R23"
-			(at 55.372 81.026 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "22"
-			(at 59.69 81.026 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 57.15 83.82 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 57.15 83.82 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor, small US symbol"
-			(at 57.15 83.82 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "166f090b-67d5-45d0-8b2b-e02afbf1cee4")
-		)
-		(pin "2"
-			(uuid "fcc0040d-6cdf-4280-a768-7dd10f77d057")
-		)
-		(instances
-			(project "airbrake_mod"
-				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/676f83b0-0619-4d44-bbd6-46e3265a2238"
-					(reference "R23")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R_Small_US")
-		(at 57.15 68.58 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "8bbfb4ef-9b4c-4073-a402-3220a3f4db71")
-		(property "Reference" "R20"
-			(at 55.372 65.786 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "22"
-			(at 59.69 65.786 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 57.15 68.58 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 57.15 68.58 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Resistor, small US symbol"
-			(at 57.15 68.58 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "6a7d8355-b027-4f1e-9e00-234c948035cc")
-		)
-		(pin "2"
-			(uuid "09a70c9b-e1e5-48e8-a1bd-ad7f311a160f")
-		)
-		(instances
-			(project ""
-				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/676f83b0-0619-4d44-bbd6-46e3265a2238"
-					(reference "R20")
 					(unit 1)
 				)
 			)
@@ -1723,7 +1734,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "a2dd0ed0-4323-4414-9cfd-b7df42633a41")
-		(property "Reference" "R25"
+		(property "Reference" "R20"
 			(at 77.47 49.53 0)
 			(effects
 				(font
@@ -1777,7 +1788,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/676f83b0-0619-4d44-bbd6-46e3265a2238"
-					(reference "R25")
+					(reference "R20")
 					(unit 1)
 				)
 			)
@@ -1792,7 +1803,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "a8083d54-e814-4e12-b301-749470b212cf")
-		(property "Reference" "R27"
+		(property "Reference" "R22"
 			(at 90.17 49.53 0)
 			(effects
 				(font
@@ -1846,7 +1857,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/676f83b0-0619-4d44-bbd6-46e3265a2238"
-					(reference "R27")
+					(reference "R22")
 					(unit 1)
 				)
 			)
@@ -1941,32 +1952,36 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:R_Small_US")
-		(at 57.15 88.9 90)
+		(lib_id "Connector:TestPoint_Small")
+		(at 63.5 83.82 0)
+		(mirror y)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "cd931967-3727-42ca-b021-4e3af6a7ddd3")
-		(property "Reference" "R24"
-			(at 55.372 86.106 90)
+		(fields_autoplaced yes)
+		(uuid "c226fca7-26fb-49c7-b0b9-1dd99921779c")
+		(property "Reference" "TP12"
+			(at 62.23 82.5499 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
-		(property "Value" "22"
-			(at 59.69 86.106 90)
+		(property "Value" "RCUCTE"
+			(at 62.23 85.0899 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 57.15 88.9 0)
+		(property "Footprint" "TestPoint_KOASpeer:TestPoint_Chip_RCUCTE_0603"
+			(at 58.42 83.82 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1975,7 +1990,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 57.15 88.9 0)
+			(at 58.42 83.82 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1983,8 +1998,8 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Resistor, small US symbol"
-			(at 57.15 88.9 0)
+		(property "Description" "test point"
+			(at 63.5 83.82 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1993,15 +2008,80 @@
 			)
 		)
 		(pin "1"
-			(uuid "83c77201-9452-441f-a2bc-f72687912c34")
-		)
-		(pin "2"
-			(uuid "bbe2e65e-e859-4478-b81f-403d8ec4a88b")
+			(uuid "d648a82d-9dee-4146-b1ea-c7bf96beb771")
 		)
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/676f83b0-0619-4d44-bbd6-46e3265a2238"
-					(reference "R24")
+					(reference "TP12")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:TestPoint_Small")
+		(at 63.5 88.9 0)
+		(mirror y)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "cd2caad8-1751-4f50-98aa-34b6d7bba798")
+		(property "Reference" "TP13"
+			(at 62.23 87.6299 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "RCUCTE"
+			(at 62.23 90.1699 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint_KOASpeer:TestPoint_Chip_RCUCTE_0603"
+			(at 58.42 88.9 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 58.42 88.9 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point"
+			(at 63.5 88.9 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "79161bc6-3b27-46ed-b0fb-8c1ba1e66107")
+		)
+		(instances
+			(project "airbrake_mod"
+				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/676f83b0-0619-4d44-bbd6-46e3265a2238"
+					(reference "TP13")
 					(unit 1)
 				)
 			)
@@ -2016,7 +2096,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "cdd540e0-5b31-4b8a-9ddb-12af52e51b8e")
-		(property "Reference" "R26"
+		(property "Reference" "R21"
 			(at 83.82 49.53 0)
 			(effects
 				(font
@@ -2070,7 +2150,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/676f83b0-0619-4d44-bbd6-46e3265a2238"
-					(reference "R26")
+					(reference "R21")
 					(unit 1)
 				)
 			)
@@ -2141,6 +2221,142 @@
 			(project ""
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/676f83b0-0619-4d44-bbd6-46e3265a2238"
 					(reference "C23")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:TestPoint_Small")
+		(at 63.5 78.74 0)
+		(mirror y)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "ec02e901-a476-446d-9102-fb31abbf3c23")
+		(property "Reference" "TP11"
+			(at 62.23 77.4699 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "RCUCTE"
+			(at 62.23 80.0099 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint_KOASpeer:TestPoint_Chip_RCUCTE_0603"
+			(at 58.42 78.74 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 58.42 78.74 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point"
+			(at 63.5 78.74 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "1e6c381d-dc2f-4a9e-a217-93525a48bb88")
+		)
+		(instances
+			(project "airbrake_mod"
+				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/676f83b0-0619-4d44-bbd6-46e3265a2238"
+					(reference "TP11")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:TestPoint_Small")
+		(at 63.5 68.58 0)
+		(mirror y)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "f04c1e59-2fba-4643-af1e-5468d528ac2a")
+		(property "Reference" "TP9"
+			(at 62.23 67.3099 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "RCUCTE"
+			(at 62.23 69.8499 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint_KOASpeer:TestPoint_Chip_RCUCTE_0603"
+			(at 58.42 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 58.42 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point"
+			(at 63.5 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "11298f7d-e9ab-418f-9e32-4f1a25a980c1")
+		)
+		(instances
+			(project "airbrake_mod"
+				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/676f83b0-0619-4d44-bbd6-46e3265a2238"
+					(reference "TP9")
 					(unit 1)
 				)
 			)

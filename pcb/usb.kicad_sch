@@ -2180,26 +2180,6 @@
 		)
 		(uuid "fecc02d7-89f8-4b0d-9384-ad37b1b9efac")
 	)
-	(label "USB_D+"
-		(at 53.34 58.42 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "965c58f9-66a1-4c04-a002-cd537c2e1c47")
-	)
-	(label "USB_D-"
-		(at 53.34 53.34 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "b623cb08-6938-474c-86ab-f78fa889d88e")
-	)
 	(hierarchical_label "USB_D+"
 		(shape bidirectional)
 		(at 101.6 55.88 0)
@@ -2366,7 +2346,7 @@
 	)
 	(symbol
 		(lib_id "Device:R_Small_US")
-		(at 88.9 123.19 0)
+		(at 88.9 130.81 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2375,7 +2355,7 @@
 		(fields_autoplaced yes)
 		(uuid "10272080-b231-4cdd-a29a-90c55e812b0d")
 		(property "Reference" "R19"
-			(at 91.44 121.9199 0)
+			(at 91.44 129.5399 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2384,7 +2364,7 @@
 			)
 		)
 		(property "Value" "600"
-			(at 91.44 124.4599 0)
+			(at 91.44 132.0799 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2393,7 +2373,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 88.9 123.19 0)
+			(at 88.9 130.81 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2402,7 +2382,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 88.9 123.19 0)
+			(at 88.9 130.81 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2411,7 +2391,7 @@
 			)
 		)
 		(property "Description" "Resistor, small US symbol"
-			(at 88.9 123.19 0)
+			(at 88.9 130.81 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2569,7 +2549,7 @@
 	)
 	(symbol
 		(lib_id "Device:LED_Small_Filled")
-		(at 88.9 130.81 90)
+		(at 88.9 123.19 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2578,7 +2558,7 @@
 		(fields_autoplaced yes)
 		(uuid "3a938e63-ef93-4b61-ac98-fa85ccca9698")
 		(property "Reference" "D2"
-			(at 91.44 129.4764 90)
+			(at 91.44 121.8564 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2587,7 +2567,7 @@
 			)
 		)
 		(property "Value" "B1911USD"
-			(at 91.44 132.0164 90)
+			(at 91.44 124.3964 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2596,7 +2576,7 @@
 			)
 		)
 		(property "Footprint" "LED_SMD:LED_0603_1608Metric"
-			(at 88.9 130.81 90)
+			(at 88.9 123.19 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2605,7 +2585,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 88.9 130.81 90)
+			(at 88.9 123.19 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2614,7 +2594,7 @@
 			)
 		)
 		(property "Description" "Light emitting diode, small symbol, filled shape"
-			(at 88.9 130.81 0)
+			(at 88.9 123.19 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2623,7 +2603,7 @@
 			)
 		)
 		(property "Sim.Pins" "1=K 2=A"
-			(at 88.9 130.81 0)
+			(at 88.9 123.19 0)
 			(effects
 				(font
 					(size 1.27 1.27)
