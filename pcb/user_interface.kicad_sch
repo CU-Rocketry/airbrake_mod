@@ -1725,131 +1725,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "power:+BATT"
-			(power)
-			(pin_numbers
-				(hide yes)
-			)
-			(pin_names
-				(offset 0)
-				(hide yes)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "#PWR"
-				(at 0 -3.81 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Value" "+BATT"
-				(at 0 3.556 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" "Power symbol creates a global label with name \"+BATT\""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_keywords" "global power battery"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "+BATT_0_1"
-				(polyline
-					(pts
-						(xy -0.762 1.27) (xy 0 2.54)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 2.54) (xy 0.762 1.27)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 0) (xy 0 2.54)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "+BATT_1_1"
-				(pin power_in line
-					(at 0 0 90)
-					(length 0)
-					(name "~"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "power:GND"
 			(power)
 			(pin_numbers
@@ -2109,7 +1984,7 @@
 		)
 		(uuid "ac41daf9-e979-4c1b-a6c0-31fe24d1ce5d")
 	)
-	(text "15 mA"
+	(text "10 mA"
 		(exclude_from_sim no)
 		(at 22.098 31.496 0)
 		(effects
@@ -2119,27 +1994,7 @@
 		)
 		(uuid "b4f32be5-e888-4197-9cdc-cfad1b689eba")
 	)
-	(text "7-8.4V"
-		(exclude_from_sim no)
-		(at 59.182 23.622 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "cbaf2947-2b85-4cbd-85c1-4da9563f8914")
-	)
-	(text "7-8.4V"
-		(exclude_from_sim no)
-		(at 135.382 23.622 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "ed9ddb4e-9f70-4acd-8d11-623d01ab431a")
-	)
-	(text "15 mA"
+	(text "10 mA"
 		(exclude_from_sim no)
 		(at 98.298 31.496 0)
 		(effects
@@ -2912,7 +2767,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "330"
+		(property "Value" "50"
 			(at 45.212 46.99 0)
 			(effects
 				(font
@@ -3515,6 +3370,72 @@
 	)
 	(symbol
 		(lib_id "power:+3V3")
+		(at 127 25.4 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "6ff0fd68-5768-4d21-80b7-c692d9859369")
+		(property "Reference" "#PWR065"
+			(at 127 29.21 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 127 20.32 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 127 25.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 127 25.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3V3\""
+			(at 127 25.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "05a755b6-6e7c-4dd1-b4d1-bedc3a20e20c")
+		)
+		(instances
+			(project ""
+				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
+					(reference "#PWR065")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3V3")
 		(at 120.65 76.2 0)
 		(unit 1)
 		(exclude_from_sim no)
@@ -3667,7 +3588,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "330"
+		(property "Value" "50"
 			(at 121.412 46.99 0)
 			(effects
 				(font
@@ -3802,7 +3723,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "430"
+		(property "Value" "150"
 			(at 108.712 46.99 0)
 			(effects
 				(font
@@ -3871,7 +3792,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "330"
+		(property "Value" "50"
 			(at 134.112 46.99 0)
 			(effects
 				(font
@@ -3917,6 +3838,72 @@
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
 					(reference "R34")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3V3")
+		(at 50.8 25.4 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "9f54d7b1-d2f0-48e9-bcf5-cbc5dd33c41a")
+		(property "Reference" "#PWR059"
+			(at 50.8 29.21 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 50.8 20.32 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 50.8 25.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 50.8 25.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3V3\""
+			(at 50.8 25.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "68821318-b644-4b99-b400-ab46afd31fb4")
+		)
+		(instances
+			(project ""
+				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
+					(reference "#PWR059")
 					(unit 1)
 				)
 			)
@@ -4284,72 +4271,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:+BATT")
-		(at 50.8 25.4 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "b3f030ab-80a2-4f1b-b869-4fc434022463")
-		(property "Reference" "#PWR059"
-			(at 50.8 29.21 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+BATT"
-			(at 50.8 20.32 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 50.8 25.4 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 50.8 25.4 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+BATT\""
-			(at 50.8 25.4 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "3a881169-f36d-4a89-97cd-15a89ca58915")
-		)
-		(instances
-			(project "airbrake_mod"
-				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
-					(reference "#PWR059")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Transistor_FET:Q_NMOS_GSD")
 		(at 60.96 152.4 0)
 		(unit 1)
@@ -4525,72 +4446,6 @@
 		)
 	)
 	(symbol
-		(lib_id "power:+BATT")
-		(at 127 25.4 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "d2492dd0-4c57-43f1-a512-011354f15ddd")
-		(property "Reference" "#PWR065"
-			(at 127 29.21 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+BATT"
-			(at 127 20.32 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 127 25.4 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 127 25.4 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+BATT\""
-			(at 127 25.4 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "26cce7bc-4055-4342-9e38-0ca9eaaab94d")
-		)
-		(instances
-			(project "airbrake_mod"
-				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
-					(reference "#PWR065")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:R_Small_US")
 		(at 38.1 45.72 0)
 		(unit 1)
@@ -4608,7 +4463,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "430"
+		(property "Value" "150"
 			(at 32.512 46.99 0)
 			(effects
 				(font
@@ -4677,7 +4532,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "330"
+		(property "Value" "50"
 			(at 57.912 46.99 0)
 			(effects
 				(font

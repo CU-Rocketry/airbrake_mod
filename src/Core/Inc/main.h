@@ -59,27 +59,10 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define BTN_0_Pin GPIO_PIN_3
-#define BTN_0_GPIO_Port GPIOE
-#define BTN_1_Pin GPIO_PIN_4
-#define BTN_1_GPIO_Port GPIOE
-#define BTN_2_Pin GPIO_PIN_5
-#define BTN_2_GPIO_Port GPIOE
-#define BTN_3_Pin GPIO_PIN_6
-#define BTN_3_GPIO_Port GPIOE
-#define MODE_C_Pin GPIO_PIN_0
-#define MODE_C_GPIO_Port GPIOC
-#define MODE_1_Pin GPIO_PIN_1
-#define MODE_1_GPIO_Port GPIOC
-#define MODE_2_Pin GPIO_PIN_2
-#define MODE_2_GPIO_Port GPIOC
-#define MODE_4_Pin GPIO_PIN_3
-#define MODE_4_GPIO_Port GPIOC
-#define BATT_SENSE_Pin GPIO_PIN_0
-#define BATT_SENSE_GPIO_Port GPIOA
-#define BARO_INT_Pin GPIO_PIN_4
-#define BARO_INT_GPIO_Port GPIOC
-#define BARO_INT_EXTI_IRQn EXTI4_IRQn
+#define BATT_VSENSE_Pin GPIO_PIN_0
+#define BATT_VSENSE_GPIO_Port GPIOC
+#define BATT_ISENSE_Pin GPIO_PIN_1
+#define BATT_ISENSE_GPIO_Port GPIOC
 #define MAG_INT_Pin GPIO_PIN_10
 #define MAG_INT_GPIO_Port GPIOE
 #define MAG_INT_EXTI_IRQn EXTI15_10_IRQn
@@ -89,6 +72,25 @@ void Error_Handler(void);
 #define IMU_INT2_Pin GPIO_PIN_9
 #define IMU_INT2_GPIO_Port GPIOD
 #define IMU_INT2_EXTI_IRQn EXTI9_5_IRQn
+#define BTN_0_Pin GPIO_PIN_0
+#define BTN_0_GPIO_Port GPIOD
+#define BTN_1_Pin GPIO_PIN_1
+#define BTN_1_GPIO_Port GPIOD
+#define BTN_2_Pin GPIO_PIN_2
+#define BTN_2_GPIO_Port GPIOD
+#define BTN_3_Pin GPIO_PIN_3
+#define BTN_3_GPIO_Port GPIOD
+#define MODE_1_Pin GPIO_PIN_4
+#define MODE_1_GPIO_Port GPIOD
+#define MODE_1_EXTI_IRQn EXTI4_IRQn
+#define MODE_C_Pin GPIO_PIN_5
+#define MODE_C_GPIO_Port GPIOD
+#define MODE_2_Pin GPIO_PIN_6
+#define MODE_2_GPIO_Port GPIOD
+#define MODE_2_EXTI_IRQn EXTI9_5_IRQn
+#define MODE_4_Pin GPIO_PIN_7
+#define MODE_4_GPIO_Port GPIOD
+#define MODE_4_EXTI_IRQn EXTI9_5_IRQn
 #define BUZZER_Pin GPIO_PIN_8
 #define BUZZER_GPIO_Port GPIOB
 #define SERVO_SIG_Pin GPIO_PIN_9
