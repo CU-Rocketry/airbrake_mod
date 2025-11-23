@@ -255,7 +255,7 @@ static void MX_ADC1_Init(void)
 
   /** Configure Regular Channel
   */
-  sConfig.Channel = ADC_CHANNEL_16;
+  sConfig.Channel = ADC_CHANNEL_11;
   sConfig.Rank = ADC_REGULAR_RANK_1;
   sConfig.SamplingTime = ADC_SAMPLETIME_1CYCLE_5;
   sConfig.SingleDiff = ADC_SINGLE_ENDED;
@@ -824,11 +824,11 @@ static void MX_GPIO_Init(void)
   /* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
-  __HAL_RCC_GPIOE_CLK_ENABLE();
   __HAL_RCC_GPIOH_CLK_ENABLE();
   __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
+  __HAL_RCC_GPIOE_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
@@ -837,11 +837,25 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(SERVO_EN_GPIO_Port, SERVO_EN_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : BTN_0_Pin BTN_1_Pin BTN_2_Pin BTN_3_Pin */
-  GPIO_InitStruct.Pin = BTN_0_Pin|BTN_1_Pin|BTN_2_Pin|BTN_3_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  /*Configure GPIO pin : MAG_INT_Pin */
+  GPIO_InitStruct.Pin = MAG_INT_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-  HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
+  HAL_GPIO_Init(MAG_INT_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : IMU_INT1_Pin IMU_INT2_Pin BTN_0_Pin BTN_1_Pin
+                           BTN_2_Pin BTN_3_Pin MODE_2_Pin MODE_4_Pin */
+  GPIO_InitStruct.Pin = IMU_INT1_Pin|IMU_INT2_Pin|BTN_0_Pin|BTN_1_Pin
+                          |BTN_2_Pin|BTN_3_Pin|MODE_2_Pin|MODE_4_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : MODE_1_Pin */
+  GPIO_InitStruct.Pin = MODE_1_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(MODE_1_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : MODE_C_Pin */
   GPIO_InitStruct.Pin = MODE_C_Pin;
@@ -849,30 +863,6 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(MODE_C_GPIO_Port, &GPIO_InitStruct);
-
-  /*Configure GPIO pins : MODE_1_Pin MODE_2_Pin MODE_4_Pin */
-  GPIO_InitStruct.Pin = MODE_1_Pin|MODE_2_Pin|MODE_4_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : BARO_INT_Pin */
-  GPIO_InitStruct.Pin = BARO_INT_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
-  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-  HAL_GPIO_Init(BARO_INT_GPIO_Port, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : MAG_INT_Pin */
-  GPIO_InitStruct.Pin = MAG_INT_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
-  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-  HAL_GPIO_Init(MAG_INT_GPIO_Port, &GPIO_InitStruct);
-
-  /*Configure GPIO pins : IMU_INT1_Pin IMU_INT2_Pin */
-  GPIO_InitStruct.Pin = IMU_INT1_Pin|IMU_INT2_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
-  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-  HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
   /*Configure GPIO pin : SERVO_EN_Pin */
   GPIO_InitStruct.Pin = SERVO_EN_Pin;
@@ -882,11 +872,11 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_Init(SERVO_EN_GPIO_Port, &GPIO_InitStruct);
 
   /* EXTI interrupt init*/
-  HAL_NVIC_SetPriority(BARO_INT_EXTI_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(BARO_INT_EXTI_IRQn);
+  HAL_NVIC_SetPriority(MODE_1_EXTI_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(MODE_1_EXTI_IRQn);
 
-  HAL_NVIC_SetPriority(IMU_INT1_EXTI_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(IMU_INT1_EXTI_IRQn);
+  HAL_NVIC_SetPriority(MODE_2_EXTI_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(MODE_2_EXTI_IRQn);
 
   HAL_NVIC_SetPriority(MAG_INT_EXTI_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(MAG_INT_EXTI_IRQn);
