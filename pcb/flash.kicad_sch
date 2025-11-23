@@ -1402,7 +1402,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "131da973-e8c5-4474-b763-5298fc0ea251")
-		(property "Reference" "TP10"
+		(property "Reference" "TP14"
 			(at 62.23 72.3899 0)
 			(effects
 				(font
@@ -1453,7 +1453,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/676f83b0-0619-4d44-bbd6-46e3265a2238"
-					(reference "TP10")
+					(reference "TP14")
 					(unit 1)
 				)
 			)
@@ -1469,7 +1469,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "393d5290-2d90-40f6-a05e-60c7b062c687")
-		(property "Reference" "#PWR054"
+		(property "Reference" "#PWR058"
 			(at 114.3 62.23 0)
 			(effects
 				(font
@@ -1519,7 +1519,7 @@
 		(instances
 			(project ""
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/676f83b0-0619-4d44-bbd6-46e3265a2238"
-					(reference "#PWR054")
+					(reference "#PWR058")
 					(unit 1)
 				)
 			)
@@ -1536,7 +1536,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "408f9098-b30e-43de-8401-fa195f851353")
-		(property "Reference" "TP8"
+		(property "Reference" "TP12"
 			(at 62.23 62.2299 0)
 			(effects
 				(font
@@ -1587,7 +1587,7 @@
 		(instances
 			(project ""
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/676f83b0-0619-4d44-bbd6-46e3265a2238"
-					(reference "TP8")
+					(reference "TP12")
 					(unit 1)
 				)
 			)
@@ -1603,7 +1603,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "477c8043-d8d2-4531-a0c4-621057025d02")
-		(property "Reference" "#PWR052"
+		(property "Reference" "#PWR056"
 			(at 101.6 46.99 0)
 			(effects
 				(font
@@ -1653,7 +1653,7 @@
 		(instances
 			(project ""
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/676f83b0-0619-4d44-bbd6-46e3265a2238"
-					(reference "#PWR052")
+					(reference "#PWR056")
 					(unit 1)
 				)
 			)
@@ -1669,7 +1669,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "9e624400-e6e2-4673-ae44-e0da971ac67c")
-		(property "Reference" "#PWR053"
+		(property "Reference" "#PWR057"
 			(at 101.6 97.79 0)
 			(effects
 				(font
@@ -1719,7 +1719,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/676f83b0-0619-4d44-bbd6-46e3265a2238"
-					(reference "#PWR053")
+					(reference "#PWR057")
 					(unit 1)
 				)
 			)
@@ -1962,7 +1962,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "c226fca7-26fb-49c7-b0b9-1dd99921779c")
-		(property "Reference" "TP12"
+		(property "Reference" "TP16"
 			(at 62.23 82.5499 0)
 			(effects
 				(font
@@ -2013,7 +2013,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/676f83b0-0619-4d44-bbd6-46e3265a2238"
-					(reference "TP12")
+					(reference "TP16")
 					(unit 1)
 				)
 			)
@@ -2030,7 +2030,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "cd2caad8-1751-4f50-98aa-34b6d7bba798")
-		(property "Reference" "TP13"
+		(property "Reference" "TP17"
 			(at 62.23 87.6299 0)
 			(effects
 				(font
@@ -2081,7 +2081,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/676f83b0-0619-4d44-bbd6-46e3265a2238"
-					(reference "TP13")
+					(reference "TP17")
 					(unit 1)
 				)
 			)
@@ -2237,7 +2237,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "ec02e901-a476-446d-9102-fb31abbf3c23")
-		(property "Reference" "TP11"
+		(property "Reference" "TP15"
 			(at 62.23 77.4699 0)
 			(effects
 				(font
@@ -2288,7 +2288,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/676f83b0-0619-4d44-bbd6-46e3265a2238"
-					(reference "TP11")
+					(reference "TP15")
 					(unit 1)
 				)
 			)
@@ -2305,7 +2305,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "f04c1e59-2fba-4643-af1e-5468d528ac2a")
-		(property "Reference" "TP9"
+		(property "Reference" "TP13"
 			(at 62.23 67.3099 0)
 			(effects
 				(font
@@ -2356,7 +2356,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/676f83b0-0619-4d44-bbd6-46e3265a2238"
-					(reference "TP9")
+					(reference "TP13")
 					(unit 1)
 				)
 			)

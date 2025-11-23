@@ -2467,7 +2467,6 @@
 							)
 						)
 					)
-					(alternate "" input line)
 					(alternate "ADC1_EXTI15" bidirectional line)
 					(alternate "ADC2_EXTI15" bidirectional line)
 					(alternate "ADC3_EXTI15" bidirectional line)
@@ -5615,6 +5614,16 @@
 			(type default)
 		)
 		(uuid "cd8e2dd6-c1e3-4821-8808-5e10f5c7f0ed")
+	)
+	(wire
+		(pts
+			(xy 119.38 129.54) (xy 139.7 129.54)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ce260595-63e0-41f7-85d6-3abbb5832a0c")
 	)
 	(wire
 		(pts
@@ -8805,6 +8814,17 @@
 			(justify right)
 		)
 		(uuid "d184597a-accf-4eed-a739-c892a619904b")
+	)
+	(hierarchical_label "SERVO_FDBK"
+		(shape input)
+		(at 139.7 129.54 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "d65e31b8-0a45-4339-a59d-c8f4f5c115f1")
 	)
 	(hierarchical_label "BTN_3"
 		(shape input)

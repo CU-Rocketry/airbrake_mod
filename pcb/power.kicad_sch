@@ -3046,6 +3046,16 @@
 	)
 	(wire
 		(pts
+			(xy 254 50.8) (xy 254 53.34)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2cdd5161-cf9e-4b6b-b675-40740982b129")
+	)
+	(wire
+		(pts
 			(xy 139.7 161.29) (xy 139.7 165.1)
 		)
 		(stroke
@@ -3376,6 +3386,16 @@
 	)
 	(wire
 		(pts
+			(xy 254 50.8) (xy 262.89 50.8)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7081b7a4-34ac-4d1f-b0c5-5a0ac37672c4")
+	)
+	(wire
+		(pts
 			(xy 63.5 114.3) (xy 68.58 114.3)
 		)
 		(stroke
@@ -3456,6 +3476,16 @@
 	)
 	(wire
 		(pts
+			(xy 254 38.1) (xy 262.89 38.1)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "83e37fe1-293b-4efd-97f7-8c659a4a2796")
+	)
+	(wire
+		(pts
 			(xy 114.3 76.2) (xy 114.3 80.01)
 		)
 		(stroke
@@ -3513,6 +3543,16 @@
 			(type default)
 		)
 		(uuid "93d3da95-784a-4adf-a531-60afffeb8333")
+	)
+	(wire
+		(pts
+			(xy 254 25.4) (xy 262.89 25.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9b78537e-aeea-4044-9297-05a5ed1e0188")
 	)
 	(wire
 		(pts
@@ -3653,6 +3693,16 @@
 			(type default)
 		)
 		(uuid "b3fb216c-a298-471f-a6a0-4825f412bba1")
+	)
+	(wire
+		(pts
+			(xy 254 22.86) (xy 254 25.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b54d2e56-5d54-414a-867a-9ea232b84d42")
 	)
 	(wire
 		(pts
@@ -3816,6 +3866,16 @@
 	)
 	(wire
 		(pts
+			(xy 254 63.5) (xy 262.89 63.5)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "eaaf3e72-dd8f-466c-a67f-3aaf97dfabdb")
+	)
+	(wire
+		(pts
 			(xy 110.49 88.9) (xy 114.3 88.9)
 		)
 		(stroke
@@ -3853,6 +3913,26 @@
 			(type default)
 		)
 		(uuid "f25c09db-f0a2-4363-9a63-1c0847b64fba")
+	)
+	(wire
+		(pts
+			(xy 254 35.56) (xy 254 38.1)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f350387d-5ae4-460c-8aff-381f9a9815e0")
+	)
+	(wire
+		(pts
+			(xy 254 63.5) (xy 254 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f36cae2e-4263-443b-891f-52c9dd897ff4")
 	)
 	(wire
 		(pts
@@ -11137,6 +11217,72 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 262.89 25.4 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "165df92c-7c62-4085-ad83-256dbb175385")
+		(property "Reference" "TP8"
+			(at 268.478 24.638 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "RCUCTE"
+			(at 268.478 26.67 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint_KOASpeer:TestPoint_Chip_RCUCTE_0603"
+			(at 262.89 30.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.koaspeer.com/pdfs/RC.pdf"
+			(at 262.89 30.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point"
+			(at 262.89 25.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "10b251e3-14be-4e61-99e9-ef2ff5eb7d50")
+		)
+		(instances
+			(project "airbrake_mod"
+				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/3ce152e6-c1c9-4db1-8237-913c82724d53"
+					(reference "TP8")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "DI_ZXCT180:ZXCT180A4")
 		(at 184.15 40.64 0)
 		(unit 1)
@@ -12084,6 +12230,72 @@
 		)
 	)
 	(symbol
+		(lib_id "power:+3V3")
+		(at 254 22.86 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "4551695e-a239-4cca-8c40-c27efdd03658")
+		(property "Reference" "#PWR044"
+			(at 254 26.67 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 254 17.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 254 22.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 254 22.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3V3\""
+			(at 254 22.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "bfa41815-d387-465f-913b-f2f54ab64532")
+		)
+		(instances
+			(project ""
+				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/3ce152e6-c1c9-4db1-8237-913c82724d53"
+					(reference "#PWR044")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:R_Small_US")
 		(at 165.1 44.45 0)
 		(unit 1)
@@ -12819,6 +13031,72 @@
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/3ce152e6-c1c9-4db1-8237-913c82724d53"
 					(reference "R8")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 254 53.34 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "90894940-5c75-4c26-98e0-012342eb3712")
+		(property "Reference" "#PWR046"
+			(at 254 59.69 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 254 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 254 53.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 254 53.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 254 53.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "ad263d0b-6f2d-48d7-bcc8-fdd90ac43d76")
+		)
+		(instances
+			(project "airbrake_mod"
+				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/3ce152e6-c1c9-4db1-8237-913c82724d53"
+					(reference "#PWR046")
 					(unit 1)
 				)
 			)
@@ -13773,6 +14051,72 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 262.89 50.8 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "b1d8f801-5fa3-4387-a3c0-5767f98328de")
+		(property "Reference" "TP10"
+			(at 268.478 50.038 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "RCUCTE"
+			(at 268.478 52.07 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint_KOASpeer:TestPoint_Chip_RCUCTE_0603"
+			(at 262.89 55.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.koaspeer.com/pdfs/RC.pdf"
+			(at 262.89 55.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point"
+			(at 262.89 50.8 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "9fd3b2e1-aab1-4bc0-8439-b77ee2019a18")
+		)
+		(instances
+			(project "airbrake_mod"
+				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/3ce152e6-c1c9-4db1-8237-913c82724d53"
+					(reference "TP10")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
 		(at 139.7 177.8 0)
 		(unit 1)
@@ -14112,6 +14456,138 @@
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/3ce152e6-c1c9-4db1-8237-913c82724d53"
 					(reference "Q3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 254 66.04 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "cbd16588-58d7-403c-a46c-e0e65e8869fb")
+		(property "Reference" "#PWR047"
+			(at 254 72.39 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 254 71.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 254 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 254 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 254 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "7c7962b3-b6b3-40ab-a8b8-2283be737cf8")
+		)
+		(instances
+			(project ""
+				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/3ce152e6-c1c9-4db1-8237-913c82724d53"
+					(reference "#PWR047")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 262.89 63.5 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "d47ae3f0-fae2-45ce-992c-7ef4bd6c9626")
+		(property "Reference" "TP11"
+			(at 268.478 62.738 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "RCUCTE"
+			(at 268.478 64.77 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint_KOASpeer:TestPoint_Chip_RCUCTE_0603"
+			(at 262.89 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.koaspeer.com/pdfs/RC.pdf"
+			(at 262.89 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point"
+			(at 262.89 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "66b18889-fd06-4c00-ad10-95b08b96ca0e")
+		)
+		(instances
+			(project "airbrake_mod"
+				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/3ce152e6-c1c9-4db1-8237-913c82724d53"
+					(reference "TP11")
 					(unit 1)
 				)
 			)
@@ -14530,6 +15006,72 @@
 		)
 	)
 	(symbol
+		(lib_id "power:+3V3")
+		(at 254 35.56 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "ed5715b5-1caf-4894-84e6-6c2381d4267c")
+		(property "Reference" "#PWR045"
+			(at 254 39.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 254 30.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 254 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 254 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3V3\""
+			(at 254 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "cd55770c-5113-4b7a-948c-dce88f0f5bfe")
+		)
+		(instances
+			(project "airbrake_mod"
+				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/3ce152e6-c1c9-4db1-8237-913c82724d53"
+					(reference "#PWR045")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:+BATT")
 		(at 165.1 55.88 180)
 		(unit 1)
@@ -14658,6 +15200,72 @@
 			(project ""
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/3ce152e6-c1c9-4db1-8237-913c82724d53"
 					(reference "R3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 262.89 38.1 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "f9d56e3e-6290-4d68-9d3c-4b14f30ef5f1")
+		(property "Reference" "TP9"
+			(at 268.478 37.338 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "RCUCTE"
+			(at 268.478 39.37 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint_KOASpeer:TestPoint_Chip_RCUCTE_0603"
+			(at 262.89 43.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.koaspeer.com/pdfs/RC.pdf"
+			(at 262.89 43.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point"
+			(at 262.89 38.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "c17bf328-dcae-44a1-8ccd-2a61e82d5d2f")
+		)
+		(instances
+			(project "airbrake_mod"
+				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/3ce152e6-c1c9-4db1-8237-913c82724d53"
+					(reference "TP9")
 					(unit 1)
 				)
 			)

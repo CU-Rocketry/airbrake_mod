@@ -2828,7 +2828,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "19f2adb6-6fb0-466b-9b99-1fc11d1b07ae")
-		(property "Reference" "#PWR067"
+		(property "Reference" "#PWR071"
 			(at 158.75 80.01 0)
 			(effects
 				(font
@@ -2878,7 +2878,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
-					(reference "#PWR067")
+					(reference "#PWR071")
 					(unit 1)
 				)
 			)
@@ -3034,7 +3034,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "294b5531-9662-4ef0-9991-71444081a02f")
-		(property "Reference" "#PWR062"
+		(property "Reference" "#PWR066"
 			(at 63.5 171.45 0)
 			(effects
 				(font
@@ -3084,7 +3084,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
-					(reference "#PWR062")
+					(reference "#PWR066")
 					(unit 1)
 				)
 			)
@@ -3100,7 +3100,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "340bd8c9-769f-4ec3-a259-fd0cbbc67b55")
-		(property "Reference" "#PWR061"
+		(property "Reference" "#PWR065"
 			(at 63.5 130.81 0)
 			(effects
 				(font
@@ -3150,7 +3150,7 @@
 		(instances
 			(project ""
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
-					(reference "#PWR061")
+					(reference "#PWR065")
 					(unit 1)
 				)
 			)
@@ -3312,7 +3312,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "428425a0-e55f-485f-82da-3dbc026b7b7b")
-		(property "Reference" "#PWR060"
+		(property "Reference" "#PWR064"
 			(at 50.8 171.45 0)
 			(effects
 				(font
@@ -3362,7 +3362,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
-					(reference "#PWR060")
+					(reference "#PWR064")
 					(unit 1)
 				)
 			)
@@ -3378,7 +3378,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "6ff0fd68-5768-4d21-80b7-c692d9859369")
-		(property "Reference" "#PWR065"
+		(property "Reference" "#PWR069"
 			(at 127 29.21 0)
 			(effects
 				(font
@@ -3428,7 +3428,7 @@
 		(instances
 			(project ""
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
-					(reference "#PWR065")
+					(reference "#PWR069")
 					(unit 1)
 				)
 			)
@@ -3444,7 +3444,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "76a834e1-1db8-4b71-8eb9-c3d2788d6dad")
-		(property "Reference" "#PWR064"
+		(property "Reference" "#PWR068"
 			(at 120.65 80.01 0)
 			(effects
 				(font
@@ -3494,7 +3494,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
-					(reference "#PWR064")
+					(reference "#PWR068")
 					(unit 1)
 				)
 			)
@@ -3649,7 +3649,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "8ec385a0-b041-4c9e-9884-676e1a95fd20")
-		(property "Reference" "#PWR066"
+		(property "Reference" "#PWR070"
 			(at 139.7 80.01 0)
 			(effects
 				(font
@@ -3699,7 +3699,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
-					(reference "#PWR066")
+					(reference "#PWR070")
 					(unit 1)
 				)
 			)
@@ -3853,7 +3853,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "9f54d7b1-d2f0-48e9-bcf5-cbc5dd33c41a")
-		(property "Reference" "#PWR059"
+		(property "Reference" "#PWR063"
 			(at 50.8 29.21 0)
 			(effects
 				(font
@@ -3903,7 +3903,7 @@
 		(instances
 			(project ""
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
-					(reference "#PWR059")
+					(reference "#PWR063")
 					(unit 1)
 				)
 			)
@@ -4389,7 +4389,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "cf4c099e-adb6-4631-924c-d154e9d5b0bb")
-		(property "Reference" "#PWR063"
+		(property "Reference" "#PWR067"
 			(at 101.6 80.01 0)
 			(effects
 				(font
@@ -4439,7 +4439,7 @@
 		(instances
 			(project ""
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
-					(reference "#PWR063")
+					(reference "#PWR067")
 					(unit 1)
 				)
 			)
