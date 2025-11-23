@@ -4798,16 +4798,6 @@
 	)
 	(wire
 		(pts
-			(xy 119.38 96.52) (xy 139.7 96.52)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "47526643-9e3b-47fc-a491-2720f317238e")
-	)
-	(wire
-		(pts
 			(xy 190.5 107.95) (xy 199.39 107.95)
 		)
 		(stroke
@@ -5705,16 +5695,6 @@
 			(type default)
 		)
 		(uuid "e2759412-204e-4fbb-b1ab-c1817a84684d")
-	)
-	(wire
-		(pts
-			(xy 119.38 99.06) (xy 139.7 99.06)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e3584a40-294f-4b63-afbc-8822d1995a80")
 	)
 	(wire
 		(pts
@@ -8465,7 +8445,7 @@
 	)
 	(hierarchical_label "MODE_C"
 		(shape output)
-		(at 38.1 114.3 180)
+		(at 38.1 116.84 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8506,17 +8486,6 @@
 			(justify left)
 		)
 		(uuid "463c004d-e758-4884-b8b4-cec1178c5253")
-	)
-	(hierarchical_label "I2C1_SDA"
-		(shape bidirectional)
-		(at 139.7 99.06 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "4c4c935b-83cd-4d64-8a2d-185fe0d963b4")
 	)
 	(hierarchical_label "SERVO_EN"
 		(shape output)
@@ -8740,7 +8709,7 @@
 	)
 	(hierarchical_label "MODE_1"
 		(shape input)
-		(at 38.1 116.84 180)
+		(at 38.1 114.3 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8924,17 +8893,6 @@
 			(justify right)
 		)
 		(uuid "f9f2db0d-bce9-4cb0-a463-6ee59d8d36c8")
-	)
-	(hierarchical_label "I2C1_SCL"
-		(shape output)
-		(at 139.7 96.52 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "ffdf8fd3-e790-43d1-becb-081ed77eef2c")
 	)
 	(symbol
 		(lib_id "Device:C_Small")
