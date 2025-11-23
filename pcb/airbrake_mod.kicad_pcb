@@ -35223,18 +35223,6 @@
 		(layer "Edge.Cuts")
 		(uuid "fbc0f935-570c-42d7-b37f-93321fe2cd17")
 	)
-	(gr_text "-     +"
-		(at 102 77.5 90)
-		(layer "F.SilkS")
-		(uuid "018898fc-8e73-4fcf-9164-1b59ec742092")
-		(effects
-			(font
-				(size 1 1)
-				(thickness 0.15)
-			)
-			(justify left bottom)
-		)
-	)
 	(gr_text "SERVO"
 		(at 111.5 60.5 90)
 		(layer "F.SilkS")
