@@ -533,7 +533,7 @@
       "plot": "",
       "pos_files": "",
       "specctra_dsn": "",
-      "step": "",
+      "step": "airbrake_mod.step",
       "svg": "",
       "vrml": ""
     },
