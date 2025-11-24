@@ -63,6 +63,8 @@ void Error_Handler(void);
 #define BATT_VSENSE_GPIO_Port GPIOC
 #define BATT_ISENSE_Pin GPIO_PIN_1
 #define BATT_ISENSE_GPIO_Port GPIOC
+#define SERVO_FDBK_Pin GPIO_PIN_2
+#define SERVO_FDBK_GPIO_Port GPIOC
 #define MAG_INT_Pin GPIO_PIN_10
 #define MAG_INT_GPIO_Port GPIOE
 #define MAG_INT_EXTI_IRQn EXTI15_10_IRQn

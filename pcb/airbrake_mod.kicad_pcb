@@ -2338,7 +2338,7 @@
 			(net 70 "/MCU/BTN_0")
 			(pinfunction "1")
 			(pintype "passive")
-			(uuid "636152f9-4122-43f0-9ab6-049254f382cf")
+			(uuid "3155cd5b-b977-436e-821e-b7336ad5612e")
 		)
 		(pad "2" smd rect
 			(at -2.250001 1.074999 322.5)
@@ -2356,7 +2356,7 @@
 			(net 1 "+3V3")
 			(pinfunction "2")
 			(pintype "passive")
-			(uuid "7fe53ff0-44b3-465f-8c96-464885cb5278")
+			(uuid "f593450d-bab4-46e8-a52e-633333b60288")
 		)
 		(embedded_fonts no)
 		(model "${KIPRJMOD}/kicad-library/3d_models/PTS815SJM250SMTRLFS.stp"
@@ -5211,7 +5211,7 @@
 				(type default)
 			)
 			(layer "F.SilkS")
-			(uuid "82d0f0c8-95e8-457b-99cc-dfe6875d75a1")
+			(uuid "ce095570-e90e-49f6-ad3b-d6d7cdd29801")
 		)
 		(fp_line
 			(start -3.5 -3.5)
@@ -5221,7 +5221,7 @@
 				(type default)
 			)
 			(layer "F.SilkS")
-			(uuid "adeae668-389d-41fb-8bdf-84fbaea06475")
+			(uuid "52cc62d7-97fe-4fa1-9a86-8ae5f4168d40")
 		)
 		(fp_rect
 			(start -4 -5)
@@ -5232,7 +5232,7 @@
 			)
 			(fill no)
 			(layer "F.CrtYd")
-			(uuid "66cf09bd-d43a-42cf-8b94-e2cc308134ca")
+			(uuid "c163d797-c65a-4520-b1bc-e2ae784d9d3d")
 		)
 		(fp_rect
 			(start -3.3 -3.55)
@@ -5243,7 +5243,7 @@
 			)
 			(fill no)
 			(layer "F.Fab")
-			(uuid "af86e00e-6b6c-4999-8324-40a6a697bb46")
+			(uuid "ef810d0e-e734-4b4f-99ea-888686260037")
 		)
 		(fp_text user "${REFERENCE}"
 			(at 0 -0.925 180)
@@ -5278,6 +5278,24 @@
 			(uuid "38bb2a4d-8f2b-467e-aaad-1719c9b5a27c")
 		)
 		(embedded_fonts no)
+		(embedded_files
+			(file
+				(name "L_Arlitech_AMPI0640ED2R2MT v1.step")
+				(type model)
+				(checksum "22F762E7914870C654B606B3EF88D42D")
+			)
+		)
+		(model "kicad-embed://L_Arlitech_AMPI0640ED2R2MT v1.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "Package_SO:TSOP-6_1.65x3.05mm_P0.95mm"
 		(layer "F.Cu")
@@ -6066,7 +6084,7 @@
 			(net 1 "+3V3")
 			(pinfunction "1")
 			(pintype "passive")
-			(uuid "914bebe8-0829-41cd-9cc3-8e534e570c1f")
+			(uuid "469a0712-86a8-4f34-85bb-a4977bf27e11")
 		)
 		(pad "2" smd rect
 			(at -2.250001 1.074999 90)
@@ -6084,7 +6102,7 @@
 			(net 49 "/MCU/BOOT0")
 			(pinfunction "2")
 			(pintype "passive")
-			(uuid "f48428d0-8068-44ce-90de-55c66f4c7d64")
+			(uuid "cc4f7afd-a034-4af7-9c4e-560b45b86fed")
 		)
 		(embedded_fonts no)
 		(model "${KIPRJMOD}/kicad-library/3d_models/PTS815SJM250SMTRLFS.stp"
@@ -12004,7 +12022,7 @@
 			(net 71 "/MCU/BTN_1")
 			(pinfunction "1")
 			(pintype "passive")
-			(uuid "5c42976f-2208-46cf-bcfc-27d7a05c4840")
+			(uuid "d243f283-b6a5-46bc-bee4-9aaaa46f14da")
 		)
 		(pad "2" smd rect
 			(at -2.250001 1.074999 330)
@@ -12022,7 +12040,7 @@
 			(net 1 "+3V3")
 			(pinfunction "2")
 			(pintype "passive")
-			(uuid "1f80c552-9c7c-4bcb-9d1e-0063e52dc536")
+			(uuid "8df2b968-09c4-499a-9a27-8538eaf998d7")
 		)
 		(embedded_fonts no)
 		(model "${KIPRJMOD}/kicad-library/3d_models/PTS815SJM250SMTRLFS.stp"
@@ -12363,7 +12381,7 @@
 			(net 73 "/MCU/BTN_3")
 			(pinfunction "1")
 			(pintype "passive")
-			(uuid "bd5fb6ae-b95a-41d6-93c4-c742f50b47f2")
+			(uuid "d856c247-1c06-4a1e-b839-1fb9d3256b60")
 		)
 		(pad "2" smd rect
 			(at -2.250001 1.074999 345)
@@ -12381,7 +12399,7 @@
 			(net 1 "+3V3")
 			(pinfunction "2")
 			(pintype "passive")
-			(uuid "10c24e6a-5cdd-42cd-8307-043821a5c25e")
+			(uuid "6b10cdf0-4956-412c-ab5f-24938dfc7a17")
 		)
 		(embedded_fonts no)
 		(model "${KIPRJMOD}/kicad-library/3d_models/PTS815SJM250SMTRLFS.stp"
@@ -16034,7 +16052,7 @@
 			(pinfunction "SHIELD")
 			(pintype "passive")
 			(solder_mask_margin 0)
-			(uuid "dbcc66e4-07ed-41a2-8262-ee901b700749")
+			(uuid "2bf7d919-e2b8-4b6a-a812-b6a5d2a3f3c9")
 		)
 		(pad "S1" thru_hole oval
 			(at 4.32 -4 225)
@@ -16046,7 +16064,7 @@
 			(pinfunction "SHIELD")
 			(pintype "passive")
 			(solder_mask_margin 0)
-			(uuid "dbcc66e4-07ed-41a2-8262-ee901b700749")
+			(uuid "578aa277-b6df-4972-800b-504131c9cbb8")
 		)
 		(pad "S1" thru_hole oval
 			(at 4.32 0 225)
@@ -16058,7 +16076,7 @@
 			(pinfunction "SHIELD")
 			(pintype "passive")
 			(solder_mask_margin 0)
-			(uuid "dbcc66e4-07ed-41a2-8262-ee901b700749")
+			(uuid "490a3fb7-9cdd-49d8-a6b0-2888be22eca6")
 		)
 		(embedded_fonts no)
 		(model "${KIPRJMOD}/kicad-library/3d_models/UJ20-C-H-G-SMT-P16-TR.step"
@@ -19650,7 +19668,7 @@
 			(pinfunction "C")
 			(pintype "passive")
 			(solder_mask_margin 0)
-			(uuid "d098a7db-279f-46a4-b7de-a45f37fba36e")
+			(uuid "42f5f4bf-2258-4256-8849-8ee12d1d530c")
 		)
 		(pad "NC" thru_hole circle
 			(at 0 -2.54 260)
@@ -21762,7 +21780,7 @@
 			(net 9 "/Debug/~{RESET}")
 			(pinfunction "1")
 			(pintype "passive")
-			(uuid "6f7f7127-926d-48dd-9f14-4a2f3590eaf0")
+			(uuid "3e81ae37-3c1a-4af7-ab93-77067c3bbd62")
 		)
 		(pad "2" smd rect
 			(at -2.250001 1.074999 280)
@@ -21780,7 +21798,7 @@
 			(net 3 "GND")
 			(pinfunction "2")
 			(pintype "passive")
-			(uuid "5cc91e36-8278-4793-be4d-2c1855e57abd")
+			(uuid "040b3245-6b36-4dd9-b02a-667b846c1788")
 		)
 		(embedded_fonts no)
 		(model "${KIPRJMOD}/kicad-library/3d_models/PTS815SJM250SMTRLFS.stp"
@@ -24712,7 +24730,7 @@
 			(net 72 "/MCU/BTN_2")
 			(pinfunction "1")
 			(pintype "passive")
-			(uuid "5f5a3084-fcd8-4f36-a73b-96f414ed60fe")
+			(uuid "692cd6d8-a9f9-4571-ad1d-97ef2cb39367")
 		)
 		(pad "2" smd rect
 			(at -2.250001 1.074998 337.5)
@@ -24730,7 +24748,7 @@
 			(net 1 "+3V3")
 			(pinfunction "2")
 			(pintype "passive")
-			(uuid "abc74044-527d-4ddc-a318-29582c3145de")
+			(uuid "b4782ee0-3b43-4d06-814d-051828f5ede5")
 		)
 		(embedded_fonts no)
 		(model "${KIPRJMOD}/kicad-library/3d_models/PTS815SJM250SMTRLFS.stp"
@@ -27054,7 +27072,7 @@
 			(uuid "bb4c7d8d-ff4b-4d25-9be8-f5c845e4c0af")
 		)
 		(fp_line
-			(start 0.799999 0.4)
+			(start 0.799998 0.4)
 			(end -0.8 0.4)
 			(stroke
 				(width 0.1)
@@ -27065,7 +27083,7 @@
 		)
 		(fp_line
 			(start 0.8 -0.4)
-			(end 0.799999 0.4)
+			(end 0.799998 0.4)
 			(stroke
 				(width 0.1)
 				(type solid)
@@ -27075,7 +27093,7 @@
 		)
 		(fp_line
 			(start -0.8 0.4)
-			(end -0.799999 -0.4)
+			(end -0.799998 -0.4)
 			(stroke
 				(width 0.1)
 				(type solid)
@@ -27084,7 +27102,7 @@
 			(uuid "de3c39d8-beff-4fc7-a1a4-b06fc783191d")
 		)
 		(fp_line
-			(start -0.799999 -0.4)
+			(start -0.799998 -0.4)
 			(end 0.8 -0.4)
 			(stroke
 				(width 0.1)
@@ -56626,6 +56644,111 @@
 				aU9h1CIvTiATfUvskjd33OOi9xc=|
 			)
 			(checksum "8985FAD3EF7322E32E3A9968D3071127")
+		)
+		(file
+			(name "L_Arlitech_AMPI0640ED2R2MT v1.step")
+			(type model)
+			(data |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|
+			)
+			(checksum "22F762E7914870C654B606B3EF88D42D")
 		)
 		(file
 			(name "SW_SameSky_RDS4-8S-1012-73-RA-254-D-67.step")
