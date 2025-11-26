@@ -43365,44 +43365,6 @@
 		)
 	)
 	(zone
-		(net 3)
-		(net_name "GND")
-		(layer "F.Cu")
-		(uuid "2aa45164-ad6c-4a8a-bbeb-b6358e0dc5ed")
-		(name "$teardrop_padvia$")
-		(hatch none 0.1)
-		(priority 30070)
-		(attr
-			(teardrop
-				(type padvia)
-			)
-		)
-		(connect_pads yes
-			(clearance 0)
-		)
-		(min_thickness 0.0254)
-		(filled_areas_thickness no)
-		(fill yes
-			(thermal_gap 0.5)
-			(thermal_bridge_width 0.5)
-			(island_removal_mode 1)
-			(island_area_min 10)
-		)
-		(polygon
-			(pts
-				(xy 50.394236 113.419156) (xy 50.394236 113.119156) (xy 49.858527 113.005764) (xy 49.799 113.3)
-				(xy 49.858527 113.594236)
-			)
-		)
-		(filled_polygon
-			(layer "F.Cu")
-			(pts
-				(xy 50.394236 113.119156) (xy 50.394236 113.419156) (xy 49.858527 113.594236) (xy 49.799 113.3)
-				(xy 49.858527 113.005764)
-			)
-		)
-	)
-	(zone
 		(net 84)
 		(net_name "/MCU/SPI1_MOSI")
 		(layer "F.Cu")
