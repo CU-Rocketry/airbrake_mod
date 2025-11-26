@@ -4150,6 +4150,18 @@
 		)
 		(uuid "8ff0cd93-1e92-4530-9651-79af672cf273")
 	)
+	(text "probably no LSE"
+		(exclude_from_sim no)
+		(at 253.492 108.966 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+				(bold yes)
+			)
+		)
+		(uuid "af65bd4e-39b8-4305-a8ae-6a38573a0321")
+	)
 	(text "VBAT decoupling"
 		(exclude_from_sim no)
 		(at 230.378 52.832 0)
