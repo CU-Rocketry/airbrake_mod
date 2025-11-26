@@ -8198,6 +8198,7 @@
 			(at -0.3 -1.4 0)
 			(unlocked yes)
 			(layer "F.SilkS")
+			(hide yes)
 			(uuid "9ea1a28f-35ce-41a6-a7ab-74d8d6bcdf8b")
 			(effects
 				(font
@@ -12617,7 +12618,7 @@
 		(descr "Test Point Chip 0603 (1.6mmx0.8mm) RCU RC")
 		(tags "Test Point Chip 0603 (1.6mmx0.8mm) RCU RC")
 		(property "Reference" "TP2"
-			(at 2.1 -0.5 0)
+			(at 1.6 -0.5 0)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "f5b40eef-deb0-41a6-a7de-4295219fdacd")
@@ -14866,7 +14867,7 @@
 		(descr "Test Point Chip 0603 (1.6mmx0.8mm) RCU RC")
 		(tags "Test Point Chip 0603 (1.6mmx0.8mm) RCU RC")
 		(property "Reference" "TP5"
-			(at 2 0.7 0)
+			(at 1.6 0.3 0)
 			(unlocked yes)
 			(layer "F.SilkS")
 			(uuid "48fd4c18-fcc2-4d34-b060-ebc208a5738c")
@@ -32213,6 +32214,18 @@
 				(thickness 0.15)
 			)
 			(justify left bottom)
+		)
+	)
+	(gr_text "BUCK\nIN"
+		(at 89.2 60.7 90)
+		(layer "F.SilkS")
+		(uuid "46c359ad-072b-4f88-8474-459ae1d705f8")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+			(justify right)
 		)
 	)
 	(gr_text "MOSI"
