@@ -4163,16 +4163,6 @@
 		)
 		(uuid "cee07c15-4b73-40b4-a7ff-b6b8be2b967a")
 	)
-	(text "debatable if needed\ninternal pullup"
-		(exclude_from_sim no)
-		(at 241.046 160.782 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "cfc59f71-7e5d-4c3b-9b78-b8e42cd1df05")
-	)
 	(text "VDD decoupling"
 		(exclude_from_sim no)
 		(at 179.324 14.732 0)
@@ -10788,7 +10778,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(dnp yes)
+		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "825994a6-7fea-4feb-9a0d-f9b296235e86")
 		(property "Reference" "C13"
