@@ -2557,6 +2557,18 @@
 		)
 		(uuid d9564be8-80cc-44f5-a337-2867c61358f1)
 	)
+	(rectangle
+		(start 80.01 149.86)
+		(end 88.9 185.42)
+		(stroke
+			(width 0)
+			(type dot)
+		)
+		(fill
+			(type none)
+		)
+		(uuid fe248b0b-d94c-4b85-862d-5ab2a02ccbd4)
+	)
 	(text "5V"
 		(exclude_from_sim no)
 		(at 29.464 97.028 0)
@@ -2633,6 +2645,16 @@
 			)
 		)
 		(uuid "490ea45d-d38b-4cae-914e-ff2f37660541")
+	)
+	(text "EN lowpass\nRC time constant\n= 0.047s\n5 tau = 0.235s"
+		(exclude_from_sim no)
+		(at 84.328 145.542 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "54a8c104-b187-4ab4-9ec1-e73af03f8ad1")
 	)
 	(text "likely safe\nthe resistor could \nburn above 11A"
 		(exclude_from_sim no)
