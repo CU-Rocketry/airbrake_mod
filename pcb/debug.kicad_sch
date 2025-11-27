@@ -4,6 +4,11 @@
 	(generator_version "9.0")
 	(uuid "8e5ff424-2c4e-48cb-8d65-042cf67f956a")
 	(paper "A4")
+	(title_block
+		(title "Air Brakes Module")
+		(date "2025-11-23")
+		(company "Clarkson University Rocketry Team")
+	)
 	(lib_symbols
 		(symbol "Connector:Conn_ARM_SWD_TagConnect_TC2030"
 			(exclude_from_sim no)

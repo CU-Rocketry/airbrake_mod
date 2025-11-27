@@ -4,6 +4,11 @@
 	(generator_version "9.0")
 	(uuid "146c3fb8-383c-4a2f-ac30-caa3cb234ffd")
 	(paper "A4")
+	(title_block
+		(title "Air Brakes Module")
+		(date "2025-11-23")
+		(company "Clarkson University Rocketry Team")
+	)
 	(lib_symbols
 		(symbol "Device:Buzzer"
 			(pin_names

@@ -4,6 +4,11 @@
 	(generator_version "9.0")
 	(uuid "d4e07a6a-dd08-4ea5-8843-fdf6ac556f36")
 	(paper "A4")
+	(title_block
+		(title "Air Brakes Module")
+		(date "2025-11-23")
+		(company "Clarkson University Rocketry Team")
+	)
 	(lib_symbols
 		(symbol "Device:C_Small"
 			(pin_numbers
