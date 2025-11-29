@@ -10,4 +10,5 @@
   (lib (name "L_Arlitech")(type "KiCad")(uri "${KIPRJMOD}/kicad-library/footprints/L_Arlitech.pretty")(options "")(descr ""))
   (lib (name "TestPoint_KOASpeer")(type "KiCad")(uri "${KIPRJMOD}/kicad-library/footprints/TestPoint_KOASpeer.pretty")(options "")(descr ""))
   (lib (name "SW_SameSky")(type "KiCad")(uri "${KIPRJMOD}/kicad-library/footprints/SW_SameSky.pretty")(options "")(descr ""))
+  (lib (name "CUR")(type "KiCad")(uri "${KIPRJMOD}/kicad-library/footprints/CUR.pretty")(options "")(descr ""))
 )
