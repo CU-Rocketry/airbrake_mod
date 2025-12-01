@@ -2089,7 +2089,7 @@
 		)
 		(uuid "219356d5-d3b4-4d1f-8a5c-07a37c1a3c10")
 	)
-	(text "600 ohm gives 5mA\nTODO: BOM optimize"
+	(text "600 ohm gives 5mA\nTODO: BOM optimize\nlow kilo ohm down is OK"
 		(exclude_from_sim no)
 		(at 103.124 122.936 0)
 		(effects
@@ -2132,6 +2132,16 @@
 			)
 		)
 		(uuid "bd03da7f-0cf3-4093-a5ef-bf38242654d4")
+	)
+	(text "V_{f}=2V"
+		(exclude_from_sim no)
+		(at 78.994 123.444 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "c955b92b-1249-4194-8825-64817ab1a4a5")
 	)
 	(text "ESD protection\nplace close to connector"
 		(exclude_from_sim no)
@@ -2677,8 +2687,8 @@
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
-		(on_board no)
-		(dnp yes)
+		(on_board yes)
+		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "10272080-b231-4cdd-a29a-90c55e812b0d")
 		(property "Reference" "R19"
@@ -2880,8 +2890,8 @@
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
-		(on_board no)
-		(dnp yes)
+		(on_board yes)
+		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "3a938e63-ef93-4b61-ac98-fa85ccca9698")
 		(property "Reference" "D2"
