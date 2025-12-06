@@ -5406,6 +5406,16 @@
 	)
 	(wire
 		(pts
+			(xy 38.1 73.66) (xy 58.42 73.66)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7bda6dad-632d-4dd2-a1e5-44b811de2318")
+	)
+	(wire
+		(pts
 			(xy 119.38 81.28) (xy 139.7 81.28)
 		)
 		(stroke
@@ -5913,6 +5923,16 @@
 			(type default)
 		)
 		(uuid "c463f91e-75b5-4842-bb35-4621f8adb5a7")
+	)
+	(wire
+		(pts
+			(xy 38.1 71.12) (xy 58.42 71.12)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c62fe171-18fe-408b-ad06-c6cc57dcbd18")
 	)
 	(wire
 		(pts
@@ -8715,6 +8735,17 @@
 		)
 		(uuid "19035587-223e-4db4-af31-4cd3edc207fc")
 	)
+	(hierarchical_label "EYE_1"
+		(shape output)
+		(at 38.1 73.66 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "1eb23dde-ab08-42d2-b2a9-f8a8c7a0c7f1")
+	)
 	(hierarchical_label "SPI1_SCK"
 		(shape output)
 		(at 139.7 50.8 0)
@@ -8923,6 +8954,17 @@
 			(justify left)
 		)
 		(uuid "785f9591-a68b-4338-8ddd-aafc3ca3a764")
+	)
+	(hierarchical_label "EYE_0"
+		(shape output)
+		(at 38.1 71.12 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "8595aaf7-8264-4977-8e02-4acbdcf1e247")
 	)
 	(hierarchical_label "MODE_4"
 		(shape input)

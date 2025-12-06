@@ -442,6 +442,16 @@
 	)
 	(wire
 		(pts
+			(xy 101.6 144.78) (xy 114.3 144.78)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1321b0cb-984e-47a2-96ea-528fc8fca86c")
+	)
+	(wire
+		(pts
 			(xy 101.6 53.34) (xy 114.3 53.34)
 		)
 		(stroke
@@ -569,6 +579,16 @@
 			(type default)
 		)
 		(uuid "3e9bacfb-b7a5-420a-88b8-04a2563c3e0b")
+	)
+	(wire
+		(pts
+			(xy 101.6 142.24) (xy 114.3 142.24)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "41103347-0ef6-42c5-992b-af4aeae2f86e")
 	)
 	(wire
 		(pts
@@ -1932,6 +1952,26 @@
 				(justify right)
 			)
 		)
+		(pin "EYE_0" output
+			(at 101.6 142.24 0)
+			(uuid "e3c1205b-9c5d-4fa6-a791-4b276b79139d")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "EYE_1" output
+			(at 101.6 144.78 0)
+			(uuid "0e1c31dd-e460-4c4c-9ea0-4b4462bddf53")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936"
@@ -2356,6 +2396,68 @@
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936"
 					(page "4")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 114.3 139.7)
+		(size 25.4 12.7)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 255 255 194 1.0000)
+		)
+		(uuid "dda63ae8-3af7-4522-92df-db9fcb4a3539")
+		(property "Sheetname" "Alex_Black_Eyes"
+			(at 114.3 138.9884 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "alex_black_eyes.kicad_sch"
+			(at 114.3 152.9846 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "EYE_1" input
+			(at 114.3 144.78 180)
+			(uuid "1b05346c-c6fa-48bd-80d5-fa535ae1a73c")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "EYE_0" input
+			(at 114.3 142.24 180)
+			(uuid "bd450a7b-5550-4662-9b5b-5f0bc2b4dd57")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "airbrake_mod"
+				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936"
+					(page "10")
 				)
 			)
 		)

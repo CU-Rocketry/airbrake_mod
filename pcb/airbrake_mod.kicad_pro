@@ -58,7 +58,36 @@
           "width": 0.0
         }
       ],
-      "drc_exclusions": [],
+      "drc_exclusions": [
+        [
+          "lib_footprint_mismatch|100000000|144450000|6023deca-7ffe-4016-89b6-34bcde3a42cc|00000000-0000-0000-0000-000000000000",
+          ""
+        ],
+        [
+          "lib_footprint_mismatch|100000000|55550000|fa22964a-1010-4969-a12c-2a8a88d4c871|00000000-0000-0000-0000-000000000000",
+          ""
+        ],
+        [
+          "lib_footprint_mismatch|49625355|90121937|bc592d5a-c525-4321-aacd-8c97cdfac092|00000000-0000-0000-0000-000000000000",
+          ""
+        ],
+        [
+          "lib_footprint_mismatch|55550000|100000000|4b139733-151d-40cb-af1a-96a9600fc15c|00000000-0000-0000-0000-000000000000",
+          ""
+        ],
+        [
+          "lib_footprint_mismatch|72000000|133000000|a162ad28-af22-4cbc-9690-0bf815f58693|00000000-0000-0000-0000-000000000000",
+          ""
+        ],
+        [
+          "lib_footprint_mismatch|77681996|131293750|4b08699b-207d-4738-82ad-ecefbe6fc023|00000000-0000-0000-0000-000000000000",
+          ""
+        ],
+        [
+          "lib_footprint_mismatch|82681996|134093750|b00cbaa3-4d33-4af3-bfc7-76fb6f227851|00000000-0000-0000-0000-000000000000",
+          ""
+        ]
+      ],
       "meta": {
         "version": 2
       },
@@ -139,7 +168,7 @@
         "min_track_width": 0.1,
         "min_via_annular_width": 0.15,
         "min_via_diameter": 0.5,
-        "solder_mask_to_copper_clearance": 0.0,
+        "solder_mask_to_copper_clearance": 0.005,
         "use_height_for_length_calcs": true
       },
       "teardrop_options": [
@@ -688,6 +717,10 @@
     [
       "f60eb89b-e788-45de-b3de-5493c9ad1c56",
       "Sensors"
+    ],
+    [
+      "dda63ae8-3af7-4522-92df-db9fcb4a3539",
+      "Alex_Black_Eyes"
     ]
   ],
   "text_variables": {}
