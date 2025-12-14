@@ -60,19 +60,7 @@
       ],
       "drc_exclusions": [
         [
-          "lib_footprint_mismatch|100000000|144450000|6023deca-7ffe-4016-89b6-34bcde3a42cc|00000000-0000-0000-0000-000000000000",
-          ""
-        ],
-        [
-          "lib_footprint_mismatch|100000000|55550000|fa22964a-1010-4969-a12c-2a8a88d4c871|00000000-0000-0000-0000-000000000000",
-          ""
-        ],
-        [
           "lib_footprint_mismatch|49625355|90121937|bc592d5a-c525-4321-aacd-8c97cdfac092|00000000-0000-0000-0000-000000000000",
-          ""
-        ],
-        [
-          "lib_footprint_mismatch|55550000|100000000|4b139733-151d-40cb-af1a-96a9600fc15c|00000000-0000-0000-0000-000000000000",
           ""
         ],
         [
@@ -715,13 +703,13 @@
           "group_by": false,
           "label": "Reference",
           "name": "Reference",
-          "show": true
+          "show": false
         },
         {
           "group_by": true,
           "label": "Value",
           "name": "Value",
-          "show": true
+          "show": false
         },
         {
           "group_by": true,
