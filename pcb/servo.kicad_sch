@@ -2382,6 +2382,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "RCUCTE"
+			(at 76.2 53.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "e284f7ad-1698-4362-9048-8cf8d662832c")
 		)
@@ -2440,6 +2449,15 @@
 			)
 		)
 		(property "Description" "Resistor, small US symbol"
+			(at 76.2 44.45 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" ""
 			(at 76.2 44.45 0)
 			(effects
 				(font
@@ -2517,6 +2535,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "RCUCTE"
+			(at 50.8 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "5b74dc13-082c-4c7f-8a96-59f0f46fa06d")
 		)
@@ -2575,6 +2602,15 @@
 		)
 		(property "Description" "Resistor, small US symbol"
 			(at 69.85 50.8 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" ""
+			(at 69.85 50.8 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2643,6 +2679,15 @@
 		)
 		(property "Description" "Resistor, small US symbol"
 			(at 44.45 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" ""
+			(at 44.45 63.5 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2786,6 +2831,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" ""
+			(at 50.8 69.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "9565c926-f50a-42d9-85be-5dd50cfcc798")
 		)
@@ -2884,6 +2938,15 @@
 			)
 		)
 		(property "Sim.Pins" "1=2 2=3 3=1"
+			(at 60.96 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "NTR4003N"
 			(at 60.96 63.5 0)
 			(effects
 				(font
@@ -3033,6 +3096,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "0436500415"
+			(at 137.16 54.61 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "bbc0922c-3c49-41a6-9f21-5d8eba68a807")
 		)
@@ -3108,6 +3180,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "RCUCTE"
+			(at 101.6 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "5eaa8d3d-173e-48e4-b069-9caf2ee0c07d")
 		)
@@ -3166,6 +3247,15 @@
 			)
 		)
 		(property "Description" "test point"
+			(at 129.54 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "RCUCTE"
 			(at 129.54 49.53 0)
 			(effects
 				(font
@@ -3370,6 +3460,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "RCUCTE"
+			(at 127 43.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "be8c400a-9be4-4986-b0f3-772066fe8770")
 		)
@@ -3429,6 +3528,15 @@
 		)
 		(property "Description" "P-Channel 20-V (D-S) MOSFET 24mOhm Rds(on) 8A Vishay Siliconix"
 			(at 86.36 29.972 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "Si3407DV"
+			(at 86.36 50.8 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3510,6 +3618,15 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x04, script generated"
+			(at 137.16 78.74 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "2147511041"
 			(at 137.16 78.74 0)
 			(effects
 				(font

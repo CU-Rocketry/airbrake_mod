@@ -3482,6 +3482,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "RCUCTE"
+			(at 180.34 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "9cd0283f-5203-4c9f-b944-46286efe08af")
 		)
@@ -3548,6 +3557,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "RCUCTE"
+			(at 88.9 53.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "7c824cee-1ae4-44e9-9c88-ff2b0e4b347e")
 		)
@@ -3606,6 +3624,15 @@
 			)
 		)
 		(property "Description" "test point"
+			(at 88.9 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "RCUCTE"
 			(at 88.9 58.42 0)
 			(effects
 				(font
@@ -3813,6 +3840,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "LPS22DF"
+			(at 50.8 50.8 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "5"
 			(uuid "fb4cd608-74d0-40bd-a95f-e27e69195b8b")
 			(alternate "SDO")
@@ -3909,6 +3945,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "RCUCTE"
+			(at 88.9 38.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "959df8b5-5000-472b-bd26-cb8d39d28884")
 		)
@@ -3975,6 +4020,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "RCUCTE"
+			(at 180.4129 53.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "cd575b6f-0041-4cb6-b90b-1e9f211a2a3d")
 		)
@@ -4033,6 +4087,15 @@
 			)
 		)
 		(property "Description" "test point"
+			(at 180.34 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "RCUCTE"
 			(at 180.34 63.5 0)
 			(effects
 				(font
@@ -4174,6 +4237,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "CL10B104KB8NNWC"
+			(at 228.6 38.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "29b22ace-6697-4026-8afb-4fbec3aba815")
 		)
@@ -4243,6 +4315,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "RCUCTE"
+			(at 101.6 139.7 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "07693647-93a2-470a-90d2-076b0e71c8ae")
 		)
@@ -4302,6 +4383,15 @@
 			)
 		)
 		(property "Description" "Resistor, small US symbol"
+			(at 50.8 101.6 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" ""
 			(at 50.8 101.6 0)
 			(effects
 				(font
@@ -4439,6 +4529,15 @@
 		)
 		(property "Description" "6 axis IMU with high-g and low-g accelerometer, 16g/80g full scale, 4000 dps full scale gyroscope"
 			(at 76.2 101.854 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "LSM6DSV80X"
+			(at 76.2 116.84 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4619,6 +4718,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "RCUCTE"
+			(at 40.64 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "7c74e3a8-d29d-4669-9ccc-2f7f88be0408")
 		)
@@ -4678,6 +4786,15 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor, small symbol"
+			(at 254 38.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "ZRB18AR61C106ME01L"
 			(at 254 38.1 0)
 			(effects
 				(font
@@ -4756,6 +4873,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "CL10B104KB8NNWC"
+			(at 36.83 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "7856b072-53e3-4436-8cf3-4872d7b64c7e")
 		)
@@ -4826,6 +4952,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "CL10B104KB8NNWC"
+			(at 95.25 101.6 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "f062d300-7232-4e9d-85aa-4a8be13fcda3")
 		)
@@ -4886,6 +5021,15 @@
 		)
 		(property "Description" "High-accuracy, ultra-low-power, 3-axis digital output magnetometer 50 gauss"
 			(at 218.694 38.354 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "IIS2MDC"
+			(at 215.9 53.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4986,6 +5130,15 @@
 			)
 		)
 		(property "Description" "test point"
+			(at 40.64 132.08 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "RCUCTE"
 			(at 40.64 132.08 0)
 			(effects
 				(font
@@ -5185,6 +5338,15 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor, small symbol"
+			(at 82.55 101.6 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "CL10B104KB8NNWC"
 			(at 82.55 101.6 0)
 			(effects
 				(font
@@ -5394,6 +5556,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "RCUCTE"
+			(at 88.9 48.26 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "e4a3fcfe-2224-454e-a5e5-c791232e1036")
 		)
@@ -5593,6 +5764,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" ""
+			(at 76.2 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "c9a27222-2b10-4eb3-aa1f-c650281d31ed")
 		)
@@ -5662,6 +5842,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "RCUCTE"
+			(at 101.6 134.62 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "caea0e10-f92c-4dc3-9aff-e9b7027835f5")
 		)
@@ -5720,6 +5909,15 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor, small symbol"
+			(at 234.95 71.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "CL10A224KB8NNNC"
 			(at 234.95 71.12 0)
 			(effects
 				(font
@@ -5797,6 +5995,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "RCUCTE"
+			(at 40.64 116.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "a35c6266-8713-40d6-aee7-e8b4ceed1631")
 		)
@@ -5855,6 +6062,15 @@
 			)
 		)
 		(property "Description" "test point"
+			(at 88.9 43.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "RCUCTE"
 			(at 88.9 43.18 0)
 			(effects
 				(font
@@ -6054,6 +6270,15 @@
 			)
 		)
 		(property "Description" "Resistor, small US symbol"
+			(at 190.5 38.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" ""
 			(at 190.5 38.1 0)
 			(effects
 				(font
@@ -6264,6 +6489,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "CL10B104KB8NNWC"
+			(at 241.3 38.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "4f374a89-ac03-4103-83fa-2ce7e1dd7b38")
 		)
@@ -6325,6 +6559,15 @@
 			)
 		)
 		(property "Description" "test point"
+			(at 40.64 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "RCUCTE"
 			(at 40.64 121.92 0)
 			(effects
 				(font
@@ -6401,6 +6644,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "RCUCTE"
+			(at 251.46 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "dc380c04-cd91-4a4a-94a1-877fde007673")
 		)
@@ -6460,6 +6712,15 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor, small symbol"
+			(at 60.96 34.29 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "GRM188R61E475KE11D"
 			(at 60.96 34.29 0)
 			(effects
 				(font

@@ -1774,6 +1774,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "RCUCTE"
+			(at 63.5 73.66 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "84e00cde-956e-4b8d-a5c4-bebe547e7785")
 		)
@@ -1900,6 +1909,15 @@
 			)
 		)
 		(property "Description" "test point"
+			(at 63.5 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "RCUCTE"
 			(at 63.5 63.5 0)
 			(effects
 				(font
@@ -2170,6 +2188,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" ""
+			(at 76.2 50.8 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "635160c5-62a2-42d9-a4c7-97a19d6b7e02")
 		)
@@ -2231,6 +2258,15 @@
 			)
 		)
 		(property "Description" "Resistor, small US symbol"
+			(at 88.9 50.8 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" ""
 			(at 88.9 50.8 0)
 			(effects
 				(font
@@ -2302,6 +2338,15 @@
 		)
 		(property "Description" "128Mbit / 16MiB Serial Flash Memory, Standard/Dual/Quad SPI, 2.7-3.6V, SOIC-8"
 			(at 101.6 48.26 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "W25Q128JVS"
+			(at 101.6 76.2 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2398,6 +2443,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "RCUCTE"
+			(at 63.5 83.82 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "d648a82d-9dee-4146-b1ea-c7bf96beb771")
 		)
@@ -2458,6 +2512,15 @@
 			)
 		)
 		(property "Description" "test point"
+			(at 63.5 88.9 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "RCUCTE"
 			(at 63.5 88.9 0)
 			(effects
 				(font
@@ -2532,6 +2595,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" ""
+			(at 82.55 50.8 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "ed596eb1-6c00-493f-9fb8-a2e58c3d6e8b")
 		)
@@ -2594,6 +2666,15 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor, small symbol"
+			(at 114.3 50.8 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "CL10B104KB8NNWC"
 			(at 114.3 50.8 0)
 			(effects
 				(font
@@ -2673,6 +2754,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "RCUCTE"
+			(at 63.5 78.74 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "1e6c381d-dc2f-4a9e-a217-93525a48bb88")
 		)
@@ -2733,6 +2823,15 @@
 			)
 		)
 		(property "Description" "test point"
+			(at 63.5 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "RCUCTE"
 			(at 63.5 68.58 0)
 			(effects
 				(font

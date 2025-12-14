@@ -1005,6 +1005,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" ""
+			(at 214.63 25.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936"
@@ -1061,6 +1070,15 @@
 			)
 		)
 		(property "Description" "Mounting Hole without connection"
+			(at 214.63 38.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" ""
 			(at 214.63 38.1 0)
 			(effects
 				(font
@@ -1189,6 +1207,15 @@
 			)
 		)
 		(property "Description" "Mounting Hole without connection"
+			(at 214.63 31.75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" ""
 			(at 214.63 31.75 0)
 			(effects
 				(font

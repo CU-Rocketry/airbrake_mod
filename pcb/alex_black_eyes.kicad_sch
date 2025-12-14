@@ -621,6 +621,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "B1911USD-20D000114U1930"
+			(at 38.1 40.64 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "536b0497-78c1-49c6-94b3-c7bdde475822")
 		)
@@ -691,6 +700,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" ""
+			(at 38.1 48.26 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "bbe43e92-1798-4a09-aa77-3dc2f31ebddf")
 		)
@@ -753,6 +771,15 @@
 			)
 		)
 		(property "Description" "Resistor, small US symbol"
+			(at 63.5 48.26 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" ""
 			(at 63.5 48.26 0)
 			(effects
 				(font
@@ -833,6 +860,15 @@
 		)
 		(property "Sim.Pins" "1=K 2=A"
 			(at 63.5 40.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "B1911USD-20D000114U1930"
+			(at 63.5 40.64 90)
 			(effects
 				(font
 					(size 1.27 1.27)

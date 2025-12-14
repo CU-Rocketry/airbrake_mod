@@ -3061,6 +3061,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "CEM-1203(42)"
+			(at 66.04 133.35 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "eb0ac8f0-1f68-4a2f-aff2-4c0ab253464a")
 		)
@@ -3122,6 +3131,15 @@
 			)
 		)
 		(property "Description" "Resistor, small US symbol"
+			(at 50.8 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" ""
 			(at 50.8 45.72 0)
 			(effects
 				(font
@@ -3266,6 +3284,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "GSPTS0018"
+			(at 101.6 88.9 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "07e8906f-86cb-43c3-8ae9-6d42cdbd2e5c")
 		)
@@ -3329,6 +3356,15 @@
 		)
 		(property "Description" "Schottky diode, small symbol"
 			(at 60.96 133.35 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "SS12"
+			(at 60.96 133.35 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3538,6 +3574,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" ""
+			(at 50.8 158.75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "56b7d846-424d-48da-99e5-b948a49c031a")
 		)
@@ -3601,6 +3646,15 @@
 		)
 		(property "Description" "RGB LED, red/green/blue/anode"
 			(at 50.8 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "B38G3RGB-10D0003H2U1930"
+			(at 50.8 33.02 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3946,6 +4000,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "GSPTS0018"
+			(at 158.75 88.9 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "e3c9d6db-2634-4c4d-8c5c-3cdb51013ce3")
 		)
@@ -4007,6 +4070,15 @@
 			)
 		)
 		(property "Description" "Resistor, small US symbol"
+			(at 127 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" ""
 			(at 127 45.72 0)
 			(effects
 				(font
@@ -4150,6 +4222,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" ""
+			(at 114.3 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "0b9a89c7-1ce0-4d06-9fbf-be9b8789226a")
 		)
@@ -4211,6 +4292,15 @@
 			)
 		)
 		(property "Description" "Resistor, small US symbol"
+			(at 139.7 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" ""
 			(at 139.7 45.72 0)
 			(effects
 				(font
@@ -4355,6 +4445,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "B38G3RGB-10D0003H2U1930"
+			(at 127 33.02 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "89bb1c18-411c-4580-85c0-a459238c4a0e")
 		)
@@ -4422,6 +4521,15 @@
 		)
 		(property "Description" "8 Position, Through Hole, 2.54 mm Pitch, IP67, Right Angle, 7.3 mm Raised Actuator, DIP Switch"
 			(at 49.53 79.248 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "RDS4-8S-1012-73-RA-254-D-67"
+			(at 50.8 85.09 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4508,6 +4616,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "GSPTS0018"
+			(at 139.7 88.9 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "04ec1fc6-0d91-4f4d-ad85-62f892eaa30d")
 		)
@@ -4578,6 +4695,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "GSPTS0018"
+			(at 120.65 88.9 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "bf93188a-abb2-4a72-b619-f0810a942a4d")
 		)
@@ -4639,6 +4765,15 @@
 		)
 		(property "Description" "Resistor, small US symbol"
 			(at 44.45 152.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" ""
+			(at 44.45 152.4 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4744,6 +4879,15 @@
 			)
 		)
 		(property "Sim.Pins" "1=2 2=3 3=1"
+			(at 60.96 152.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "NTR4003N"
 			(at 60.96 152.4 0)
 			(effects
 				(font
@@ -4890,6 +5034,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" ""
+			(at 38.1 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "c21db110-508f-49cb-8643-6a0a39a71006")
 		)
@@ -4951,6 +5104,15 @@
 			)
 		)
 		(property "Description" "Resistor, small US symbol"
+			(at 63.5 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" ""
 			(at 63.5 45.72 0)
 			(effects
 				(font

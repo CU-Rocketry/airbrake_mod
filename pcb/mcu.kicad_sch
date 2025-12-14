@@ -9404,6 +9404,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "CL10B104KB8NNWC"
+			(at 228.6 31.75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "f36fc2fc-6cbf-4be5-a8d6-c0f70ec4261e")
 		)
@@ -9736,6 +9745,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "CL10B105MO8NNWC"
+			(at 241.3 69.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "24c10789-bac3-4ed9-a659-da3d7f90154d")
 		)
@@ -9872,6 +9890,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "CL10B104KB8NNWC"
+			(at 241.3 31.75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "52d4a986-1cdd-4b24-9b88-5b53112a176f")
 		)
@@ -10000,6 +10027,15 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor, small symbol"
+			(at 203.2 69.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "CL10B105MO8NNWC"
 			(at 203.2 69.85 0)
 			(effects
 				(font
@@ -10275,6 +10311,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "CL10C150JB8NNNC"
+			(at 215.9 111.76 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "af996b42-d2c1-4950-855f-f75bae35da53")
 		)
@@ -10469,6 +10514,15 @@
 			)
 		)
 		(property "Description" "STMicroelectronics Arm Cortex-M7 MCU, 128KB flash, 564KB RAM, 550 MHz, 1.71-3.6V, 82 GPIO, LQFP100"
+			(at 88.9 101.6 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "STM32H730VBT6"
 			(at 88.9 101.6 0)
 			(effects
 				(font
@@ -10931,6 +10985,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "CL10B104KB8NNWC"
+			(at 254 69.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "ccb6d788-9974-41b2-80a5-103242c1858c")
 		)
@@ -10992,6 +11055,15 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor, small symbol"
+			(at 190.5 111.76 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "CL10C150JB8NNNC"
 			(at 190.5 111.76 0)
 			(effects
 				(font
@@ -11201,6 +11273,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "CL10B104KB8NNWC"
+			(at 215.9 31.75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "b654c473-2e2c-496a-bcbf-13bdf8756b7a")
 		)
@@ -11263,6 +11344,15 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor, small symbol"
+			(at 241.3 146.05 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "CL10B104KB8NNWC"
 			(at 241.3 146.05 0)
 			(effects
 				(font
@@ -11341,6 +11431,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "GRM188R61E475KE11D"
+			(at 190.5 31.75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "f48ac074-a917-4de2-bef9-fe686281ea59")
 		)
@@ -11411,6 +11510,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "CL10B104KB8NNWC"
+			(at 254 31.75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "4ac88f40-efbf-44f3-aa26-704ce0f809c2")
 		)
@@ -11471,6 +11579,15 @@
 			)
 		)
 		(property "Description" "Push button switch, generic, two pins"
+			(at 195.58 146.05 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "GSPTS0018"
 			(at 195.58 146.05 0)
 			(effects
 				(font
@@ -11548,6 +11665,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "GRT188R61H225KE13D"
+			(at 38.1 154.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "a81566c9-b77f-474a-b1a3-d8fc291e3f3c")
 		)
@@ -11608,6 +11734,15 @@
 		)
 		(property "Description" "Ferrite bead, small symbol"
 			(at 196.85 66.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "BLM18AG601SN1D"
+			(at 196.85 66.04 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11816,6 +11951,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" ""
+			(at 203.2 151.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "cfe4cb3f-cd3d-418f-84cb-bcdcaf8a2090")
 		)
@@ -11886,6 +12030,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "GSPTS0018"
+			(at 254 146.05 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "518683b0-36f0-4c1b-85d4-2a715e6e9e7c")
 		)
@@ -11945,6 +12098,15 @@
 			)
 		)
 		(property "Description" "Four pin crystal, GND on pins 2 and 4"
+			(at 203.2 107.95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "ECS-160-12-33B2Q-JES-TR3"
 			(at 203.2 107.95 0)
 			(effects
 				(font
@@ -12159,6 +12321,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "GRT188R61H225KE13D"
+			(at 50.8 154.94 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "167195f7-04cc-4889-a52d-026b21599cba")
 		)
@@ -12358,6 +12529,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" ""
+			(at 40.64 48.26 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "019e59c5-10aa-4514-b11d-68a3c628c528")
 		)
@@ -12428,6 +12608,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "CL10B104KB8NNWC"
+			(at 215.9 69.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "0e4bd05f-d18f-41fb-b7b2-96e51288bc9d")
 		)
@@ -12490,6 +12679,15 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor, small symbol"
+			(at 203.2 31.75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "CL10B104KB8NNWC"
 			(at 203.2 31.75 0)
 			(effects
 				(font

@@ -2736,6 +2736,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" ""
+			(at 88.9 130.81 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "4a7639dc-148d-42c7-8303-c60908fb7a45")
 		)
@@ -2796,6 +2805,15 @@
 		)
 		(property "Description" "Resistor, small US symbol"
 			(at 60.96 43.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" ""
+			(at 60.96 43.18 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2948,6 +2966,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "B1911USD-20D000114U1930"
+			(at 88.9 123.19 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "7174a99f-9444-4ab9-91be-88bbca7f7d4e")
 		)
@@ -2981,7 +3008,7 @@
 				)
 			)
 		)
-		(property "Value" "Same Sky UJ20-C-H-G-SMT-P16-TR"
+		(property "Value" "UJ20-C-H-G-SMT-P16-TR"
 			(at 35.56 33.02 0)
 			(effects
 				(font
@@ -3008,6 +3035,15 @@
 			)
 		)
 		(property "Description" "USB 2.0-only 16P Type-C Receptacle connector"
+			(at 35.56 53.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "UJ20-C-H-G-SMT-P16-TR"
 			(at 35.56 53.34 0)
 			(effects
 				(font
@@ -3260,6 +3296,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" ""
+			(at 60.96 45.72 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "c31f7c3d-0021-4249-8668-0b8f67c1e91f")
 		)
@@ -3322,6 +3367,15 @@
 			)
 		)
 		(property "Description" "Resistor, small US symbol"
+			(at 25.4 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" ""
 			(at 25.4 121.92 0)
 			(effects
 				(font
@@ -3395,6 +3449,15 @@
 			)
 		)
 		(property "Description" "Very low capacitance ESD protection diode, 2 data-line, SOT-23-6"
+			(at 88.9 53.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "USBLC6-2SC6"
 			(at 88.9 53.34 0)
 			(effects
 				(font
@@ -3609,6 +3672,15 @@
 			)
 		)
 		(property "Description" "Resistor, small US symbol"
+			(at 25.4 132.08 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" ""
 			(at 25.4 132.08 0)
 			(effects
 				(font
