@@ -3007,7 +3007,7 @@
 				(hide yes)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "RC0603JR-07150RL"
 			(at 116.84 66.04 0)
 			(effects
 				(font

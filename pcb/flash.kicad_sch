@@ -2188,7 +2188,7 @@
 				(hide yes)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "RC0603FR-0747KL"
 			(at 76.2 50.8 0)
 			(effects
 				(font
@@ -2266,7 +2266,7 @@
 				(hide yes)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "RC0603FR-0747KL"
 			(at 88.9 50.8 0)
 			(effects
 				(font
@@ -2595,7 +2595,7 @@
 				(hide yes)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "RC0603FR-0747KL"
 			(at 82.55 50.8 0)
 			(effects
 				(font

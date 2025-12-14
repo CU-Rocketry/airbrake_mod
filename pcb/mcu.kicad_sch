@@ -11951,7 +11951,7 @@
 				(hide yes)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "RC0603FR-0747KL"
 			(at 203.2 151.13 0)
 			(effects
 				(font
@@ -12529,7 +12529,7 @@
 				(hide yes)
 			)
 		)
-		(property "MPN" ""
+		(property "MPN" "RC0603JR-1347RL"
 			(at 40.64 48.26 90)
 			(effects
 				(font
