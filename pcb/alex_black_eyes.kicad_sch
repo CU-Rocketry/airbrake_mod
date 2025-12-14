@@ -435,26 +435,6 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "V_{f}=2V"
-		(exclude_from_sim no)
-		(at 31.649 40.9304 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "048e8866-d520-4072-ba0b-04a46086c25c")
-	)
-	(text "10 mA"
-		(exclude_from_sim no)
-		(at 52.07 37.338 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "87e9b2c4-60fc-4ebe-9fec-fdd4c8cca6ad")
-	)
 	(text "10 mA"
 		(exclude_from_sim no)
 		(at 86.106 40.894 0)
@@ -467,7 +447,7 @@
 	)
 	(text "V_{f}=2V"
 		(exclude_from_sim no)
-		(at 57.049 40.9304 0)
+		(at 85.852 38.354 0)
 		(effects
 			(font
 				(size 1.27 1.27)

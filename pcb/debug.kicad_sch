@@ -1925,13 +1925,24 @@
 	)
 	(text "order adjusted to help with layout"
 		(exclude_from_sim no)
-		(at 71.12 85.852 0)
+		(at 69.088 84.836 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 		)
 		(uuid "016c419f-ff78-494b-83f9-628ce1af0f23")
+	)
+	(text "see UM2910\nfrom the debugger's perspective:\nT_VCP_RX is output\nT_VCP_TX is input"
+		(exclude_from_sim no)
+		(at 156.464 45.72 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "2fa4ecb6-b2ff-4674-a159-a3d9ad88442c")
 	)
 	(text "for STLINK-V3MINIE"
 		(exclude_from_sim no)
@@ -1963,9 +1974,9 @@
 		)
 		(uuid "84e6d230-e78f-4b0e-b66b-a43e0adfb273")
 	)
-	(text "CHECK: UM2910 pg 11"
+	(text "Reserved (UM2910 pg 11)"
 		(exclude_from_sim no)
-		(at 88.392 48.26 0)
+		(at 87.376 48.26 0)
 		(effects
 			(font
 				(size 1.27 1.27)
