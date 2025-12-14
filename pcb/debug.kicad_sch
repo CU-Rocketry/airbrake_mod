@@ -1973,6 +1973,16 @@
 		)
 		(uuid "89bd086a-a5c4-487b-985c-c7926fb5d004")
 	)
+	(text "can we make this 150"
+		(exclude_from_sim no)
+		(at 135.636 66.04 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "a32a8fd5-1db1-4b47-91e6-9878ed9b809c")
+	)
 	(text "Pads to be placed in square configuration"
 		(exclude_from_sim no)
 		(at 47.752 168.656 0)
