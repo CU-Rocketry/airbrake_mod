@@ -2255,7 +2255,7 @@
 		)
 		(uuid "70684256-eaf9-4b9f-87a7-76e5d514c2fe")
 	)
-	(text "red 2V\ngreen/blue 3.3V"
+	(text "red 2V\ngreen/blue 3V"
 		(exclude_from_sim no)
 		(at 79.502 33.02 0)
 		(effects
@@ -2265,7 +2265,7 @@
 		)
 		(uuid "7103ad69-e6a8-4f52-89cb-93a2210c5167")
 	)
-	(text "red 2V\ngreen/blue 3.3V"
+	(text "red 2V\ngreen/blue 3V"
 		(exclude_from_sim no)
 		(at 155.702 33.02 0)
 		(effects
@@ -3103,7 +3103,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "50"
+		(property "Value" "47"
 			(at 45.212 46.99 0)
 			(effects
 				(font
@@ -4042,7 +4042,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "50"
+		(property "Value" "47"
 			(at 121.412 46.99 0)
 			(effects
 				(font
@@ -4264,7 +4264,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "50"
+		(property "Value" "47"
 			(at 134.112 46.99 0)
 			(effects
 				(font
@@ -5076,7 +5076,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "50"
+		(property "Value" "47"
 			(at 57.912 46.99 0)
 			(effects
 				(font
