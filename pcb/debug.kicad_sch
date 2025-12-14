@@ -1973,7 +1973,7 @@
 		)
 		(uuid "89bd086a-a5c4-487b-985c-c7926fb5d004")
 	)
-	(text "can we make this 150"
+	(text "meant to be 100\ncan replace from SMD\nsampler book if needed"
 		(exclude_from_sim no)
 		(at 135.636 66.04 0)
 		(effects
@@ -2971,7 +2971,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "100"
+		(property "Value" "150"
 			(at 119.38 67.3099 0)
 			(effects
 				(font
