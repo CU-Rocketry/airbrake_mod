@@ -2309,7 +2309,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "W25Q128JVS"
+		(property "Value" "W25Q128JVSIQ"
 			(at 113.03 77.4699 0)
 			(effects
 				(font
@@ -2345,7 +2345,7 @@
 				(hide yes)
 			)
 		)
-		(property "MPN" "W25Q128JVS"
+		(property "MPN" "W25Q128JVSIQ"
 			(at 101.6 76.2 0)
 			(effects
 				(font

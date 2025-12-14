@@ -1905,6 +1905,16 @@
 		)
 		(uuid "1ac67072-5bb4-4dde-8ef2-811e20efbc54")
 	)
+	(text "see for information on baro\nhttps://github.com/kriswiner/ILPS22QS/issues/2"
+		(exclude_from_sim no)
+		(at 44.704 16.002 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "4e5f495a-2a5d-42e5-b6a3-47e0c4b4c6a3")
+	)
 	(text "internal pull down on INT_DRDY"
 		(exclude_from_sim no)
 		(at 81.026 62.484 0)

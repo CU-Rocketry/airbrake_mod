@@ -3139,7 +3139,7 @@
 				(hide yes)
 			)
 		)
-		(property "MPN" "RC0603JR-1347RL"
+		(property "MPN" "RC0603FR-0747RL"
 			(at 50.8 45.72 0)
 			(effects
 				(font
@@ -3284,7 +3284,7 @@
 				(hide yes)
 			)
 		)
-		(property "MPN" "GSPTS0018"
+		(property "MPN" "SKRPADE010"
 			(at 101.6 88.9 90)
 			(effects
 				(font
@@ -4000,7 +4000,7 @@
 				(hide yes)
 			)
 		)
-		(property "MPN" "GSPTS0018"
+		(property "MPN" "SKRPADE010"
 			(at 158.75 88.9 90)
 			(effects
 				(font
@@ -4078,7 +4078,7 @@
 				(hide yes)
 			)
 		)
-		(property "MPN" "RC0603JR-1347RL"
+		(property "MPN" "RC0603FR-0747RL"
 			(at 127 45.72 0)
 			(effects
 				(font
@@ -4300,7 +4300,7 @@
 				(hide yes)
 			)
 		)
-		(property "MPN" "RC0603JR-1347RL"
+		(property "MPN" "RC0603FR-0747RL"
 			(at 139.7 45.72 0)
 			(effects
 				(font
@@ -4616,7 +4616,7 @@
 				(hide yes)
 			)
 		)
-		(property "MPN" "GSPTS0018"
+		(property "MPN" "SKRPADE010"
 			(at 139.7 88.9 90)
 			(effects
 				(font
@@ -4695,7 +4695,7 @@
 				(hide yes)
 			)
 		)
-		(property "MPN" "GSPTS0018"
+		(property "MPN" "SKRPADE010"
 			(at 120.65 88.9 90)
 			(effects
 				(font
@@ -5112,7 +5112,7 @@
 				(hide yes)
 			)
 		)
-		(property "MPN" "RC0603JR-1347RL"
+		(property "MPN" "RC0603FR-0747RL"
 			(at 63.5 45.72 0)
 			(effects
 				(font
