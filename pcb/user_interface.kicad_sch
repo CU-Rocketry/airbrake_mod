@@ -4177,7 +4177,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "935236ec-bc02-4a3c-b0c1-205cca652b93")
-		(property "Reference" "R35"
+		(property "Reference" "R36"
 			(at 108.712 52.07 0)
 			(effects
 				(font
@@ -4240,7 +4240,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
-					(reference "R35")
+					(reference "R36")
 					(unit 1)
 				)
 			)
@@ -4333,7 +4333,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "9ebeae2b-541c-44a4-8e99-a51245166749")
-		(property "Reference" "R36"
+		(property "Reference" "R35"
 			(at 108.712 44.45 0)
 			(effects
 				(font
@@ -4396,7 +4396,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
-					(reference "R36")
+					(reference "R35")
 					(unit 1)
 				)
 			)
@@ -5067,7 +5067,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "ded20e14-90ff-4d4c-b055-499434e9e15f")
-		(property "Reference" "R29"
+		(property "Reference" "R30"
 			(at 32.512 52.07 0)
 			(effects
 				(font
@@ -5130,7 +5130,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
-					(reference "R29")
+					(reference "R30")
 					(unit 1)
 				)
 			)
@@ -5223,7 +5223,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "eb4d415e-7d36-4700-94bf-67dc9bc050cc")
-		(property "Reference" "R30"
+		(property "Reference" "R29"
 			(at 32.512 44.45 0)
 			(effects
 				(font
@@ -5286,7 +5286,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
-					(reference "R30")
+					(reference "R29")
 					(unit 1)
 				)
 			)
