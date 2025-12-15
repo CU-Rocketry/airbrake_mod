@@ -2101,7 +2101,7 @@
 	)
 	(text "600R - 5 mA\n300R - 10 mA\n450R - 6.667 mA"
 		(exclude_from_sim no)
-		(at 103.124 115.316 0)
+		(at 66.548 129.54 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2951,7 +2951,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "B1911USD"
+		(property "Value" "FC-1608SXK-620H08"
 			(at 91.44 116.7764 90)
 			(effects
 				(font
@@ -2996,7 +2996,7 @@
 				(hide yes)
 			)
 		)
-		(property "MPN" "B1911USD-20D000114U1930"
+		(property "MPN" "FC-1608SXK-620H08"
 			(at 88.9 115.57 90)
 			(effects
 				(font

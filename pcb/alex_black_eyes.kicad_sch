@@ -759,7 +759,7 @@
 	)
 	(text "10 mA"
 		(exclude_from_sim no)
-		(at 86.106 40.894 0)
+		(at 108.966 42.672 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -769,7 +769,7 @@
 	)
 	(text "V_{f}=2V"
 		(exclude_from_sim no)
-		(at 85.852 38.354 0)
+		(at 108.712 40.132 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -789,7 +789,7 @@
 	)
 	(wire
 		(pts
-			(xy 63.5 50.8) (xy 63.5 53.34)
+			(xy 76.2 50.8) (xy 76.2 53.34)
 		)
 		(stroke
 			(width 0)
@@ -799,7 +799,7 @@
 	)
 	(wire
 		(pts
-			(xy 63.5 35.56) (xy 63.5 38.1)
+			(xy 76.2 35.56) (xy 76.2 38.1)
 		)
 		(stroke
 			(width 0)
@@ -819,7 +819,7 @@
 	)
 	(wire
 		(pts
-			(xy 63.5 43.18) (xy 63.5 45.72)
+			(xy 76.2 43.18) (xy 76.2 45.72)
 		)
 		(stroke
 			(width 0)
@@ -850,7 +850,7 @@
 	)
 	(hierarchical_label "EYE_1"
 		(shape input)
-		(at 63.5 35.56 90)
+		(at 76.2 35.56 90)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -942,7 +942,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "B1911USD"
+		(property "Value" "FC-1608SXK-620H08"
 			(at 40.64 41.8464 90)
 			(effects
 				(font
@@ -987,7 +987,7 @@
 				(hide yes)
 			)
 		)
-		(property "MPN" "B1911USD-20D000114U1930"
+		(property "MPN" "FC-1608SXK-620H08"
 			(at 38.1 40.64 90)
 			(effects
 				(font
@@ -1092,7 +1092,7 @@
 	)
 	(symbol
 		(lib_id "Device:R_Small_US")
-		(at 63.5 48.26 0)
+		(at 76.2 48.26 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1101,7 +1101,7 @@
 		(fields_autoplaced yes)
 		(uuid "5265c293-29ef-44be-afaa-0322b8bdd8da")
 		(property "Reference" "R44"
-			(at 66.04 46.9899 0)
+			(at 78.74 46.9899 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1110,7 +1110,7 @@
 			)
 		)
 		(property "Value" "150"
-			(at 66.04 49.5299 0)
+			(at 78.74 49.5299 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1119,7 +1119,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 63.5 48.26 0)
+			(at 76.2 48.26 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1128,7 +1128,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 63.5 48.26 0)
+			(at 76.2 48.26 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1137,7 +1137,7 @@
 			)
 		)
 		(property "Description" "Resistor, small US symbol"
-			(at 63.5 48.26 0)
+			(at 76.2 48.26 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1146,7 +1146,7 @@
 			)
 		)
 		(property "MPN" "RC0603JR-07150RL"
-			(at 63.5 48.26 0)
+			(at 76.2 48.26 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1171,7 +1171,7 @@
 	)
 	(symbol
 		(lib_id "Device:LED_Small_Filled")
-		(at 63.5 40.64 90)
+		(at 76.2 40.64 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1180,7 +1180,7 @@
 		(fields_autoplaced yes)
 		(uuid "753a8bcb-4a9f-436d-82c1-fcf033450607")
 		(property "Reference" "D9"
-			(at 66.04 39.3064 90)
+			(at 78.74 39.3064 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1188,8 +1188,8 @@
 				(justify right)
 			)
 		)
-		(property "Value" "B1911USD"
-			(at 66.04 41.8464 90)
+		(property "Value" "FC-1608SXK-620H08"
+			(at 78.74 41.8464 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1198,7 +1198,7 @@
 			)
 		)
 		(property "Footprint" "LED_SMD:LED_0603_1608Metric"
-			(at 63.5 40.64 90)
+			(at 76.2 40.64 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1207,7 +1207,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 63.5 40.64 90)
+			(at 76.2 40.64 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1216,7 +1216,7 @@
 			)
 		)
 		(property "Description" "Light emitting diode, small symbol, filled shape"
-			(at 63.5 40.64 0)
+			(at 76.2 40.64 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1225,7 +1225,7 @@
 			)
 		)
 		(property "Sim.Pins" "1=K 2=A"
-			(at 63.5 40.64 0)
+			(at 76.2 40.64 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1233,8 +1233,8 @@
 				(hide yes)
 			)
 		)
-		(property "MPN" "B1911USD-20D000114U1930"
-			(at 63.5 40.64 90)
+		(property "MPN" "FC-1608SXK-620H08"
+			(at 76.2 40.64 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1325,7 +1325,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 63.5 53.34 0)
+		(at 76.2 53.34 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1334,7 +1334,7 @@
 		(fields_autoplaced yes)
 		(uuid "d5b43e03-f72a-4f2c-8314-824adc323099")
 		(property "Reference" "#PWR095"
-			(at 63.5 59.69 0)
+			(at 76.2 59.69 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1343,7 +1343,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 63.5 58.42 0)
+			(at 76.2 58.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1351,7 +1351,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 63.5 53.34 0)
+			(at 76.2 53.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1360,7 +1360,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 63.5 53.34 0)
+			(at 76.2 53.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1369,7 +1369,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 63.5 53.34 0)
+			(at 76.2 53.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)
