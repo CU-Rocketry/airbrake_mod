@@ -3439,7 +3439,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "64a08c96-4a53-492b-96aa-83dd093a78a7")
-		(property "Reference" "R41"
+		(property "Reference" "R20"
 			(at 91.44 129.5399 0)
 			(effects
 				(font
@@ -3502,7 +3502,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/ca842921-3489-4085-9fee-8380a44600c3"
-					(reference "R41")
+					(reference "R20")
 					(unit 1)
 				)
 			)
@@ -3518,7 +3518,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "73c9ea0c-88c9-4c31-a8dc-1f01a87bf6db")
-		(property "Reference" "R42"
+		(property "Reference" "R21"
 			(at 91.44 137.1599 0)
 			(effects
 				(font
@@ -3581,7 +3581,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/ca842921-3489-4085-9fee-8380a44600c3"
-					(reference "R42")
+					(reference "R21")
 					(unit 1)
 				)
 			)
