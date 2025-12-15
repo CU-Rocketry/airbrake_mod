@@ -9295,7 +9295,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "0b0b2b1f-9f15-413b-bbba-0b685f247341")
-		(property "Reference" "#G1"
+		(property "Reference" "#G2"
 			(at 279.4 167.002 0)
 			(effects
 				(font
@@ -9343,7 +9343,7 @@
 		(instances
 			(project ""
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/2752e4f7-ef20-4182-94b5-1761925ce585"
-					(reference "#G1")
+					(reference "#G2")
 					(unit 1)
 				)
 			)

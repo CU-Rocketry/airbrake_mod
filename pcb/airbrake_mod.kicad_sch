@@ -1106,7 +1106,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "c16839eb-4ab0-47b2-9408-dda026d6e12a")
-		(property "Reference" "#G2"
+		(property "Reference" "#G1"
 			(at 279.4 167.002 0)
 			(effects
 				(font
@@ -1154,7 +1154,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936"
-					(reference "#G2")
+					(reference "#G1")
 					(unit 1)
 				)
 			)

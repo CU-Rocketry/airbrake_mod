@@ -3094,7 +3094,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "1531c998-2ffc-494a-b8dc-444953048b55")
-		(property "Reference" "R29"
+		(property "Reference" "R32"
 			(at 45.212 44.45 0)
 			(effects
 				(font
@@ -3157,7 +3157,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
-					(reference "R29")
+					(reference "R32")
 					(unit 1)
 				)
 			)
@@ -3529,7 +3529,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "3d1db5b8-30c6-4d68-8976-7a993f5655fc")
-		(property "Reference" "R30"
+		(property "Reference" "R33"
 			(at 53.34 170.1799 0)
 			(effects
 				(font
@@ -3592,7 +3592,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
-					(reference "R30")
+					(reference "R33")
 					(unit 1)
 				)
 			)
@@ -3870,7 +3870,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "7f4ba854-e411-4d9f-bdba-8aa248cd022f")
-		(property "Reference" "D10"
+		(property "Reference" "D3"
 			(at 59.69 31.7499 90)
 			(effects
 				(font
@@ -3939,7 +3939,7 @@
 		(instances
 			(project ""
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
-					(reference "D10")
+					(reference "D3")
 					(unit 1)
 				)
 			)
@@ -4033,7 +4033,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "82d0055a-5037-4b9f-99d5-6431e9776fec")
-		(property "Reference" "R33"
+		(property "Reference" "R37"
 			(at 121.412 44.45 0)
 			(effects
 				(font
@@ -4096,7 +4096,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
-					(reference "R33")
+					(reference "R37")
 					(unit 1)
 				)
 			)
@@ -4170,15 +4170,15 @@
 	)
 	(symbol
 		(lib_id "Device:R_Small_US")
-		(at 114.3 45.72 0)
+		(at 114.3 53.34 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(uuid "935236ec-bc02-4a3c-b0c1-205cca652b93")
-		(property "Reference" "R32"
-			(at 108.712 44.45 0)
+		(property "Reference" "R35"
+			(at 108.712 52.07 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4187,7 +4187,7 @@
 			)
 		)
 		(property "Value" "150"
-			(at 108.712 46.99 0)
+			(at 108.712 54.61 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4196,7 +4196,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 114.3 45.72 0)
+			(at 114.3 53.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4205,7 +4205,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 114.3 45.72 0)
+			(at 114.3 53.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4214,7 +4214,7 @@
 			)
 		)
 		(property "Description" "Resistor, small US symbol"
-			(at 114.3 45.72 0)
+			(at 114.3 53.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4223,7 +4223,7 @@
 			)
 		)
 		(property "MPN" "RC0603JR-07150RL"
-			(at 114.3 45.72 0)
+			(at 114.3 53.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4240,7 +4240,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
-					(reference "R32")
+					(reference "R35")
 					(unit 1)
 				)
 			)
@@ -4255,7 +4255,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "98fde326-0067-4528-b85d-3509f6d73397")
-		(property "Reference" "R34"
+		(property "Reference" "R38"
 			(at 134.112 44.45 0)
 			(effects
 				(font
@@ -4318,7 +4318,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
-					(reference "R34")
+					(reference "R38")
 					(unit 1)
 				)
 			)
@@ -4326,15 +4326,15 @@
 	)
 	(symbol
 		(lib_id "Device:R_Small_US")
-		(at 114.3 53.34 0)
+		(at 114.3 45.72 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(uuid "9ebeae2b-541c-44a4-8e99-a51245166749")
-		(property "Reference" "R44"
-			(at 108.712 52.07 0)
+		(property "Reference" "R36"
+			(at 108.712 44.45 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4343,7 +4343,7 @@
 			)
 		)
 		(property "Value" "150"
-			(at 108.712 54.61 0)
+			(at 108.712 46.99 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4352,7 +4352,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 114.3 53.34 0)
+			(at 114.3 45.72 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4361,7 +4361,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 114.3 53.34 0)
+			(at 114.3 45.72 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4370,7 +4370,7 @@
 			)
 		)
 		(property "Description" "Resistor, small US symbol"
-			(at 114.3 53.34 0)
+			(at 114.3 45.72 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4379,7 +4379,7 @@
 			)
 		)
 		(property "MPN" "RC0603JR-07150RL"
-			(at 114.3 53.34 0)
+			(at 114.3 45.72 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4396,7 +4396,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
-					(reference "R44")
+					(reference "R36")
 					(unit 1)
 				)
 			)
@@ -4643,7 +4643,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "a97ce516-88d4-48da-9d4d-15da6cf2f058")
-		(property "Reference" "D3"
+		(property "Reference" "D5"
 			(at 135.89 31.7499 90)
 			(effects
 				(font
@@ -4712,7 +4712,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
-					(reference "D3")
+					(reference "D5")
 					(unit 1)
 				)
 			)
@@ -4807,7 +4807,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "b36f3fb2-7e2f-4206-991c-373f25abadde")
-		(property "Reference" "R28"
+		(property "Reference" "R31"
 			(at 44.45 158.75 90)
 			(effects
 				(font
@@ -4868,7 +4868,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
-					(reference "R28")
+					(reference "R31")
 					(unit 1)
 				)
 			)
@@ -5060,15 +5060,15 @@
 	)
 	(symbol
 		(lib_id "Device:R_Small_US")
-		(at 38.1 45.72 0)
+		(at 38.1 53.34 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(uuid "ded20e14-90ff-4d4c-b055-499434e9e15f")
-		(property "Reference" "R27"
-			(at 32.512 44.45 0)
+		(property "Reference" "R29"
+			(at 32.512 52.07 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5077,7 +5077,7 @@
 			)
 		)
 		(property "Value" "150"
-			(at 32.512 46.99 0)
+			(at 32.512 54.61 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5086,7 +5086,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 38.1 45.72 0)
+			(at 38.1 53.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5095,7 +5095,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 38.1 45.72 0)
+			(at 38.1 53.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5104,7 +5104,7 @@
 			)
 		)
 		(property "Description" "Resistor, small US symbol"
-			(at 38.1 45.72 0)
+			(at 38.1 53.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5113,7 +5113,7 @@
 			)
 		)
 		(property "MPN" "RC0603JR-07150RL"
-			(at 38.1 45.72 0)
+			(at 38.1 53.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5130,7 +5130,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
-					(reference "R27")
+					(reference "R29")
 					(unit 1)
 				)
 			)
@@ -5145,7 +5145,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "e4b96078-7372-42e3-8a1c-ff0c2c3f94a5")
-		(property "Reference" "R31"
+		(property "Reference" "R34"
 			(at 57.912 44.45 0)
 			(effects
 				(font
@@ -5208,7 +5208,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
-					(reference "R31")
+					(reference "R34")
 					(unit 1)
 				)
 			)
@@ -5216,15 +5216,15 @@
 	)
 	(symbol
 		(lib_id "Device:R_Small_US")
-		(at 38.1 53.34 0)
+		(at 38.1 45.72 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(uuid "eb4d415e-7d36-4700-94bf-67dc9bc050cc")
-		(property "Reference" "R43"
-			(at 32.512 52.07 0)
+		(property "Reference" "R30"
+			(at 32.512 44.45 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5233,7 +5233,7 @@
 			)
 		)
 		(property "Value" "150"
-			(at 32.512 54.61 0)
+			(at 32.512 46.99 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5242,7 +5242,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 38.1 53.34 0)
+			(at 38.1 45.72 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5251,7 +5251,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 38.1 53.34 0)
+			(at 38.1 45.72 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5260,7 +5260,7 @@
 			)
 		)
 		(property "Description" "Resistor, small US symbol"
-			(at 38.1 53.34 0)
+			(at 38.1 45.72 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5269,7 +5269,7 @@
 			)
 		)
 		(property "MPN" "RC0603JR-07150RL"
-			(at 38.1 53.34 0)
+			(at 38.1 45.72 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5286,7 +5286,7 @@
 		(instances
 			(project "airbrake_mod"
 				(path "/1f4fd4ed-9886-4375-a5ac-dc32d5760936/0a32b07f-7988-40ae-8006-b298a5ae2a50"
-					(reference "R43")
+					(reference "R30")
 					(unit 1)
 				)
 			)
