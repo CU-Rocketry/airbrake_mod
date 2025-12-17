@@ -1779,69 +1779,9 @@
 				(justify right)
 			)
 		)
-		(pin "TIM3_CH3" output
-			(at 63.5 121.92 180)
-			(uuid "c162c9f7-bd0f-475b-9ccd-ca2609825f03")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(pin "TIM3_CH1" output
-			(at 63.5 116.84 180)
-			(uuid "06d67283-e04b-4abb-a276-32e407340958")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(pin "TIM3_CH2" output
-			(at 63.5 119.38 180)
-			(uuid "bd58043c-f705-4d19-be18-21d479cc1fc0")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
 		(pin "BUZZER" output
 			(at 63.5 137.16 180)
 			(uuid "fe1b9402-281f-45b8-a552-2a3698703d8a")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(pin "TIM4_CH2" output
-			(at 63.5 129.54 180)
-			(uuid "648da8a2-52c9-4f70-8a1e-f298e72f8f47")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(pin "TIM4_CH3" output
-			(at 63.5 132.08 180)
-			(uuid "07d3a92b-16db-472c-8c20-b40f89c96205")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(pin "TIM4_CH1" output
-			(at 63.5 127 180)
-			(uuid "952ba50e-fade-452f-8e33-5d65a5fb2b88")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1997,6 +1937,66 @@
 					(size 1.27 1.27)
 				)
 				(justify right)
+			)
+		)
+		(pin "LED0_R" output
+			(at 63.5 116.84 180)
+			(uuid "ecdffa01-afff-4121-a9e7-335147ecd030")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "LED0_B" output
+			(at 63.5 121.92 180)
+			(uuid "640ce1a1-7c15-46d3-8539-d7a02d2f3242")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "LED1_G" output
+			(at 63.5 129.54 180)
+			(uuid "b56dce31-1dba-4692-9558-d2bdc92cf480")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "LED1_R" output
+			(at 63.5 127 180)
+			(uuid "ceead91d-004a-4954-a807-214ac80677de")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "LED0_G" output
+			(at 63.5 119.38 180)
+			(uuid "9132ef49-a78a-4eab-9568-414b6e5ff78b")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "LED1_B" output
+			(at 63.5 132.08 180)
+			(uuid "df7972f7-014e-452e-8056-4a02e79becda")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
 			)
 		)
 		(instances

@@ -6328,7 +6328,7 @@
 		)
 		(uuid "ee01c8fd-68d9-461c-8b5f-98c05b5cddf5")
 	)
-	(hierarchical_label "TIM4_CH2"
+	(hierarchical_label "LED1_G"
 		(shape output)
 		(at 38.1 137.16 180)
 		(effects
@@ -6405,7 +6405,7 @@
 		)
 		(uuid "20461947-d122-4493-8976-1af7ffd8a8fd")
 	)
-	(hierarchical_label "TIM3_CH1"
+	(hierarchical_label "LED0_R"
 		(shape output)
 		(at 139.7 139.7 0)
 		(effects
@@ -6427,7 +6427,7 @@
 		)
 		(uuid "2d5511ae-7dda-409d-985d-169fa6965403")
 	)
-	(hierarchical_label "TIM3_CH3"
+	(hierarchical_label "LED0_B"
 		(shape output)
 		(at 139.7 144.78 0)
 		(effects
@@ -6548,7 +6548,7 @@
 		)
 		(uuid "64ab1e39-0715-48ff-87a2-fc045c6fef69")
 	)
-	(hierarchical_label "TIM4_CH1"
+	(hierarchical_label "LED1_R"
 		(shape output)
 		(at 38.1 134.62 180)
 		(effects
@@ -6768,7 +6768,7 @@
 		)
 		(uuid "b56baf54-1463-4a6e-b882-cfce230970bd")
 	)
-	(hierarchical_label "TIM3_CH2"
+	(hierarchical_label "LED0_G"
 		(shape output)
 		(at 139.7 142.24 0)
 		(effects
@@ -6867,7 +6867,7 @@
 		)
 		(uuid "df0ab43e-b314-4dae-ad41-7ffbcf21fc40")
 	)
-	(hierarchical_label "TIM4_CH3"
+	(hierarchical_label "LED1_B"
 		(shape output)
 		(at 38.1 139.7 180)
 		(effects
