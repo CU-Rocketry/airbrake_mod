@@ -53029,24 +53029,106 @@
 		(uuid "fbc0f935-570c-42d7-b37f-93321fe2cd17")
 	)
 	(gr_line
-		(start 100.5 99.5)
-		(end 99.5 100.5)
+		(start 100 84)
+		(end 100 98.5)
 		(stroke
-			(width 0.1)
+			(width 0.15)
+			(type dash_dot)
+		)
+		(layer "User.1")
+		(uuid "0c4dcabb-a547-4ad5-9102-e0e645f12f44")
+	)
+	(gr_line
+		(start 100 105)
+		(end 100 132.5)
+		(stroke
+			(width 0.15)
+			(type dash_dot)
+		)
+		(layer "User.1")
+		(uuid "0f525cc8-0952-409f-87af-dfbba43261b8")
+	)
+	(gr_circle
+		(center 112 94)
+		(end 112.25 94)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(fill yes)
+		(layer "User.1")
+		(uuid "18d36a2e-e8c2-4a9a-b63f-8a24e66c54c6")
+	)
+	(gr_line
+		(start 119 93.5)
+		(end 120 94.5)
+		(stroke
+			(width 0.15)
+			(type default)
+		)
+		(layer "User.1")
+		(uuid "4017fc9f-fddd-4b24-9c07-4cf754d8cc42")
+	)
+	(gr_line
+		(start 98.5 100)
+		(end 89 100)
+		(stroke
+			(width 0.15)
+			(type dash_dot)
+		)
+		(layer "User.1")
+		(uuid "54d26b1d-58bc-43c5-afba-a2556b965434")
+	)
+	(gr_line
+		(start 101 100)
+		(end 99 100)
+		(stroke
+			(width 0.15)
 			(type default)
 		)
 		(layer "User.1")
 		(uuid "85269b4d-193a-430b-8ab6-fd98423122a9")
 	)
 	(gr_line
-		(start 99.5 99.5)
-		(end 100.5 100.5)
+		(start 100 99)
+		(end 100 101)
 		(stroke
-			(width 0.1)
+			(width 0.15)
 			(type default)
 		)
 		(layer "User.1")
 		(uuid "a0ee2894-d044-4089-8634-f4eefe9ff07d")
+	)
+	(gr_line
+		(start 120 93.5)
+		(end 119 94.5)
+		(stroke
+			(width 0.15)
+			(type default)
+		)
+		(layer "User.1")
+		(uuid "b16e9308-5e3f-45c3-a5dc-524941bc2c6b")
+	)
+	(gr_line
+		(start 109 100)
+		(end 101.5 100)
+		(stroke
+			(width 0.15)
+			(type dash_dot)
+		)
+		(layer "User.1")
+		(uuid "c3a3fab9-f07e-44cc-9cfc-10e85f35e6f9")
+	)
+	(gr_circle
+		(center 112 94)
+		(end 112 94.5)
+		(stroke
+			(width 0.15)
+			(type default)
+		)
+		(fill no)
+		(layer "User.1")
+		(uuid "d0888740-4751-4302-bd27-1d3d94641ba7")
 	)
 	(gr_text "SERVO"
 		(at 111.8 58.1 90)
@@ -56559,14 +56641,50 @@
 		)
 	)
 	(gr_text "allegedly the center\nof the rocket"
-		(at 101 103 0)
-		(layer "F.Fab")
+		(at 100 103 0)
+		(layer "User.1")
 		(uuid "21cc20a4-2ea7-426d-852b-2b4b382f0d64")
 		(effects
 			(font
-				(size 1.5 1.5)
+				(size 1 1)
 				(thickness 0.15)
 			)
+		)
+	)
+	(gr_text "coordinate systems\nuse current symbols\nfor into/out i.e."
+		(at 108.8 92.2 0)
+		(layer "User.1")
+		(uuid "915f4541-71da-40d7-aca6-97fbcb371425")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+			(justify left bottom)
+		)
+	)
+	(gr_text "into page"
+		(at 117.5 96.5 0)
+		(layer "User.1")
+		(uuid "a5153f53-52d5-40e7-a82b-9f87d65a77a3")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+			(justify left bottom)
+		)
+	)
+	(gr_text "out of page"
+		(at 106 96.5 0)
+		(layer "User.1")
+		(uuid "d5a93e11-401b-4eb4-af5c-0412e2d31788")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+			(justify left bottom)
 		)
 	)
 	(segment
