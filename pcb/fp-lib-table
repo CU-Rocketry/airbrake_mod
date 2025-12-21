@@ -12,4 +12,5 @@
   (lib (name "SW_SameSky")(type "KiCad")(uri "${KIPRJMOD}/kicad-library/footprints/SW_SameSky.pretty")(options "")(descr ""))
   (lib (name "CUR")(type "KiCad")(uri "${KIPRJMOD}/kicad-library/footprints/CUR.pretty")(options "")(descr ""))
   (lib (name "LED_Everlight")(type "KiCad")(uri "${KIPRJMOD}/kicad-library/footprints/LED_Everlight.pretty")(options "")(descr ""))
+  (lib (name "L_Sunltech")(type "KiCad")(uri "${KIPRJMOD}/kicad-library/footprints/L_Sunltech.pretty")(options "")(descr ""))
 )

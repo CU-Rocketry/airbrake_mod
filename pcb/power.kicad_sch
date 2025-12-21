@@ -11718,7 +11718,7 @@
 				)
 			)
 		)
-		(property "Value" "AMPI0640ED2R2MT"
+		(property "Value" "SLO0624H3R3MTT"
 			(at 128.27 149.86 90)
 			(effects
 				(font
@@ -11726,7 +11726,7 @@
 				)
 			)
 		)
-		(property "Footprint" "L_Arlitech:L_Arlitech_AMPI0640ED2R2MT_6.6mm_7.1mm_2628_6671_Metric"
+		(property "Footprint" "L_Sunltech:L_Sunltech_SLO0624H"
 			(at 128.27 152.4 0)
 			(effects
 				(font
@@ -11735,7 +11735,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "~"
+		(property "Datasheet" "https://file.elecfans.com/web2/M00/42/8B/pYYBAGJ5AK-AFbIwAA3vuOUpZHE121.pdf"
 			(at 128.27 152.4 0)
 			(effects
 				(font
@@ -11753,7 +11753,7 @@
 				(hide yes)
 			)
 		)
-		(property "MPN" "AMPI0640ED2R2MT"
+		(property "MPN" "SLO0624H3R3MTT"
 			(at 128.27 152.4 90)
 			(effects
 				(font
