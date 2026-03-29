@@ -48,5 +48,30 @@ arm_status get_imu_b(arm_matrix_instance *out_accel, arm_matrix_instance *out_om
 	status = arm_mat_trans_f32(&omega_row, &omega_col);
 	status = arm_mat_mult_f32(&rot_imu_to_b, &omega_col, &omega_b);
 
+	arm_status get_mag_b(arm_matrix_instance *out_mag)
+	{
+		arm_status status;
+
+		float mag[3];
+
+		get_mag_mgauss(&mag); // TODO
+
+		static float32_t mag_to_b_data[3*3] = {
+		  0, 0, 1,
+		  0, -1, 0,
+		  -1, 0, 0
+		};
+		arm_matrix_instance rot_mag_to_b;
+		arm_matrix_instance mag_row, mag_col, mag_b;
+
+
+
+		arm_mat_init_f32(&mag_row, 1, 3, mag);
+
+
+		status = arm_mat_trans_f32(&mag_row, &mag_col);
+		status = arm_mat_mult_f32(&rot_mag_to_b, &mag_col, &mag_b);
+
+
 }
 
