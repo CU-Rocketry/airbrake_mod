@@ -59,12 +59,27 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define EYE_0_Pin GPIO_PIN_4
+#define EYE_0_GPIO_Port GPIOE
+#define EYE_1_Pin GPIO_PIN_5
+#define EYE_1_GPIO_Port GPIOE
 #define BATT_VSENSE_Pin GPIO_PIN_0
 #define BATT_VSENSE_GPIO_Port GPIOC
 #define BATT_ISENSE_Pin GPIO_PIN_1
 #define BATT_ISENSE_GPIO_Port GPIOC
 #define SERVO_FDBK_Pin GPIO_PIN_2
 #define SERVO_FDBK_GPIO_Port GPIOC
+#define BARO_NSS_Pin GPIO_PIN_4
+#define BARO_NSS_GPIO_Port GPIOA
+#define BARO_SCK_Pin GPIO_PIN_5
+#define BARO_SCK_GPIO_Port GPIOA
+#define BARO_MISO_Pin GPIO_PIN_6
+#define BARO_MISO_GPIO_Port GPIOA
+#define BARO_MOSI_Pin GPIO_PIN_7
+#define BARO_MOSI_GPIO_Port GPIOA
+#define BARO_INT_Pin GPIO_PIN_4
+#define BARO_INT_GPIO_Port GPIOC
+#define BARO_INT_EXTI_IRQn EXTI4_IRQn
 #define MAG_INT_Pin GPIO_PIN_10
 #define MAG_INT_GPIO_Port GPIOE
 #define MAG_INT_EXTI_IRQn EXTI15_10_IRQn
@@ -82,9 +97,6 @@ void Error_Handler(void);
 #define BTN_2_GPIO_Port GPIOD
 #define BTN_3_Pin GPIO_PIN_3
 #define BTN_3_GPIO_Port GPIOD
-#define MODE_1_Pin GPIO_PIN_4
-#define MODE_1_GPIO_Port GPIOD
-#define MODE_1_EXTI_IRQn EXTI4_IRQn
 #define MODE_C_Pin GPIO_PIN_5
 #define MODE_C_GPIO_Port GPIOD
 #define MODE_2_Pin GPIO_PIN_6
