@@ -1,8 +1,8 @@
-### Footprint positions - created on 2025-12-13T23:51:41-0500 ###
+### Footprint positions - created on 2026-01-21T22:28:59-0500 ###
 ### Printed by KiCad version 9.0.5
 ## Unit = mm, Angle = deg.
 ## Side : bottom
-# Ref     Val       Package                   PosX       PosY       Rot  Side
-D8        B1911USD  LED_0603_1608Metric    82.6820  -134.0938  150.0000  bottom
-D9        B1911USD  LED_0603_1608Metric    77.6820  -131.2937  150.0000  bottom
+# Ref     Val                Package                   PosX       PosY       Rot  Side
+D8        FC-1608SXK-620H08  LED_0603_1608Metric    82.6820  -134.0938  150.0000  bottom
+D9        FC-1608SXK-620H08  LED_0603_1608Metric    77.6820  -131.2937  150.0000  bottom
 ## End
