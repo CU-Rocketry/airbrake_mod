@@ -23,6 +23,7 @@
 /* USER CODE BEGIN Includes */
 #include "lps22df_reg.h"
 #include "arm_math.h"
+#include "sensors.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -58,6 +59,7 @@ DMA_HandleTypeDef hdma_spi4_tx;
 
 TIM_HandleTypeDef htim3;
 TIM_HandleTypeDef htim4;
+TIM_HandleTypeDef htim7;
 TIM_HandleTypeDef htim16;
 TIM_HandleTypeDef htim17;
 
@@ -66,7 +68,9 @@ UART_HandleTypeDef huart4;
 PCD_HandleTypeDef hpcd_USB_OTG_HS;
 
 /* USER CODE BEGIN PV */
-stmdev_ctx_t lps22df_dev_ctx;
+stmdev_ctx_t lps22df_ctx;
+stmdev_ctx_t lsm6dsv80x_ctx;
+stmdev_ctx_t iis2mdc_ctx;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -87,13 +91,13 @@ static void MX_TIM3_Init(void);
 static void MX_TIM4_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_ADC3_Init(void);
+static void MX_TIM7_Init(void);
 /* USER CODE BEGIN PFP */
-/** Please note that is MANDATORY: return 0 -> no Error.**/
+
 int32_t platform_write(void *handle, uint8_t reg, const uint8_t *bufp, uint16_t len);
 int32_t platform_read(void *handle, uint8_t reg, uint8_t *bufp, uint16_t len);
-
-/** Optional (may be required by driver) **/
 void platform_delay(uint32_t millisec);
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -109,10 +113,21 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-	lps22df_dev_ctx.write_reg = platform_write;
-	lps22df_dev_ctx.read_reg = platform_read;
-	lps22df_dev_ctx.mdelay = platform_delay;
-	lps22df_dev_ctx.handle = &hspi1;
+  // Setup baro driver device context
+  lps22df_dev_ctx.write_reg = platform_write;
+  lps22df_dev_ctx.read_reg = platform_read;
+  lps22df_dev_ctx.mdelay = platform_delay;
+  lps22df_dev_ctx.handle = &hspi1;
+  // Setup IMU driver device context
+  lsm6dsv80x_ctx.write_reg = platform_write;
+  lsm6dsv80x_ctx.read_reg = platform_read;
+  lsm6dsv80x_ctx.mdelay = platform_delay;
+  lsm6dsv80x_ctx.handle = &hspi2;
+  // Setup
+  iis2mdc_ctx.write_reg = platform_write;
+  iis2mdc_ctx.read_reg = platform_read;
+  iis2mdc_ctx.mdelay = platform_delay;
+  iis2mdc_ctx.handle = &hspi4;
   /* USER CODE END 1 */
 
   /* MPU Configuration--------------------------------------------------------*/
@@ -152,6 +167,7 @@ int main(void)
   MX_TIM4_Init();
   MX_ADC1_Init();
   MX_ADC3_Init();
+  MX_TIM7_Init();
   /* USER CODE BEGIN 2 */
 
   lps22df_id_t id;
@@ -720,6 +736,44 @@ static void MX_TIM4_Init(void)
 }
 
 /**
+  * @brief TIM7 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM7_Init(void)
+{
+
+  /* USER CODE BEGIN TIM7_Init 0 */
+
+  /* USER CODE END TIM7_Init 0 */
+
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+
+  /* USER CODE BEGIN TIM7_Init 1 */
+
+  /* USER CODE END TIM7_Init 1 */
+  htim7.Instance = TIM7;
+  htim7.Init.Prescaler = 64;
+  htim7.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim7.Init.Period = 10000;
+  htim7.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim7) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim7, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM7_Init 2 */
+
+  /* USER CODE END TIM7_Init 2 */
+
+}
+
+/**
   * @brief TIM16 Initialization Function
   * @param None
   * @retval None
@@ -1006,11 +1060,17 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_Init(MAG_INT_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : IMU_INT1_Pin IMU_INT2_Pin BTN_0_Pin BTN_1_Pin
-                           BTN_2_Pin BTN_3_Pin MODE_2_Pin MODE_4_Pin */
+                           BTN_2_Pin BTN_3_Pin */
   GPIO_InitStruct.Pin = IMU_INT1_Pin|IMU_INT2_Pin|BTN_0_Pin|BTN_1_Pin
-                          |BTN_2_Pin|BTN_3_Pin|MODE_2_Pin|MODE_4_Pin;
+                          |BTN_2_Pin|BTN_3_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : MODE_1_Pin MODE_2_Pin MODE_4_Pin */
+  GPIO_InitStruct.Pin = MODE_1_Pin|MODE_2_Pin|MODE_4_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
   /*Configure GPIO pin : MODE_C_Pin */
@@ -1031,8 +1091,8 @@ static void MX_GPIO_Init(void)
   HAL_NVIC_SetPriority(BARO_INT_EXTI_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(BARO_INT_EXTI_IRQn);
 
-  HAL_NVIC_SetPriority(MODE_2_EXTI_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(MODE_2_EXTI_IRQn);
+  HAL_NVIC_SetPriority(IMU_INT1_EXTI_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(IMU_INT1_EXTI_IRQn);
 
   HAL_NVIC_SetPriority(MAG_INT_EXTI_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(MAG_INT_EXTI_IRQn);
@@ -1045,26 +1105,44 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 int32_t platform_write(void *handle, uint8_t reg, const uint8_t *bufp, uint16_t len)
 {
-	HAL_GPIO_WritePin(BARO_NSS_GPIO_Port, BARO_NSS_Pin, 0);
-	HAL_SPI_Transmit(handle, &reg, 1, 1000);
-	HAL_SPI_Transmit(handle, bufp, len, 1000);
-	HAL_GPIO_WritePin(BARO_NSS_GPIO_Port, BARO_NSS_Pin, 1);
-	return 0;
+	HAL_StatusTypeDef status = HAL_OK;
+	status += HAL_SPI_Transmit(handle, &reg, 1, 1000);
+	status += HAL_SPI_Transmit(handle, bufp, len, 1000);
+	return status;
 }
 
 int32_t platform_read(void *handle, uint8_t reg, uint8_t *bufp, uint16_t len)
 {
 	reg |= 0x80;
-	HAL_GPIO_WritePin(BARO_NSS_GPIO_Port, BARO_NSS_Pin, 0);
-	HAL_SPI_Transmit(handle, &reg, 1, 1000);
-	HAL_SPI_Receive(handle, bufp, len, 1000);
-	HAL_GPIO_WritePin(BARO_NSS_GPIO_Port, BARO_NSS_Pin, 1);
-	return 0;
+
+	HAL_StatusTypeDef status = HAL_OK;
+	status += HAL_SPI_Transmit(handle, &reg, 1, 1000);
+	status += HAL_SPI_Receive(handle, bufp, len, 1000);
+	return status;
 }
 
 void platform_delay(uint32_t millisec)
 {
 	HAL_Delay(millisec);
+}
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+  if (GPIO_Pin == GPIO_PIN_4) {
+    lps22df_int_drdy_handler();
+  }
+
+  else if (GPIO_Pin == GPIO_PIN_10) {
+    iis2mdc_int_drdy_handler();
+  }
+
+  else if (GPIO_Pin == GPIO_PIN_8 || GPIO_Pin == GPIO_PIN_9) {
+    lsm6dsv80x_int_drdy_handler();
+  }
+
+  else {
+	  // TODO
+  }
 }
 
 /* USER CODE END 4 */

@@ -97,14 +97,14 @@ void Error_Handler(void);
 #define BTN_2_GPIO_Port GPIOD
 #define BTN_3_Pin GPIO_PIN_3
 #define BTN_3_GPIO_Port GPIOD
+#define MODE_1_Pin GPIO_PIN_4
+#define MODE_1_GPIO_Port GPIOD
 #define MODE_C_Pin GPIO_PIN_5
 #define MODE_C_GPIO_Port GPIOD
 #define MODE_2_Pin GPIO_PIN_6
 #define MODE_2_GPIO_Port GPIOD
-#define MODE_2_EXTI_IRQn EXTI9_5_IRQn
 #define MODE_4_Pin GPIO_PIN_7
 #define MODE_4_GPIO_Port GPIOD
-#define MODE_4_EXTI_IRQn EXTI9_5_IRQn
 #define BUZZER_Pin GPIO_PIN_8
 #define BUZZER_GPIO_Port GPIOB
 #define SERVO_SIG_Pin GPIO_PIN_9
