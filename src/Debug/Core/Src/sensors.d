@@ -1,5 +1,5 @@
-Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
- ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h \
+Core/Src/sensors.o: ../Core/Src/sensors.c ../Core/Inc/sensors.h \
+ ../Core/Inc/main.h ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h \
  ../Core/Inc/stm32h7xx_hal_conf.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_rcc.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h \
@@ -40,9 +40,9 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_ll_usb.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd_ex.h \
- ../Core/Inc/sensors.h ../Core/Inc/black_eyes.h ../Core/Inc/main.h \
- ../Core/Inc/rgb_led.h ../Core/Inc/buzzer.h ../Core/Inc/servo.h \
- ../Core/Inc/mode_switch.h
+ ../Core/Inc/lps22df_reg.h ../Core/Inc/lsm6dsv80x_reg.h \
+ ../Core/Inc/iis2mdc_reg.h
+../Core/Inc/sensors.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h:
 ../Core/Inc/stm32h7xx_hal_conf.h:
@@ -85,10 +85,6 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd.h:
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_ll_usb.h:
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd_ex.h:
-../Core/Inc/sensors.h:
-../Core/Inc/black_eyes.h:
-../Core/Inc/main.h:
-../Core/Inc/rgb_led.h:
-../Core/Inc/buzzer.h:
-../Core/Inc/servo.h:
-../Core/Inc/mode_switch.h:
+../Core/Inc/lps22df_reg.h:
+../Core/Inc/lsm6dsv80x_reg.h:
+../Core/Inc/iis2mdc_reg.h:

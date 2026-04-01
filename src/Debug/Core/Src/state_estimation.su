@@ -1,0 +1,3 @@
+../Core/Src/state_estimation.c:12:6:state_estimation	24	static
+../Core/Src/state_estimation.c:19:12:get_imu_b	104	static
+../Core/Src/state_estimation.c:55:12:get_mag_b	64	static

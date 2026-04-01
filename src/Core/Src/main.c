@@ -21,9 +21,14 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "lps22df_reg.h"
-#include "arm_math.h"
 #include "sensors.h"
+#include <stdio.h>
+#include <string.h>
+#include "black_eyes.h"
+#include "rgb_led.h"
+#include "buzzer.h"
+#include "servo.h"
+#include "mode_switch.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -68,9 +73,29 @@ UART_HandleTypeDef huart4;
 PCD_HandleTypeDef hpcd_USB_OTG_HS;
 
 /* USER CODE BEGIN PV */
-stmdev_ctx_t lps22df_ctx;
-stmdev_ctx_t lsm6dsv80x_ctx;
-stmdev_ctx_t iis2mdc_ctx;
+// Custom driver contexts
+rgb_led_t led0 = {
+    .handle = &htim3,
+    .channel_r = TIM_CHANNEL_1,
+    .channel_g = TIM_CHANNEL_2,
+    .channel_b = TIM_CHANNEL_3
+};
+rgb_led_t led1 = {
+    .handle = &htim4,
+    .channel_r = TIM_CHANNEL_1,
+    .channel_g = TIM_CHANNEL_2,
+    .channel_b = TIM_CHANNEL_3
+};
+buzzer_t buzzer = {
+    .handle = &htim16
+};
+
+servo_t servo = {
+	.handle = &htim17
+};
+
+// Control system tick
+uint8_t poll = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -93,6 +118,8 @@ static void MX_ADC1_Init(void);
 static void MX_ADC3_Init(void);
 static void MX_TIM7_Init(void);
 /* USER CODE BEGIN PFP */
+// printf UART
+#define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
 
 int32_t platform_write(void *handle, uint8_t reg, const uint8_t *bufp, uint16_t len);
 int32_t platform_read(void *handle, uint8_t reg, uint8_t *bufp, uint16_t len);
@@ -113,21 +140,7 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-  // Setup baro driver device context
-  lps22df_dev_ctx.write_reg = platform_write;
-  lps22df_dev_ctx.read_reg = platform_read;
-  lps22df_dev_ctx.mdelay = platform_delay;
-  lps22df_dev_ctx.handle = &hspi1;
-  // Setup IMU driver device context
-  lsm6dsv80x_ctx.write_reg = platform_write;
-  lsm6dsv80x_ctx.read_reg = platform_read;
-  lsm6dsv80x_ctx.mdelay = platform_delay;
-  lsm6dsv80x_ctx.handle = &hspi2;
-  // Setup
-  iis2mdc_ctx.write_reg = platform_write;
-  iis2mdc_ctx.read_reg = platform_read;
-  iis2mdc_ctx.mdelay = platform_delay;
-  iis2mdc_ctx.handle = &hspi4;
+
   /* USER CODE END 1 */
 
   /* MPU Configuration--------------------------------------------------------*/
@@ -169,11 +182,24 @@ int main(void)
   MX_ADC3_Init();
   MX_TIM7_Init();
   /* USER CODE BEGIN 2 */
+    black_eye_set(0, 1);
+    black_eye_set(1, 1);
 
-  lps22df_id_t id;
-  lps22df_id_get(&lps22df_dev_ctx, &id);
-   if (id.whoami != LPS22DF_ID)
-     while(1);
+    rgb_led_init(&led0);
+    rgb_led_init(&led1);
+    rgb_led_set(&led0, 0x808080);
+    rgb_led_set(&led1, 0x000080);
+
+    buzzer_init(&buzzer);
+
+    servo_init(&servo);
+    servo_set(&servo, 500);
+
+    printf("Hello, world!\r\n");
+    uint8_t mode = get_mode_switch();
+    printf("Mode: %u\r\n", mode);
+
+    HAL_TIM_Base_Start_IT(&htim7);
 
   /* USER CODE END 2 */
 
@@ -181,6 +207,17 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+//	  buzzer_set(&buzzer, 1);
+//	  HAL_Delay(500);
+//	  buzzer_set(&buzzer, 0);
+//	  HAL_Delay(500);
+
+	  if (poll) {
+		  poll = 0;
+		  uint8_t mode = get_mode_switch();
+//		  printf("Mode: %u\r\n", mode);
+	  }
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -203,24 +240,22 @@ void SystemClock_Config(void)
 
   /** Configure the main internal regulator output voltage
   */
-  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE3);
+  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE0);
 
   while(!__HAL_PWR_GET_FLAG(PWR_FLAG_VOSRDY)) {}
 
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI|RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
-  RCC_OscInitStruct.HSIState = RCC_HSI_DIV1;
-  RCC_OscInitStruct.HSICalibrationValue = 64;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
   RCC_OscInitStruct.PLL.PLLM = 1;
-  RCC_OscInitStruct.PLL.PLLN = 12;
-  RCC_OscInitStruct.PLL.PLLP = 2;
-  RCC_OscInitStruct.PLL.PLLQ = 4;
-  RCC_OscInitStruct.PLL.PLLR = 2;
+  RCC_OscInitStruct.PLL.PLLN = 32;
+  RCC_OscInitStruct.PLL.PLLP = 1;
+  RCC_OscInitStruct.PLL.PLLQ = 16;
+  RCC_OscInitStruct.PLL.PLLR = 16;
   RCC_OscInitStruct.PLL.PLLRGE = RCC_PLL1VCIRANGE_3;
   RCC_OscInitStruct.PLL.PLLVCOSEL = RCC_PLL1VCOWIDE;
   RCC_OscInitStruct.PLL.PLLFRACN = 0;
@@ -234,15 +269,15 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2
                               |RCC_CLOCKTYPE_D3PCLK1|RCC_CLOCKTYPE_D1PCLK1;
-  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.SYSCLKDivider = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.AHBCLKDivider = RCC_HCLK_DIV1;
-  RCC_ClkInitStruct.APB3CLKDivider = RCC_APB3_DIV1;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_APB1_DIV2;
-  RCC_ClkInitStruct.APB2CLKDivider = RCC_APB2_DIV1;
-  RCC_ClkInitStruct.APB4CLKDivider = RCC_APB4_DIV1;
+  RCC_ClkInitStruct.AHBCLKDivider = RCC_HCLK_DIV2;
+  RCC_ClkInitStruct.APB3CLKDivider = RCC_APB3_DIV8;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_APB1_DIV8;
+  RCC_ClkInitStruct.APB2CLKDivider = RCC_APB2_DIV8;
+  RCC_ClkInitStruct.APB4CLKDivider = RCC_APB4_DIV8;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_3) != HAL_OK)
   {
     Error_Handler();
   }
@@ -261,7 +296,7 @@ void PeriphCommonClock_Config(void)
   PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_ADC;
   PeriphClkInitStruct.PLL2.PLL2M = 1;
   PeriphClkInitStruct.PLL2.PLL2N = 12;
-  PeriphClkInitStruct.PLL2.PLL2P = 5;
+  PeriphClkInitStruct.PLL2.PLL2P = 6;
   PeriphClkInitStruct.PLL2.PLL2Q = 2;
   PeriphClkInitStruct.PLL2.PLL2R = 2;
   PeriphClkInitStruct.PLL2.PLL2RGE = RCC_PLL2VCIRANGE_3;
@@ -621,7 +656,7 @@ static void MX_TIM3_Init(void)
 
   /* USER CODE END TIM3_Init 1 */
   htim3.Instance = TIM3;
-  htim3.Init.Prescaler = 64000;
+  htim3.Init.Prescaler = 639;
   htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim3.Init.Period = 255;
   htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
@@ -688,7 +723,7 @@ static void MX_TIM4_Init(void)
 
   /* USER CODE END TIM4_Init 1 */
   htim4.Instance = TIM4;
-  htim4.Init.Prescaler = 64000;
+  htim4.Init.Prescaler = 639;
   htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim4.Init.Period = 255;
   htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
@@ -753,9 +788,9 @@ static void MX_TIM7_Init(void)
 
   /* USER CODE END TIM7_Init 1 */
   htim7.Instance = TIM7;
-  htim7.Init.Prescaler = 64;
+  htim7.Init.Prescaler = 63;
   htim7.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim7.Init.Period = 10000;
+  htim7.Init.Period = 9999;
   htim7.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim7) != HAL_OK)
   {
@@ -792,9 +827,9 @@ static void MX_TIM16_Init(void)
 
   /* USER CODE END TIM16_Init 1 */
   htim16.Instance = TIM16;
-  htim16.Init.Prescaler = 16000;
+  htim16.Init.Prescaler = 1;
   htim16.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim16.Init.Period = 65535;
+  htim16.Init.Period = 16000;
   htim16.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim16.Init.RepetitionCounter = 0;
   htim16.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
@@ -855,9 +890,9 @@ static void MX_TIM17_Init(void)
 
   /* USER CODE END TIM17_Init 1 */
   htim17.Instance = TIM17;
-  htim17.Init.Prescaler = 64;
+  htim17.Init.Prescaler = 63;
   htim17.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim17.Init.Period = 1520;
+  htim17.Init.Period = 3002;
   htim17.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim17.Init.RepetitionCounter = 0;
   htim17.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
@@ -1070,7 +1105,7 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pins : MODE_1_Pin MODE_2_Pin MODE_4_Pin */
   GPIO_InitStruct.Pin = MODE_1_Pin|MODE_2_Pin|MODE_4_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
   /*Configure GPIO pin : MODE_C_Pin */
@@ -1091,9 +1126,6 @@ static void MX_GPIO_Init(void)
   HAL_NVIC_SetPriority(BARO_INT_EXTI_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(BARO_INT_EXTI_IRQn);
 
-  HAL_NVIC_SetPriority(IMU_INT1_EXTI_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(IMU_INT1_EXTI_IRQn);
-
   HAL_NVIC_SetPriority(MAG_INT_EXTI_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(MAG_INT_EXTI_IRQn);
 
@@ -1103,46 +1135,48 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-int32_t platform_write(void *handle, uint8_t reg, const uint8_t *bufp, uint16_t len)
+
+/**
+  * @brief  Retargets the C library printf function to the USART.
+  *   None
+  * @retval None
+  */
+PUTCHAR_PROTOTYPE
 {
-	HAL_StatusTypeDef status = HAL_OK;
-	status += HAL_SPI_Transmit(handle, &reg, 1, 1000);
-	status += HAL_SPI_Transmit(handle, bufp, len, 1000);
-	return status;
+  /* Place your implementation of fputc here */
+  /* e.g. write a character to the USART1 and Loop until the end of transmission */
+  HAL_UART_Transmit(&huart4, (uint8_t *)&ch, 1, 0xFFFF);
+
+  return ch;
 }
 
-int32_t platform_read(void *handle, uint8_t reg, uint8_t *bufp, uint16_t len)
-{
-	reg |= 0x80;
-
-	HAL_StatusTypeDef status = HAL_OK;
-	status += HAL_SPI_Transmit(handle, &reg, 1, 1000);
-	status += HAL_SPI_Receive(handle, bufp, len, 1000);
-	return status;
-}
-
-void platform_delay(uint32_t millisec)
-{
-	HAL_Delay(millisec);
-}
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
-  if (GPIO_Pin == GPIO_PIN_4) {
-    lps22df_int_drdy_handler();
-  }
+	if (GPIO_Pin == BARO_INT_Pin) {
+		baro_int_drdy_handler();
+	} else if(GPIO_Pin == IMU_INT1_Pin || GPIO_Pin == IMU_INT2_Pin) {
+		imu_int_drdy_handler();
+	} else if(GPIO_Pin == MAG_INT_Pin) {
+		mag_int_drdy_handler();
+	}
+}
 
-  else if (GPIO_Pin == GPIO_PIN_10) {
-    iis2mdc_int_drdy_handler();
-  }
+void HAL_SPI_TxRxCpltCallback(SPI_HandleTypeDef *hspi)
+{
+	if (hspi->Instance == SPI1) {
+		baro_spi_callback();
+	} else if (hspi->Instance == SPI2) {
+		imu_spi_callback();
+	} else if (hspi->Instance == SPI4) {
+		mag_spi_callback();
+	}
+}
 
-  else if (GPIO_Pin == GPIO_PIN_8 || GPIO_Pin == GPIO_PIN_9) {
-    lsm6dsv80x_int_drdy_handler();
-  }
-
-  else {
-	  // TODO
-  }
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
+	if (htim->Instance == TIM7) { // 100 Hz
+		poll = 1;
+	}
 }
 
 /* USER CODE END 4 */

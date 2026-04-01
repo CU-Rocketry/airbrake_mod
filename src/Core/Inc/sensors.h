@@ -8,13 +8,22 @@
 #ifndef SRC_SENSORS_H_
 #define SRC_SENSORS_H_
 
-float get_accel_ms2(float *out);
-float get_omega_rads(float *out);
-float get_mag_mgauss(float *out);
-float get_pres_hpa(float *out);
+void get_accel_ms2(float *out);
+void get_omega_rads(float *out);
+void get_mag_mgauss(float *out);
+void get_pres_hpa(float *out);
 
-void lps22df_int_drdy_handler();
-void lsm6dsv80x_int_drdy_handler();
-void iis2mdc_int_drdy_handler();
+void baro_int_drdy_handler(void);
+void imu_int_drdy_handler(void);
+void mag_int_drdy_handler(void);
+
+void baro_spi_callback(void);
+void imu_spi_callback(void);
+void mag_spi_callback(void);
+
+void sensors_init(void);
+void baro_init(void);
+void imu_init(void);
+void mag_init(void);
 
 #endif /* SRC_SENSORS_H_ */

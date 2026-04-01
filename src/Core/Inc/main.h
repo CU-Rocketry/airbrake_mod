@@ -85,10 +85,8 @@ void Error_Handler(void);
 #define MAG_INT_EXTI_IRQn EXTI15_10_IRQn
 #define IMU_INT1_Pin GPIO_PIN_8
 #define IMU_INT1_GPIO_Port GPIOD
-#define IMU_INT1_EXTI_IRQn EXTI9_5_IRQn
 #define IMU_INT2_Pin GPIO_PIN_9
 #define IMU_INT2_GPIO_Port GPIOD
-#define IMU_INT2_EXTI_IRQn EXTI9_5_IRQn
 #define BTN_0_Pin GPIO_PIN_0
 #define BTN_0_GPIO_Port GPIOD
 #define BTN_1_Pin GPIO_PIN_1
