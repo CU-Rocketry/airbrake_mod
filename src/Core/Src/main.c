@@ -187,7 +187,7 @@ int main(void)
 
     rgb_led_init(&led0);
     rgb_led_init(&led1);
-    rgb_led_set(&led0, 0x808080);
+    rgb_led_set(&led0, 0x800000);
     rgb_led_set(&led1, 0x000080);
 
     buzzer_init(&buzzer);
@@ -199,7 +199,11 @@ int main(void)
     uint8_t mode = get_mode_switch();
     printf("Mode: %u\r\n", mode);
 
-    HAL_TIM_Base_Start_IT(&htim7);
+    HAL_TIM_Base_Start_IT(&htim7); // start 100 Hz control system tick
+
+    HAL_Delay(100);
+
+    baro_init();
 
   /* USER CODE END 2 */
 
@@ -214,8 +218,13 @@ int main(void)
 
 	  if (poll) {
 		  poll = 0;
-		  uint8_t mode = get_mode_switch();
+
+//		  uint8_t mode = get_mode_switch();
 //		  printf("Mode: %u\r\n", mode);
+
+		  float pres;
+		  get_pres_hpa(&pres);
+		  printf("Pressure: %f\r\n", pres);
 	  }
 
     /* USER CODE END WHILE */
@@ -254,7 +263,7 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.PLL.PLLM = 1;
   RCC_OscInitStruct.PLL.PLLN = 32;
   RCC_OscInitStruct.PLL.PLLP = 1;
-  RCC_OscInitStruct.PLL.PLLQ = 16;
+  RCC_OscInitStruct.PLL.PLLQ = 64;
   RCC_OscInitStruct.PLL.PLLR = 16;
   RCC_OscInitStruct.PLL.PLLRGE = RCC_PLL1VCIRANGE_3;
   RCC_OscInitStruct.PLL.PLLVCOSEL = RCC_PLL1VCOWIDE;
@@ -293,15 +302,16 @@ void PeriphCommonClock_Config(void)
 
   /** Initializes the peripherals clock
   */
-  PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_ADC;
+  PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_OSPI|RCC_PERIPHCLK_ADC;
   PeriphClkInitStruct.PLL2.PLL2M = 1;
-  PeriphClkInitStruct.PLL2.PLL2N = 12;
-  PeriphClkInitStruct.PLL2.PLL2P = 6;
+  PeriphClkInitStruct.PLL2.PLL2N = 16;
+  PeriphClkInitStruct.PLL2.PLL2P = 8;
   PeriphClkInitStruct.PLL2.PLL2Q = 2;
-  PeriphClkInitStruct.PLL2.PLL2R = 2;
+  PeriphClkInitStruct.PLL2.PLL2R = 8;
   PeriphClkInitStruct.PLL2.PLL2RGE = RCC_PLL2VCIRANGE_3;
   PeriphClkInitStruct.PLL2.PLL2VCOSEL = RCC_PLL2VCOWIDE;
   PeriphClkInitStruct.PLL2.PLL2FRACN = 0;
+  PeriphClkInitStruct.OspiClockSelection = RCC_OSPICLKSOURCE_PLL2;
   PeriphClkInitStruct.AdcClockSelection = RCC_ADCCLKSOURCE_PLL2;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
   {
@@ -514,7 +524,7 @@ static void MX_SPI1_Init(void)
   hspi1.Init.DataSize = SPI_DATASIZE_8BIT;
   hspi1.Init.CLKPolarity = SPI_POLARITY_HIGH;
   hspi1.Init.CLKPhase = SPI_PHASE_2EDGE;
-  hspi1.Init.NSS = SPI_NSS_HARD_OUTPUT;
+  hspi1.Init.NSS = SPI_NSS_SOFT;
   hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
   hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
@@ -562,7 +572,7 @@ static void MX_SPI2_Init(void)
   hspi2.Init.DataSize = SPI_DATASIZE_8BIT;
   hspi2.Init.CLKPolarity = SPI_POLARITY_HIGH;
   hspi2.Init.CLKPhase = SPI_PHASE_2EDGE;
-  hspi2.Init.NSS = SPI_NSS_HARD_OUTPUT;
+  hspi2.Init.NSS = SPI_NSS_SOFT;
   hspi2.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
   hspi2.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi2.Init.TIMode = SPI_TIMODE_DISABLE;
@@ -610,7 +620,7 @@ static void MX_SPI4_Init(void)
   hspi4.Init.DataSize = SPI_DATASIZE_8BIT;
   hspi4.Init.CLKPolarity = SPI_POLARITY_HIGH;
   hspi4.Init.CLKPhase = SPI_PHASE_2EDGE;
-  hspi4.Init.NSS = SPI_NSS_HARD_OUTPUT;
+  hspi4.Init.NSS = SPI_NSS_SOFT;
   hspi4.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
   hspi4.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi4.Init.TIMode = SPI_TIMODE_DISABLE;
@@ -1073,14 +1083,30 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOE, EYE_0_Pin|EYE_1_Pin|SERVO_EN_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(BARO_NSS_GPIO_Port, BARO_NSS_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(MAG_NSS_GPIO_Port, MAG_NSS_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(IMU_NSS_GPIO_Port, IMU_NSS_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(MODE_C_GPIO_Port, MODE_C_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : EYE_0_Pin EYE_1_Pin */
-  GPIO_InitStruct.Pin = EYE_0_Pin|EYE_1_Pin;
+  /*Configure GPIO pins : EYE_0_Pin EYE_1_Pin MAG_NSS_Pin */
+  GPIO_InitStruct.Pin = EYE_0_Pin|EYE_1_Pin|MAG_NSS_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : BARO_NSS_Pin */
+  GPIO_InitStruct.Pin = BARO_NSS_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(BARO_NSS_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : BARO_INT_Pin */
   GPIO_InitStruct.Pin = BARO_INT_Pin;
@@ -1093,6 +1119,13 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   HAL_GPIO_Init(MAG_INT_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : IMU_NSS_Pin */
+  GPIO_InitStruct.Pin = IMU_NSS_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(IMU_NSS_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : IMU_INT1_Pin IMU_INT2_Pin BTN_0_Pin BTN_1_Pin
                            BTN_2_Pin BTN_3_Pin */

@@ -83,6 +83,10 @@ void Error_Handler(void);
 #define MAG_INT_Pin GPIO_PIN_10
 #define MAG_INT_GPIO_Port GPIOE
 #define MAG_INT_EXTI_IRQn EXTI15_10_IRQn
+#define MAG_NSS_Pin GPIO_PIN_11
+#define MAG_NSS_GPIO_Port GPIOE
+#define IMU_NSS_Pin GPIO_PIN_12
+#define IMU_NSS_GPIO_Port GPIOB
 #define IMU_INT1_Pin GPIO_PIN_8
 #define IMU_INT1_GPIO_Port GPIOD
 #define IMU_INT2_Pin GPIO_PIN_9

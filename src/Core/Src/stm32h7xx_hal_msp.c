@@ -191,22 +191,11 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef* hadc)
 void HAL_OSPI_MspInit(OSPI_HandleTypeDef* hospi)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
-  RCC_PeriphCLKInitTypeDef PeriphClkInitStruct = {0};
   if(hospi->Instance==OCTOSPI1)
   {
     /* USER CODE BEGIN OCTOSPI1_MspInit 0 */
 
     /* USER CODE END OCTOSPI1_MspInit 0 */
-
-  /** Initializes the peripherals clock
-  */
-    PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_OSPI;
-    PeriphClkInitStruct.OspiClockSelection = RCC_OSPICLKSOURCE_D1HCLK;
-    if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
-    {
-      Error_Handler();
-    }
-
     /* Peripheral clock enable */
     __HAL_RCC_OCTOSPIM_CLK_ENABLE();
     __HAL_RCC_OSPI1_CLK_ENABLE();
@@ -323,12 +312,11 @@ void HAL_SPI_MspInit(SPI_HandleTypeDef* hspi)
 
     __HAL_RCC_GPIOA_CLK_ENABLE();
     /**SPI1 GPIO Configuration
-    PA4     ------> SPI1_NSS
     PA5     ------> SPI1_SCK
     PA6     ------> SPI1_MISO
     PA7     ------> SPI1_MOSI
     */
-    GPIO_InitStruct.Pin = BARO_NSS_Pin|BARO_SCK_Pin|BARO_MISO_Pin|BARO_MOSI_Pin;
+    GPIO_InitStruct.Pin = BARO_SCK_Pin|BARO_MISO_Pin|BARO_MOSI_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -399,12 +387,11 @@ void HAL_SPI_MspInit(SPI_HandleTypeDef* hspi)
 
     __HAL_RCC_GPIOB_CLK_ENABLE();
     /**SPI2 GPIO Configuration
-    PB12     ------> SPI2_NSS
     PB13     ------> SPI2_SCK
     PB14     ------> SPI2_MISO
     PB15     ------> SPI2_MOSI
     */
-    GPIO_InitStruct.Pin = GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15;
+    GPIO_InitStruct.Pin = GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -475,12 +462,11 @@ void HAL_SPI_MspInit(SPI_HandleTypeDef* hspi)
 
     __HAL_RCC_GPIOE_CLK_ENABLE();
     /**SPI4 GPIO Configuration
-    PE11     ------> SPI4_NSS
     PE12     ------> SPI4_SCK
     PE13     ------> SPI4_MISO
     PE14     ------> SPI4_MOSI
     */
-    GPIO_InitStruct.Pin = GPIO_PIN_11|GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14;
+    GPIO_InitStruct.Pin = GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -551,12 +537,11 @@ void HAL_SPI_MspDeInit(SPI_HandleTypeDef* hspi)
     __HAL_RCC_SPI1_CLK_DISABLE();
 
     /**SPI1 GPIO Configuration
-    PA4     ------> SPI1_NSS
     PA5     ------> SPI1_SCK
     PA6     ------> SPI1_MISO
     PA7     ------> SPI1_MOSI
     */
-    HAL_GPIO_DeInit(GPIOA, BARO_NSS_Pin|BARO_SCK_Pin|BARO_MISO_Pin|BARO_MOSI_Pin);
+    HAL_GPIO_DeInit(GPIOA, BARO_SCK_Pin|BARO_MISO_Pin|BARO_MOSI_Pin);
 
     /* SPI1 DMA DeInit */
     HAL_DMA_DeInit(hspi->hdmarx);
@@ -577,12 +562,11 @@ void HAL_SPI_MspDeInit(SPI_HandleTypeDef* hspi)
     __HAL_RCC_SPI2_CLK_DISABLE();
 
     /**SPI2 GPIO Configuration
-    PB12     ------> SPI2_NSS
     PB13     ------> SPI2_SCK
     PB14     ------> SPI2_MISO
     PB15     ------> SPI2_MOSI
     */
-    HAL_GPIO_DeInit(GPIOB, GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15);
+    HAL_GPIO_DeInit(GPIOB, GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15);
 
     /* SPI2 DMA DeInit */
     HAL_DMA_DeInit(hspi->hdmarx);
@@ -603,12 +587,11 @@ void HAL_SPI_MspDeInit(SPI_HandleTypeDef* hspi)
     __HAL_RCC_SPI4_CLK_DISABLE();
 
     /**SPI4 GPIO Configuration
-    PE11     ------> SPI4_NSS
     PE12     ------> SPI4_SCK
     PE13     ------> SPI4_MISO
     PE14     ------> SPI4_MOSI
     */
-    HAL_GPIO_DeInit(GPIOE, GPIO_PIN_11|GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14);
+    HAL_GPIO_DeInit(GPIOE, GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14);
 
     /* SPI4 DMA DeInit */
     HAL_DMA_DeInit(hspi->hdmarx);

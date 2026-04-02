@@ -10,6 +10,7 @@
 #include "lsm6dsv80x_reg.h"
 #include "iis2mdc_reg.h"
 #include <string.h>
+#include <stdio.h>
 
 // SPI handles
 extern SPI_HandleTypeDef hspi1; // Baro
@@ -61,12 +62,25 @@ void get_pres_hpa(float *out) {
 	*out = pres_hpa;
 }
 
+void spi_nss(SPI_HandleTypeDef handle, uint8_t level) {
+	if (handle.Instance == hspi1) {
+		HAL_GPIO_WritePin(BARO_NSS_GPIO_Port, BARO_NSS_Pin, level);
+	} else if (handle.Instance == hspi2) {
+		HAL_GPIO_WritePin(IMU_NSS_GPIO_Port, IMU_NSS_Pin, level);
+	} else if (handle.Instance == hspi4) {
+		HAL_GPIO_WritePin(MAG_NSS_GPIO_Port, MAG_NSS_Pin, level);
+	}
+}
+
 // ST driver platform functions
 int32_t platform_write(void *handle, uint8_t reg, const uint8_t *bufp, uint16_t len)
 {
 	HAL_StatusTypeDef status = HAL_OK;
+
+	spi_nss(handle, 0);
 	status += HAL_SPI_Transmit(handle, &reg, 1, 1000);
 	status += HAL_SPI_Transmit(handle, bufp, len, 1000);
+	spi_nss(handle, 1);
 	return status;
 }
 
@@ -125,16 +139,51 @@ void mag_spi_callback() {
 
 void sensors_init() {
 	baro_init();
-	imu_init();
-	mag_init();
+//	imu_init();
+//	mag_init();
+
+
 }
 
 void baro_init() {
-	  // Setup baro driver device context
-	  lps22df_ctx.write_reg = platform_write;
-	  lps22df_ctx.read_reg = platform_read;
-	  lps22df_ctx.mdelay = platform_delay;
-	  lps22df_ctx.handle = &hspi1;
+	// Setup baro driver device context
+	lps22df_ctx.write_reg = platform_write;
+	lps22df_ctx.read_reg = platform_read;
+	lps22df_ctx.mdelay = platform_delay;
+	lps22df_ctx.handle = &hspi1;
+
+	lps22df_pin_int_route_t int_route;
+	lps22df_bus_mode_t bus_mode;
+	lps22df_stat_t status;
+	lps22df_id_t id;
+	lps22df_md_t md;
+
+
+	lps22df_id_get(&lps22df_ctx, &id);
+	if (id.whoami != LPS22DF_ID) {
+		printf("LPS22DF whoami failed: %u, expected %u\r\n", id.whoami, LPS22DF_ID);
+		while (1);
+	}
+
+	lps22df_init_set(&lps22df_ctx, LPS22DF_RESET);
+	do {
+		lps22df_status_get(&lps22df_ctx, &status);
+	} while (status.sw_reset);
+	printf("LPS22 reset success\r\n");
+
+	bus_mode.filter = LPS22DF_FILTER_AUTO;
+	bus_mode.interface = LPS22DF_SPI_4W;
+	lps22df_bus_mode_set(&lps22df_ctx, &bus_mode);
+
+	md.odr = LPS22DF_100Hz;
+	md.avg = LPS22DF_64_AVG;
+	md.lpf = LPS22DF_LPF_ODR_DIV_9;
+	lps22df_mode_set(&lps22df_ctx, &md);
+
+	// Enable DRDY routed on INT pin
+	lps22df_pin_int_route_get(&lps22df_ctx, &int_route);
+	int_route.drdy_pres = PROPERTY_ENABLE;
+	lps22df_pin_int_route_set(&lps22df_ctx, &int_route);
 }
 
 void imu_init() {
