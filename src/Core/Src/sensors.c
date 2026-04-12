@@ -12,6 +12,8 @@
 #include <string.h>
 #include <stdio.h>
 
+#define MG_TOMS2 123.0f
+
 // SPI handles
 extern SPI_HandleTypeDef hspi1; // Baro
 extern SPI_HandleTypeDef hspi2; // IMU
