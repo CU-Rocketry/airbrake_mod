@@ -12,7 +12,17 @@
 #include <string.h>
 #include <stdio.h>
 
-#define MG_TOMS2 123.0f
+#define MG_TO_MS2 0.009805f
+//1 g=9.805 m/s^2; 1000 mG=1 g
+//(1/1000)G*(9.805 m/s^2/1 G)--> 9.805/1000--> multiply by 0.009805
+//123.0f
+
+#define MILIDEGREE_TO_RADS 0.00001745f
+//1/1000 degree=1 milidegree; pi/180 to convert from deg to rad
+//multiply by pi/180,000
+
+
+
 
 // SPI handles
 extern SPI_HandleTypeDef hspi1; // Baro
@@ -153,17 +163,17 @@ void imu_spi_callback() {
 	omega_raw[1] = (int16_t)(((int16_t)imu_rx_buf[4] << 8) | (int16_t)imu_rx_buf[3]);
 	omega_raw[2] = (int16_t)(((int16_t)imu_rx_buf[6] << 8) | (int16_t)imu_rx_buf[5]);
 	// Convert to scientific units
-	omega_rads[0] = lsm6dsv80x_from_fs4000_to_mdps(omega_raw[0]); // TODO: convert mdps to rads
-	omega_rads[1] = lsm6dsv80x_from_fs4000_to_mdps(omega_raw[1]); // TODO: convert mdps to rads
-	omega_rads[2] = lsm6dsv80x_from_fs4000_to_mdps(omega_raw[2]); // TODO: convert mdps to rads
+	omega_rads[0] = lsm6dsv80x_from_fs4000_to_mdps(omega_raw[0])*0.00001745f; //converted to rads
+	omega_rads[1] = lsm6dsv80x_from_fs4000_to_mdps(omega_raw[1])*0.00001745f;
+	omega_rads[2] = lsm6dsv80x_from_fs4000_to_mdps(omega_raw[2])*0.00001745f;
 	// Pack registers into accel LSBs
 	accel_raw[0] = (int16_t)(((int16_t)imu_rx_buf[8] << 8) | (int16_t)imu_rx_buf[7]);
 	accel_raw[1] = (int16_t)(((int16_t)imu_rx_buf[10] << 8) | (int16_t)imu_rx_buf[9]);
 	accel_raw[2] = (int16_t)(((int16_t)imu_rx_buf[12] << 8) | (int16_t)imu_rx_buf[11]);
 	// Convert to scientific units
-	accel_ms2[0] = lsm6dsv80x_from_fs16_to_mg(accel_raw[0]); // TODO: same
-	accel_ms2[1] = lsm6dsv80x_from_fs16_to_mg(accel_raw[1]);
-	accel_ms2[2] = lsm6dsv80x_from_fs16_to_mg(accel_raw[2]);
+	accel_ms2[0] = lsm6dsv80x_from_fs16_to_mg(accel_raw[0])**0.009805f; // converted to m/s^2
+	accel_ms2[1] = lsm6dsv80x_from_fs16_to_mg(accel_raw[1])*0.009805f;
+	accel_ms2[2] = lsm6dsv80x_from_fs16_to_mg(accel_raw[2])*0.009805f;
 	imu_ready = 1;
 }
 
