@@ -171,7 +171,7 @@ void imu_spi_callback() {
 	accel_raw[1] = (int16_t)(((int16_t)imu_rx_buf[10] << 8) | (int16_t)imu_rx_buf[9]);
 	accel_raw[2] = (int16_t)(((int16_t)imu_rx_buf[12] << 8) | (int16_t)imu_rx_buf[11]);
 	// Convert to scientific units
-	accel_ms2[0] = lsm6dsv80x_from_fs16_to_mg(accel_raw[0])**0.009805f; // converted to m/s^2
+	accel_ms2[0] = lsm6dsv80x_from_fs16_to_mg(accel_raw[0])*0.009805f; // converted to m/s^2
 	accel_ms2[1] = lsm6dsv80x_from_fs16_to_mg(accel_raw[1])*0.009805f;
 	accel_ms2[2] = lsm6dsv80x_from_fs16_to_mg(accel_raw[2])*0.009805f;
 	imu_ready = 1;
