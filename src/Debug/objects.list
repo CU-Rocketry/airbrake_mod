@@ -1,3 +1,4 @@
+"./Core/Src/MadgwickAHRS.o"
 "./Core/Src/iis2mdc_reg.o"
 "./Core/Src/lps22df_reg.o"
 "./Core/Src/lsm6dsv80x_reg.o"

@@ -8,11 +8,49 @@
 #include "arm_math.h"
 #include "sensors.h"
 #include "state_estimation.h"
+#include "MadgwickAHRS.h"
+
+uint16_t last_sample_time;
+uint16_t sample_time;
+float dt;
+
+extern uint8_t imu_ready;
+extern uint8_t mag_ready;
+extern uint8_t baro_ready;
 
 void state_estimation(void) {
 
 	arm_matrix_instance_f32 accel_b, omega_b;
 	get_imu_b(&accel_b, &omega_b);
+
+	if (sample_time < last_sample_time) {
+		dt = (0xFFFF - last_sample_time + sample_time); // [us]
+	} else {
+		dt = (sample_time - last_sample_time); // [us]
+	}
+	dt *= 0.000001f;
+
+
+	if (imu_ready)
+	{
+		if (mag_ready) {
+			MadgwickAHRSupdate(omega_b.pData[0], omega_b.pData[1], omega_b.pData[2],
+					accel_b.pData[0], accel_b.pData[1], accel_b.pData[2],
+					accel_b.pData[0], accel_b.pData[1], accel_b.pData[2],
+					dt); // TODO make it mag
+
+		} else {
+			MadgwickAHRSupdateIMU(omega_b.pData[0], omega_b.pData[1], omega_b.pData[2],
+								 accel_b.pData[0], accel_b.pData[1], accel_b.pData[2],
+								 dt);
+		}
+
+		// EKF prediction
+	}
+
+	if (baro_ready) {
+		// EKF correction
+	}
 
 }
 

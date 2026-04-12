@@ -49,6 +49,7 @@
 /* Private variables ---------------------------------------------------------*/
 ADC_HandleTypeDef hadc1;
 ADC_HandleTypeDef hadc3;
+DMA_HandleTypeDef hdma_adc3;
 
 OSPI_HandleTypeDef hospi1;
 
@@ -64,6 +65,7 @@ DMA_HandleTypeDef hdma_spi4_tx;
 
 TIM_HandleTypeDef htim3;
 TIM_HandleTypeDef htim4;
+TIM_HandleTypeDef htim6;
 TIM_HandleTypeDef htim7;
 TIM_HandleTypeDef htim16;
 TIM_HandleTypeDef htim17;
@@ -91,11 +93,34 @@ buzzer_t buzzer = {
 };
 
 servo_t servo = {
-	.handle = &htim17
+	.tim_handle = &htim17,
+	.en_gpio_port = SERVO_EN_GPIO_Port,
+	.en_pin = SERVO_EN_Pin,
+	.adc_handle = &hadc3
 };
 
-// Control system tick
-uint8_t poll = 0;
+extern uint8_t baro_ready;
+extern uint8_t mag_ready;
+extern uint8_t imu_ready;
+
+
+// Control system ticks
+uint8_t tick_100Hz = 0;
+uint8_t tick_500Hz = 0;
+
+// Mode selection
+enum Mode {
+	IDLE = 0,
+	TEST_LEDS = 1,
+	TEST_BUZZER = 2,
+	TEST_SERVO = 3,
+	TEST_SENSORS = 4,
+	TEST_FLASH = 5,
+	TEST_CONTROL = 6,
+	LAUNCH_DETECT = 7
+};
+enum Mode mode = 0;
+enum Mode mode_prev = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -104,6 +129,7 @@ void PeriphCommonClock_Config(void);
 static void MPU_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_DMA_Init(void);
+static void MX_BDMA_Init(void);
 static void MX_USB_OTG_HS_PCD_Init(void);
 static void MX_OCTOSPI1_Init(void);
 static void MX_UART4_Init(void);
@@ -116,6 +142,7 @@ static void MX_TIM3_Init(void);
 static void MX_TIM4_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_ADC3_Init(void);
+static void MX_TIM6_Init(void);
 static void MX_TIM7_Init(void);
 /* USER CODE BEGIN PFP */
 // printf UART
@@ -125,6 +152,9 @@ int32_t platform_write(void *handle, uint8_t reg, const uint8_t *bufp, uint16_t 
 int32_t platform_read(void *handle, uint8_t reg, uint8_t *bufp, uint16_t len);
 void platform_delay(uint32_t millisec);
 
+// State transitions
+void mode_transition_handler(enum Mode prev, enum Mode curr);
+void mode_current_handler(enum Mode curr);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -168,6 +198,7 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_DMA_Init();
+  MX_BDMA_Init();
   MX_USB_OTG_HS_PCD_Init();
   MX_OCTOSPI1_Init();
   MX_UART4_Init();
@@ -180,30 +211,31 @@ int main(void)
   MX_TIM4_Init();
   MX_ADC1_Init();
   MX_ADC3_Init();
+  MX_TIM6_Init();
   MX_TIM7_Init();
   /* USER CODE BEGIN 2 */
+  printf("System reset\r\n");
+
     black_eye_set(0, 1);
     black_eye_set(1, 1);
 
     rgb_led_init(&led0);
     rgb_led_init(&led1);
-    rgb_led_set(&led0, 0x800000);
-    rgb_led_set(&led1, 0x000080);
+    rgb_led_set(&led0, 0x006000);
+    rgb_led_set(&led1, 0x0000A0);
 
     buzzer_init(&buzzer);
 
     servo_init(&servo);
     servo_set(&servo, 500);
+    servo_enable(&servo, 0);
 
-    printf("Hello, world!\r\n");
-    uint8_t mode = get_mode_switch();
+    mode = get_mode_switch();
     printf("Mode: %u\r\n", mode);
 
     HAL_TIM_Base_Start_IT(&htim7); // start 100 Hz control system tick
 
-    HAL_Delay(100);
-
-    baro_init();
+    sensors_init();
 
   /* USER CODE END 2 */
 
@@ -215,17 +247,25 @@ int main(void)
 //	  HAL_Delay(500);
 //	  buzzer_set(&buzzer, 0);
 //	  HAL_Delay(500);
+//
+	  if (tick_100Hz) {
+		  tick_100Hz = 0;
 
-	  if (poll) {
-		  poll = 0;
+		  // Handle mode switch
+		  mode = get_mode_switch();
+		  if (mode != mode_prev) {
+			  mode_transition_handler(mode_prev, mode);
+			  mode_prev = mode;
+		  }
+		  mode_current_handler(mode);
 
-//		  uint8_t mode = get_mode_switch();
-//		  printf("Mode: %u\r\n", mode);
-
-		  float pres;
-		  get_pres_hpa(&pres);
-		  printf("Pressure: %f\r\n", pres);
 	  }
+
+
+
+//	  if (state_estimation) {
+//		  state_estimation();
+//	  }
 
     /* USER CODE END WHILE */
 
@@ -302,16 +342,18 @@ void PeriphCommonClock_Config(void)
 
   /** Initializes the peripherals clock
   */
-  PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_OSPI|RCC_PERIPHCLK_ADC;
+  PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_OSPI|RCC_PERIPHCLK_ADC
+                              |RCC_PERIPHCLK_SPI4;
   PeriphClkInitStruct.PLL2.PLL2M = 1;
   PeriphClkInitStruct.PLL2.PLL2N = 16;
-  PeriphClkInitStruct.PLL2.PLL2P = 8;
-  PeriphClkInitStruct.PLL2.PLL2Q = 2;
+  PeriphClkInitStruct.PLL2.PLL2P = 32;
+  PeriphClkInitStruct.PLL2.PLL2Q = 32;
   PeriphClkInitStruct.PLL2.PLL2R = 8;
   PeriphClkInitStruct.PLL2.PLL2RGE = RCC_PLL2VCIRANGE_3;
   PeriphClkInitStruct.PLL2.PLL2VCOSEL = RCC_PLL2VCOWIDE;
   PeriphClkInitStruct.PLL2.PLL2FRACN = 0;
   PeriphClkInitStruct.OspiClockSelection = RCC_OSPICLKSOURCE_PLL2;
+  PeriphClkInitStruct.Spi45ClockSelection = RCC_SPI45CLKSOURCE_PLL2;
   PeriphClkInitStruct.AdcClockSelection = RCC_ADCCLKSOURCE_PLL2;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
   {
@@ -409,7 +451,7 @@ static void MX_ADC3_Init(void)
   /** Common config
   */
   hadc3.Instance = ADC3;
-  hadc3.Init.ClockPrescaler = ADC_CLOCK_ASYNC_DIV1;
+  hadc3.Init.ClockPrescaler = ADC_CLOCK_ASYNC_DIV8;
   hadc3.Init.Resolution = ADC_RESOLUTION_12B;
   hadc3.Init.DataAlign = ADC3_DATAALIGN_RIGHT;
   hadc3.Init.ScanConvMode = ADC_SCAN_DISABLE;
@@ -422,7 +464,7 @@ static void MX_ADC3_Init(void)
   hadc3.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
   hadc3.Init.DMAContinuousRequests = DISABLE;
   hadc3.Init.SamplingMode = ADC_SAMPLING_MODE_NORMAL;
-  hadc3.Init.ConversionDataManagement = ADC_CONVERSIONDATA_DR;
+  hadc3.Init.ConversionDataManagement = ADC_CONVERSIONDATA_DMA_CIRCULAR;
   hadc3.Init.Overrun = ADC_OVR_DATA_PRESERVED;
   hadc3.Init.LeftBitShift = ADC_LEFTBITSHIFT_NONE;
   hadc3.Init.OversamplingMode = DISABLE;
@@ -436,7 +478,7 @@ static void MX_ADC3_Init(void)
   */
   sConfig.Channel = ADC_CHANNEL_0;
   sConfig.Rank = ADC_REGULAR_RANK_1;
-  sConfig.SamplingTime = ADC3_SAMPLETIME_2CYCLES_5;
+  sConfig.SamplingTime = ADC3_SAMPLETIME_640CYCLES_5;
   sConfig.SingleDiff = ADC_SINGLE_ENDED;
   sConfig.OffsetNumber = ADC_OFFSET_NONE;
   sConfig.Offset = 0;
@@ -525,7 +567,7 @@ static void MX_SPI1_Init(void)
   hspi1.Init.CLKPolarity = SPI_POLARITY_HIGH;
   hspi1.Init.CLKPhase = SPI_PHASE_2EDGE;
   hspi1.Init.NSS = SPI_NSS_SOFT;
-  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8;
   hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
@@ -538,7 +580,7 @@ static void MX_SPI1_Init(void)
   hspi1.Init.MasterSSIdleness = SPI_MASTER_SS_IDLENESS_00CYCLE;
   hspi1.Init.MasterInterDataIdleness = SPI_MASTER_INTERDATA_IDLENESS_00CYCLE;
   hspi1.Init.MasterReceiverAutoSusp = SPI_MASTER_RX_AUTOSUSP_DISABLE;
-  hspi1.Init.MasterKeepIOState = SPI_MASTER_KEEP_IO_STATE_DISABLE;
+  hspi1.Init.MasterKeepIOState = SPI_MASTER_KEEP_IO_STATE_ENABLE;
   hspi1.Init.IOSwap = SPI_IO_SWAP_DISABLE;
   if (HAL_SPI_Init(&hspi1) != HAL_OK)
   {
@@ -573,7 +615,7 @@ static void MX_SPI2_Init(void)
   hspi2.Init.CLKPolarity = SPI_POLARITY_HIGH;
   hspi2.Init.CLKPhase = SPI_PHASE_2EDGE;
   hspi2.Init.NSS = SPI_NSS_SOFT;
-  hspi2.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+  hspi2.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8;
   hspi2.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi2.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi2.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
@@ -586,7 +628,7 @@ static void MX_SPI2_Init(void)
   hspi2.Init.MasterSSIdleness = SPI_MASTER_SS_IDLENESS_00CYCLE;
   hspi2.Init.MasterInterDataIdleness = SPI_MASTER_INTERDATA_IDLENESS_00CYCLE;
   hspi2.Init.MasterReceiverAutoSusp = SPI_MASTER_RX_AUTOSUSP_DISABLE;
-  hspi2.Init.MasterKeepIOState = SPI_MASTER_KEEP_IO_STATE_DISABLE;
+  hspi2.Init.MasterKeepIOState = SPI_MASTER_KEEP_IO_STATE_ENABLE;
   hspi2.Init.IOSwap = SPI_IO_SWAP_DISABLE;
   if (HAL_SPI_Init(&hspi2) != HAL_OK)
   {
@@ -621,7 +663,7 @@ static void MX_SPI4_Init(void)
   hspi4.Init.CLKPolarity = SPI_POLARITY_HIGH;
   hspi4.Init.CLKPhase = SPI_PHASE_2EDGE;
   hspi4.Init.NSS = SPI_NSS_SOFT;
-  hspi4.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+  hspi4.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8;
   hspi4.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi4.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi4.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
@@ -634,7 +676,7 @@ static void MX_SPI4_Init(void)
   hspi4.Init.MasterSSIdleness = SPI_MASTER_SS_IDLENESS_00CYCLE;
   hspi4.Init.MasterInterDataIdleness = SPI_MASTER_INTERDATA_IDLENESS_00CYCLE;
   hspi4.Init.MasterReceiverAutoSusp = SPI_MASTER_RX_AUTOSUSP_DISABLE;
-  hspi4.Init.MasterKeepIOState = SPI_MASTER_KEEP_IO_STATE_DISABLE;
+  hspi4.Init.MasterKeepIOState = SPI_MASTER_KEEP_IO_STATE_ENABLE;
   hspi4.Init.IOSwap = SPI_IO_SWAP_DISABLE;
   if (HAL_SPI_Init(&hspi4) != HAL_OK)
   {
@@ -777,6 +819,44 @@ static void MX_TIM4_Init(void)
 
   /* USER CODE END TIM4_Init 2 */
   HAL_TIM_MspPostInit(&htim4);
+
+}
+
+/**
+  * @brief TIM6 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM6_Init(void)
+{
+
+  /* USER CODE BEGIN TIM6_Init 0 */
+
+  /* USER CODE END TIM6_Init 0 */
+
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+
+  /* USER CODE BEGIN TIM6_Init 1 */
+
+  /* USER CODE END TIM6_Init 1 */
+  htim6.Instance = TIM6;
+  htim6.Init.Prescaler = 63;
+  htim6.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim6.Init.Period = 1999;
+  htim6.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim6) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim6, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM6_Init 2 */
+
+  /* USER CODE END TIM6_Init 2 */
 
 }
 
@@ -1031,6 +1111,22 @@ static void MX_USB_OTG_HS_PCD_Init(void)
 /**
   * Enable DMA controller clock
   */
+static void MX_BDMA_Init(void)
+{
+
+  /* DMA controller clock enable */
+  __HAL_RCC_BDMA_CLK_ENABLE();
+
+  /* DMA interrupt init */
+  /* BDMA_Channel0_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(BDMA_Channel0_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(BDMA_Channel0_IRQn);
+
+}
+
+/**
+  * Enable DMA controller clock
+  */
 static void MX_DMA_Init(void)
 {
 
@@ -1156,8 +1252,23 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_Init(SERVO_EN_GPIO_Port, &GPIO_InitStruct);
 
   /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(BTN_0_EXTI_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(BTN_0_EXTI_IRQn);
+
+  HAL_NVIC_SetPriority(BTN_1_EXTI_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(BTN_1_EXTI_IRQn);
+
+  HAL_NVIC_SetPriority(BTN_2_EXTI_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(BTN_2_EXTI_IRQn);
+
+  HAL_NVIC_SetPriority(BTN_3_EXTI_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(BTN_3_EXTI_IRQn);
+
   HAL_NVIC_SetPriority(BARO_INT_EXTI_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(BARO_INT_EXTI_IRQn);
+
+  HAL_NVIC_SetPriority(IMU_INT1_EXTI_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(IMU_INT1_EXTI_IRQn);
 
   HAL_NVIC_SetPriority(MAG_INT_EXTI_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(MAG_INT_EXTI_IRQn);
@@ -1186,6 +1297,7 @@ PUTCHAR_PROTOTYPE
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
+//	printf("EXTI:%u\r\n", GPIO_Pin);
 	if (GPIO_Pin == BARO_INT_Pin) {
 		baro_int_drdy_handler();
 	} else if(GPIO_Pin == IMU_INT1_Pin || GPIO_Pin == IMU_INT2_Pin) {
@@ -1208,7 +1320,90 @@ void HAL_SPI_TxRxCpltCallback(SPI_HandleTypeDef *hspi)
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 	if (htim->Instance == TIM7) { // 100 Hz
-		poll = 1;
+		tick_100Hz = 1;
+	}
+	if (htim->Instance == TIM6) { // 500 Hz (state estimation)
+		tick_500Hz = 1;
+	}
+}
+
+// State
+void mode_transition_handler(enum Mode prev, enum Mode curr) {
+	printf("Mode transition from %u to %u\r\n", prev, curr);
+
+	// Handle exit from previous mode
+	switch (prev) {
+		case TEST_SERVO:
+			servo_enable(&servo, 0); // Disable servo power
+			break;
+		case TEST_BUZZER:
+			buzzer_set(&buzzer, 0);  // Ensure buzzer is off on exit
+			break;
+		default:
+			break;
+	}
+
+	// Handle entry to new mode
+	switch (curr) {
+		case TEST_SERVO:
+			servo_enable(&servo, 1); // Enable servo power
+			servo_set(&servo, 500);
+			break;
+		default:
+			break;
+	}
+}
+
+void mode_current_handler(enum Mode curr) {
+	switch (curr) {
+		case IDLE: // 0
+			break;
+		case TEST_LEDS: // 1
+			break;
+		case TEST_BUZZER: // 2
+			 if (HAL_GPIO_ReadPin(BTN_0_GPIO_Port, BTN_0_Pin) == GPIO_PIN_SET)
+			 {
+				 buzzer_set(&buzzer, 1);
+			 } else {
+				 buzzer_set(&buzzer, 0);
+			 }
+			break;
+		case TEST_SERVO: // 3
+			if (HAL_GPIO_ReadPin(BTN_0_GPIO_Port, BTN_0_Pin))
+			{
+				servo_set(&servo, 500);
+			} else if (HAL_GPIO_ReadPin(BTN_1_GPIO_Port, BTN_1_Pin))
+			{
+				servo_set(&servo, 1500);
+			} else if (HAL_GPIO_ReadPin(BTN_2_GPIO_Port, BTN_2_Pin))
+			{
+				servo_set(&servo, 2500);
+			}
+			printf("angle:%f\r\n", servo_get_angle(&servo));
+			break;
+		case TEST_SENSORS: // 4
+			float pres;
+			float accel[3];
+			float omega[3];
+
+			  if (baro_ready) {
+				  get_pres_hpa(&pres);
+			  }
+
+			  if (imu_ready) {
+				  get_accel_ms2(accel);
+				  get_omega_rads(omega);
+			  }
+
+			  printf("p:%f,ax:%f,ay:%f,az:%f,ox:%f,oy:%f,oz:%f\r\n", pres, accel[0], accel[1], accel[2], omega[0], omega[1], omega[2]);
+
+			break;
+		case TEST_FLASH: // 5
+			break;
+		case TEST_CONTROL: // 6
+			break;
+		case LAUNCH_DETECT: // 7
+			break;
 	}
 }
 
