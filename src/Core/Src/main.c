@@ -92,11 +92,13 @@ buzzer_t buzzer = {
     .handle = &htim16
 };
 
+__attribute__((section(".RAM_D3"))) uint16_t servo_fdbk_raw_buf;
 servo_t servo = {
 	.tim_handle = &htim17,
 	.en_gpio_port = SERVO_EN_GPIO_Port,
 	.en_pin = SERVO_EN_Pin,
-	.adc_handle = &hadc3
+	.adc_handle = &hadc3,
+	.fdbk_raw = &servo_fdbk_raw_buf
 };
 
 extern uint8_t baro_ready;
@@ -226,9 +228,13 @@ int main(void)
 
     buzzer_init(&buzzer);
 
+    // Servo init
+    HAL_NVIC_DisableIRQ(BDMA_Channel0_IRQn);
+    HAL_SYSCFG_AnalogSwitchConfig(SYSCFG_SWITCH_PC2, SYSCFG_SWITCH_PC2_CLOSE); // analog switch for fdbk pin
     servo_init(&servo);
     servo_set(&servo, 500);
     servo_enable(&servo, 0);
+
 
     mode = get_mode_switch();
     printf("Mode: %u\r\n", mode);
