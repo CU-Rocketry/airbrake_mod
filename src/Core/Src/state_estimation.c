@@ -7,29 +7,63 @@
 
 #include "arm_math.h"
 #include "sensors.h"
+#include "state_estimation.h"
+#include "MadgwickAHRS.h"
+
+uint16_t last_sample_time;
+uint16_t sample_time;
+float dt;
+
+extern uint8_t imu_ready;
+extern uint8_t mag_ready;
+extern uint8_t baro_ready;
 
 void state_estimation(void) {
 
-	arm_matrix_instance accel_b;
-	arm_matrix_instance omega_b;
+	arm_matrix_instance_f32 accel_b, omega_b;
+	get_imu_b(&accel_b, &omega_b);
 
-	status = get_imu_b(&accel_b,&omega_b);
+	if (sample_time < last_sample_time) {
+		dt = (0xFFFF - last_sample_time + sample_time); // [us]
+	} else {
+		dt = (sample_time - last_sample_time); // [us]
+	}
+	dt *= 0.000001f;
 
-	arm_matrix_instance mag_b;
-	status = get_mag_b(&mag_b);
+
+	if (imu_ready)
+	{
+		if (mag_ready) {
+			MadgwickAHRSupdate(omega_b.pData[0], omega_b.pData[1], omega_b.pData[2],
+					accel_b.pData[0], accel_b.pData[1], accel_b.pData[2],
+					accel_b.pData[0], accel_b.pData[1], accel_b.pData[2],
+					dt); // TODO make it mag
+
+		} else {
+			MadgwickAHRSupdateIMU(omega_b.pData[0], omega_b.pData[1], omega_b.pData[2],
+								 accel_b.pData[0], accel_b.pData[1], accel_b.pData[2],
+								 dt);
+		}
+
+		// EKF prediction
+	}
+
+	if (baro_ready) {
+		// EKF correction
+	}
 
 }
 
-arm_status get_imu_b(arm_matrix_instance *out_accel, arm_matrix_instance *out_omega)
+arm_status get_imu_b(arm_matrix_instance_f32 *out_accel, arm_matrix_instance_f32 *out_omega)
 {
 	arm_status status;
 
 	float accel[3];
 
-	get_accel_ms2(&accel); // TODO
+	get_accel_ms2(accel); // TODO
 
 	float omega[3];
-	get_accel_rads(&omega); // TODO
+	get_omega_rads(omega); // TODO
 
 	static float32_t rot_imu_to_b_data[3*3] = {
 	  0, 0, 1,
@@ -37,10 +71,10 @@ arm_status get_imu_b(arm_matrix_instance *out_accel, arm_matrix_instance *out_om
 	  1, 0, 0
 	};
 
-	arm_matrix_instance rot_imu_to_b;
-	arm_matrix_instance accel_row, accel_col, accel_b;
+	arm_matrix_instance_f32 rot_imu_to_b;
+	arm_matrix_instance_f32 accel_row, accel_col, accel_b;
 
-	arm_matrix_instance omega_row, omega_col, omega_b;
+	arm_matrix_instance_f32 omega_row, omega_col, omega_b;
 
 	arm_mat_init_f32(&rot_imu_to_b, 3, 3, rot_imu_to_b_data);
 	arm_mat_init_f32(&accel_row, 1, 3, accel);
@@ -52,47 +86,49 @@ arm_status get_imu_b(arm_matrix_instance *out_accel, arm_matrix_instance *out_om
 
 	status = arm_mat_trans_f32(&omega_row, &omega_col);
 	status = arm_mat_mult_f32(&rot_imu_to_b, &omega_col, &omega_b);
-	return arm_status;
+
+	return status;
 }
 
-arm_status get_mag_b(arm_matrix_instance *out_mag)
+arm_status get_mag_b(arm_matrix_instance_f32 *out_mag)
 {
-	arm_status status;
+		arm_status status;
 
-	float mag[3];
+		float mag[3];
 
-	get_mag_mgauss(&mag); // TODO
+		get_mag_mgauss(mag); // TODO
 
-	static float32_t mag_to_b_data[3*3] = {
-	  0, 0, 1,
-	  0, -1, 0,
-	  -1, 0, 0
-	};
-	arm_matrix_instance rot_mag_to_b;
-	arm_matrix_instance mag_row, mag_col, mag_b;
-
-
-
-	arm_mat_init_f32(&mag_row, 1, 3, mag);
+		static float32_t mag_to_b_data[3*3] = {
+		  0, 0, 1,
+		  0, -1, 0,
+		  -1, 0, 0
+		};
+		arm_matrix_instance_f32 rot_mag_to_b;
+		arm_matrix_instance_f32 mag_row, mag_col, mag_b;
 
 
-	status = arm_mat_trans_f32(&mag_row, &mag_col);
-	status = arm_mat_mult_f32(&rot_mag_to_b, &mag_col, &mag_b);
+		arm_mat_init_f32(&rot_mag_to_b, 3, 3, mag_to_b_data);
+		arm_mat_init_f32(&mag_row, 1, 3, mag);
 
-	return arm_status;
 
+		status = arm_mat_trans_f32(&mag_row, &mag_col);
+		status = arm_mat_mult_f32(&rot_mag_to_b, &mag_col, &mag_b);
+
+		return status;
 }
+
+//indexing starts at zero
+//u cross v
 
 void quat_conj(arm_matrix_instance *in,arm_matrix_instance *out)
 {
 	float out_data[4] = {in->pdata[0], -(in->pdata[1]),-(in->pdata[2]),-(in->pdata[4])};
-
-	arm_matrix_instance out_mat;
-
-	arm_mat_init_f32(&out_mat,4,1,out_data);
-	out=out_mat;
-}
-
+	status = arm_mat_trans_f32(&mag_row, &mag_col);
+			status = arm_mat_mult_f32(&rot_mag_to_b, &mag_col, &mag_b);
+			arm_matrix_instance out_mat;
+			arm_mat_init_f32(&out_mat,4,1,out_data);
+				out=out_mat;
+			}
 void cross_prod(arm_matrix_instance *a,arm_matrix_instance *b, arm_matrix_instance *out)
 {
 	float a_data[3]=a->pdata;
@@ -108,10 +144,11 @@ void cross_prod(arm_matrix_instance *a,arm_matrix_instance *b, arm_matrix_instan
 		out=out_mat;
 		//cross product
 }
-
-//pdata=[scalar,i,j,k]
+s=pData[0];
+//pData=[scalar,i,j,k]
 //scalar=s
-//vector being rotated=pdata[1],pdata[2],pdata[3]
+//vector being rotated=pData[1],pData[2],pData[3];
+
 
 //v= i,j,k components of original vector
 
@@ -120,32 +157,29 @@ void cross_prod(arm_matrix_instance *a,arm_matrix_instance *b, arm_matrix_instan
 
 
 //s=scalar
-s=pdata[0];
+
 
 //v=3 dim vector
 
-v=[pdata[1],pdata[2],pdata[3];]
+v=pData[1],pData[2],pData[3];
 
 //unit length quaternion:
-q=(r,s)
+//q=(r,s);
 
 
 
 
-q=[0,pdata[1],pdata[2],pdata[3]];
+q0=0,pData[1],pData[2],pData[3];
+//unit quaternion is normalized/divided by its length
+magq=arm_sqrt_f32(q0);
+q=(1/magq)*q0;
 
 
-//new rotated vector:
-rot_vector=q[1,2,3]+arm_scale_f32(2,q[1],q[2],q[3])*cross_prod()(cross_prod()+sv)
-
-//rotated vector=
 
 
-//2(quaternion vector components dotted with original vector
 //components)*quaternion vector components+(s^2-quat vector dotted w/ quat vector)*original vector components)
 //+2s(quat vector comps cross original vector comps)
 
 
-rot_vector=arm_mult_f32(2(arm_dot_prod_f32(r,v)))+arm_mult_f32(s*s-arm_dot_prod_f32(r,r),v)+2s*cross_prod(r,v)
-
+rot_vector=arm_mult_f32(2(arm_dot_prod_f32(u,v)))+arm_mult_f32(s*s-arm_dot_prod_f32(q,q),v)+2*s*cross_prod(u,v);
 
