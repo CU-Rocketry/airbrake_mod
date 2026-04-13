@@ -117,3 +117,69 @@ arm_status get_mag_b(arm_matrix_instance_f32 *out_mag)
 		return status;
 }
 
+//indexing starts at zero
+//u cross v
+
+void quat_conj(arm_matrix_instance *in,arm_matrix_instance *out)
+{
+	float out_data[4] = {in->pdata[0], -(in->pdata[1]),-(in->pdata[2]),-(in->pdata[4])};
+	status = arm_mat_trans_f32(&mag_row, &mag_col);
+			status = arm_mat_mult_f32(&rot_mag_to_b, &mag_col, &mag_b);
+			arm_matrix_instance out_mat;
+			arm_mat_init_f32(&out_mat,4,1,out_data);
+				out=out_mat;
+			}
+void cross_prod(arm_matrix_instance *a,arm_matrix_instance *b, arm_matrix_instance *out)
+{
+	float a_data[3]=a->pdata;
+	float b_data[3]=b->pdata;
+	float out_data[3];
+	out_data[0]=(a_data[1]*b_data[2]-b_data[1]*a_data[2]);
+	out_data[1]=-(a_data[0]*b_data[2]-b_data[0]*a_data[2]);
+	out_data[2]=a_data[0]*b_data[1]-b_data[0]*a_data[1];
+
+	arm_matrix_instance out_mat;
+
+		arm_mat_init_f32(*out_mat,3,1,out_data);
+		out=out_mat;
+		//cross product
+}
+s=pData[0];
+//pData=[scalar,i,j,k]
+//scalar=s
+//vector being rotated=pData[1],pData[2],pData[3];
+
+
+//v= i,j,k components of original vector
+
+//r=vector components of quaternion we're rotating about
+//q=quaternion=[0,r]
+
+
+//s=scalar
+
+
+//v=3 dim vector
+
+v=pData[1],pData[2],pData[3];
+
+//unit length quaternion:
+//q=(r,s);
+
+
+
+
+q0=0,pData[1],pData[2],pData[3];
+//unit quaternion is normalized/divided by its length
+magq=arm_sqrt_f32(q0);
+q=(1/magq)*q0;
+
+
+
+
+//components)*quaternion vector components+(s^2-quat vector dotted w/ quat vector)*original vector components)
+//+2s(quat vector comps cross original vector comps)
+
+
+rot_vector=arm_mult_f32(2(arm_dot_prod_f32(u,v)))+arm_mult_f32(s*s-arm_dot_prod_f32(q,q),v)+2*s*cross_prod(u,v);
+
