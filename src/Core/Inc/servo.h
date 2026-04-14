@@ -16,7 +16,10 @@ typedef struct {
 	uint16_t en_pin;
 	// Feedback
 	ADC_HandleTypeDef* adc_handle;
-	uint32_t fdbk_raw;
+	uint16_t* fdbk_raw;
+	// Air brakes endpoints
+	uint32_t duty_retracted;
+	uint32_t duty_extended;
 } servo_t;
 
 // duty is the on time of the pulse (min 500 max 2500) [us]
@@ -45,7 +48,7 @@ void servo_init(servo_t* servo) {
 	HAL_TIM_PWM_Start(servo->tim_handle, TIM_CHANNEL_1);
 
 	// start ADC
-	HAL_ADC_Start_DMA(servo->adc_handle, &servo->fdbk_raw, 1);
+	HAL_ADC_Start_DMA(servo->adc_handle, (uint32_t*)servo->fdbk_raw, 1);
 }
 
 float servo_get_angle(servo_t* servo) {
@@ -53,7 +56,7 @@ float servo_get_angle(servo_t* servo) {
 	// needs to be mapped into the ADC 0 to 4096 range
 	// 300mV = 372 counts and 3000mV = 3724 counts
 
-	uint16_t raw = servo->fdbk_raw;
+	uint16_t raw = *(servo->fdbk_raw);
 
 	// clamp values to prevent out-of-bounds angles due to noise
 	if (raw < 372) {
@@ -64,6 +67,8 @@ float servo_get_angle(servo_t* servo) {
 
 	// map the range (raw - counts_min) * (angle_max / counts_range)
 	float angle = (float)(raw - 372) * (180.0f / (3724.0f - 372.0f));
+
+	printf("fdbk:%f\r\n", angle);
 
 	return angle;
 }

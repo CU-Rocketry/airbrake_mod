@@ -29,6 +29,7 @@
 #include "buzzer.h"
 #include "servo.h"
 #include "mode_switch.h"
+#include "state_estimation.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -49,7 +50,6 @@
 /* Private variables ---------------------------------------------------------*/
 ADC_HandleTypeDef hadc1;
 ADC_HandleTypeDef hadc3;
-DMA_HandleTypeDef hdma_adc3;
 
 OSPI_HandleTypeDef hospi1;
 
@@ -92,12 +92,18 @@ buzzer_t buzzer = {
     .handle = &htim16
 };
 
+uint16_t servo_fdbk_raw_buf;
 servo_t servo = {
 	.tim_handle = &htim17,
 	.en_gpio_port = SERVO_EN_GPIO_Port,
 	.en_pin = SERVO_EN_Pin,
-	.adc_handle = &hadc3
+	.adc_handle = &hadc3,
+	.fdbk_raw = &servo_fdbk_raw_buf,
+	.duty_retracted = 1000,
+	.duty_extended = 2370
 };
+uint32_t servo_duty = 500;
+uint8_t endpoint_selected = 0;
 
 extern uint8_t baro_ready;
 extern uint8_t mag_ready;
@@ -129,7 +135,6 @@ void PeriphCommonClock_Config(void);
 static void MPU_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_DMA_Init(void);
-static void MX_BDMA_Init(void);
 static void MX_USB_OTG_HS_PCD_Init(void);
 static void MX_OCTOSPI1_Init(void);
 static void MX_UART4_Init(void);
@@ -198,7 +203,6 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_DMA_Init();
-  MX_BDMA_Init();
   MX_USB_OTG_HS_PCD_Init();
   MX_OCTOSPI1_Init();
   MX_UART4_Init();
@@ -261,11 +265,9 @@ int main(void)
 
 	  }
 
-
-
-//	  if (state_estimation) {
-//		  state_estimation();
-//	  }
+	  if (tick_500Hz) {
+		  state_estimation();
+	  }
 
     /* USER CODE END WHILE */
 
@@ -457,14 +459,14 @@ static void MX_ADC3_Init(void)
   hadc3.Init.ScanConvMode = ADC_SCAN_DISABLE;
   hadc3.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
   hadc3.Init.LowPowerAutoWait = DISABLE;
-  hadc3.Init.ContinuousConvMode = ENABLE;
+  hadc3.Init.ContinuousConvMode = DISABLE;
   hadc3.Init.NbrOfConversion = 1;
   hadc3.Init.DiscontinuousConvMode = DISABLE;
   hadc3.Init.ExternalTrigConv = ADC_SOFTWARE_START;
   hadc3.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
   hadc3.Init.DMAContinuousRequests = DISABLE;
   hadc3.Init.SamplingMode = ADC_SAMPLING_MODE_NORMAL;
-  hadc3.Init.ConversionDataManagement = ADC_CONVERSIONDATA_DMA_CIRCULAR;
+  hadc3.Init.ConversionDataManagement = ADC_CONVERSIONDATA_DR;
   hadc3.Init.Overrun = ADC_OVR_DATA_PRESERVED;
   hadc3.Init.LeftBitShift = ADC_LEFTBITSHIFT_NONE;
   hadc3.Init.OversamplingMode = DISABLE;
@@ -478,7 +480,7 @@ static void MX_ADC3_Init(void)
   */
   sConfig.Channel = ADC_CHANNEL_0;
   sConfig.Rank = ADC_REGULAR_RANK_1;
-  sConfig.SamplingTime = ADC3_SAMPLETIME_640CYCLES_5;
+  sConfig.SamplingTime = ADC3_SAMPLETIME_2CYCLES_5;
   sConfig.SingleDiff = ADC_SINGLE_ENDED;
   sConfig.OffsetNumber = ADC_OFFSET_NONE;
   sConfig.Offset = 0;
@@ -1111,22 +1113,6 @@ static void MX_USB_OTG_HS_PCD_Init(void)
 /**
   * Enable DMA controller clock
   */
-static void MX_BDMA_Init(void)
-{
-
-  /* DMA controller clock enable */
-  __HAL_RCC_BDMA_CLK_ENABLE();
-
-  /* DMA interrupt init */
-  /* BDMA_Channel0_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(BDMA_Channel0_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(BDMA_Channel0_IRQn);
-
-}
-
-/**
-  * Enable DMA controller clock
-  */
 static void MX_DMA_Init(void)
 {
 
@@ -1369,17 +1355,45 @@ void mode_current_handler(enum Mode curr) {
 			 }
 			break;
 		case TEST_SERVO: // 3
+			// BTN0 goes to retracted endpoint
+			// BTN1 goes to extended endpoint
+			// BTN2 decreases deployment of endpoint
+			// BTN3 increases deployment of endpoint
 			if (HAL_GPIO_ReadPin(BTN_0_GPIO_Port, BTN_0_Pin))
 			{
-				servo_set(&servo, 500);
+				servo_set(&servo, servo.duty_retracted);
+				endpoint_selected = 0;
 			} else if (HAL_GPIO_ReadPin(BTN_1_GPIO_Port, BTN_1_Pin))
 			{
-				servo_set(&servo, 1500);
+				servo_set(&servo, servo.duty_extended);
+				endpoint_selected = 1;
 			} else if (HAL_GPIO_ReadPin(BTN_2_GPIO_Port, BTN_2_Pin))
 			{
-				servo_set(&servo, 2500);
+				if (endpoint_selected == 0) { // retracted
+					servo.duty_retracted -= 1;
+					servo_set(&servo, servo.duty_retracted);
+					printf("retracted:%lu\r\n", servo.duty_retracted);
+				} else if (endpoint_selected == 1) { // extended
+					servo.duty_extended -= 1;
+					servo_set(&servo, servo.duty_extended);
+					printf("extended:%lu\r\n", servo.duty_extended);
+				}
+			} else if (HAL_GPIO_ReadPin(BTN_3_GPIO_Port, BTN_3_Pin))
+			{
+				if (endpoint_selected == 0) { // retracted
+					servo.duty_retracted += 1;
+					servo_set(&servo, servo.duty_retracted);
+					printf("retracted:%lu\r\n", servo.duty_retracted);
+				} else if (endpoint_selected == 1) { // extended
+					servo.duty_extended += 1;
+					servo_set(&servo, servo.duty_extended);
+					printf("extended:%lu\r\n", servo.duty_extended);
+				}
 			}
-			printf("angle:%f\r\n", servo_get_angle(&servo));
+
+			servo_get_angle(&servo);
+
+//			printf("angle:%f\r\n", servo_get_angle(&servo));
 			break;
 		case TEST_SENSORS: // 4
 			float pres;

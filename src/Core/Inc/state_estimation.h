@@ -8,7 +8,10 @@
 #ifndef INC_STATE_ESTIMATION_H_
 #define INC_STATE_ESTIMATION_H_
 
+#include "arm_math.h"
+
 void state_estimation(void);
 arm_status get_imu_b(arm_matrix_instance_f32 *out_accel, arm_matrix_instance_f32 *out_omega);
+arm_status get_mag_b(arm_matrix_instance_f32 *out_mag);
 
 #endif /* INC_STATE_ESTIMATION_H_ */
