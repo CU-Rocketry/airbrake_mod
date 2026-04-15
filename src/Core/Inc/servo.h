@@ -16,6 +16,7 @@ typedef struct {
 	uint16_t en_pin;
 	// Feedback
 	ADC_HandleTypeDef* adc_handle;
+	volatile uint16_t* dma_buf;
 	// Air brakes endpoints
 	uint32_t duty_retracted;
 	uint32_t duty_extended;
@@ -45,6 +46,9 @@ void servo_init(servo_t* servo) {
 
 	// start PWM
 	HAL_TIM_PWM_Start(servo->tim_handle, TIM_CHANNEL_1);
+
+	// start continuous ADC
+	HAL_ADC_Start_DMA(servo->adc_handle, (uint32_t*)servo->dma_buf, 1);
 }
 
 float servo_get_angle(servo_t* servo) {
@@ -52,9 +56,12 @@ float servo_get_angle(servo_t* servo) {
 	// needs to be mapped into the ADC 0 to 4096 range
 	// 300mV = 372 counts and 3000mV = 3724 counts
 
-	HAL_ADC_Start(servo->adc_handle);
-	HAL_ADC_PollForConversion(servo->adc_handle, 1);
-	uint32_t raw = HAL_ADC_GetValue(servo->adc_handle);
+//	HAL_ADC_Start(servo->adc_handle);
+//	HAL_ADC_PollForConversion(servo->adc_handle, 1);
+//	uint32_t raw = HAL_ADC_GetValue(servo->adc_handle);
+
+//	SCB_InvalidateDCache_by_Addr((uint32_t*)servo->dma_buf, 2);
+	uint32_t raw = servo->dma_buf[0];
 
 	// clamp to known voltage range (300 to 3000 mV)
 	if (raw < 372) {

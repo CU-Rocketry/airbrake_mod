@@ -53,6 +53,7 @@
 ADC_HandleTypeDef hadc1;
 ADC_HandleTypeDef hadc3;
 DMA_HandleTypeDef hdma_adc1;
+DMA_HandleTypeDef hdma_adc3;
 
 OSPI_HandleTypeDef hospi1;
 
@@ -95,11 +96,13 @@ buzzer_t buzzer = {
     .handle = &htim16
 };
 
+__attribute__((section(".bdma_buf"))) volatile uint16_t servo_dma_buf[1];
 servo_t servo = {
 	.tim_handle = &htim17,
 	.en_gpio_port = SERVO_EN_GPIO_Port,
 	.en_pin = SERVO_EN_Pin,
 	.adc_handle = &hadc3,
+	.dma_buf = servo_dma_buf,
 	.duty_retracted = 1000,
 	.duty_extended = 2370
 };
@@ -142,6 +145,7 @@ void PeriphCommonClock_Config(void);
 static void MPU_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_DMA_Init(void);
+static void MX_BDMA_Init(void);
 static void MX_USB_OTG_HS_PCD_Init(void);
 static void MX_OCTOSPI1_Init(void);
 static void MX_UART4_Init(void);
@@ -154,8 +158,8 @@ static void MX_TIM3_Init(void);
 static void MX_TIM4_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_ADC3_Init(void);
-static void MX_TIM6_Init(void);
 static void MX_TIM7_Init(void);
+static void MX_TIM6_Init(void);
 /* USER CODE BEGIN PFP */
 // printf UART
 #define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
@@ -210,6 +214,7 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_DMA_Init();
+  MX_BDMA_Init();
   MX_USB_OTG_HS_PCD_Init();
   MX_OCTOSPI1_Init();
   MX_UART4_Init();
@@ -222,8 +227,8 @@ int main(void)
   MX_TIM4_Init();
   MX_ADC1_Init();
   MX_ADC3_Init();
-  MX_TIM6_Init();
   MX_TIM7_Init();
+  MX_TIM6_Init();
   /* USER CODE BEGIN 2 */
   printf("System reset\r\n");
 
@@ -358,7 +363,7 @@ void PeriphCommonClock_Config(void)
                               |RCC_PERIPHCLK_SPI4;
   PeriphClkInitStruct.PLL2.PLL2M = 1;
   PeriphClkInitStruct.PLL2.PLL2N = 16;
-  PeriphClkInitStruct.PLL2.PLL2P = 4;
+  PeriphClkInitStruct.PLL2.PLL2P = 32;
   PeriphClkInitStruct.PLL2.PLL2Q = 32;
   PeriphClkInitStruct.PLL2.PLL2R = 8;
   PeriphClkInitStruct.PLL2.PLL2RGE = RCC_PLL2VCIRANGE_3;
@@ -478,14 +483,14 @@ static void MX_ADC3_Init(void)
   hadc3.Init.ScanConvMode = ADC_SCAN_DISABLE;
   hadc3.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
   hadc3.Init.LowPowerAutoWait = DISABLE;
-  hadc3.Init.ContinuousConvMode = DISABLE;
+  hadc3.Init.ContinuousConvMode = ENABLE;
   hadc3.Init.NbrOfConversion = 1;
   hadc3.Init.DiscontinuousConvMode = DISABLE;
   hadc3.Init.ExternalTrigConv = ADC_SOFTWARE_START;
   hadc3.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
-  hadc3.Init.DMAContinuousRequests = DISABLE;
+  hadc3.Init.DMAContinuousRequests = ENABLE;
   hadc3.Init.SamplingMode = ADC_SAMPLING_MODE_NORMAL;
-  hadc3.Init.ConversionDataManagement = ADC_CONVERSIONDATA_DR;
+  hadc3.Init.ConversionDataManagement = ADC_CONVERSIONDATA_DMA_CIRCULAR;
   hadc3.Init.Overrun = ADC_OVR_DATA_PRESERVED;
   hadc3.Init.LeftBitShift = ADC_LEFTBITSHIFT_NONE;
   hadc3.Init.OversamplingMode = DISABLE;
@@ -499,7 +504,7 @@ static void MX_ADC3_Init(void)
   */
   sConfig.Channel = ADC_CHANNEL_0;
   sConfig.Rank = ADC_REGULAR_RANK_1;
-  sConfig.SamplingTime = ADC3_SAMPLETIME_12CYCLES_5;
+  sConfig.SamplingTime = ADC3_SAMPLETIME_640CYCLES_5;
   sConfig.SingleDiff = ADC_SINGLE_ENDED;
   sConfig.OffsetNumber = ADC_OFFSET_NONE;
   sConfig.Offset = 0;
@@ -1132,6 +1137,22 @@ static void MX_USB_OTG_HS_PCD_Init(void)
 /**
   * Enable DMA controller clock
   */
+static void MX_BDMA_Init(void)
+{
+
+  /* DMA controller clock enable */
+  __HAL_RCC_BDMA_CLK_ENABLE();
+
+  /* DMA interrupt init */
+  /* BDMA_Channel0_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(BDMA_Channel0_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(BDMA_Channel0_IRQn);
+
+}
+
+/**
+  * Enable DMA controller clock
+  */
 static void MX_DMA_Init(void)
 {
 
@@ -1413,14 +1434,13 @@ void mode_current_handler(enum Mode curr) {
 				}
 			}
 
-//			float servo_fdbk = servo_get_angle(&servo);
+			float servo_fdbk = servo_get_angle(&servo);
+			printf("fdbk:%f\r\n", servo_fdbk);
 
-			float batt_v;
-			float batt_i;
-			batt_sense_get(&batt_sense, &batt_v, &batt_i);
-
-//			printf("fdbk:%f\r\n", servo_fdbk);
-			printf("v:%f,i:%f\r\n", batt_v, batt_i);
+//			float batt_v;
+//			float batt_i;
+//			batt_sense_get(&batt_sense, &batt_v, &batt_i);
+//			printf("v:%f,i:%f\r\n", batt_v, batt_i);
 
 			break;
 		case TEST_SENSORS: // 4
