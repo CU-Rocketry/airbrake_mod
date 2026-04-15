@@ -9,6 +9,8 @@
 #include "sensors.h"
 #include "state_estimation.h"
 #include "MadgwickAHRS.h"
+#include <stdio.h>
+#include "state.h"
 
 uint16_t last_sample_time;
 uint16_t sample_time;
@@ -18,14 +20,24 @@ extern uint8_t imu_ready;
 extern uint8_t mag_ready;
 extern uint8_t baro_ready;
 
+float roll, pitch, yaw;
+
 void state_estimation(void) {
 
+	float accel_b_data[3];
+	float omega_b_data[3];
 	arm_matrix_instance_f32 accel_b, omega_b;
+	arm_mat_init_f32(&accel_b, 3, 1, accel_b_data);
+	arm_mat_init_f32(&omega_b, 3, 1, omega_b_data);
+
 	get_imu_b(&accel_b, &omega_b);
 
+	float mag_b_data[3];
 	arm_matrix_instance_f32 mag_b;
-	get_mag_b(&mag_b);
+	arm_mat_init_f32(&mag_b, 3, 1, mag_b_data);
+//	get_mag_b(&mag_b);
 
+	// TODO
 //	if (sample_time < last_sample_time) {
 //		dt = (0xFFFF - last_sample_time + sample_time); // [us]
 //	} else {
@@ -37,11 +49,13 @@ void state_estimation(void) {
 
 	if (imu_ready)
 	{
+		imu_ready = 0;
 		if (mag_ready) {
+			mag_ready = 0;
 			MadgwickAHRSupdate(omega_b.pData[0], omega_b.pData[1], omega_b.pData[2],
 					accel_b.pData[0], accel_b.pData[1], accel_b.pData[2],
 					mag_b.pData[0], mag_b.pData[1], mag_b.pData[2],
-					dt); // TODO make it mag
+					dt);
 
 		} else {
 			MadgwickAHRSupdateIMU(omega_b.pData[0], omega_b.pData[1], omega_b.pData[2],
@@ -53,26 +67,38 @@ void state_estimation(void) {
 	}
 
 	if (baro_ready) {
+		baro_ready = 0;
 		// EKF correction
 	}
 
-	// Quaternion to euler angles for output
-	float roll  = atan2f(2.0f * (q0 * q1 + q2 * q3), 1.0f - 2.0f * (q1 * q1 + q2 * q2));
-	float pitch = asinf(2.0f * (q0 * q2 - q3 * q1));
-	float yaw   = atan2f(2.0f * (q0 * q3 + q1 * q2), 1.0f - 2.0f * (q2 * q2 + q3 * q3));
+	MadgwickQuaternionGet(state.quat);
 
+//	// Quaternion to euler angles for output
+//	state.roll  = atan2f(2.0f * (q[0] * q[1] + q[2] * q[3]), 1.0f - 2.0f * (q[1] * q[1] + q[2] * q[2]));
+//	state.pitch = asinf(2.0f * (q[0] * q[2] - q[3] * q[1]));
+//	state.yaw   = atan2f(2.0f * (q[0] * q[3] + q[1] * q[2]), 1.0f - 2.0f * (q[2] * q[2] + q[3] * q[3]));
+//
+//	// pi = 180 degrees
+//	state.roll *= (180.0f / PI);
+//	state.pitch *= (180.0f / PI);
+//	state.yaw *= (180.0f / PI);
 }
+
+void state_estimation_ea_get(float* out_roll, float* out_pitch, float* out_yaw) {
+	*out_roll = roll;
+	*out_pitch = pitch;
+	*out_yaw = yaw;
+}
+
+// ax:9.818493,ay:0.019139,az:-0.531117,ax_b:-0.531117,ay_b:-0.019139,az_b:-0.019139
 
 arm_status get_imu_b(arm_matrix_instance_f32 *out_accel, arm_matrix_instance_f32 *out_omega)
 {
 	arm_status status;
 
-	float accel[3];
-
-	get_accel_ms2(accel); // TODO
-
-	float omega[3];
-	get_omega_rads(omega); // TODO
+//	float accel[3] = state.accel_ms2;
+//	float omega[3] = state.omega_rads;
+	// this is wrong
 
 	static float32_t rot_imu_to_b_data[3*3] = {
 	  0, 0, 1,
@@ -81,20 +107,29 @@ arm_status get_imu_b(arm_matrix_instance_f32 *out_accel, arm_matrix_instance_f32
 	};
 
 	arm_matrix_instance_f32 rot_imu_to_b;
-	arm_matrix_instance_f32 accel_row, accel_col, accel_b;
-
-	arm_matrix_instance_f32 omega_row, omega_col, omega_b;
-
 	arm_mat_init_f32(&rot_imu_to_b, 3, 3, rot_imu_to_b_data);
-	arm_mat_init_f32(&accel_row, 1, 3, accel);
-	arm_mat_init_f32(&omega_row, 1, 3, omega);
 
+	float accel_col_data[3];
+	float omega_col_data[3];
+
+	arm_matrix_instance_f32 accel_row, accel_col;
+	arm_matrix_instance_f32 omega_row, omega_col;
+
+	arm_mat_init_f32(&accel_row, 1, 3, state.accel_ms2);
+	arm_mat_init_f32(&omega_row, 1, 3, state.omega_rads);
+
+	arm_mat_init_f32(&accel_col, 3, 1, accel_col_data);
+	arm_mat_init_f32(&omega_col, 3, 1, omega_col_data);
 
 	status = arm_mat_trans_f32(&accel_row, &accel_col);
-	status = arm_mat_mult_f32(&rot_imu_to_b, &accel_col, &accel_b);
+	status = arm_mat_mult_f32(&rot_imu_to_b, &accel_col, out_accel);
+
+	memcpy(state.accel_b, out_accel->pData, 3 * sizeof(float));
 
 	status = arm_mat_trans_f32(&omega_row, &omega_col);
-	status = arm_mat_mult_f32(&rot_imu_to_b, &omega_col, &omega_b);
+	status = arm_mat_mult_f32(&rot_imu_to_b, &omega_col, out_omega);
+
+	memcpy(state.omega_b, out_omega->pData, 3 * sizeof(float));
 
 	return status;
 }
@@ -103,9 +138,7 @@ arm_status get_mag_b(arm_matrix_instance_f32 *out_mag)
 {
 		arm_status status;
 
-		float mag[3];
-
-		get_mag_mgauss(mag); // TODO
+//		float mag[3] = state.mag_mgauss;
 
 		static float32_t mag_to_b_data[3*3] = {
 		  0, 0, 1,
@@ -117,7 +150,7 @@ arm_status get_mag_b(arm_matrix_instance_f32 *out_mag)
 
 
 		arm_mat_init_f32(&rot_mag_to_b, 3, 3, mag_to_b_data);
-		arm_mat_init_f32(&mag_row, 1, 3, mag);
+		arm_mat_init_f32(&mag_row, 1, 3, state.mag_mgauss);
 
 
 		status = arm_mat_trans_f32(&mag_row, &mag_col);
@@ -178,10 +211,10 @@ arm_status get_mag_b(arm_matrix_instance_f32 *out_mag)
 
 
 
-//q0=0,pData[1],pData[2],pData[3];
+//q[0]=0,pData[1],pData[2],pData[3];
 //unit quaternion is normalized/divided by its length
-//magq=arm_sqrt_f32(q0);
-//q=(1/magq)*q0;
+//magq=arm_sqrt_f32(q[0]);
+//q=(1/magq)*q[0];
 
 
 

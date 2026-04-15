@@ -11,6 +11,7 @@
 #include "iis2mdc_reg.h"
 #include <string.h>
 #include <stdio.h>
+#include "state.h"
 
 #define MG_TO_MS2 0.009805f
 //1 g=9.805 m/s^2; 1000 mG=1 g
@@ -34,17 +35,11 @@ stmdev_ctx_t lps22df_ctx;
 stmdev_ctx_t lsm6dsv80x_ctx;
 stmdev_ctx_t iis2mdc_ctx;
 
-// Sensor readings
+// Sensor readings in LSBs
 uint32_t pres_raw;
-float pres_hpa;
-
 int16_t accel_raw[3];
 int16_t omega_raw[3];
-float accel_ms2[3];
-float omega_rads[3];
-
 int16_t mag_raw[3];
-float mag_mgauss[3];
 
 // New data available flags
 uint8_t baro_ready = 0;
@@ -56,32 +51,6 @@ uint8_t mag_ready = 0;
 uint8_t baro_tx_buf[4], baro_rx_buf[4]; // XL, L, and H
 uint8_t imu_tx_buf[13], imu_rx_buf[13]; // Gyro 2 bytes * 3 axes + Accel 2 bytes * 3 axes
 uint8_t mag_tx_buf[7], mag_rx_buf[7]; // X, Y, Z where each channel is 16 bits = 2 bytes
-
-void get_accel_ms2(float *out) {
-	out[0] = accel_ms2[0];
-	out[1] = accel_ms2[1];
-	out[2] = accel_ms2[2];
-	imu_ready = 0;
-}
-
-void get_omega_rads(float *out) {
-	out[0] = omega_rads[0];
-	out[1] = omega_rads[1];
-	out[2] = omega_rads[2];
-	imu_ready = 0;
-}
-
-void get_mag_mgauss(float *out) {
-	out[0] = mag_mgauss[0];
-	out[1] = mag_mgauss[1];
-	out[2] = mag_mgauss[2];
-	mag_ready = 0;
-}
-
-void get_pres_hpa(float *out) {
-	*out = pres_hpa;
-	baro_ready = 0;
-}
 
 void spi_nss(SPI_HandleTypeDef *handle, uint8_t level) {
 	if (handle->Instance == SPI1) { // baro
@@ -152,7 +121,8 @@ void mag_int_drdy_handler() {
 void baro_spi_callback() {
 	spi_nss(lps22df_ctx.handle, 1); // deassert baro CS
 	pres_raw = (uint32_t)(((uint32_t)baro_rx_buf[3] << 24) | ((uint32_t)baro_rx_buf[2] << 16) | ((uint32_t)baro_rx_buf[1] << 8));
-	pres_hpa = lps22df_from_lsb_to_hPa(pres_raw);
+//	pres_hpa = lps22df_from_lsb_to_hPa(pres_raw);
+	state.pres_hpa = lps22df_from_lsb_to_hPa(pres_raw);
 	baro_ready = 1;
 }
 
@@ -163,17 +133,17 @@ void imu_spi_callback() {
 	omega_raw[1] = (int16_t)(((int16_t)imu_rx_buf[4] << 8) | (int16_t)imu_rx_buf[3]);
 	omega_raw[2] = (int16_t)(((int16_t)imu_rx_buf[6] << 8) | (int16_t)imu_rx_buf[5]);
 	// Convert to scientific units
-	omega_rads[0] = lsm6dsv80x_from_fs4000_to_mdps(omega_raw[0])*0.00001745f; //converted to rads
-	omega_rads[1] = lsm6dsv80x_from_fs4000_to_mdps(omega_raw[1])*0.00001745f;
-	omega_rads[2] = lsm6dsv80x_from_fs4000_to_mdps(omega_raw[2])*0.00001745f;
+	state.omega_rads[0] = lsm6dsv80x_from_fs4000_to_mdps(omega_raw[0])*0.00001745f; //converted to rads
+	state.omega_rads[1] = lsm6dsv80x_from_fs4000_to_mdps(omega_raw[1])*0.00001745f;
+	state.omega_rads[2] = lsm6dsv80x_from_fs4000_to_mdps(omega_raw[2])*0.00001745f;
 	// Pack registers into accel LSBs
 	accel_raw[0] = (int16_t)(((int16_t)imu_rx_buf[8] << 8) | (int16_t)imu_rx_buf[7]);
 	accel_raw[1] = (int16_t)(((int16_t)imu_rx_buf[10] << 8) | (int16_t)imu_rx_buf[9]);
 	accel_raw[2] = (int16_t)(((int16_t)imu_rx_buf[12] << 8) | (int16_t)imu_rx_buf[11]);
 	// Convert to scientific units
-	accel_ms2[0] = lsm6dsv80x_from_fs16_to_mg(accel_raw[0])*0.009805f; // converted to m/s^2
-	accel_ms2[1] = lsm6dsv80x_from_fs16_to_mg(accel_raw[1])*0.009805f;
-	accel_ms2[2] = lsm6dsv80x_from_fs16_to_mg(accel_raw[2])*0.009805f;
+	state.accel_ms2[0] = lsm6dsv80x_from_fs16_to_mg(accel_raw[0])*0.009805f; // converted to m/s^2
+	state.accel_ms2[1] = lsm6dsv80x_from_fs16_to_mg(accel_raw[1])*0.009805f;
+	state.accel_ms2[2] = lsm6dsv80x_from_fs16_to_mg(accel_raw[2])*0.009805f;
 	imu_ready = 1;
 }
 

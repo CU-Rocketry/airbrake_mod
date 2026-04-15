@@ -1,3 +1,4 @@
-../Core/Src/state_estimation.c:21:6:state_estimation	3
-../Core/Src/state_estimation.c:66:12:get_imu_b	1
-../Core/Src/state_estimation.c:102:12:get_mag_b	1
+../Core/Src/state_estimation.c:25:6:state_estimation	4
+../Core/Src/state_estimation.c:87:6:state_estimation_ea_get	1
+../Core/Src/state_estimation.c:95:12:get_imu_b	1
+../Core/Src/state_estimation.c:137:12:get_mag_b	1

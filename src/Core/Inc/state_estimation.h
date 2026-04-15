@@ -14,4 +14,6 @@ void state_estimation(void);
 arm_status get_imu_b(arm_matrix_instance_f32 *out_accel, arm_matrix_instance_f32 *out_omega);
 arm_status get_mag_b(arm_matrix_instance_f32 *out_mag);
 
+void state_estimation_ea_get(float* out_roll, float* out_pitch, float* out_yaw);
+
 #endif /* INC_STATE_ESTIMATION_H_ */
