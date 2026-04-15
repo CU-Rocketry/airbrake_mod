@@ -30,6 +30,8 @@
 #include "servo.h"
 #include "mode_switch.h"
 #include "state_estimation.h"
+#include "state.h"
+#include "batt_sense.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -92,23 +94,28 @@ buzzer_t buzzer = {
     .handle = &htim16
 };
 
-uint16_t servo_fdbk_raw_buf;
 servo_t servo = {
 	.tim_handle = &htim17,
 	.en_gpio_port = SERVO_EN_GPIO_Port,
 	.en_pin = SERVO_EN_Pin,
 	.adc_handle = &hadc3,
-	.fdbk_raw = &servo_fdbk_raw_buf,
 	.duty_retracted = 1000,
 	.duty_extended = 2370
 };
-uint32_t servo_duty = 500;
 uint8_t endpoint_selected = 0;
+
+batt_sense_t batt_sense = {
+	.adc_handle = &hadc1,
+	.isense_raw = 0.0f,
+	.vsense_raw = 0.0f
+};
 
 extern uint8_t baro_ready;
 extern uint8_t mag_ready;
 extern uint8_t imu_ready;
 
+// Global state
+state_t state = {0};
 
 // Control system ticks
 uint8_t tick_100Hz = 0;
@@ -237,7 +244,8 @@ int main(void)
     mode = get_mode_switch();
     printf("Mode: %u\r\n", mode);
 
-    HAL_TIM_Base_Start_IT(&htim7); // start 100 Hz control system tick
+    HAL_TIM_Base_Start_IT(&htim7); // start 100 Hz
+    HAL_TIM_Base_Start_IT(&htim6); // start 500 Hz
 
     sensors_init();
 
@@ -348,7 +356,7 @@ void PeriphCommonClock_Config(void)
                               |RCC_PERIPHCLK_SPI4;
   PeriphClkInitStruct.PLL2.PLL2M = 1;
   PeriphClkInitStruct.PLL2.PLL2N = 16;
-  PeriphClkInitStruct.PLL2.PLL2P = 32;
+  PeriphClkInitStruct.PLL2.PLL2P = 4;
   PeriphClkInitStruct.PLL2.PLL2Q = 32;
   PeriphClkInitStruct.PLL2.PLL2R = 8;
   PeriphClkInitStruct.PLL2.PLL2RGE = RCC_PLL2VCIRANGE_3;
@@ -387,11 +395,11 @@ static void MX_ADC1_Init(void)
   hadc1.Instance = ADC1;
   hadc1.Init.ClockPrescaler = ADC_CLOCK_ASYNC_DIV1;
   hadc1.Init.Resolution = ADC_RESOLUTION_16B;
-  hadc1.Init.ScanConvMode = ADC_SCAN_DISABLE;
+  hadc1.Init.ScanConvMode = ADC_SCAN_ENABLE;
   hadc1.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
   hadc1.Init.LowPowerAutoWait = DISABLE;
-  hadc1.Init.ContinuousConvMode = ENABLE;
-  hadc1.Init.NbrOfConversion = 1;
+  hadc1.Init.ContinuousConvMode = DISABLE;
+  hadc1.Init.NbrOfConversion = 2;
   hadc1.Init.DiscontinuousConvMode = DISABLE;
   hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
   hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
@@ -415,13 +423,22 @@ static void MX_ADC1_Init(void)
 
   /** Configure Regular Channel
   */
-  sConfig.Channel = ADC_CHANNEL_11;
+  sConfig.Channel = ADC_CHANNEL_10;
   sConfig.Rank = ADC_REGULAR_RANK_1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_1CYCLE_5;
+  sConfig.SamplingTime = ADC_SAMPLETIME_810CYCLES_5;
   sConfig.SingleDiff = ADC_SINGLE_ENDED;
   sConfig.OffsetNumber = ADC_OFFSET_NONE;
   sConfig.Offset = 0;
   sConfig.OffsetSignedSaturation = DISABLE;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_11;
+  sConfig.Rank = ADC_REGULAR_RANK_2;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     Error_Handler();
@@ -453,7 +470,7 @@ static void MX_ADC3_Init(void)
   /** Common config
   */
   hadc3.Instance = ADC3;
-  hadc3.Init.ClockPrescaler = ADC_CLOCK_ASYNC_DIV8;
+  hadc3.Init.ClockPrescaler = ADC_CLOCK_ASYNC_DIV1;
   hadc3.Init.Resolution = ADC_RESOLUTION_12B;
   hadc3.Init.DataAlign = ADC3_DATAALIGN_RIGHT;
   hadc3.Init.ScanConvMode = ADC_SCAN_DISABLE;
@@ -480,7 +497,7 @@ static void MX_ADC3_Init(void)
   */
   sConfig.Channel = ADC_CHANNEL_0;
   sConfig.Rank = ADC_REGULAR_RANK_1;
-  sConfig.SamplingTime = ADC3_SAMPLETIME_2CYCLES_5;
+  sConfig.SamplingTime = ADC3_SAMPLETIME_12CYCLES_5;
   sConfig.SingleDiff = ADC_SINGLE_ENDED;
   sConfig.OffsetNumber = ADC_OFFSET_NONE;
   sConfig.Offset = 0;
@@ -1391,30 +1408,40 @@ void mode_current_handler(enum Mode curr) {
 				}
 			}
 
-			servo_get_angle(&servo);
+			float servo_fdbk = servo_get_angle(&servo);
 
-//			printf("angle:%f\r\n", servo_get_angle(&servo));
+			float batt_v;
+			float batt_i;
+			batt_sense_get(&batt_sense, &batt_v, &batt_i);
+
+//			printf("fdbk:%f\r\n", servo_fdbk);
+			printf("v:%f,i:%f\r\n", batt_v, batt_i);
+
 			break;
 		case TEST_SENSORS: // 4
-			float pres;
-			float accel[3];
-			float omega[3];
-
-			  if (baro_ready) {
-				  get_pres_hpa(&pres);
-			  }
-
-			  if (imu_ready) {
-				  get_accel_ms2(accel);
-				  get_omega_rads(omega);
-			  }
-
-			  printf("p:%f,ax:%f,ay:%f,az:%f,ox:%f,oy:%f,oz:%f\r\n", pres, accel[0], accel[1], accel[2], omega[0], omega[1], omega[2]);
-
 			break;
 		case TEST_FLASH: // 5
 			break;
 		case TEST_CONTROL: // 6
+//			Print all
+//			printf("p:%f,ax:%f,ay:%f,az:%f,ox:%f,oy:%f,oz:%f,ax_b:%f,ay_b:%f,az_b:%f,roll:%f,pitch:%f,yaw:%f\r\n",
+//					state.pres_hpa,
+//					state.accel_ms2[0], state.accel_ms2[1], state.accel_ms2[2],
+//					state.omega_rads[0], state.omega_rads[1], state.omega_rads[2],
+//					state.accel_b[0], state.accel_b[1], state.accel_b[1],
+//					state.roll, state.pitch, state.yaw);
+
+// 			Print IMU and body acceleration
+//			printf("ax:%f,ay:%f,az:%f,ax_b:%f,ay_b:%f,az_b:%f\r\n",
+//								state.accel_ms2[0], state.accel_ms2[1], state.accel_ms2[2],
+//								state.accel_b[0], state.accel_b[1], state.accel_b[2]);
+
+//			Print orientation only
+//			printf("roll:%f,pitch:%f,yaw:%f\r\n", state.roll, state.pitch, state.yaw);
+
+			// Print quaternion
+			printf("q:[%f,%f,%f,%f]\r\n", state.quat[0], state.quat[1], state.quat[2], state.quat[3]);
+
 			break;
 		case LAUNCH_DETECT: // 7
 			break;
