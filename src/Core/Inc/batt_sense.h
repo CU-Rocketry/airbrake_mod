@@ -10,22 +10,12 @@
 
 typedef struct {
 	ADC_HandleTypeDef* adc_handle;
-	uint16_t vsense_raw;
-	uint16_t isense_raw;
+	volatile uint16_t dma_buf[2];
 } batt_sense_t;
 
 void batt_sense_get(batt_sense_t* batt_sense, float* out_v, float* out_i) {
-    HAL_ADC_Start(batt_sense->adc_handle);
-
-    if (HAL_ADC_PollForConversion(batt_sense->adc_handle, 1) == HAL_OK) {
-        batt_sense->vsense_raw = HAL_ADC_GetValue(batt_sense->adc_handle);
-    }
-
-    if (HAL_ADC_PollForConversion(batt_sense->adc_handle, 1) == HAL_OK) {
-        batt_sense->isense_raw = HAL_ADC_GetValue(batt_sense->adc_handle);
-    }
-
-    HAL_ADC_Stop(batt_sense->adc_handle);
+    uint16_t vsense_raw = batt_sense->dma_buf[0];
+    uint16_t isense_raw = batt_sense->dma_buf[1];
 
     const float VREF = 3.3f;
     const float ADC_COUNTS_MAX = (float)(0xFFFF); // 16 bit
@@ -34,13 +24,15 @@ void batt_sense_get(batt_sense_t* batt_sense, float* out_v, float* out_i) {
     const float SHUNT_GAIN = 200.0f; // [V/V]
 
     // (Raw / 4095) * 3.3 * (129 / 47)
-    *out_v = ((float)batt_sense->vsense_raw / ADC_COUNTS_MAX) * VREF * VSENSE_RATIO;
+    *out_v = ((float)vsense_raw / ADC_COUNTS_MAX) * VREF * VSENSE_RATIO;
 
     // (Raw / 4095) * 3.3 / (Shunt * Gain)
     // 0.002 * 200 = 0.4
-    *out_i = (((float)batt_sense->isense_raw / ADC_COUNTS_MAX) * VREF) / (SHUNT_RESISTANCE * SHUNT_GAIN);
+    *out_i = (((float)isense_raw / ADC_COUNTS_MAX) * VREF) / (SHUNT_RESISTANCE * SHUNT_GAIN);
 }
 
-
+void batt_sense_init(batt_sense_t* batt_sense) {
+    HAL_ADC_Start_DMA(batt_sense->adc_handle, (uint32_t*)batt_sense->dma_buf, 2); // starts continuous conversion
+}
 
 #endif /* INC_BATT_SENSE_H_ */
