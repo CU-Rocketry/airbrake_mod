@@ -35,9 +35,26 @@ void servo_set(servo_t* servo, uint32_t duty) {
 	__HAL_TIM_SET_COMPARE(servo->tim_handle, TIM_CHANNEL_1, duty);
 }
 
+// sig's mistake fixing
 void servo_enable(servo_t* servo, uint8_t state) {
-	HAL_GPIO_WritePin(servo->en_gpio_port, servo->en_pin, state);
-//	HAL_GPIO_WritePin(EYE_0_GPIO_Port, EYE_0_Pin, state);
+	if (state == 1) { // state 1
+		// need to ramp up voltage
+		for (uint32_t i = 0; i < 5; i++) {
+			servo->en_gpio_port->BSRR = servo->en_pin; // turn on
+			// about 100 ns here
+			servo->en_gpio_port->BSRR = (uint32_t)servo->en_pin << 16U; // turn back off
+
+			// delay to slowly discharge the capacitance
+			for (volatile uint32_t d = 0; d < 5000; d++) {
+				__NOP();
+			}
+		}
+
+		servo->en_gpio_port->BSRR = servo->en_pin; // turn on
+
+	} else { // state is 0
+		servo->en_gpio_port->BSRR = (uint32_t)servo->en_pin << 16U; // turn off
+	}
 }
 
 void servo_init(servo_t* servo) {
