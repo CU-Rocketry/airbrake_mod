@@ -37,6 +37,7 @@ void servo_set(servo_t* servo, uint32_t duty) {
 
 void servo_enable(servo_t* servo, uint8_t state) {
 	HAL_GPIO_WritePin(servo->en_gpio_port, servo->en_pin, state);
+//	HAL_GPIO_WritePin(EYE_0_GPIO_Port, EYE_0_Pin, state);
 }
 
 void servo_init(servo_t* servo) {

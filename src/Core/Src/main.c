@@ -101,6 +101,8 @@ servo_t servo = {
 	.tim_handle = &htim17,
 	.en_gpio_port = SERVO_EN_GPIO_Port,
 	.en_pin = SERVO_EN_Pin,
+//	.en_gpio_port = EYE_0_GPIO_Port,
+//	.en_pin = EYE_0_Pin,
 	.adc_handle = &hadc3,
 	.dma_buf = servo_dma_buf,
 	.duty_retracted = 1000,
@@ -232,8 +234,8 @@ int main(void)
   /* USER CODE BEGIN 2 */
   printf("System reset\r\n");
 
-    black_eye_set(0, 1);
-    black_eye_set(1, 1);
+    black_eye_set(0, 0);
+    black_eye_set(1, 0);
 
     rgb_led_init(&led0);
     rgb_led_init(&led1);
@@ -1434,13 +1436,13 @@ void mode_current_handler(enum Mode curr) {
 				}
 			}
 
-			float servo_fdbk = servo_get_angle(&servo);
-			printf("fdbk:%f\r\n", servo_fdbk);
+//			float servo_fdbk = servo_get_angle(&servo);
+//			printf("fdbk:%f\r\n", servo_fdbk);
 
-//			float batt_v;
-//			float batt_i;
-//			batt_sense_get(&batt_sense, &batt_v, &batt_i);
-//			printf("v:%f,i:%f\r\n", batt_v, batt_i);
+			float batt_v;
+			float batt_i;
+			batt_sense_get(&batt_sense, &batt_v, &batt_i);
+			printf("v:%f,i:%f\r\n", batt_v, batt_i);
 
 			break;
 		case TEST_SENSORS: // 4
@@ -1465,7 +1467,7 @@ void mode_current_handler(enum Mode curr) {
 //			printf("roll:%f,pitch:%f,yaw:%f\r\n", state.roll, state.pitch, state.yaw);
 
 			// Print quaternion
-			printf("q:[%f,%f,%f,%f]\r\n", state.quat[0], state.quat[1], state.quat[2], state.quat[3]);
+//			printf("q:[%f,%f,%f,%f]\r\n", state.quat[0], state.quat[1], state.quat[2], state.quat[3]);
 
 			break;
 		case LAUNCH_DETECT: // 7
