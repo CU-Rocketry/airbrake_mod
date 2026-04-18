@@ -66,6 +66,8 @@ void state_estimation(void) {
 								 dt);
 		}
 
+		MadgwickQuaternionGet(state.quat); // output madgwick filter quaternion to state
+
 		// EKF prediction
 	}
 
@@ -73,8 +75,6 @@ void state_estimation(void) {
 		baro_ready = 0;
 		// EKF correction
 	}
-
-	MadgwickQuaternionGet(state.quat);
 }
 
 void get_imu_b(float out_accel_b[3], float out_omega_b[3]) {
