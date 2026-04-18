@@ -96,15 +96,16 @@ void get_mag_b(float out_mag_b[3]) {
 //indexing starts at zero
 //u cross v
 
-//void quat_conj(arm_matrix_instance_f32 *in,arm_matrix_instance_f32 *out)
-//{
-//	float out_data[4] = {in->pData[0], -(in->pData[1]),-(in->pData[2]),-(in->pData[4])};
-//	status = arm_mat_trans_f32(&mag_row, &mag_col);
-//			status = arm_mat_mult_f32(&rot_mag_to_b, &mag_col, &mag_b);
-//			arm_matrix_instance_f32 out_mat;
-//			arm_mat_init_f32(&out_mat,4,1,out_data);
-//				out=out_mat;
-//			}
+
+// q* = [q0, -q1, -q2, -q3] at least in the representation we have
+void quat_conj(float q_in[4], float q_out[4])
+{
+	q_out[0] =  q_in[0];
+	q_out[1] = -q_in[1];
+	q_out[2] = -q_in[2];
+	q_out[3] = -q_in[3];
+}
+
 //void cross_prod(arm_matrix_instance_f32 *a,arm_matrix_instance_f32 *b, arm_matrix_instance_f32 *out)
 //{
 //	float a_data[3]=a->pData;
