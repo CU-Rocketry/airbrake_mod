@@ -95,48 +95,6 @@ void state_estimation(void) {
 
 // ax:9.818493,ay:0.019139,az:-0.531117,ax_b:-0.531117,ay_b:-0.019139,az_b:-0.019139
 
-//arm_status get_imu_b(arm_matrix_instance_f32 *out_accel, arm_matrix_instance_f32 *out_omega)
-//{
-//	arm_status status;
-//
-////	float accel[3] = state.accel_ms2;
-////	float omega[3] = state.omega_rads;
-//	// this is wrong
-//
-//	static float32_t rot_imu_to_b_data[3*3] = {
-//	  0, 0, 1,
-//	  0, -1, 0,
-//	  1, 0, 0
-//	};
-//
-//	arm_matrix_instance_f32 rot_imu_to_b;
-//	arm_mat_init_f32(&rot_imu_to_b, 3, 3, rot_imu_to_b_data);
-//
-//	float accel_col_data[3];
-//	float omega_col_data[3];
-//
-//	arm_matrix_instance_f32 accel_row, accel_col;
-//	arm_matrix_instance_f32 omega_row, omega_col;
-//
-//	arm_mat_init_f32(&accel_row, 1, 3, state.accel_ms2);
-//	arm_mat_init_f32(&omega_row, 1, 3, state.omega_rads);
-//
-//	arm_mat_init_f32(&accel_col, 3, 1, accel_col_data);
-//	arm_mat_init_f32(&omega_col, 3, 1, omega_col_data);
-//
-//	status = arm_mat_trans_f32(&accel_row, &accel_col);
-//	status = arm_mat_mult_f32(&rot_imu_to_b, &accel_col, out_accel);
-//
-//	memcpy(state.accel_b, out_accel->pData, 3 * sizeof(float));
-//
-//	status = arm_mat_trans_f32(&omega_row, &omega_col);
-//	status = arm_mat_mult_f32(&rot_imu_to_b, &omega_col, out_omega);
-//
-//	memcpy(state.omega_b, out_omega->pData, 3 * sizeof(float));
-//
-//	return status;
-//}
-
 void get_imu_b(float out_accel_b[3], float out_omega_b[3]) {
 	out_accel_b[0] = state.accel_ms2[2]; // body +X is now sensor +Z
 	out_accel_b[1] = -state.accel_ms2[1]; // body +Y is now sensor -Y
@@ -146,31 +104,6 @@ void get_imu_b(float out_accel_b[3], float out_omega_b[3]) {
 	out_omega_b[1] = -state.omega_rads[1]; // body +Y is now sensor -Y
 	out_omega_b[2] = state.omega_rads[0]; // body +Z is now sensor +X
 }
-
-//arm_status get_mag_b(arm_matrix_instance_f32 *out_mag)
-//{
-//		arm_status status;
-//
-////		float mag[3] = state.mag_mgauss;
-//
-//		static float32_t mag_to_b_data[3*3] = {
-//		  0, 0, 1,
-//		  0, -1, 0,
-//		  -1, 0, 0
-//		};
-//		arm_matrix_instance_f32 rot_mag_to_b;
-//		arm_matrix_instance_f32 mag_row, mag_col, mag_b;
-//
-//
-//		arm_mat_init_f32(&rot_mag_to_b, 3, 3, mag_to_b_data);
-//		arm_mat_init_f32(&mag_row, 1, 3, state.mag_mgauss);
-//
-//
-//		status = arm_mat_trans_f32(&mag_row, &mag_col);
-//		status = arm_mat_mult_f32(&rot_mag_to_b, &mag_col, &mag_b);
-//
-//		return status;
-//}
 
 void get_mag_b(float out_mag_b[3]) {
 	out_mag_b[0] = state.mag_mgauss[2]; // body +X is now sensor +Z
