@@ -134,7 +134,7 @@ enum Mode {
 	TEST_SERVO = 3,
 	TEST_SENSORS = 4,
 	TEST_FLASH = 5,
-	TEST_CONTROL = 6,
+	CONTROL_PANEL = 6,
 	LAUNCH_DETECT = 7
 };
 enum Mode mode = 0;
@@ -1449,7 +1449,7 @@ void mode_current_handler(enum Mode curr) {
 			break;
 		case TEST_FLASH: // 5
 			break;
-		case TEST_CONTROL: // 6
+		case CONTROL_PANEL: // 6
 //			Print all
 //			printf("p:%f,ax:%f,ay:%f,az:%f,ox:%f,oy:%f,oz:%f,ax_b:%f,ay_b:%f,az_b:%f,roll:%f,pitch:%f,yaw:%f\r\n",
 //					state.pres_hpa,
@@ -1467,9 +1467,9 @@ void mode_current_handler(enum Mode curr) {
 //			printf("roll:%f,pitch:%f,yaw:%f\r\n", state.roll, state.pitch, state.yaw);
 
 			// Print quaternion
-//			printf("q:[%f,%f,%f,%f]\r\n", state.quat[0], state.quat[1], state.quat[2], state.quat[3]);
+			printf("q:[%f,%f,%f,%f]\r\n", state.quat[0], state.quat[1], state.quat[2], state.quat[3]);
 
-			printf("accel_b:[%.3f,%.3f,%.3f]\r\n", state.accel_e[0], state.accel_e[1], state.accel_e[2]);
+//			printf("accel_b:[%.3f,%.3f,%.3f]\r\n", state.accel_e[0], state.accel_e[1], state.accel_e[2]);
 
 			break;
 		case LAUNCH_DETECT: // 7

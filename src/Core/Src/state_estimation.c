@@ -56,13 +56,13 @@ void state_estimation(void) {
 		if (mag_ready) {
 			mag_ready = 0;
 			MadgwickAHRSupdate(omega_b[0], omega_b[1], omega_b[2],
-					accel_b[0], accel_b[1], accel_b[2],
+					-accel_b[0], -accel_b[1], -accel_b[2],
 					mag_b[0], mag_b[1], mag_b[2],
 					dt);
 
 		} else {
 			MadgwickAHRSupdateIMU(omega_b[0], omega_b[1], omega_b[2],
-								 accel_b[0], accel_b[1], accel_b[2],
+								 -accel_b[0], -accel_b[1], -accel_b[2],
 								 dt);
 		}
 

@@ -35,6 +35,6 @@
 ../Core/Src/main.c:1341:6:HAL_SPI_TxRxCpltCallback	16	static
 ../Core/Src/main.c:1352:6:HAL_TIM_PeriodElapsedCallback	16	static
 ../Core/Src/main.c:1362:6:mode_transition_handler	16	static
-../Core/Src/main.c:1388:6:mode_current_handler	40	static
+../Core/Src/main.c:1388:6:mode_current_handler	48	static
 ../Core/Src/main.c:1484:6:MPU_Config	24	static
 ../Core/Src/main.c:1515:6:Error_Handler	4	static,ignoring_inline_asm
