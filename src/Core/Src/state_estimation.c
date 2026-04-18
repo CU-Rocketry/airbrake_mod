@@ -75,25 +75,7 @@ void state_estimation(void) {
 	}
 
 	MadgwickQuaternionGet(state.quat);
-
-//	// Quaternion to euler angles for output
-//	state.roll  = atan2f(2.0f * (q[0] * q[1] + q[2] * q[3]), 1.0f - 2.0f * (q[1] * q[1] + q[2] * q[2]));
-//	state.pitch = asinf(2.0f * (q[0] * q[2] - q[3] * q[1]));
-//	state.yaw   = atan2f(2.0f * (q[0] * q[3] + q[1] * q[2]), 1.0f - 2.0f * (q[2] * q[2] + q[3] * q[3]));
-//
-//	// pi = 180 degrees
-//	state.roll *= (180.0f / PI);
-//	state.pitch *= (180.0f / PI);
-//	state.yaw *= (180.0f / PI);
 }
-
-//void state_estimation_ea_get(float* out_roll, float* out_pitch, float* out_yaw) {
-//	*out_roll = roll;
-//	*out_pitch = pitch;
-//	*out_yaw = yaw;
-//}
-
-// ax:9.818493,ay:0.019139,az:-0.531117,ax_b:-0.531117,ay_b:-0.019139,az_b:-0.019139
 
 void get_imu_b(float out_accel_b[3], float out_omega_b[3]) {
 	out_accel_b[0] = state.accel_ms2[2]; // body +X is now sensor +Z
