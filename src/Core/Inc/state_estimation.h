@@ -17,6 +17,7 @@ void state_estimation(void);
 void get_imu_b(float out_accel_b[3], float out_omega_b[3]);
 void get_mag_b(float out_mag_b[3]);
 
-void state_estimation_ea_get(float* out_roll, float* out_pitch, float* out_yaw);
+void quat_conj(float q[4], float q_star[4]);
+void quat_rot(float v[3], float q[4], float v_out[3]);
 
 #endif /* INC_STATE_ESTIMATION_H_ */

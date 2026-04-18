@@ -22,9 +22,7 @@ typedef struct {
 
     // State estimation
     float quat[4];
-//    float roll;
-//    float pitch;
-//    float yaw;
+    float accel_e[3];
 
     // Control
     // TODO

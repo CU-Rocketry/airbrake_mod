@@ -68,6 +68,19 @@ void state_estimation(void) {
 
 		MadgwickQuaternionGet(state.quat); // output madgwick filter quaternion to state
 
+		float q_star[4];
+		quat_conj(state.quat, q_star); // get conjugate of madgwick output
+		// now q_star is the body to earth rotation
+
+		float accel_e[3];
+		quat_rot(accel_b, q_star, accel_e); // rotate body accel by b to e rotation to get inertial acceleration
+
+		accel_e[2] += 9.80665f; // get rid of gravity. TODO a constant maybe
+
+		state.accel_e[0] = accel_e[0];
+		state.accel_e[1] = accel_e[1];
+		state.accel_e[2] = accel_e[2];
+
 		// EKF prediction
 	}
 
@@ -98,12 +111,28 @@ void get_mag_b(float out_mag_b[3]) {
 
 
 // q* = [q0, -q1, -q2, -q3] at least in the representation we have
-void quat_conj(float q_in[4], float q_out[4])
+void quat_conj(float q[4], float q_star[4])
 {
-	q_out[0] =  q_in[0];
-	q_out[1] = -q_in[1];
-	q_out[2] = -q_in[2];
-	q_out[3] = -q_in[3];
+	q_star[0] =  q[0];
+	q_star[1] = -q[1];
+	q_star[2] = -q[2];
+	q_star[3] = -q[3];
+}
+
+// rotates a vector by quaternion
+// see https://danceswithcode.net/engineeringnotes/quaternions/quaternions.html
+void quat_rot(float v[3], float q[4], float v_out[3]) {
+	v_out[0] = v[0] * (1.0f - 2.0f * (q[2]*q[2] + q[3]*q[3])) +
+			   v[1] * (2.0f * (q[1]*q[2] - q[0]*q[3])) +
+			   v[2] * (2.0f * (q[1]*q[3] + q[0]*q[2]));
+
+	v_out[1] = v[0] * (2.0f * (q[1]*q[2] + q[0]*q[3])) +
+			   v[1] * (1.0f - 2.0f * (q[1]*q[1] + q[3]*q[3])) +
+			   v[2] * (2.0f * (q[2]*q[3] - q[0]*q[1]));
+
+	v_out[2] = v[0] * (2.0f * (q[1]*q[3] - q[0]*q[2])) +
+			   v[1] * (2.0f * (q[2]*q[3] + q[0]*q[1])) +
+			   v[2] * (1.0f - 2.0f * (q[1]*q[1] + q[2]*q[2]));
 }
 
 //void cross_prod(arm_matrix_instance_f32 *a,arm_matrix_instance_f32 *b, arm_matrix_instance_f32 *out)
