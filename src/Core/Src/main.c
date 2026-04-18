@@ -1442,7 +1442,7 @@ void mode_current_handler(enum Mode curr) {
 			float batt_v;
 			float batt_i;
 			batt_sense_get(&batt_sense, &batt_v, &batt_i);
-			printf("v:%f,i:%f\r\n", batt_v, batt_i);
+//			printf("v:%f,i:%f\r\n", batt_v, batt_i);
 
 			break;
 		case TEST_SENSORS: // 4
@@ -1468,6 +1468,8 @@ void mode_current_handler(enum Mode curr) {
 
 			// Print quaternion
 //			printf("q:[%f,%f,%f,%f]\r\n", state.quat[0], state.quat[1], state.quat[2], state.quat[3]);
+
+			printf("accel_b:[%.3f,%.3f,%.3f]\r\n", state.accel_e[0], state.accel_e[1], state.accel_e[2]);
 
 			break;
 		case LAUNCH_DETECT: // 7

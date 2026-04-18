@@ -1,3 +1,5 @@
 ../Core/Src/state_estimation.c:25:6:state_estimation	4
-../Core/Src/state_estimation.c:140:6:get_imu_b	1
-../Core/Src/state_estimation.c:175:6:get_mag_b	1
+../Core/Src/state_estimation.c:93:6:get_imu_b	1
+../Core/Src/state_estimation.c:103:6:get_mag_b	1
+../Core/Src/state_estimation.c:114:6:quat_conj	1
+../Core/Src/state_estimation.c:124:6:quat_rot	1
