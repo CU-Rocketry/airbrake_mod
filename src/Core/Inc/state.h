@@ -9,6 +9,13 @@
 #define INC_STATE_H_
 
 typedef struct {
+	// Time
+	uint32_t t; // [ms] since boot
+
+	// Power
+	float batt_v; // [V]
+	float batt_i; // [A]
+
     // Sensors
     float accel_ms2[3];
     float omega_rads[3];
@@ -16,16 +23,20 @@ typedef struct {
     float pres_hpa;
 
     // Body frame sensors
-    float accel_b[3];
-    float omega_b[3];
-    float mag_b[3];
+    float accel_b[3]; // [m/s/s] in body frame. *proper acceleration
+    float omega_b[3]; // [rad/s] in body frame
+    float mag_b[3]; // [mgauss] in body frame
 
     // State estimation
     float quat[4];
-    float accel_e[3];
+    float accel_e[3]; // [m/s/s] in inertial frame
 
     // Control
     // TODO
+
+    // Servo
+    float servo_cmd; // [deg]
+    float servo_fdbk; // [deg]
 } state_t;
 
 extern state_t state; // global instance

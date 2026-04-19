@@ -68,12 +68,13 @@ void state_estimation(void) {
 
 		MadgwickQuaternionGet(state.quat); // output madgwick filter quaternion to state
 
-		float q_star[4];
-		quat_conj(state.quat, q_star); // get conjugate of madgwick output
+		// Seemingly the madgwick filter already outputs the body to earth rotation
+//		float q_star[4];
+//		quat_conj(state.quat, q_star); // get conjugate of madgwick output
 		// now q_star is the body to earth rotation
 
 		float accel_e[3];
-		quat_rot(accel_b, q_star, accel_e); // rotate body accel by b to e rotation to get inertial acceleration
+		quat_rot(accel_b, state.quat, accel_e); // rotate body accel by b to e rotation to get inertial acceleration
 
 		accel_e[2] += 9.80665f; // get rid of gravity. TODO a constant maybe
 

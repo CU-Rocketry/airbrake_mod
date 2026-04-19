@@ -32,6 +32,7 @@
 #include "state_estimation.h"
 #include "state.h"
 #include "batt_sense.h"
+#include "telemetry.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -93,7 +94,89 @@ rgb_led_t led1 = {
     .channel_b = TIM_CHANNEL_3
 };
 buzzer_t buzzer = {
-    .handle = &htim16
+    .handle = &htim16,
+    .tim_freq = 64000000,
+    .seq = 0,
+    .seq_len = 0,
+    .seq_idx = 0,
+    .beep_start = 0,
+    .seq_playing = 0
+};
+
+const buzzer_beep_t seq_startup_3[] = {
+	{4186, 250},
+	{4435, 250},
+	{4699, 500}
+};
+
+const buzzer_beep_t seq_mode_1_1[] = {
+		{4186, 500}
+};
+
+const buzzer_beep_t seq_mode_2_3[] = {
+		{4186, 500},
+		{0, 500},
+		{4186, 500}
+};
+
+const buzzer_beep_t seq_mode_3_5[] = {
+		{4186, 500},
+		{0, 500},
+		{4186, 500},
+		{0, 500},
+		{4186, 500}
+};
+
+const buzzer_beep_t seq_mode_4_7[] = {
+		{4186, 500},
+		{0, 500},
+		{4186, 500},
+		{0, 500},
+		{4186, 500},
+		{0, 500},
+		{4186, 500}
+};
+
+const buzzer_beep_t seq_mode_5_9[] = {
+		{4186, 500},
+		{0, 500},
+		{4186, 500},
+		{0, 500},
+		{4186, 500},
+		{0, 500},
+		{4186, 500},
+		{0, 500},
+		{4186, 500}
+};
+
+const buzzer_beep_t seq_mode_6_11[] = {
+		{4186, 500},
+		{0, 500},
+		{4186, 500},
+		{0, 500},
+		{4186, 500},
+		{0, 500},
+		{4186, 500},
+		{0, 500},
+		{4186, 500},
+		{0, 500},
+		{4186, 500}
+};
+
+const buzzer_beep_t seq_mode_7_13[] = {
+		{4186, 500},
+		{0, 500},
+		{4186, 500},
+		{0, 500},
+		{4186, 500},
+		{0, 500},
+		{4186, 500},
+		{0, 500},
+		{4186, 500},
+		{0, 500},
+		{4186, 500},
+		{0, 500},
+		{4186, 500}
 };
 
 __attribute__((section(".bdma_buf"))) volatile uint16_t servo_dma_buf[1];
@@ -105,8 +188,10 @@ servo_t servo = {
 //	.en_pin = EYE_0_Pin,
 	.adc_handle = &hadc3,
 	.dma_buf = servo_dma_buf,
-	.duty_retracted = 1000,
-	.duty_extended = 2370
+//	.duty_retracted = 1000,
+//	.duty_extended = 2370
+	.duty_retracted = 500,
+	.duty_extended = 2500
 };
 uint8_t endpoint_selected = 0;
 
@@ -128,6 +213,7 @@ uint8_t tick_500Hz = 0;
 
 // Mode selection
 enum Mode {
+	START = -1,
 	IDLE = 0,
 	TEST_LEDS = 1,
 	TEST_BUZZER = 2,
@@ -137,8 +223,8 @@ enum Mode {
 	CONTROL_PANEL = 6,
 	LAUNCH_DETECT = 7
 };
-enum Mode mode = 0;
-enum Mode mode_prev = 0;
+enum Mode mode = -1;
+enum Mode mode_prev = -1;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -258,19 +344,26 @@ int main(void)
 
     sensors_init();
 
+    telemetry_init(&huart4);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-//	  buzzer_set(&buzzer, 1);
-//	  HAL_Delay(500);
-//	  buzzer_set(&buzzer, 0);
-//	  HAL_Delay(500);
-//
 	  if (tick_100Hz) {
 		  tick_100Hz = 0;
+
+		  batt_sense_get(&batt_sense, &(state.batt_v), &(state.batt_i)); // Read power info
+
+		  servo_get_angle(&servo); // Servo feedback
+
+		  buzzer_update(&buzzer); // buzzer
+
+		  state.t = HAL_GetTick();
+
+//		  telemetry_state(&state);
 
 		  // Handle mode switch
 		  mode = get_mode_switch();
@@ -1376,9 +1469,31 @@ void mode_transition_handler(enum Mode prev, enum Mode curr) {
 
 	// Handle entry to new mode
 	switch (curr) {
+		case IDLE:
+//			buzzer_play_sequence(&buzzer, seq_startup_3, 3);
+			break;
+		case TEST_LEDS:
+//			buzzer_play_sequence(&buzzer, seq_mode_1_1, 1);
+			break;
+		case TEST_BUZZER:
+//			buzzer_play_sequence(&buzzer, seq_mode_2_3, 3);
+			break;
 		case TEST_SERVO:
+//			buzzer_play_sequence(&buzzer, seq_mode_3_5, 5);
 			servo_enable(&servo, 1); // Enable servo power
 			servo_set(&servo, 500);
+			break;
+		case TEST_SENSORS:
+//			buzzer_play_sequence(&buzzer, seq_mode_4_7, 7);
+			break;
+		case TEST_FLASH:
+//			buzzer_play_sequence(&buzzer, seq_mode_5_9, 9);
+			break;
+		case CONTROL_PANEL:
+//			buzzer_play_sequence(&buzzer, seq_mode_6_11, 11);
+			break;
+		case LAUNCH_DETECT:
+//			buzzer_play_sequence(&buzzer, seq_mode_7_13, 13);
 			break;
 		default:
 			break;
@@ -1394,9 +1509,7 @@ void mode_current_handler(enum Mode curr) {
 		case TEST_BUZZER: // 2
 			 if (HAL_GPIO_ReadPin(BTN_0_GPIO_Port, BTN_0_Pin) == GPIO_PIN_SET)
 			 {
-				 buzzer_set(&buzzer, 1);
-			 } else {
-				 buzzer_set(&buzzer, 0);
+				 buzzer_play_sequence(&buzzer, seq_startup_3, 3);
 			 }
 			break;
 		case TEST_SERVO: // 3
@@ -1436,27 +1549,47 @@ void mode_current_handler(enum Mode curr) {
 				}
 			}
 
-//			float servo_fdbk = servo_get_angle(&servo);
-//			printf("fdbk:%f\r\n", servo_fdbk);
-
-			float batt_v;
-			float batt_i;
-			batt_sense_get(&batt_sense, &batt_v, &batt_i);
-//			printf("v:%f,i:%f\r\n", batt_v, batt_i);
-
 			break;
 		case TEST_SENSORS: // 4
 			break;
 		case TEST_FLASH: // 5
 			break;
 		case CONTROL_PANEL: // 6
-//			Print all
-//			printf("p:%f,ax:%f,ay:%f,az:%f,ox:%f,oy:%f,oz:%f,ax_b:%f,ay_b:%f,az_b:%f,roll:%f,pitch:%f,yaw:%f\r\n",
-//					state.pres_hpa,
-//					state.accel_ms2[0], state.accel_ms2[1], state.accel_ms2[2],
-//					state.omega_rads[0], state.omega_rads[1], state.omega_rads[2],
-//					state.accel_b[0], state.accel_b[1], state.accel_b[1],
-//					state.roll, state.pitch, state.yaw);
+
+//			typedef struct {
+//				// Power
+//				float batt_v;
+//				float batt_i;
+//
+//			    // Sensors
+//			    float accel_ms2[3];
+//			    float omega_rads[3];
+//			    float mag_mgauss[3];
+//			    float pres_hpa;
+//
+//			    // Body frame sensors
+//			    float accel_b[3];
+//			    float omega_b[3];
+//			    float mag_b[3];
+//
+//			    // State estimation
+//			    float quat[4];
+//			    float accel_e[3];
+//
+//			    // Control
+//			    // TODO
+//			} state_t;
+
+//			printf("t: %lu batt_v:%.3f batt_i:%.3f servo_cmd:%.3f servo_fdbk:%.3f accel_b:%.3f,%.3f,%.3f omega_b:%.3f,%.3f,%.3f mag_b:%.3f,%.3f,%.3f quat:%.3f,%.3f,%.3f,%.3f accel_e:%.3f,%.3f,%.3f\r\n",
+//					state.t,
+//					state.batt_v, state.batt_i,
+//					state.servo_cmd, state.servo_fdbk,
+//					state.accel_b[0], state.accel_b[1], state.accel_b[2],
+//					state.omega_b[0], state.omega_b[1], state.omega_b[2],
+//					state.mag_b[0], state.mag_b[1], state.mag_b[2],
+//					state.quat[0], state.quat[1], state.quat[2], state.quat[3],
+//					state.accel_e[0], state.accel_e[1], state.accel_e[2]
+//			);
 
 // 			Print IMU and body acceleration
 //			printf("ax:%f,ay:%f,az:%f,ax_b:%f,ay_b:%f,az_b:%f\r\n",
@@ -1473,6 +1606,8 @@ void mode_current_handler(enum Mode curr) {
 
 			break;
 		case LAUNCH_DETECT: // 7
+			break;
+		default:
 			break;
 	}
 }
