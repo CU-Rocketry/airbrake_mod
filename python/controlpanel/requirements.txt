@@ -1,0 +1,6 @@
+cobs
+pyserial
+imgui-bundle
+scipy
+matplotlib
+cffi
