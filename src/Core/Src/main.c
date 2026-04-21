@@ -33,6 +33,7 @@
 #include "state.h"
 #include "batt_sense.h"
 #include "telemetry.h"
+#include "flash.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -202,6 +203,10 @@ batt_sense_t batt_sense = {
 
 telemetry_t telemetry = {
 	.handle = &huart4
+};
+
+flash_t flash = {
+    .hospi = &hospi1
 };
 
 extern uint8_t baro_ready;
@@ -1489,6 +1494,8 @@ void mode_transition_handler(enum Mode prev, enum Mode curr) {
 			break;
 		case TEST_FLASH:
 //			buzzer_play_sequence(&buzzer, seq_mode_5_9, 9);
+			rgb_led_set(&led0, 0x000000);
+			rgb_led_set(&led1, 0x000000);
 			break;
 		case CONTROL_PANEL:
 //			buzzer_play_sequence(&buzzer, seq_mode_6_11, 11);
@@ -1554,6 +1561,61 @@ void mode_current_handler(enum Mode curr) {
 		case TEST_SENSORS: // 4
 			break;
 		case TEST_FLASH: // 5
+			if (HAL_GPIO_ReadPin(BTN_0_GPIO_Port, BTN_0_Pin)) // if BTN0 pressed read JEDEC ID
+			{
+				uint32_t flash_id = flash_read_jedec_id(&flash);
+				if (flash_id == W25Q128JV_JEDEC_ID) {
+					printf("JEDEC ID good: 0x%06lX\r\n", flash_id);
+					rgb_led_set(&led0, 0x00FF00);
+				} else {
+					printf("JEDEC ID error: 0x%06lX (Expected 0x%06X)\r\n", flash_id, W25Q128JV_JEDEC_ID);
+					rgb_led_set(&led0, 0xFF0000);
+				}
+
+				HAL_Delay(1000);
+				rgb_led_set(&led0, 0x000000);
+			} else if (HAL_GPIO_ReadPin(BTN_1_GPIO_Port, BTN_1_Pin) == GPIO_PIN_SET) {
+				printf("Flash RW test\r\n");
+				rgb_led_set(&led0, 0x0000FF);
+				uint32_t test_address = 0x000000; // Sector 0
+
+				state_t dummy_state_w = {0}; // blank state to write
+				state_t dummy_state_r = {0}; // blank state to read back
+
+				dummy_state_w.t = 1234; // update write state time (first in struct)
+				dummy_state_w.servo_fdbk = 69.0f; // update write state servo fdbk (last in struct)
+
+				printf("Erase sector 0\r\n");
+				flash_erase_sector(&flash, test_address);
+
+				printf("Write %u bytes\r\n", sizeof(state_t));
+				flash_write_page(&flash, test_address, (uint8_t*)&dummy_state_w, sizeof(state_t));
+
+				printf("Read back\r\n");
+				flash_read_data(&flash, test_address, (uint8_t*)&dummy_state_r, sizeof(state_t));
+
+				if (dummy_state_r.t == 1234 && dummy_state_r.servo_fdbk == 69.0f) {
+					printf("RW test passed with t=%lu and servo_fdbk=%f\r\n", dummy_state_r.t, dummy_state_r.servo_fdbk);
+					rgb_led_set(&led0, 0x00FF00);
+				} else {
+					printf("RW test failed with t=%lu and servo_fdbk=%f\r\n", dummy_state_r.t, dummy_state_r.servo_fdbk);
+					rgb_led_set(&led0, 0xFF0000);
+				}
+
+				HAL_Delay(1000);
+				rgb_led_set(&led0, 0x000000);
+			} else if (HAL_GPIO_ReadPin(BTN_2_GPIO_Port, BTN_2_Pin) == GPIO_PIN_SET) {
+				printf("Erasing flash (this will take a minute)\r\n");
+				rgb_led_set(&led0, 0x0000FF);
+
+				flash_erase_chip(&flash);
+
+				printf("Erase complete\r\n");
+				rgb_led_set(&led0, 0x00FF00);
+
+				HAL_Delay(1000);
+				rgb_led_set(&led0, 0x000000);
+			}
 			break;
 		case CONTROL_PANEL: // 6
 

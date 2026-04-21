@@ -1,0 +1,8 @@
+../Core/Src/flash.c:11:10:flash_read_jedec_id	104	static
+../Core/Src/flash.c:43:9:flash_read_status	104	static
+../Core/Src/flash.c:66:6:flash_wait_for_ready	16	static
+../Core/Src/flash.c:73:6:flash_write_enable	96	static
+../Core/Src/flash.c:91:6:flash_erase_sector	96	static
+../Core/Src/flash.c:116:6:flash_erase_chip	96	static
+../Core/Src/flash.c:139:6:flash_write_page	104	static
+../Core/Src/flash.c:169:6:flash_read_data	104	static
