@@ -8,6 +8,8 @@
 #ifndef INC_SERVO_H_
 #define INC_SERVO_H_
 
+#include "state.h"
+
 typedef struct {
 	// PWM
 	TIM_HandleTypeDef* tim_handle;
@@ -25,14 +27,16 @@ typedef struct {
 // duty is the on time of the pulse (min 500 max 2500) [us]
 void servo_set(servo_t* servo, uint32_t duty) {
 
+	state.servo_cmd = (float)(duty - 500) * (180.0f / (2500.0f - 500.0f)); // calculate servo cmd angle before clamping duty to expose issues
+
+	// clamp duty to servo valid input
 	if (duty < 500) {
 		duty = 500;
 	} else if (duty > 2500) {
 		duty = 2500;
 	}
 
-	// update duty cycles
-	__HAL_TIM_SET_COMPARE(servo->tim_handle, TIM_CHANNEL_1, duty);
+	__HAL_TIM_SET_COMPARE(servo->tim_handle, TIM_CHANNEL_1, duty); // update PWM duty cycle
 }
 
 // sig's mistake fixing
@@ -82,16 +86,16 @@ float servo_get_angle(servo_t* servo) {
 	uint32_t raw = servo->dma_buf[0];
 
 	// clamp to known voltage range (300 to 3000 mV)
-	if (raw < 372) {
-		raw = 372;
-	} else if (raw > 3724) {
-		raw = 3724;
+	if (raw < 1130) {
+		raw = 1130;
+	} else if (raw > 3195) {
+		raw = 3195;
 	}
 
 	// map the range (raw - counts_min) * (angle_max / counts_range)
-	float angle = (float)(raw - 372) * (180.0f / (3724.0f - 372.0f));
+	state.servo_fdbk = 180.0f - (float)(raw - 1130) * (180.0f / (3195.0f - 1130.0f));
 
-	return angle;
+	return state.servo_fdbk;
 }
 
 #endif /* INC_SERVO_H_ */

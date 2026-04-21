@@ -200,6 +200,10 @@ batt_sense_t batt_sense = {
 	.dma_buf = {0, 0}
 };
 
+telemetry_t telemetry = {
+	.handle = &huart4
+};
+
 extern uint8_t baro_ready;
 extern uint8_t mag_ready;
 extern uint8_t imu_ready;
@@ -343,9 +347,6 @@ int main(void)
     batt_sense_init(&batt_sense);
 
     sensors_init();
-
-    telemetry_init(&huart4);
-
   /* USER CODE END 2 */
 
   /* Infinite loop */

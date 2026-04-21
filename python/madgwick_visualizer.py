@@ -14,6 +14,7 @@ except serial.SerialException as e:
 
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
+ax.view_init(azim=210, elev=20)
 
 def update(frame):
     try:
@@ -38,16 +39,16 @@ def update(frame):
 
                     ax.cla()
 
-                    ax.set_xlim([-1.5, 1.5])
-                    ax.set_ylim([1.5, -1.5])
-                    ax.set_zlim([1.5, -1.5])
+                    ax.set_xlim([-2, 2])
+                    ax.set_ylim([2, -2])
+                    ax.set_zlim([2, -2])
                     ax.set_xlabel('North (Xe)')
                     ax.set_ylabel('East (Ye)')
                     ax.set_zlabel('Down (Ze)')
 
                     rotation = R.from_quat([qw, qx, qy, qz], scalar_first=True) # scipy uses x y z w
 
-                unit_x = [1, 0, 0]
+                unit_x = [2, 0, 0]
                 unit_y = [0, 1, 0]
                 unit_z = [0, 0, 1]
 

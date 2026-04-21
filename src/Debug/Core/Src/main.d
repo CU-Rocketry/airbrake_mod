@@ -42,10 +42,10 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd_ex.h \
  ../Core/Inc/sensors.h ../Core/Inc/black_eyes.h ../Core/Inc/main.h \
  ../Core/Inc/rgb_led.h ../Core/Inc/buzzer.h ../Core/Inc/servo.h \
- ../Core/Inc/mode_switch.h ../Core/Inc/state_estimation.h \
- ../Drivers/CMSIS/DSP/Include/arm_math.h \
+ ../Core/Inc/state.h ../Core/Inc/mode_switch.h \
+ ../Core/Inc/state_estimation.h ../Drivers/CMSIS/DSP/Include/arm_math.h \
  ../Drivers/CMSIS/Include/cmsis_compiler.h ../Core/Inc/state.h \
- ../Core/Inc/batt_sense.h
+ ../Core/Inc/batt_sense.h ../Core/Inc/telemetry.h
 ../Core/Inc/main.h:
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h:
 ../Core/Inc/stm32h7xx_hal_conf.h:
@@ -94,9 +94,11 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Core/Inc/rgb_led.h:
 ../Core/Inc/buzzer.h:
 ../Core/Inc/servo.h:
+../Core/Inc/state.h:
 ../Core/Inc/mode_switch.h:
 ../Core/Inc/state_estimation.h:
 ../Drivers/CMSIS/DSP/Include/arm_math.h:
 ../Drivers/CMSIS/Include/cmsis_compiler.h:
 ../Core/Inc/state.h:
 ../Core/Inc/batt_sense.h:
+../Core/Inc/telemetry.h:
