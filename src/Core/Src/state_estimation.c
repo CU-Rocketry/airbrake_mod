@@ -140,7 +140,9 @@ void quat_rot(float v[3], float q[4], float v_out[3]) {
 
 //initial conditions
 
-bool rocket_launch=false;
+//bool rocket_launch=false;
+uint8_t is_launched = 0; // bool is a pain often, so we just do an integer we can set to 0 or 1 -sig :)
+						// we don't necessarily know how the compiler will allocate memory for a bool which is what makes it hard
 
 //start timer once the G-force on the rocket is 5G or greater
 
@@ -151,29 +153,32 @@ bool rocket_launch=false;
 //initial conditions:
 float accel_ms2=0.0f;
 
-bool rocket_launch=false;
 //need current acceleration of the rocket: I just named it accel for now
 
-float launch_accel_G=5.0f;
-float G_to_MS2=9.807;
-float launch_accel_ms2=launch_accel_g*G_to_MS2;
-float required_flight_duration=0.01f; //1/100th of a second
-float acceleration_event_time=0.0f;
+const float launch_accel_G=5.0f;
+const float G_to_MS2=9.807;
+const float launch_accel_ms2=launch_accel_G*G_to_MS2;
+const float required_flight_duration=0.01f; //1/100th of a second
+
+float accel_event_time=0.0f;
 
 // call with launch_detect(state.accel_b[0]);
 void launch_detect(float accel) {
 	float launch_accel_G=5.0f;
 	float G_to_MS2=9.807;
-	float launch_accel_ms2=launch_accel_g*G_to_MS2;
-	float required_flight_duration=0.01f; //in seconds
+	float launch_accel_ms2=launch_accel_G*G_to_MS2;
 
 	if (accel>=launch_accel_ms2){
-		if(acceleration_event_time==0.0f){
-			acceleration_event_time=HAL_GetTick();
+		if(accel_event_time==0.0f){
+//			accel_event_time=HAL_GetTick(); // TODO include the HAL library you need for this -sig
+											// alternatively we can just pull it from state.t
 		}
-		if (HAL_GetTick()-acceleration_detect_time)>=required_flight_duration);
+//		if (HAL_GetTick()-accel_event_time>=required_flight_duration){ // TODO same as above, I just need to think abt it later -sig
+//
+//		}
 	}
-	{
+}
+
 //HAL_GetTick is uint32_t data type
 
 //if (accel>=launch_accel_ms2)

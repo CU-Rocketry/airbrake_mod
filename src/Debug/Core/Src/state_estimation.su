@@ -3,3 +3,4 @@
 ../Core/Src/state_estimation.c:104:6:get_mag_b	16	static
 ../Core/Src/state_estimation.c:115:6:quat_conj	16	static
 ../Core/Src/state_estimation.c:125:6:quat_rot	24	static
+../Core/Src/state_estimation.c:166:6:launch_detect	32	static
