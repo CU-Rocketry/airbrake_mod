@@ -136,6 +136,54 @@ void quat_rot(float v[3], float q[4], float v_out[3]) {
 			   v[2] * (1.0f - 2.0f * (q[1]*q[1] + q[2]*q[2]));
 }
 
+
+
+//initial conditions
+
+bool rocket_launch=false;
+
+//start timer once the G-force on the rocket is 5G or greater
+
+//If function runs 5 times - then it's been 1/100th of a second
+//Connected to 500 Hz frequency
+
+
+//initial conditions:
+float accel_ms2=0.0f;
+
+bool rocket_launch=false;
+//need current acceleration of the rocket: I just named it accel for now
+
+float launch_accel_G=5.0f;
+float G_to_MS2=9.807;
+float launch_accel_ms2=launch_accel_g*G_to_MS2;
+float required_flight_duration=0.01f; //1/100th of a second
+float acceleration_event_time=0.0f;
+
+// call with launch_detect(state.accel_b[0]);
+void launch_detect(float accel) {
+	float launch_accel_G=5.0f;
+	float G_to_MS2=9.807;
+	float launch_accel_ms2=launch_accel_g*G_to_MS2;
+	float required_flight_duration=0.01f; //in seconds
+
+	if (accel>=launch_accel_ms2){
+		if(acceleration_event_time==0.0f){
+			acceleration_event_time=HAL_GetTick();
+		}
+		if (HAL_GetTick()-acceleration_detect_time)>=required_flight_duration);
+	}
+	{
+//HAL_GetTick is uint32_t data type
+
+//if (accel>=launch_accel_ms2)
+//if (start_time==0.0f)
+
+
+//old stuff below
+
+
+
 //void cross_prod(arm_matrix_instance_f32 *a,arm_matrix_instance_f32 *b, arm_matrix_instance_f32 *out)
 //{
 //	float a_data[3]=a->pData;
