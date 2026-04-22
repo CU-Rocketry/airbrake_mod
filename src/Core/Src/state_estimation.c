@@ -11,6 +11,7 @@
 #include "MadgwickAHRS.h"
 #include <stdio.h>
 #include "state.h"
+#include "math.h"
 
 uint16_t last_sample_time;
 uint16_t sample_time;
@@ -21,6 +22,29 @@ extern uint8_t mag_ready;
 extern uint8_t baro_ready;
 
 float roll, pitch, yaw;
+
+// ISA model
+#define ISA_T0 288.15    // [K] sea level temp
+#define ISA_L 0.0065     // [K/m] lapse rate
+#define ISA_P0 101325.0  // [Pa] sea level pressure TODO: pressure unit conversion if needed
+#define ISA_R 287.05   // gas constant
+
+// Kalman state
+typedef struct {
+    float q[2]; // q = [alt_agl, vel_z]T
+    float P[2][2]; // Covariance matrix
+    float P_ground; // Ground pressure
+} kalman_state_t;
+
+static kalman_state_t kalman_state = {
+    .q = {0.0f, 0.0f},
+    .P = {{2.0f, 0.0f}, {0.0f, 0.5f}},
+    .P_ground = 101325.0f // To be overwritten with average
+};
+
+// Kalman tuning
+static const float sigma_acc = 0.5f; // IMU trust
+static const float R_baro = 4.0f; // Baro trust (SD in meters, squared)
 
 void state_estimation(void) {
 
@@ -82,13 +106,17 @@ void state_estimation(void) {
 		state.accel_e[1] = accel_e[1];
 		state.accel_e[2] = accel_e[2];
 
-		// EKF prediction
+		kalman_predict(state.accel_e[2], dt); // kalman prediction
 	}
 
 	if (baro_ready) {
 		baro_ready = 0;
-		// EKF correction
+		kalman_update(state.pres_hpa); // Kalman correction
 	}
+
+	// negatives to convert back from NED
+	state.alt_agl = -kalman_state.q[0];
+	state.vel_z = -kalman_state.q[1];
 }
 
 void get_imu_b(float out_accel_b[3], float out_omega_b[3]) {
@@ -156,17 +184,13 @@ float accel_ms2=0.0f;
 //need current acceleration of the rocket: I just named it accel for now
 
 const float launch_accel_G=5.0f;
-const float G_to_MS2=9.807;
-const float launch_accel_ms2=launch_accel_G*G_to_MS2;
+const float launch_accel_ms2=launch_accel_G*GRAVITY;
 const float required_flight_duration=0.01f; //1/100th of a second
 
 float accel_event_time=0.0f;
 
 // call with launch_detect(state.accel_b[0]);
 void launch_detect(float accel) {
-	float launch_accel_G=5.0f;
-	float G_to_MS2=9.807;
-	float launch_accel_ms2=launch_accel_G*G_to_MS2;
 
 	if (accel>=launch_accel_ms2){
 		if(accel_event_time==0.0f){
@@ -177,6 +201,79 @@ void launch_detect(float accel) {
 //
 //		}
 	}
+}
+
+void kalman_predict(float accel_z, float dt) {
+    if (!is_launched) { // if not launched, prevent drift
+        kalman_state.q[0] = 0.0f;
+        kalman_state.q[1] = 0.0f;
+        kalman_state.P[0][0] = 2.0f; kalman_state.P[0][1] = 0.0f;
+        kalman_state.P[1][0] = 0.0f; kalman_state.P[1][1] = 0.5f;
+        return;
+    }
+
+    // prediction for q = F*x + B*u
+    // position += velocity*dt + 0.5*accel*dt^2
+    // velocity += accel*dt
+    kalman_state.q[0] = kalman_state.q[0] + kalman_state.q[1] * dt + 0.5f * accel_z * dt * dt;
+    kalman_state.q[1] = kalman_state.q[1] + accel_z * dt;
+
+    // prediction for covariance P = F*P*F' + Q
+    // Q = Q00 Q01
+    //     Q10 Q11
+    // which is unconventional but matches zero indexed arrays
+    float Q00 = (dt * dt * dt * dt / 4.0f) * (sigma_acc * sigma_acc);
+    float Q01 = (dt * dt * dt / 2.0f) * (sigma_acc * sigma_acc);
+    float Q10 = Q01;
+    float Q11 = (dt * dt) * (sigma_acc * sigma_acc);
+
+    // P = P00 P01
+    //     P10 P11
+    float P00 = kalman_state.P[0][0];
+    float P01 = kalman_state.P[0][1];
+    float P10 = kalman_state.P[1][0];
+    float P11 = kalman_state.P[1][1];
+
+    kalman_state.P[0][0] = P00 + dt * P10 + dt * (P01 + dt * P11) + Q00;
+    kalman_state.P[0][1] = P01 + dt * P11 + Q01;
+    kalman_state.P[1][0] = P10 + dt * P11 + Q10;
+    kalman_state.P[1][1] = P11 + Q11;
+}
+
+void kalman_update(float pressure) {
+    if (!is_launched) { // before launch update ground pressure
+        kalman_state.P_ground = 0.99f * kalman_state.P_ground + 0.01f * pressure; // low pass filter (LPF)
+        return;
+    }
+
+    // use ISA model to convert to a height
+    float exponent = (ISA_R * ISA_L) / GRAVITY;
+    float h_agl_pres = (ISA_T0 / ISA_L) * (1.0f - powf((pressure / kalman_state.P_ground), exponent));
+    float z_meas = -h_agl_pres; // NED coordinate system
+
+    // Innovation (residual) y = z_meas - H*q
+    // H = [1, 0], so H*q is just q[0]
+    float y = z_meas - kalman_state.q[0];
+
+    // Innovation covariance S = H*P*H' + R
+    float S = kalman_state.P[0][0] + R_baro;
+
+    // Kalman gain K = P*H' / S
+    float K0 = kalman_state.P[0][0] / S;
+    float K1 = kalman_state.P[1][0] / S;
+
+    // state update x = x + K*y
+    kalman_state.q[0] = kalman_state.q[0] + K0 * y;
+    kalman_state.q[1] = kalman_state.q[1] + K1 * y;
+
+    // covariance update P = (I - K*H)*P
+    float P00 = kalman_state.P[0][0];
+    float P01 = kalman_state.P[0][1];
+
+    kalman_state.P[0][0] = P00 - K0 * P00;
+    kalman_state.P[0][1] = P01 - K0 * P01;
+    kalman_state.P[1][0] = kalman_state.P[1][0] - K1 * P00;
+    kalman_state.P[1][1] = kalman_state.P[1][1] - K1 * P01;
 }
 
 //HAL_GetTick is uint32_t data type

@@ -40,6 +40,6 @@
 ../Core/Src/main.c:1440:6:HAL_SPI_TxRxCpltCallback	4
 ../Core/Src/main.c:1451:6:HAL_TIM_PeriodElapsedCallback	3
 ../Core/Src/main.c:1461:6:mode_transition_handler	5
-../Core/Src/main.c:1511:6:mode_current_handler	20
-../Core/Src/main.c:1682:6:MPU_Config	1
-../Core/Src/main.c:1713:6:Error_Handler	1
+../Core/Src/main.c:1511:6:mode_current_handler	19
+../Core/Src/main.c:1684:6:MPU_Config	1
+../Core/Src/main.c:1715:6:Error_Handler	1

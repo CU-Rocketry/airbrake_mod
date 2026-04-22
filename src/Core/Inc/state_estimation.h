@@ -20,4 +20,7 @@ void get_mag_b(float out_mag_b[3]);
 void quat_conj(float q[4], float q_star[4]);
 void quat_rot(float v[3], float q[4], float v_out[3]);
 
+void kalman_predict(float accel_z, float dt);
+void kalman_update(float pressure);
+
 #endif /* INC_STATE_ESTIMATION_H_ */

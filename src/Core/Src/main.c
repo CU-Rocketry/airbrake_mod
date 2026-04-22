@@ -191,8 +191,8 @@ servo_t servo = {
 	.dma_buf = servo_dma_buf,
 //	.duty_retracted = 1000,
 //	.duty_extended = 2370
-	.duty_retracted = 500,
-	.duty_extended = 2500
+	.duty_retracted = 550,
+	.duty_extended = 2200
 };
 uint8_t endpoint_selected = 0;
 
@@ -369,7 +369,7 @@ int main(void)
 
 		  state.t = HAL_GetTick();
 
-//		  telemetry_state(&state);
+//		  telemetry_state(&telemetry, &state);
 
 		  // Handle mode switch
 		  mode = get_mode_switch();
@@ -1557,6 +1557,8 @@ void mode_current_handler(enum Mode curr) {
 				}
 			}
 
+//			printf("v:%f i:%f\r\n", state.batt_v, state.batt_i);
+
 			break;
 		case TEST_SENSORS: // 4
 			break;
@@ -1663,7 +1665,7 @@ void mode_current_handler(enum Mode curr) {
 //			printf("roll:%f,pitch:%f,yaw:%f\r\n", state.roll, state.pitch, state.yaw);
 
 			// Print quaternion
-			printf("q:[%f,%f,%f,%f]\r\n", state.quat[0], state.quat[1], state.quat[2], state.quat[3]);
+//			printf("q:[%f,%f,%f,%f]\r\n", state.quat[0], state.quat[1], state.quat[2], state.quat[3]);
 
 //			printf("accel_b:[%.3f,%.3f,%.3f]\r\n", state.accel_e[0], state.accel_e[1], state.accel_e[2]);
 
