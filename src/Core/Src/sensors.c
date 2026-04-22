@@ -295,6 +295,8 @@ void mag_init() {
 	/* Set device in continuous mode */
 	iis2mdc_operating_mode_set(&iis2mdc_ctx, IIS2MDC_CONTINUOUS_MODE);
 
+	iis2mdc_drdy_on_pin_set(&iis2mdc_ctx, 1);
+
 	printf("IIS2MDC init complete\r\n");
 }
 
