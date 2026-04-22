@@ -29,10 +29,12 @@ typedef struct {
 uint32_t flash_read_jedec_id(flash_t *flash);
 uint8_t flash_read_status(flash_t *flash);
 void flash_wait_for_ready(flash_t *flash);
+uint8_t flash_is_ready(flash_t *flash);
 void flash_write_enable(flash_t *flash);
 void flash_erase_sector(flash_t *flash, uint32_t address);
 void flash_erase_chip(flash_t *flash);
 void flash_write_page(flash_t *flash, uint32_t address, uint8_t *data, uint32_t length);
+void flash_write_page_dma(flash_t *flash, uint32_t address, uint8_t *data, uint32_t length);
 void flash_read_data(flash_t *flash, uint32_t address, uint8_t *data, uint32_t length);
 
 #endif /* INC_FLASH_H_ */

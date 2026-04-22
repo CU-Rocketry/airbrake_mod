@@ -64,10 +64,14 @@ uint8_t flash_read_status(flash_t *flash) {
 }
 
 void flash_wait_for_ready(flash_t *flash) {
-    // Poll the BUSY bit until it clears
-    while ((flash_read_status(flash) & FLASH_SR1_BUSY) == FLASH_SR1_BUSY) {
-        // You could add a timeout or a small delay here if using an RTOS
+    while ((flash_read_status(flash) & FLASH_SR1_BUSY) == FLASH_SR1_BUSY) { // poll busy bit until ready
+        // TODO do we need a delay
     }
+}
+
+// 1 if busy, 0 if ready
+uint8_t flash_is_ready(flash_t *flash) {
+    return ((flash_read_status(flash) & FLASH_SR1_BUSY) == FLASH_SR1_BUSY);
 }
 
 void flash_write_enable(flash_t *flash) {
@@ -164,6 +168,35 @@ void flash_write_page(flash_t *flash, uint32_t address, uint8_t *data, uint32_t 
 
     // Wait for the write to complete
     flash_wait_for_ready(flash);
+}
+
+void flash_write_page_dma(flash_t *flash, uint32_t address, uint8_t *data, uint32_t length) {
+    OSPI_RegularCmdTypeDef sCommand = {0};
+
+    if (length > 256) length = 256;
+
+    flash_wait_for_ready(flash); // ensure write is already done
+
+    flash_write_enable(flash);
+
+    sCommand.OperationType      = HAL_OSPI_OPTYPE_COMMON_CFG;
+    sCommand.FlashId            = HAL_OSPI_FLASH_ID_1;
+    sCommand.Instruction        = FLASH_CMD_PAGE_PROGRAM;
+    sCommand.InstructionMode    = HAL_OSPI_INSTRUCTION_1_LINE;
+    sCommand.InstructionSize    = HAL_OSPI_INSTRUCTION_8_BITS;
+    sCommand.AddressMode        = HAL_OSPI_ADDRESS_1_LINE;
+    sCommand.AddressSize        = HAL_OSPI_ADDRESS_24_BITS;
+    sCommand.Address            = address;
+    sCommand.AlternateBytesMode = HAL_OSPI_ALTERNATE_BYTES_NONE;
+    sCommand.DataMode           = HAL_OSPI_DATA_1_LINE;
+    sCommand.NbData             = length;
+    sCommand.DummyCycles        = 0;
+    sCommand.DQSMode            = HAL_OSPI_DQS_DISABLE;
+    sCommand.SIOOMode           = HAL_OSPI_SIOO_INST_EVERY_CMD;
+
+    HAL_OSPI_Command(flash->hospi, &sCommand, HAL_OSPI_TIMEOUT_DEFAULT_VALUE);
+
+    HAL_OSPI_Transmit_DMA(flash->hospi, data); // start DMA transmission (non blocking)
 }
 
 void flash_read_data(flash_t *flash, uint32_t address, uint8_t *data, uint32_t length) {
