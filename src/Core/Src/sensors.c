@@ -113,6 +113,7 @@ void imu_int_drdy_handler() {
 void mag_int_drdy_handler() {
 	memset(mag_tx_buf, 0, 7);
 	mag_tx_buf[0] = IIS2MDC_OUTX_L_REG | 0x80;
+	spi_nss(iis2mdc_ctx.handle, 0); // assert mag CS
 	HAL_SPI_TransmitReceive_DMA(iis2mdc_ctx.handle, mag_tx_buf, mag_rx_buf, 7);
 }
 
@@ -148,7 +149,13 @@ void imu_spi_callback() {
 }
 
 
-void mag_spi_callback() {
+void mag_spi_callback() { // when DMA receive transfer is done (data is in memory of STM 32)
+	mag_raw[0] = (int16_t)(((int16_t)mag_rx_buf[2] << 8) | (int16_t)mag_rx_buf[1]);
+	mag_raw[1] = (int16_t)(((int16_t)mag_rx_buf[4] << 8) | (int16_t)mag_rx_buf[3]);
+	mag_raw[2] = (int16_t)(((int16_t)mag_rx_buf[6] << 8) | (int16_t)mag_rx_buf[5]);
+	state.mag_mgauss[0] = iis2mdc_from_lsb_to_mgauss(mag_raw[0]);//mG
+	state.mag_mgauss[1] = iis2mdc_from_lsb_to_mgauss(mag_raw[1]);
+	state.mag_mgauss[2] = iis2mdc_from_lsb_to_mgauss(mag_raw[2]);
 	mag_ready = 1;
 }
 
