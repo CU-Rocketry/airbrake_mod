@@ -8,6 +8,8 @@
 #ifndef INC_STATE_H_
 #define INC_STATE_H_
 
+#define GRAVITY 9.80665f
+
 typedef struct {
 	// Time
 	uint32_t t; // [ms] since boot
@@ -28,8 +30,10 @@ typedef struct {
     float mag_b[3]; // [mgauss] in body frame
 
     // State estimation
-    float quat[4];
+    float quat[4]; // body to inertial rotation already I think
     float accel_e[3]; // [m/s/s] in inertial frame
+    float alt_agl; // [m] AGL with + up
+    float vel_z; // [m] with + up
 
     // Control
     // TODO
