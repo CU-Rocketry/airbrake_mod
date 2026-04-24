@@ -50,7 +50,7 @@ uint8_t mag_ready = 0;
 // Size = 1 for register + N bytes
 uint8_t baro_tx_buf[4], baro_rx_buf[4]; // XL, L, and H
 uint8_t imu_tx_buf[13], imu_rx_buf[13]; // Gyro 2 bytes * 3 axes + Accel 2 bytes * 3 axes
-uint8_t mag_tx_buf[7], mag_rx_buf[7]; // X, Y, Z where each channel is 16 bits = 2 bytes
+uint8_t mag_tx_buf, mag_rx_buf[6]; // X, Y, Z where each channel is 16 bits = 2 bytes
 
 void spi_nss(SPI_HandleTypeDef *handle, uint8_t level) {
 	if (handle->Instance == SPI1) { // baro
@@ -111,10 +111,11 @@ void imu_int_drdy_handler() {
 }
 
 void mag_int_drdy_handler() {
-	memset(mag_tx_buf, 0, 7);
-	mag_tx_buf[0] = IIS2MDC_OUTX_L_REG | 0x80;
+	mag_tx_buf = IIS2MDC_OUTX_L_REG | 0x80;
 	spi_nss(iis2mdc_ctx.handle, 0); // assert mag CS
-	HAL_SPI_TransmitReceive_DMA(iis2mdc_ctx.handle, mag_tx_buf, mag_rx_buf, 7);
+//	HAL_SPI_TransmitReceive_DMA(iis2mdc_ctx.handle, mag_tx_buf, mag_rx_buf, 7); // this doesn't work for half duplex SPI
+	HAL_SPI_Transmit(&hspi4, &mag_tx_buf, 1, 1);
+	HAL_SPI_Receive_DMA(&hspi4, mag_rx_buf, 6);
 }
 
 // SPI DMA done callbacks
@@ -150,9 +151,10 @@ void imu_spi_callback() {
 
 
 void mag_spi_callback() { // when DMA receive transfer is done (data is in memory of STM 32)
-	mag_raw[0] = (int16_t)(((int16_t)mag_rx_buf[2] << 8) | (int16_t)mag_rx_buf[1]);
-	mag_raw[1] = (int16_t)(((int16_t)mag_rx_buf[4] << 8) | (int16_t)mag_rx_buf[3]);
-	mag_raw[2] = (int16_t)(((int16_t)mag_rx_buf[6] << 8) | (int16_t)mag_rx_buf[5]);
+	spi_nss(iis2mdc_ctx.handle, 1); // deassert mag CS
+	mag_raw[0] = (int16_t)(((int16_t)mag_rx_buf[1] << 8) | (int16_t)mag_rx_buf[0]);
+	mag_raw[1] = (int16_t)(((int16_t)mag_rx_buf[3] << 8) | (int16_t)mag_rx_buf[2]);
+	mag_raw[2] = (int16_t)(((int16_t)mag_rx_buf[5] << 8) | (int16_t)mag_rx_buf[4]);
 	state.mag_mgauss[0] = iis2mdc_from_lsb_to_mgauss(mag_raw[0]);//mG
 	state.mag_mgauss[1] = iis2mdc_from_lsb_to_mgauss(mag_raw[1]);
 	state.mag_mgauss[2] = iis2mdc_from_lsb_to_mgauss(mag_raw[2]);
@@ -287,7 +289,7 @@ void mag_init() {
 	/* Enable Block Data Update */
 	iis2mdc_block_data_update_set(&iis2mdc_ctx, PROPERTY_ENABLE);
 	/* Set Output Data Rate */
-	iis2mdc_data_rate_set(&iis2mdc_ctx, IIS2MDC_ODR_10Hz);
+	iis2mdc_data_rate_set(&iis2mdc_ctx, IIS2MDC_ODR_100Hz);
 	/* Set / Reset sensor mode */
 	iis2mdc_set_rst_mode_set(&iis2mdc_ctx, IIS2MDC_SENS_OFF_CANC_EVERY_ODR);
 	/* Enable temperature compensation */
