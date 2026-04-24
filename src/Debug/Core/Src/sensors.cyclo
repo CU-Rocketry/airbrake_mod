@@ -5,10 +5,10 @@
 ../Core/Src/sensors.c:97:6:baro_int_drdy_handler	1
 ../Core/Src/sensors.c:106:6:imu_int_drdy_handler	1
 ../Core/Src/sensors.c:113:6:mag_int_drdy_handler	1
-../Core/Src/sensors.c:121:6:baro_spi_callback	1
-../Core/Src/sensors.c:129:6:imu_spi_callback	1
-../Core/Src/sensors.c:151:6:mag_spi_callback	1
-../Core/Src/sensors.c:155:6:sensors_init	1
-../Core/Src/sensors.c:162:6:baro_init	3
-../Core/Src/sensors.c:204:6:imu_init	2
-../Core/Src/sensors.c:258:6:mag_init	3
+../Core/Src/sensors.c:123:6:baro_spi_callback	1
+../Core/Src/sensors.c:131:6:imu_spi_callback	1
+../Core/Src/sensors.c:153:6:mag_spi_callback	1
+../Core/Src/sensors.c:164:6:sensors_init	1
+../Core/Src/sensors.c:171:6:baro_init	3
+../Core/Src/sensors.c:213:6:imu_init	2
+../Core/Src/sensors.c:267:6:mag_init	3

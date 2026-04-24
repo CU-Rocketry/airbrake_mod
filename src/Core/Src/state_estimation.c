@@ -54,15 +54,13 @@ void state_estimation(void) {
 //	arm_mat_init_f32(&accel_b, 3, 1, accel_b_data);
 //	arm_mat_init_f32(&omega_b, 3, 1, omega_b_data);
 
-	float accel_b[3];
-	float omega_b[3];
-	get_imu_b(accel_b, omega_b);
+	get_imu_b(state.accel_b, state.omega_b);
 
 //	float mag_b_data[3];
 //	arm_matrix_instance_f32 mag_b;
 //	arm_mat_init_f32(&mag_b, 3, 1, mag_b_data);
-	float mag_b[3] = {0,0,0};
-//	get_mag_b(&mag_b);
+//	float mag_b[3] = {0,0,0};
+	get_mag_b(state.mag_b);
 
 	// TODO
 //	if (sample_time < last_sample_time) {
@@ -79,14 +77,14 @@ void state_estimation(void) {
 		imu_ready = 0;
 		if (mag_ready) {
 			mag_ready = 0;
-			MadgwickAHRSupdate(omega_b[0], omega_b[1], omega_b[2],
-					-accel_b[0], -accel_b[1], -accel_b[2],
-					mag_b[0], mag_b[1], mag_b[2],
+			MadgwickAHRSupdate(state.omega_b[0], state.omega_b[1], state.omega_b[2],
+					-state.accel_b[0], -state.accel_b[1], -state.accel_b[2],
+					state.mag_b[0], state.mag_b[1], state.mag_b[2],
 					dt);
 
 		} else {
-			MadgwickAHRSupdateIMU(omega_b[0], omega_b[1], omega_b[2],
-								 -accel_b[0], -accel_b[1], -accel_b[2],
+			MadgwickAHRSupdateIMU(state.omega_b[0], state.omega_b[1], state.omega_b[2],
+								 -state.accel_b[0], -state.accel_b[1], -state.accel_b[2],
 								 dt);
 		}
 
@@ -97,14 +95,9 @@ void state_estimation(void) {
 //		quat_conj(state.quat, q_star); // get conjugate of madgwick output
 		// now q_star is the body to earth rotation
 
-		float accel_e[3];
-		quat_rot(accel_b, state.quat, accel_e); // rotate body accel by b to e rotation to get inertial acceleration
+		quat_rot(state.accel_b, state.quat, state.accel_e); // rotate body accel by b to e rotation to get inertial acceleration
 
-		accel_e[2] += 9.80665f; // get rid of gravity. TODO a constant maybe
-
-		state.accel_e[0] = accel_e[0];
-		state.accel_e[1] = accel_e[1];
-		state.accel_e[2] = accel_e[2];
+		state.accel_e[2] += 9.80665f; // get rid of gravity. TODO a constant maybe
 
 		kalman_predict(state.accel_e[2], dt); // kalman prediction
 	}
