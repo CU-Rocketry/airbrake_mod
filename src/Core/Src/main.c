@@ -231,7 +231,7 @@ enum Mode {
 	TEST_SERVO = 3,
 	TEST_SENSORS = 4,
 	TEST_FLASH = 5,
-	CONTROL_PANEL = 6,
+	TEST_CONTROL = 6,
 	LAUNCH_DETECT = 7
 };
 enum Mode mode = -1;
@@ -1508,7 +1508,7 @@ void mode_transition_handler(enum Mode prev, enum Mode curr) {
 			rgb_led_set(&led0, 0x000000);
 			rgb_led_set(&led1, 0x000000);
 			break;
-		case CONTROL_PANEL:
+		case TEST_CONTROL:
 //			buzzer_play_sequence(&buzzer, seq_mode_6_11, 11);
 			break;
 		case LAUNCH_DETECT:
@@ -1634,42 +1634,12 @@ void mode_current_handler(enum Mode curr) {
 				rgb_led_set(&led0, 0x000000);
 			}
 			break;
-		case CONTROL_PANEL: // 6
+		case TEST_CONTROL: // 6
 
-//			typedef struct {
-//				// Power
-//				float batt_v;
-//				float batt_i;
-//
-//			    // Sensors
-//			    float accel_ms2[3];
-//			    float omega_rads[3];
-//			    float mag_mgauss[3];
-//			    float pres_hpa;
-//
-//			    // Body frame sensors
-//			    float accel_b[3];
-//			    float omega_b[3];
-//			    float mag_b[3];
-//
-//			    // State estimation
-//			    float quat[4];
-//			    float accel_e[3];
-//
-//			    // Control
-//			    // TODO
-//			} state_t;
+			if (HAL_GPIO_ReadPin(BTN_0_GPIO_Port, BTN_0_Pin))
+			{
 
-//			printf("t: %lu batt_v:%.3f batt_i:%.3f servo_cmd:%.3f servo_fdbk:%.3f accel_b:%.3f,%.3f,%.3f omega_b:%.3f,%.3f,%.3f mag_b:%.3f,%.3f,%.3f quat:%.3f,%.3f,%.3f,%.3f accel_e:%.3f,%.3f,%.3f\r\n",
-//					state.t,
-//					state.batt_v, state.batt_i,
-//					state.servo_cmd, state.servo_fdbk,
-//					state.accel_b[0], state.accel_b[1], state.accel_b[2],
-//					state.omega_b[0], state.omega_b[1], state.omega_b[2],
-//					state.mag_b[0], state.mag_b[1], state.mag_b[2],
-//					state.quat[0], state.quat[1], state.quat[2], state.quat[3],
-//					state.accel_e[0], state.accel_e[1], state.accel_e[2]
-//			);
+			}
 
 // 			Print IMU and body acceleration
 //			printf("ax:%f,ay:%f,az:%f,ax_b:%f,ay_b:%f,az_b:%f\r\n",
