@@ -56,7 +56,9 @@ void telemetry_state(telemetry_t *ctx, state_t *state) {
 
     ctx->tx_buf[encoded_len] = 0x00; // final character is null terminator
 
-    HAL_UART_Transmit_IT(ctx->handle, ctx->tx_buf, encoded_len + 1); // transmit UART non-blocking
+//    HAL_UART_Transmit_IT(ctx->handle, ctx->tx_buf, encoded_len + 1);
+//    HAL_UART_Transmit(ctx->handle, ctx->tx_buf, encoded_len + 1, 1);
+    HAL_UART_Transmit_DMA(ctx->handle, ctx->tx_buf, encoded_len + 1);
 }
 
 #endif /* INC_TELEMETRY_H_ */
