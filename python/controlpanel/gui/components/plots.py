@@ -2,7 +2,7 @@ from imgui_bundle import implot, imgui, implot3d
 from gui.scrollingbuffer import ScrollingBuffer
 import numpy as np
 
-class TelemetryPlot:
+class LinePlot:
     def __init__(self, title, y_label, history=10.0, max_points=2000):
         self.title = title
         self.y_label = y_label
@@ -45,7 +45,7 @@ class TelemetryPlot:
             implot.end_plot()
 
 
-class OrientationPlot3D:
+class QuatPlot:
     def __init__(self, title):
         self.title = title
         self.quat_buffer = None
