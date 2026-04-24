@@ -27,7 +27,7 @@ class State:
             'accel_ms2': ScrollingBuffer(max_size=self.buffer_size, width=3),
             'omega_rads': ScrollingBuffer(max_size=self.buffer_size, width=3),
             'mag_mgauss': ScrollingBuffer(max_size=self.buffer_size, width=3),
-            'pres_hpa': ScrollingBuffer(max_size=self.buffer_size),
+            'pres_pa': ScrollingBuffer(max_size=self.buffer_size),
 
             'accel_b': ScrollingBuffer(max_size=self.buffer_size, width=3),
             'omega_b': ScrollingBuffer(max_size=self.buffer_size, width=3),
@@ -35,6 +35,8 @@ class State:
 
             'quat': ScrollingBuffer(max_size=self.buffer_size, width=4), # w,x,y,z
             'accel_e': ScrollingBuffer(max_size=self.buffer_size, width=3),
+
+            'p_ground': ScrollingBuffer(max_size=self.buffer_size),
             'alt_agl': ScrollingBuffer(max_size=self.buffer_size),
             'vel_z': ScrollingBuffer(max_size=self.buffer_size),
 

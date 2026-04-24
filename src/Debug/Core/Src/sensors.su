@@ -6,9 +6,9 @@
 ../Core/Src/sensors.c:106:6:imu_int_drdy_handler	8	static
 ../Core/Src/sensors.c:113:6:mag_int_drdy_handler	8	static
 ../Core/Src/sensors.c:123:6:baro_spi_callback	8	static
-../Core/Src/sensors.c:131:6:imu_spi_callback	8	static
-../Core/Src/sensors.c:153:6:mag_spi_callback	8	static
-../Core/Src/sensors.c:164:6:sensors_init	8	static
-../Core/Src/sensors.c:171:6:baro_init	32	static
-../Core/Src/sensors.c:213:6:imu_init	24	static
-../Core/Src/sensors.c:267:6:mag_init	16	static
+../Core/Src/sensors.c:132:6:imu_spi_callback	8	static
+../Core/Src/sensors.c:154:6:mag_spi_callback	8	static
+../Core/Src/sensors.c:165:6:sensors_init	8	static
+../Core/Src/sensors.c:172:6:baro_init	32	static
+../Core/Src/sensors.c:214:6:imu_init	24	static
+../Core/Src/sensors.c:268:6:mag_init	16	static

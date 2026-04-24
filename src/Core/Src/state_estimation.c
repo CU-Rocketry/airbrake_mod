@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include "state.h"
 #include "math.h"
+#include "stm32h7xx_hal.h"
 
 uint16_t last_sample_time;
 uint16_t sample_time;
@@ -97,14 +98,14 @@ void state_estimation(void) {
 
 		quat_rot(state.accel_b, state.quat, state.accel_e); // rotate body accel by b to e rotation to get inertial acceleration
 
-		state.accel_e[2] += 9.80665f; // get rid of gravity. TODO a constant maybe
+		state.accel_e[2] += GRAVITY; // get rid of gravity. TODO a constant maybe
 
 		kalman_predict(state.accel_e[2], dt); // kalman prediction
 	}
 
 	if (baro_ready) {
 		baro_ready = 0;
-		kalman_update(state.pres_hpa); // Kalman correction
+		kalman_update(state.pres_pa); // Kalman correction
 	}
 
 	// negatives to convert back from NED
@@ -161,43 +162,40 @@ void quat_rot(float v[3], float q[4], float v_out[3]) {
 
 //initial conditions
 
-//bool rocket_launch=false;
-uint8_t is_launched = 0; // bool is a pain often, so we just do an integer we can set to 0 or 1 -sig :)
-						// we don't necessarily know how the compiler will allocate memory for a bool which is what makes it hard
-
 //start timer once the G-force on the rocket is 5G or greater
 
 //If function runs 5 times - then it's been 1/100th of a second
 //Connected to 500 Hz frequency
 
+void launch_detect(float accel_b_x) {
+	if (state.is_launched) { // if already launched don't keep checking bc you can't unlaunch
+		return;
+	}
 
-//initial conditions:
-float accel_ms2=0.0f;
+	static uint8_t trig_cnt = 0; // how many samples greater than threshold, static so it stays between function calls
 
-//need current acceleration of the rocket: I just named it accel for now
+	const float LAUNCH_THRESH_MS2 = 5.0f * GRAVITY;
+	const uint8_t MIN_TRIG_CNT = 10; // 10 samples at 500Hz = 20ms
 
-const float launch_accel_G=5.0f;
-const float launch_accel_ms2=launch_accel_G*GRAVITY;
-const float required_flight_duration=0.01f; //1/100th of a second
+	if (accel_b_x >= LAUNCH_THRESH_MS2) { // check if body X accel exceeds threshold
+		trig_cnt++;
 
-float accel_event_time=0.0f;
-
-// call with launch_detect(state.accel_b[0]);
-void launch_detect(float accel) {
-
-	if (accel>=launch_accel_ms2){
-		if(accel_event_time==0.0f){
-//			accel_event_time=HAL_GetTick(); // TODO include the HAL library you need for this -sig
-											// alternatively we can just pull it from state.t
+		if (trig_cnt >= MIN_TRIG_CNT) { // if acceleration above threshold for consecutive samples
+			state.is_launched = 1;
+			state.launch_t = HAL_GetTick();
 		}
-//		if (HAL_GetTick()-accel_event_time>=required_flight_duration){ // TODO same as above, I just need to think abt it later -sig
-//
-//		}
+
+	} else { // accel below thresh so counter reset
+		trig_cnt = 0;
 	}
 }
 
+void launch_detect_override(uint8_t is_launched) {
+	state.is_launched = (is_launched > 0) ? 1 : 0; // force launch detect to 1 or 0
+}
+
 void kalman_predict(float accel_z, float dt) {
-    if (!is_launched) { // if not launched, prevent drift
+    if (!state.is_launched) { // if not launched, prevent drift
         kalman_state.q[0] = 0.0f;
         kalman_state.q[1] = 0.0f;
         kalman_state.P[0][0] = 2.0f; kalman_state.P[0][1] = 0.0f;
@@ -234,8 +232,9 @@ void kalman_predict(float accel_z, float dt) {
 }
 
 void kalman_update(float pressure) {
-    if (!is_launched) { // before launch update ground pressure
-        kalman_state.P_ground = 0.99f * kalman_state.P_ground + 0.01f * pressure; // low pass filter (LPF)
+    if (!state.is_launched) { // before launch update ground pressure
+        kalman_state.P_ground = 0.999f * kalman_state.P_ground + 0.001f * pressure; // low pass filter (LPF)
+        state.p_ground = kalman_state.P_ground;
         return;
     }
 

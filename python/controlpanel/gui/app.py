@@ -29,8 +29,8 @@ plot_omega_raw.add_line("X", app_state.buffers['omega_rads'], col=0)
 plot_omega_raw.add_line("Y", app_state.buffers['omega_rads'], col=1)
 plot_omega_raw.add_line("Z", app_state.buffers['omega_rads'], col=2)
 
-plot_pres = LinePlot("Barometer", "Pressure [hPa]")
-plot_pres.add_line("Pressure", app_state.buffers['pres_hpa'])
+plot_pres = LinePlot("Barometer", "Pressure [Pa]")
+plot_pres.add_line("Pressure", app_state.buffers['pres_pa'])
 
 plot_accel_b = LinePlot("Body Acceleration", "Accel [m/s^2]")
 plot_accel_b.add_line("X", app_state.buffers['accel_b'], col=0)
@@ -55,6 +55,9 @@ plot_accel_e = LinePlot("Inertial Acceleration", "Accel [m/s^2]")
 plot_accel_e.add_line("X", app_state.buffers['accel_e'], col=0)
 plot_accel_e.add_line("Y", app_state.buffers['accel_e'], col=1)
 plot_accel_e.add_line("Z", app_state.buffers['accel_e'], col=2)
+
+plot_p_ground = LinePlot("Ground Pressure", "Pressure [Pa]")
+plot_p_ground.add_line("Ground Pressure", app_state.buffers['p_ground'])
 
 plot_alt_agl = LinePlot("Altitude AGL", "Altitude [m]")
 plot_alt_agl.add_line("Altitude", app_state.buffers['alt_agl'])
@@ -109,6 +112,7 @@ def gui():
 
     imgui.begin("Estimation inertial")
     plot_accel_e.render(app_state.latest_time)
+    plot_p_ground.render(app_state.latest_time)
     plot_alt_agl.render(app_state.latest_time)
     plot_vel_z.render(app_state.latest_time)
     imgui.end()

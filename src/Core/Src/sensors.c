@@ -124,7 +124,8 @@ void baro_spi_callback() {
 	spi_nss(lps22df_ctx.handle, 1); // deassert baro CS
 	pres_raw = (uint32_t)(((uint32_t)baro_rx_buf[3] << 24) | ((uint32_t)baro_rx_buf[2] << 16) | ((uint32_t)baro_rx_buf[1] << 8));
 //	pres_hpa = lps22df_from_lsb_to_hPa(pres_raw);
-	state.pres_hpa = lps22df_from_lsb_to_hPa(pres_raw);
+//	state.pres_hpa = lps22df_from_lsb_to_hPa(pres_raw);
+	state.pres_pa = lps22df_from_lsb_to_hPa(pres_raw) * 100.0f; // unit conversion, 1 hPa = 100 Pa;
 	baro_ready = 1;
 }
 

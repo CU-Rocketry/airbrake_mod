@@ -1,8 +1,9 @@
-../Core/Src/state_estimation.c:49:6:state_estimation	8	static
-../Core/Src/state_estimation.c:115:6:get_imu_b	16	static
-../Core/Src/state_estimation.c:125:6:get_mag_b	16	static
-../Core/Src/state_estimation.c:136:6:quat_conj	16	static
-../Core/Src/state_estimation.c:146:6:quat_rot	24	static
-../Core/Src/state_estimation.c:186:6:launch_detect	16	static
-../Core/Src/state_estimation.c:199:6:kalman_predict	48	static
-../Core/Src/state_estimation.c:236:6:kalman_update	56	static
+../Core/Src/state_estimation.c:50:6:state_estimation	8	static
+../Core/Src/state_estimation.c:116:6:get_imu_b	16	static
+../Core/Src/state_estimation.c:126:6:get_mag_b	16	static
+../Core/Src/state_estimation.c:137:6:quat_conj	16	static
+../Core/Src/state_estimation.c:147:6:quat_rot	24	static
+../Core/Src/state_estimation.c:170:6:launch_detect	24	static
+../Core/Src/state_estimation.c:193:6:launch_detect_override	16	static
+../Core/Src/state_estimation.c:197:6:kalman_predict	48	static
+../Core/Src/state_estimation.c:234:6:kalman_update	56	static

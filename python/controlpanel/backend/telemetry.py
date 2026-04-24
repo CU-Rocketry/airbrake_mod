@@ -7,18 +7,24 @@ ffi = FFI()
 
 ffi.cdef("""
 typedef struct {
-    // Time
-    uint32_t t; // [ms] since boot
+	// Time
+	uint32_t t; // [ms] since boot
+	uint32_t launch_t; // [ms] launch detect
+	uint32_t elapsed_t; // [ms] since launch detected
 
-    // Power
-    float batt_v; // [V]
-    float batt_i; // [A]
+	// Launch detect
+	uint32_t is_launched;
+
+	// Power
+	float batt_v; // [V]
+	float batt_i; // [A]
 
     // Sensors
     float accel_ms2[3];
     float omega_rads[3];
     float mag_mgauss[3];
-    float pres_hpa;
+//    float pres_hpa;
+    float pres_pa;
 
     // Body frame sensors
     float accel_b[3]; // [m/s/s] in body frame. *proper acceleration
@@ -28,6 +34,8 @@ typedef struct {
     // State estimation
     float quat[4]; // body to inertial rotation already I think
     float accel_e[3]; // [m/s/s] in inertial frame
+
+    float p_ground; // [Pa]
     float alt_agl; // [m] AGL with + up
     float vel_z; // [m] with + up
 

@@ -1638,7 +1638,7 @@ void mode_current_handler(enum Mode curr) {
 
 			if (HAL_GPIO_ReadPin(BTN_0_GPIO_Port, BTN_0_Pin))
 			{
-
+				launch_detect_override(1);
 			}
 
 // 			Print IMU and body acceleration

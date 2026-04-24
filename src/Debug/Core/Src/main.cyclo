@@ -41,6 +41,6 @@
 ../Core/Src/main.c:1454:6:HAL_SPI_RxCpltCallback	2
 ../Core/Src/main.c:1462:6:HAL_TIM_PeriodElapsedCallback	3
 ../Core/Src/main.c:1472:6:mode_transition_handler	5
-../Core/Src/main.c:1522:6:mode_current_handler	20
-../Core/Src/main.c:1699:6:MPU_Config	1
-../Core/Src/main.c:1730:6:Error_Handler	1
+../Core/Src/main.c:1522:6:mode_current_handler	22
+../Core/Src/main.c:1669:6:MPU_Config	1
+../Core/Src/main.c:1700:6:Error_Handler	1
