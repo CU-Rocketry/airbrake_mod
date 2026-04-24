@@ -42,14 +42,14 @@ plot_omega_b.add_line("X", app_state.buffers['omega_b'], col=0)
 plot_omega_b.add_line("Y", app_state.buffers['omega_b'], col=1)
 plot_omega_b.add_line("Z", app_state.buffers['omega_b'], col=2)
 
-plot_quat = LinePlot("Orientation", "Quaternion")
-plot_quat.add_line("W", app_state.buffers['quat'], col=0)
-plot_quat.add_line("X", app_state.buffers['quat'], col=1)
-plot_quat.add_line("Y", app_state.buffers['quat'], col=2)
-plot_quat.add_line("Z", app_state.buffers['quat'], col=3)
+plot_quat_components = LinePlot("Orientation", "Quaternion")
+plot_quat_components.add_line("W", app_state.buffers['quat'], col=0)
+plot_quat_components.add_line("X", app_state.buffers['quat'], col=1)
+plot_quat_components.add_line("Y", app_state.buffers['quat'], col=2)
+plot_quat_components.add_line("Z", app_state.buffers['quat'], col=3)
 
-plot_3d_orientation = QuatPlot("Vehicle Attitude")
-plot_3d_orientation.set_buffer(app_state.buffers['quat'])
+plot_quat_orientation = QuatPlot("Vehicle Attitude")
+plot_quat_orientation.set_buffer(app_state.buffers['quat'])
 
 # 3. Connection Callbacks
 def connect_cb(port, baud):
@@ -92,6 +92,6 @@ def gui():
     imgui.end()
 
     imgui.begin("Orientation")
-    plot_quat.render(app_state.latest_time)
-    plot_3d_orientation.render()
+    plot_quat_components.render(app_state.latest_time)
+    plot_quat_orientation.render()
     imgui.end()
