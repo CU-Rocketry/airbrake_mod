@@ -77,6 +77,7 @@ TIM_HandleTypeDef htim16;
 TIM_HandleTypeDef htim17;
 
 UART_HandleTypeDef huart4;
+DMA_HandleTypeDef hdma_uart4_tx;
 
 PCD_HandleTypeDef hpcd_USB_OTG_HS;
 
@@ -179,6 +180,7 @@ const buzzer_beep_t seq_mode_7_13[] = {
 		{0, 500},
 		{4186, 500}
 };
+
 
 __attribute__((section(".bdma_buf"))) volatile uint16_t servo_dma_buf[1];
 servo_t servo = {
@@ -369,7 +371,7 @@ int main(void)
 
 		  state.t = HAL_GetTick();
 
-//		  telemetry_state(&telemetry, &state);
+		  telemetry_state(&telemetry, &state);
 
 		  // Handle mode switch
 		  mode = get_mode_switch();
@@ -1282,6 +1284,9 @@ static void MX_DMA_Init(void)
   /* DMA1_Stream6_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(DMA1_Stream6_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(DMA1_Stream6_IRQn);
+  /* DMA1_Stream7_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Stream7_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Stream7_IRQn);
 
 }
 
@@ -1443,10 +1448,16 @@ void HAL_SPI_TxRxCpltCallback(SPI_HandleTypeDef *hspi)
 		baro_spi_callback();
 	} else if (hspi->Instance == SPI2) {
 		imu_spi_callback();
-	} else if (hspi->Instance == SPI4) {
+	}
+}
+
+void HAL_SPI_RxCpltCallback(SPI_HandleTypeDef *hspi) {
+	if (hspi->Instance == SPI4) {
 		mag_spi_callback();
 	}
 }
+
+
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 	if (htim->Instance == TIM7) { // 100 Hz
@@ -1558,10 +1569,14 @@ void mode_current_handler(enum Mode curr) {
 			}
 
 //			printf("v:%f i:%f\r\n", state.batt_v, state.batt_i);
+			break;
 
-			break;
 		case TEST_SENSORS: // 4
+
+			printf("mag_x:%f,mag_y:%f,mag_z:%f\r\n",
+								state.mag_mgauss[0], state.mag_mgauss[1], state.mag_mgauss[2]);
 			break;
+
 		case TEST_FLASH: // 5
 			if (HAL_GPIO_ReadPin(BTN_0_GPIO_Port, BTN_0_Pin)) // if BTN0 pressed read JEDEC ID
 			{
