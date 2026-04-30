@@ -107,22 +107,16 @@ float pi_controller(float predicted, uint8_t enable, float Kp, float Ki, float t
 }
 
 void control_update(float dt) {
-    // Calculate elapsed time since launch (requires launch_time to be tracked in state)
-    // float elapsed_time = (state.t - state.launch_time) / 1000.0f;
-    float elapsed_time = 5.0f; // TODO: Pull real elapsed time
 
     // 1. Predict
     float predicted_apogee = predict_apogee(state.alt_agl, state.vel_z, GRAVITY, ROCKET_CD, ROCKET_A_REF, ROCKET_MASS_EMPTY);
 
     // 2. Lockout
     // Assuming body X is your axial acceleration out of the IMU
-    uint8_t brakes_enabled = airbrakes_lockout(state.accel_b[0], state.alt_agl, elapsed_time, state.vel_z);
+    uint8_t brakes_enabled = airbrakes_lockout(state.accel_b[0], state.alt_agl, state.elapsed_t, state.vel_z);
 
     // 3. Control
-    float brake_command = pi_controller(predicted_apogee, brakes_enabled, Kp, Ki, TARGET_APOGEE, dt);
+    state.output = pi_controller(predicted_apogee, brakes_enabled, Kp, Ki, TARGET_APOGEE, dt);
 
-    // 4. Actuate
-    // Assuming servo takes a deployment percentage 0.0 to 1.0, map it to PWM limits
-    // e.g., duty = duty_retracted + brake_command * (duty_extended - duty_retracted)
-    state.servo_cmd = brake_command;
+    // TOOD brake deployment from 100hz loop
 }
