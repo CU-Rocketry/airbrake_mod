@@ -57,6 +57,8 @@ void state_estimation(float dt) {
 
 	get_imu_b(state.accel_b, state.omega_b);
 
+	launch_detect(state.accel_b[0]);
+
 //	float mag_b_data[3];
 //	arm_matrix_instance_f32 mag_b;
 //	arm_mat_init_f32(&mag_b, 3, 1, mag_b_data);
