@@ -15,6 +15,11 @@
 typedef struct {
     UART_HandleTypeDef *handle;
     uint8_t tx_buf[256]; // TX buffer for non blocking. 256/4=64 words space rn
+
+    uint8_t rx_buf[256]; // incoming bytes after decoding
+	uint16_t rx_idx; // write index, needs to be uint16_t so it goes up to 256
+	uint8_t rx_byte; // buffer for UART write
+	uint8_t rx_ready; // indicates COBS packet RX ready
 } telemetry_t;
 
 // see https://en.wikipedia.org/wiki/Consistent_Overhead_Byte_Stuffing
@@ -59,6 +64,44 @@ void telemetry_state(telemetry_t *ctx, state_t *state) {
 //    HAL_UART_Transmit_IT(ctx->handle, ctx->tx_buf, encoded_len + 1);
 //    HAL_UART_Transmit(ctx->handle, ctx->tx_buf, encoded_len + 1, 1);
     HAL_UART_Transmit_DMA(ctx->handle, ctx->tx_buf, encoded_len + 1);
+}
+
+typedef struct {
+    float pres_pa;
+    float accel_ms2[3];
+    float omega_rads[3];
+    float mag_mgauss[3];
+} simulink_sensor_data_t;
+
+typedef struct {
+	float output;
+} control_output_t;
+
+// complement to cobs_encode
+static uint16_t cobs_decode(const uint8_t *input, uint16_t length, uint8_t *output) {
+	uint16_t r_idx = 0; // index in input
+	uint16_t w_idx = 0; // index in output
+	uint8_t code;
+	uint8_t i;
+
+	while (r_idx < length) {
+		code = input[r_idx];
+
+		if (r_idx + code > length && code != 1) {
+			return 0; // packet malformed I guess
+		}
+
+		r_idx++;
+
+		for (i = 1; i < code; i++) {
+			output[w_idx++] = input[r_idx++];
+		}
+
+		if (code < 0xFF && r_idx < length) {
+			output[w_idx++] = 0;
+		}
+	}
+	return w_idx; // equals the length of decoded data
 }
 
 #endif /* INC_TELEMETRY_H_ */
