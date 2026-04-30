@@ -125,7 +125,7 @@ void baro_spi_callback() {
 	pres_raw = (uint32_t)(((uint32_t)baro_rx_buf[3] << 24) | ((uint32_t)baro_rx_buf[2] << 16) | ((uint32_t)baro_rx_buf[1] << 8));
 //	pres_hpa = lps22df_from_lsb_to_hPa(pres_raw);
 //	state.pres_hpa = lps22df_from_lsb_to_hPa(pres_raw);
-	state.pres_pa = lps22df_from_lsb_to_hPa(pres_raw) * 100.0f; // unit conversion, 1 hPa = 100 Pa;
+	global_state.pres_pa = lps22df_from_lsb_to_hPa(pres_raw) * 100.0f; // unit conversion, 1 hPa = 100 Pa;
 	baro_ready = 1;
 }
 
@@ -136,17 +136,17 @@ void imu_spi_callback() {
 	omega_raw[1] = (int16_t)(((int16_t)imu_rx_buf[4] << 8) | (int16_t)imu_rx_buf[3]);
 	omega_raw[2] = (int16_t)(((int16_t)imu_rx_buf[6] << 8) | (int16_t)imu_rx_buf[5]);
 	// Convert to scientific units
-	state.omega_rads[0] = lsm6dsv80x_from_fs4000_to_mdps(omega_raw[0])*0.00001745f; //converted to rads
-	state.omega_rads[1] = lsm6dsv80x_from_fs4000_to_mdps(omega_raw[1])*0.00001745f;
-	state.omega_rads[2] = lsm6dsv80x_from_fs4000_to_mdps(omega_raw[2])*0.00001745f;
+	global_state.omega_rads[0] = lsm6dsv80x_from_fs4000_to_mdps(omega_raw[0])*0.00001745f; //converted to rads
+	global_state.omega_rads[1] = lsm6dsv80x_from_fs4000_to_mdps(omega_raw[1])*0.00001745f;
+	global_state.omega_rads[2] = lsm6dsv80x_from_fs4000_to_mdps(omega_raw[2])*0.00001745f;
 	// Pack registers into accel LSBs
 	accel_raw[0] = (int16_t)(((int16_t)imu_rx_buf[8] << 8) | (int16_t)imu_rx_buf[7]);
 	accel_raw[1] = (int16_t)(((int16_t)imu_rx_buf[10] << 8) | (int16_t)imu_rx_buf[9]);
 	accel_raw[2] = (int16_t)(((int16_t)imu_rx_buf[12] << 8) | (int16_t)imu_rx_buf[11]);
 	// Convert to scientific units
-	state.accel_ms2[0] = lsm6dsv80x_from_fs16_to_mg(accel_raw[0])*0.009805f; // converted to m/s^2
-	state.accel_ms2[1] = lsm6dsv80x_from_fs16_to_mg(accel_raw[1])*0.009805f;
-	state.accel_ms2[2] = lsm6dsv80x_from_fs16_to_mg(accel_raw[2])*0.009805f;
+	global_state.accel_ms2[0] = lsm6dsv80x_from_fs16_to_mg(accel_raw[0])*0.009805f; // converted to m/s^2
+	global_state.accel_ms2[1] = lsm6dsv80x_from_fs16_to_mg(accel_raw[1])*0.009805f;
+	global_state.accel_ms2[2] = lsm6dsv80x_from_fs16_to_mg(accel_raw[2])*0.009805f;
 	imu_ready = 1;
 }
 
@@ -156,9 +156,9 @@ void mag_spi_callback() { // when DMA receive transfer is done (data is in memor
 	mag_raw[0] = (int16_t)(((int16_t)mag_rx_buf[1] << 8) | (int16_t)mag_rx_buf[0]);
 	mag_raw[1] = (int16_t)(((int16_t)mag_rx_buf[3] << 8) | (int16_t)mag_rx_buf[2]);
 	mag_raw[2] = (int16_t)(((int16_t)mag_rx_buf[5] << 8) | (int16_t)mag_rx_buf[4]);
-	state.mag_mgauss[0] = iis2mdc_from_lsb_to_mgauss(mag_raw[0]);//mG
-	state.mag_mgauss[1] = iis2mdc_from_lsb_to_mgauss(mag_raw[1]);
-	state.mag_mgauss[2] = iis2mdc_from_lsb_to_mgauss(mag_raw[2]);
+	global_state.mag_mgauss[0] = iis2mdc_from_lsb_to_mgauss(mag_raw[0]);//mG
+	global_state.mag_mgauss[1] = iis2mdc_from_lsb_to_mgauss(mag_raw[1]);
+	global_state.mag_mgauss[2] = iis2mdc_from_lsb_to_mgauss(mag_raw[2]);
 	mag_ready = 1;
 }
 

@@ -13,13 +13,19 @@ typedef struct {
 	uint32_t channel_r;
 	uint32_t channel_g;
 	uint32_t channel_b;
+	uint8_t brightness_shift; // to reduce brightness, shifts extra bits right. 1 will halve, 2 is quarter, etc
 } rgb_led_t;
 
 void rgb_led_set(rgb_led_t* led, uint32_t color) {
 	// color should be in lower 24 bits
 	uint8_t r = (color >> 16) & 0xFF;
 	uint8_t g = (color >> 8) & 0xFF;
-	uint8_t b = color & 0xFF;
+	uint8_t b = color >> 0 & 0xFF;
+
+	// brightness limiting
+	r = r >> led->brightness_shift;
+	g = g >> led->brightness_shift;
+	b = b >> led->brightness_shift;
 
 	uint32_t ccr_r = 255 - r;
 	uint32_t ccr_g = 255 - g;

@@ -27,7 +27,7 @@ typedef struct {
 // duty is the on time of the pulse (min 500 max 2500) [us]
 void servo_set_duty(servo_t* servo, uint32_t duty) {
 
-	state.servo_cmd = (float)(duty - 500) * (180.0f / (2500.0f - 500.0f)); // calculate servo cmd angle before clamping duty to expose issues
+	global_state.servo_cmd = (float)(duty - 500) * (180.0f / (2500.0f - 500.0f)); // calculate servo cmd angle before clamping duty to expose issues
 
 	// clamp duty to servo valid input
 	if (duty < 500) {
@@ -98,9 +98,9 @@ float servo_get_angle(servo_t* servo) {
 	}
 
 	// map the range (raw - counts_min) * (angle_max / counts_range)
-	state.servo_fdbk = 180.0f - (float)(raw - 1130) * (180.0f / (3195.0f - 1130.0f));
+	global_state.servo_fdbk = 180.0f - (float)(raw - 1130) * (180.0f / (3195.0f - 1130.0f));
 
-	return state.servo_fdbk;
+	return global_state.servo_fdbk;
 }
 
 #endif /* INC_SERVO_H_ */

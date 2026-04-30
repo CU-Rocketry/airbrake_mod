@@ -35,6 +35,8 @@
 #include "telemetry.h"
 #include "flash.h"
 #include "control.h"
+#include "packets.h"
+#include "hil.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -59,6 +61,7 @@ DMA_HandleTypeDef hdma_adc1;
 DMA_HandleTypeDef hdma_adc3;
 
 OSPI_HandleTypeDef hospi1;
+MDMA_HandleTypeDef hmdma_octospi1_fifo_th;
 
 SPI_HandleTypeDef hspi1;
 SPI_HandleTypeDef hspi2;
@@ -88,13 +91,15 @@ rgb_led_t led0 = {
     .handle = &htim3,
     .channel_r = TIM_CHANNEL_1,
     .channel_g = TIM_CHANNEL_2,
-    .channel_b = TIM_CHANNEL_3
+    .channel_b = TIM_CHANNEL_3,
+	.brightness_shift = 2
 };
 rgb_led_t led1 = {
     .handle = &htim4,
     .channel_r = TIM_CHANNEL_1,
     .channel_g = TIM_CHANNEL_2,
-    .channel_b = TIM_CHANNEL_3
+    .channel_b = TIM_CHANNEL_3,
+	.brightness_shift = 2
 };
 buzzer_t buzzer = {
     .handle = &htim16,
@@ -204,12 +209,16 @@ batt_sense_t batt_sense = {
 	.dma_buf = {0, 0}
 };
 
-telemetry_t telemetry = {
+cobs_uart_t cobs_uart = {
 	.handle = &huart4
 };
 
 flash_t flash = {
-    .hospi = &hospi1
+    .hospi = &hospi1,
+    .address = 0,
+    .full = 0,
+    .prescaler_max = 10, // default to 10 hz for waiting on pad
+    .prescaler_cnt = 0
 };
 
 extern uint8_t baro_ready;
@@ -217,7 +226,7 @@ extern uint8_t mag_ready;
 extern uint8_t imu_ready;
 
 // Global state
-state_t state = {0};
+state_t global_state = {0};
 
 // Control system ticks
 uint8_t tick_100Hz = 0;
@@ -246,6 +255,7 @@ static void MPU_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_DMA_Init(void);
 static void MX_BDMA_Init(void);
+static void MX_MDMA_Init(void);
 static void MX_USB_OTG_HS_PCD_Init(void);
 static void MX_OCTOSPI1_Init(void);
 static void MX_UART4_Init(void);
@@ -315,6 +325,7 @@ int main(void)
   MX_GPIO_Init();
   MX_DMA_Init();
   MX_BDMA_Init();
+  MX_MDMA_Init();
   MX_USB_OTG_HS_PCD_Init();
   MX_OCTOSPI1_Init();
   MX_UART4_Init();
@@ -356,7 +367,7 @@ int main(void)
 
     sensors_init();
 
-    HAL_UART_Receive_IT(telemetry.handle, &telemetry.rx_byte, 1); // start hardware in the loop RX
+    HAL_UART_Receive_IT(cobs_uart.handle, &cobs_uart.rx_byte, 1); // start hardware in the loop RX
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -366,17 +377,24 @@ int main(void)
 	  if (tick_100Hz) {
 		  tick_100Hz = 0;
 
-		  batt_sense_get(&batt_sense, &(state.batt_v), &(state.batt_i)); // Read power info
+		  batt_sense_get(&batt_sense, &(global_state.batt_v), &(global_state.batt_i)); // Read power info
 
 		  servo_get_angle(&servo); // Servo feedback
 
 		  buzzer_update(&buzzer); // buzzer
 
-		  state.t = HAL_GetTick();
+		  global_state.t = HAL_GetTick();
 
-		  if (mode != TEST_SIMULINK) // as long as not in hardware in the loop testing mode
+//		  if (mode != TEST_SIMULINK) // as long as not in hardware in the loop testing mode
+		  if (mode == TEST_SENSORS || mode == TEST_CONTROL || mode == LAUNCH_DETECT)
 		  {
-			  telemetry_state(&telemetry, &state); // send control panel telemetry
+			  telemetry_packet_t telemetry_packet;
+			  telemetry_packet_build(&global_state, &telemetry_packet);
+			  telemetry_send(&cobs_uart, &telemetry_packet); // send control panel telemetry
+		  }
+
+		  if (mode == LAUNCH_DETECT || mode == TEST_SIMULINK) {
+			  flash_packet_write(&flash, &global_state); // writes if needed only
 		  }
 
 		  // Handle mode switch
@@ -392,8 +410,8 @@ int main(void)
 	  if (tick_500Hz) {
 		  tick_500Hz = 0;
 
-		  state.t = HAL_GetTick(); // [ms]
-		  state.elapsed_t = state.t - state.launch_t;
+		  global_state.t = HAL_GetTick(); // [ms]
+		  global_state.elapsed_t = global_state.t - global_state.launch_t;
 
 		  if (mode != TEST_SIMULINK) {
 			  state_estimation(0.002f); // TODO get real dt from timer
@@ -1304,6 +1322,23 @@ static void MX_DMA_Init(void)
 }
 
 /**
+  * Enable MDMA controller clock
+  */
+static void MX_MDMA_Init(void)
+{
+
+  /* MDMA controller clock enable */
+  __HAL_RCC_MDMA_CLK_ENABLE();
+  /* Local variables */
+
+  /* MDMA interrupt initialization */
+  /* MDMA_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(MDMA_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(MDMA_IRQn);
+
+}
+
+/**
   * @brief GPIO Initialization Function
   * @param None
   * @retval None
@@ -1483,27 +1518,27 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
     if (huart->Instance == UART4) {
-        if (telemetry.rx_ready) {
+        if (cobs_uart.rx_ready) {
             // Packet waiting to be processed, ignore new bytes and keep listening
-            HAL_UART_Receive_IT(telemetry.handle, &telemetry.rx_byte, 1);
+            HAL_UART_Receive_IT(cobs_uart.handle, &cobs_uart.rx_byte, 1);
             return;
         }
 
-        if (telemetry.rx_byte == 0x00) {
+        if (cobs_uart.rx_byte == 0x00) {
             // Packet end delimiter found
-            if (telemetry.rx_idx > 0) {
-                telemetry.rx_ready = 1;
+            if (cobs_uart.rx_idx > 0) {
+            	cobs_uart.rx_ready = 1;
             }
         } else {
             // Store byte and increment index
-            if (telemetry.rx_idx < sizeof(telemetry.rx_buf)) {
-                telemetry.rx_buf[telemetry.rx_idx++] = telemetry.rx_byte;
+            if (cobs_uart.rx_idx < sizeof(cobs_uart.rx_buf)) {
+            	cobs_uart.rx_buf[cobs_uart.rx_idx++] = cobs_uart.rx_byte;
             } else {
-                telemetry.rx_idx = 0; // Overflow, reset
+            	cobs_uart.rx_idx = 0; // Overflow, reset
             }
         }
 
-        HAL_UART_Receive_IT(telemetry.handle, &telemetry.rx_byte, 1); // always listen for the next byte
+        HAL_UART_Receive_IT(cobs_uart.handle, &cobs_uart.rx_byte, 1); // always listen for the next byte
     }
 }
 
@@ -1554,8 +1589,38 @@ void mode_transition_handler(enum Mode prev, enum Mode curr) {
 			break;
 		case TEST_FLASH:
 //			buzzer_play_sequence(&buzzer, seq_mode_5_9, 9);
-			rgb_led_set(&led0, 0x000000);
-			rgb_led_set(&led1, 0x000000);
+
+
+			// Turn off both LEDS
+			rgb_led_set(&led0, 0x000000); // status LED
+			rgb_led_set(&led1, 0x000000); // operating LED
+
+			// Test JEDEC ID
+			rgb_led_set(&led1, 0x0000FF); // operating LED blue
+			uint32_t flash_id = flash_read_jedec_id(&flash);
+			if (flash_id == W25Q128JV_JEDEC_ID) {
+				printf("JEDEC ID good: 0x%06lX\r\n", flash_id);
+				rgb_led_set(&led1, 0x00FF00); // operating LED green
+			} else {
+				printf("JEDEC ID error: 0x%06lX (Expected 0x%06X)\r\n", flash_id, W25Q128JV_JEDEC_ID);
+				rgb_led_set(&led1, 0xFF0000); // operating LED red
+			}
+
+			HAL_Delay(1000);
+			rgb_led_set(&led1, 0x000000); // operating LED off
+			HAL_Delay(1000);
+
+			// Test flash erased
+			rgb_led_set(&led1, 0x0000FF); // Turn on LED1 blue (operating LED)
+			if (flash_check_erased(&flash)) { // if erased
+				printf("Flash is blank. Ready for flight!\r\n");
+				rgb_led_set(&led0, 0x00FF00); // status LED green
+			} else { // else not erased
+				printf("Flash is NOT erased! Must do so before flight.\r\n");
+				rgb_led_set(&led0, 0xFF0000); // status LED red to indicate needs erasing
+			}
+			rgb_led_set(&led1, 0x000000); // Turn off operating LED
+
 			break;
 		case TEST_CONTROL:
 //			buzzer_play_sequence(&buzzer, seq_mode_6_11, 11);
@@ -1579,41 +1644,27 @@ void mode_current_handler(enum Mode curr) {
 				buzzer_play_sequence(&buzzer, seq_startup_3, 3);
 			}
 			break;
+
 		case TEST_SIMULINK: // 2
-			if (telemetry.rx_ready) {
-				simulink_sensor_data_t simulink_data;
-				uint16_t decoded_len = cobs_decode(telemetry.rx_buf, telemetry.rx_idx, (uint8_t*)&simulink_data);
-
-				if (decoded_len == sizeof(simulink_sensor_data_t)) { // data is valid
-					state.pres_pa = simulink_data.pres_pa;
-					memcpy(state.accel_ms2, simulink_data.accel_ms2, sizeof(simulink_data.accel_ms2));
-					memcpy(state.omega_rads, simulink_data.omega_rads, sizeof(simulink_data.omega_rads));
-					memcpy(state.mag_mgauss, simulink_data.mag_mgauss, sizeof(simulink_data.mag_mgauss));
-
+			if (cobs_uart.rx_ready) {
+				if (hil_parse_rx(&cobs_uart, &global_state)) { // Parse and map data
 					imu_ready = 1;
 					mag_ready = 1;
 					baro_ready = 1;
 
 					state_estimation(0.01f); // update alt_agl vel_z and accel_b
 					control_update(0.01f); // 100Hz dt
-					servo_set_deployment(&servo, state.output);
+					servo_set_deployment(&servo, global_state.output);
 
-					control_output_t simulink_output; // brake command back to simulink
-					simulink_output.output = state.output;
-
-					// encode with COBS and return to simulink
-					uint16_t output_len_enc = cobs_encode((uint8_t*)&simulink_output, sizeof(simulink_output), telemetry.tx_buf);
-					telemetry.tx_buf[output_len_enc] = 0; // mark end byte
-					HAL_UART_Transmit_DMA(telemetry.handle, telemetry.tx_buf, output_len_enc + 1);
-
+					hil_send(&cobs_uart, &global_state); // Encode and return to simulink
 				}
 
 				// Reset RX state for the next packet
-				telemetry.rx_idx = 0;
-				telemetry.rx_ready = 0;
-				// Note: HAL_UART_Receive_IT is handled exclusively by the callback now
+				cobs_uart.rx_idx = 0;
+				cobs_uart.rx_ready = 0;
 			}
 			break;
+
 		case TEST_SERVO: // 3
 			// BTN0 goes to retracted endpoint
 			// BTN1 goes to extended endpoint
@@ -1657,64 +1708,141 @@ void mode_current_handler(enum Mode curr) {
 		case TEST_SENSORS: // 4
 
 			printf("mag_x:%f,mag_y:%f,mag_z:%f\r\n",
-								state.mag_mgauss[0], state.mag_mgauss[1], state.mag_mgauss[2]);
+								global_state.mag_mgauss[0], global_state.mag_mgauss[1], global_state.mag_mgauss[2]);
 			break;
 
 		case TEST_FLASH: // 5
-			if (HAL_GPIO_ReadPin(BTN_0_GPIO_Port, BTN_0_Pin)) // if BTN0 pressed read JEDEC ID
+			if (HAL_GPIO_ReadPin(BTN_0_GPIO_Port, BTN_0_Pin)) // if BTN0 pressed print CSV over UART
 			{
-				uint32_t flash_id = flash_read_jedec_id(&flash);
-				if (flash_id == W25Q128JV_JEDEC_ID) {
-					printf("JEDEC ID good: 0x%06lX\r\n", flash_id);
-					rgb_led_set(&led0, 0x00FF00);
-				} else {
-					printf("JEDEC ID error: 0x%06lX (Expected 0x%06X)\r\n", flash_id, W25Q128JV_JEDEC_ID);
-					rgb_led_set(&led0, 0xFF0000);
-				}
+				uint32_t read_address = 0;
+				flash_packet_t packet_r;
 
-				HAL_Delay(1000);
-				rgb_led_set(&led0, 0x000000);
-			} else if (HAL_GPIO_ReadPin(BTN_1_GPIO_Port, BTN_1_Pin) == GPIO_PIN_SET) {
+				// Print CSV Header
+				printf("t,batt_v,batt_i,accel_b[0],accel_b[1],accel_b[2],omega_b[0],omega_b[1],omega_b[2],mag_b[0],mag_b[1],mag_b[2],quat[0],quat[1],quat[2],quat[3],accel_e[0],accel_e[1],accel_e[2],p_ground,alt_agl,vel_z,output,servo_cmd,servo_fdbk\r\n");
+
+				// Read until we hit the current write address, or an unwritten sector (0xFFFFFFFF)
+				while (read_address < (16 * 1024 * 1024)) {
+
+					// Apply page-skipping logic to find where the packet actually is
+					if ((read_address % 256) + sizeof(flash_packet_t) > 256) {
+						read_address = (read_address & ~0xFF) + 256;
+					}
+
+					flash_read_data(&flash, read_address, (uint8_t*)&packet_r, sizeof(flash_packet_t));
+
+					if (packet_r.t == 0xFFFFFFFF) { // timestamp won't be 0xFFFFFFFF until 50 days so this indicates end of flash writing
+						break;
+					}
+
+					// Print as CSV row
+					printf("%lu,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f\r\n",
+							packet_r.t,
+							packet_r.batt_v,
+							packet_r.batt_i,
+							packet_r.accel_b[0], packet_r.accel_b[1], packet_r.accel_b[2],
+							packet_r.omega_b[0], packet_r.omega_b[1], packet_r.omega_b[2],
+							packet_r.mag_b[0], packet_r.mag_b[1], packet_r.mag_b[2],
+							packet_r.quat[0], packet_r.quat[1], packet_r.quat[2], packet_r.quat[3],
+							packet_r.accel_e[0], packet_r.accel_e[1], packet_r.accel_e[2],
+							packet_r.p_ground,
+							packet_r.alt_agl,
+							packet_r.vel_z,
+							packet_r.output,
+							packet_r.servo_cmd,
+							packet_r.servo_fdbk);
+
+					read_address += sizeof(flash_packet_t);
+
+					HAL_Delay(2);
+				}
+			}
+
+			else if (HAL_GPIO_ReadPin(BTN_1_GPIO_Port, BTN_1_Pin) == GPIO_PIN_SET) { // if BTN1 pressed test R/W
 				printf("Flash RW test\r\n");
-				rgb_led_set(&led0, 0x0000FF);
+
+				rgb_led_set(&led1, 0x0000FF); // operating LED blue
+
 				uint32_t test_address = 0x000000; // Sector 0
 
-				state_t dummy_state_w = {0}; // blank state to write
-				state_t dummy_state_r = {0}; // blank state to read back
+				flash_packet_t dummy_packet_w = {0}; // test packet to write
+				flash_packet_t dummy_packet_r = {0}; // test packet to read back
 
-				dummy_state_w.t = 1234; // update write state time (first in struct)
-				dummy_state_w.servo_fdbk = 69.0f; // update write state servo fdbk (last in struct)
+				dummy_packet_w.t = 1234; // update write state time (first in struct)
+				dummy_packet_w.servo_fdbk = 42.0f; // update write state servo fdbk (last in struct)
 
 				printf("Erase sector 0\r\n");
 				flash_erase_sector(&flash, test_address);
 
-				printf("Write %u bytes\r\n", sizeof(state_t));
-				flash_write_page(&flash, test_address, (uint8_t*)&dummy_state_w, sizeof(state_t));
+				printf("Write %u bytes\r\n", sizeof(flash_packet_t));
+				flash_write_page(&flash, test_address, (uint8_t*)&dummy_packet_w, sizeof(flash_packet_t));
 
 				printf("Read back\r\n");
-				flash_read_data(&flash, test_address, (uint8_t*)&dummy_state_r, sizeof(state_t));
+				memset(&dummy_packet_r, 0, sizeof(flash_packet_t));
+				flash_read_data(&flash, test_address, (uint8_t*)&dummy_packet_r, sizeof(flash_packet_t));
 
-				if (dummy_state_r.t == 1234 && dummy_state_r.servo_fdbk == 69.0f) {
-					printf("RW test passed with t=%lu and servo_fdbk=%f\r\n", dummy_state_r.t, dummy_state_r.servo_fdbk);
-					rgb_led_set(&led0, 0x00FF00);
+				if (dummy_packet_r.t == dummy_packet_w.t && dummy_packet_r.servo_fdbk == dummy_packet_w.servo_fdbk) {
+					printf("RW test passed with t=%lu and servo_fdbk=%f\r\n", dummy_packet_r.t, dummy_packet_r.servo_fdbk);
+					rgb_led_set(&led1, 0x00FF00);
 				} else {
-					printf("RW test failed with t=%lu and servo_fdbk=%f\r\n", dummy_state_r.t, dummy_state_r.servo_fdbk);
-					rgb_led_set(&led0, 0xFF0000);
+					printf("RW test failed with t=%lu and servo_fdbk=%f\r\n", dummy_packet_r.t, dummy_packet_r.servo_fdbk);
+					rgb_led_set(&led1, 0xFF0000);
 				}
 
 				HAL_Delay(1000);
-				rgb_led_set(&led0, 0x000000);
-			} else if (HAL_GPIO_ReadPin(BTN_2_GPIO_Port, BTN_2_Pin) == GPIO_PIN_SET) {
-				printf("Erasing flash (this will take a minute)\r\n");
-				rgb_led_set(&led0, 0x0000FF);
+				rgb_led_set(&led1, 0x000000);
+			}
 
-				flash_erase_chip(&flash);
+			else if (HAL_GPIO_ReadPin(BTN_2_GPIO_Port, BTN_2_Pin) == GPIO_PIN_SET) { // if BTN2 pressed check if erased
+				// Test flash erased
+				// Turn off both LEDS
+				rgb_led_set(&led0, 0x000000); // status LED
+				rgb_led_set(&led1, 0x000000); // operating LED
 
-				printf("Erase complete\r\n");
-				rgb_led_set(&led0, 0x00FF00);
+				rgb_led_set(&led1, 0x0000FF); // Turn on LED1 blue (operating LED)
+				if (flash_check_erased(&flash)) { // if erased
+					printf("Flash is blank. Ready for flight!\r\n");
+					rgb_led_set(&led0, 0x00FF00); // status LED green
+				} else { // else not erased
+					printf("Flash is NOT erased! Must do so before flight.\r\n");
+					rgb_led_set(&led0, 0xFF0000); // status LED red to indicate needs erasing
+				}
+				rgb_led_set(&led1, 0x000000); // Turn off operating LED
+				HAL_Delay(1000); // basically debounce
+			}
 
-				HAL_Delay(1000);
-				rgb_led_set(&led0, 0x000000);
+			else { // erase flash if hold BTN3
+				static uint16_t hold_cnt = 0; // long press hold counter [0.01s]
+
+				if (HAL_GPIO_ReadPin(BTN_3_GPIO_Port, BTN_3_Pin) == GPIO_PIN_SET) { // BTN3 to erase
+					hold_cnt++;
+
+					if (hold_cnt == 1) {
+						printf("Hold BTN 3 for 2 seconds to wipe chip...\r\n");
+						rgb_led_set(&led1, 0xFF0000); // Red warning
+					}
+
+					if (hold_cnt >= 200) { // 200 = 2 second hold
+						printf("Erasing flash (this will take a minute)\r\n");
+						rgb_led_set(&led1, 0x0000FF);
+
+						flash_erase_chip(&flash);
+						flash_counters_reset(&flash);
+
+						printf("Erase complete\r\n");
+						rgb_led_set(&led0, 0x00FF00); // status LED green
+						rgb_led_set(&led1, 0x00FF00); // op LED green
+						HAL_Delay(1000);
+						rgb_led_set(&led1, 0x000000); // op LED off
+						hold_cnt = 0; // reset counter for next time
+					}
+				} else {
+					if (hold_cnt > 0 && hold_cnt < 200) {
+						printf("Erase cancelled\r\n");
+						rgb_led_set(&led0, 0xFF0000); // status LED red
+						rgb_led_set(&led1, 0x000000);
+					}
+					hold_cnt = 0;
+				}
 			}
 			break;
 		case TEST_CONTROL: // 6

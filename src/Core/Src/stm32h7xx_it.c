@@ -57,6 +57,8 @@
 /* External variables --------------------------------------------------------*/
 extern DMA_HandleTypeDef hdma_adc1;
 extern DMA_HandleTypeDef hdma_adc3;
+extern MDMA_HandleTypeDef hmdma_octospi1_fifo_th;
+extern OSPI_HandleTypeDef hospi1;
 extern DMA_HandleTypeDef hdma_spi1_rx;
 extern DMA_HandleTypeDef hdma_spi1_tx;
 extern DMA_HandleTypeDef hdma_spi2_rx;
@@ -505,6 +507,34 @@ void SPI4_IRQHandler(void)
   /* USER CODE BEGIN SPI4_IRQn 1 */
 
   /* USER CODE END SPI4_IRQn 1 */
+}
+
+/**
+  * @brief This function handles OCTOSPI1 global interrupt.
+  */
+void OCTOSPI1_IRQHandler(void)
+{
+  /* USER CODE BEGIN OCTOSPI1_IRQn 0 */
+
+  /* USER CODE END OCTOSPI1_IRQn 0 */
+  HAL_OSPI_IRQHandler(&hospi1);
+  /* USER CODE BEGIN OCTOSPI1_IRQn 1 */
+
+  /* USER CODE END OCTOSPI1_IRQn 1 */
+}
+
+/**
+  * @brief This function handles MDMA global interrupt.
+  */
+void MDMA_IRQHandler(void)
+{
+  /* USER CODE BEGIN MDMA_IRQn 0 */
+
+  /* USER CODE END MDMA_IRQn 0 */
+  HAL_MDMA_IRQHandler(&hmdma_octospi1_fifo_th);
+  /* USER CODE BEGIN MDMA_IRQn 1 */
+
+  /* USER CODE END MDMA_IRQn 1 */
 }
 
 /**
