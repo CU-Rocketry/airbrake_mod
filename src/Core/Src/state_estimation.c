@@ -62,6 +62,7 @@ void state_estimation(float dt) {
 //	arm_mat_init_f32(&mag_b, 3, 1, mag_b_data);
 //	float mag_b[3] = {0,0,0};
 	get_mag_b(state.mag_b);
+	mag_ready = 0; // disable magnetometer
 
 	// TODO
 //	if (sample_time < last_sample_time) {
