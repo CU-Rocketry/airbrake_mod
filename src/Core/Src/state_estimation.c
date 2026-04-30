@@ -236,7 +236,7 @@ void kalman_predict(float accel_z, float dt) {
 
 void kalman_update(float pressure) {
     if (!state.is_launched) { // before launch update ground pressure
-        kalman_state.P_ground = 0.999f * kalman_state.P_ground + 0.001f * pressure; // low pass filter (LPF)
+        kalman_state.P_ground = 0.99f * kalman_state.P_ground + 0.01f * pressure; // low pass filter (LPF)
         state.p_ground = kalman_state.P_ground;
         return;
     }
