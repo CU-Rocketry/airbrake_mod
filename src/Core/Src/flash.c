@@ -6,6 +6,13 @@
  */
 
 #include "flash.h"
+#include <string.h>
+#include "state.h"
+#include "packets.h"
+#include <stdio.h>
+
+
+// Flash hardware driver
 
 // Reads JEDEC ID with 1-1-1 standard SPI mode
 uint32_t flash_read_jedec_id(flash_t *flash) {
@@ -219,4 +226,89 @@ void flash_read_data(flash_t *flash, uint32_t address, uint8_t *data, uint32_t l
 
     HAL_OSPI_Command(flash->hospi, &sCommand, HAL_OSPI_TIMEOUT_DEFAULT_VALUE);
     HAL_OSPI_Receive(flash->hospi, data, HAL_OSPI_TIMEOUT_DEFAULT_VALUE);
+}
+
+// Flash data packet and abstraction
+
+void flash_packet_build(const state_t *current_state, flash_packet_t *packet) {
+	packet->t = current_state->t;
+	packet->batt_v = current_state->batt_v;
+	packet->batt_i = current_state->batt_i;
+
+	memcpy(packet->accel_b, current_state->accel_b, sizeof(packet->accel_b));
+	memcpy(packet->omega_b, current_state->omega_b, sizeof(packet->omega_b));
+	memcpy(packet->mag_b, current_state->mag_b, sizeof(packet->mag_b));
+	memcpy(packet->quat, current_state->quat, sizeof(packet->quat));
+	memcpy(packet->accel_e, current_state->accel_e, sizeof(packet->accel_e));
+
+	packet->p_ground = current_state->p_ground;
+	packet->alt_agl = current_state->alt_agl;
+	packet->vel_z = current_state->vel_z;
+	packet->output = current_state->output;
+	packet->servo_cmd = current_state->servo_cmd;
+	packet->servo_fdbk = current_state->servo_fdbk;
+}
+
+uint8_t flash_check_erased(flash_t *flash) {
+    uint32_t total_size = 16 * 1024 * 1024; // 128 M-bit = 16 MB
+    uint8_t buffer[4096]; // Read each 4KB sector
+    uint32_t address = 0;
+
+    while (address < total_size) {
+        flash_read_data(flash, address, buffer, sizeof(buffer)); // read 4KB
+
+        for (uint16_t i = 0; i < sizeof(buffer); i++) { // check all are 0xFF
+            if (buffer[i] != 0xFF) {
+                return 0; // immediately return false if non erased byte found
+            }
+        }
+        address += sizeof(buffer); // move to next block
+    }
+
+    return 1; // if we make it, entire chip is erased
+}
+
+void flash_packet_write(flash_t *flash, const state_t *state) {
+    if (flash->full) return;
+
+    if (state->is_launched) {
+		flash->prescaler_max = 1; // 100 Hz in flight
+	} else {
+		flash->prescaler_max = 10; // 10 Hz on pad
+	}
+
+    uint8_t should_write = 0;
+
+    flash->prescaler_cnt++;
+    if (flash->prescaler_cnt >= flash->prescaler_max) {
+    	should_write = 1;
+    	flash->prescaler_cnt = 0;
+    }
+
+    if (should_write) {
+        if ((flash->address % 256) + sizeof(flash_packet_t) > 256) { // if next packet will cross page boundary
+        	flash->address = (flash->address & ~0xFF) + 256; // zero out lower 8 bits of address and move ahead one page
+        									                 // effectively skipping the rest of that page
+        }
+
+		if (flash->address + sizeof(flash_packet_t) <= (16 * 1024 * 1024)) { // if address not at end of memory yet
+			flash_packet_build(state, &(flash->dma_packet));
+			SCB_CleanDCache_by_Addr((uint32_t*)&(flash->dma_packet), sizeof(flash_packet_t));
+			flash_wait_for_ready(flash); // wait for prev write to complete. should already be done but best to be safe
+			flash_write_page_dma(flash, flash->address, (uint8_t*)&(flash->dma_packet), sizeof(flash_packet_t));
+
+			flash->address += sizeof(flash_packet_t);
+
+		} else { // full
+			flash->full = 1;
+			printf("Flash memory full! Logging stopped.\r\n");
+		}
+    }
+}
+
+void flash_counters_reset(flash_t *flash) {
+    flash->address = 0;
+    flash->full = 0;
+    flash->prescaler_cnt = 0;
+    flash->prescaler_max = 10; // default to 10 Hz
 }
