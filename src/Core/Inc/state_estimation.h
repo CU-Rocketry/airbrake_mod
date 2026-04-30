@@ -10,7 +10,7 @@
 
 #include "arm_math.h"
 
-void state_estimation(void);
+void state_estimation(float dt);
 //arm_status get_imu_b(arm_matrix_instance_f32 *out_accel, arm_matrix_instance_f32 *out_omega);
 //arm_status get_mag_b(arm_matrix_instance_f32 *out_mag);
 

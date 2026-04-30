@@ -47,7 +47,7 @@ static kalman_state_t kalman_state = {
 static const float sigma_acc = 0.5f; // IMU trust
 static const float R_baro = 4.0f; // Baro trust (SD in meters, squared)
 
-void state_estimation(void) {
+void state_estimation(float dt) {
 
 //	float accel_b_data[3];
 //	float omega_b_data[3];
@@ -70,7 +70,7 @@ void state_estimation(void) {
 //		dt = (sample_time - last_sample_time); // [us]
 //	}
 //	dt *= 0.000001f;
-	dt = 0.002f; // 500 Hz, hardcoded for now
+	// dt = 0.002f; // 500 Hz, hardcoded for now
 
 
 	if (imu_ready)
