@@ -45,6 +45,7 @@ typedef struct {
 
     // Control
     // TODO
+    float output; // 0 to 1 mapping to air brakes deployment range
 
     // Servo
     float servo_cmd; // [deg]
