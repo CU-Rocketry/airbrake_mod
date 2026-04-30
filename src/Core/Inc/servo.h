@@ -25,7 +25,7 @@ typedef struct {
 } servo_t;
 
 // duty is the on time of the pulse (min 500 max 2500) [us]
-void servo_set(servo_t* servo, uint32_t duty) {
+void servo_set_duty(servo_t* servo, uint32_t duty) {
 
 	state.servo_cmd = (float)(duty - 500) * (180.0f / (2500.0f - 500.0f)); // calculate servo cmd angle before clamping duty to expose issues
 
@@ -37,6 +37,11 @@ void servo_set(servo_t* servo, uint32_t duty) {
 	}
 
 	__HAL_TIM_SET_COMPARE(servo->tim_handle, TIM_CHANNEL_1, duty); // update PWM duty cycle
+}
+
+void servo_set_deployment(servo_t* servo, float deployment) {
+	uint32_t duty = deployment * (float)(servo->duty_extended - servo->duty_retracted) + (float)(servo->duty_retracted);
+	servo_set_duty(servo, duty);
 }
 
 // sig's mistake fixing
@@ -64,7 +69,7 @@ void servo_enable(servo_t* servo, uint8_t state) {
 void servo_init(servo_t* servo) {
 	servo_enable(servo, 0);
 
-	servo_set(servo, 1520); // middle position
+	servo_set_duty(servo, 1520); // middle position
 
 	// start PWM
 	HAL_TIM_PWM_Start(servo->tim_handle, TIM_CHANNEL_1);
