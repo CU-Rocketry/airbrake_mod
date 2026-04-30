@@ -34,6 +34,7 @@
 #include "batt_sense.h"
 #include "telemetry.h"
 #include "flash.h"
+#include "control.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -226,8 +227,8 @@ uint8_t tick_500Hz = 0;
 enum Mode {
 	START = -1,
 	IDLE = 0,
-	TEST_LEDS = 1,
-	TEST_BUZZER = 2,
+	TEST_UI = 1,
+	TEST_SIMULINK = 2,
 	TEST_SERVO = 3,
 	TEST_SENSORS = 4,
 	TEST_FLASH = 5,
@@ -342,7 +343,7 @@ int main(void)
     buzzer_init(&buzzer);
 
     servo_init(&servo);
-    servo_set(&servo, 500);
+    servo_set_duty(&servo, 500);
     servo_enable(&servo, 0);
 
     mode = get_mode_switch();
@@ -354,6 +355,8 @@ int main(void)
     batt_sense_init(&batt_sense);
 
     sensors_init();
+
+    HAL_UART_Receive_IT(telemetry.handle, &telemetry.rx_byte, 1); // start hardware in the loop RX
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -371,7 +374,10 @@ int main(void)
 
 		  state.t = HAL_GetTick();
 
-		  telemetry_state(&telemetry, &state);
+		  if (mode != TEST_SIMULINK) // as long as not in hardware in the loop testing mode
+		  {
+			  telemetry_state(&telemetry, &state); // send control panel telemetry
+		  }
 
 		  // Handle mode switch
 		  mode = get_mode_switch();
@@ -384,7 +390,14 @@ int main(void)
 	  }
 
 	  if (tick_500Hz) {
-		  state_estimation();
+		  tick_500Hz = 0;
+
+		  state.t = HAL_GetTick(); // [ms]
+		  state.elapsed_t = state.t - state.launch_t;
+
+		  if (mode != TEST_SIMULINK) {
+			  state_estimation(0.002f); // TODO get real dt from timer
+		  }
 	  }
 
     /* USER CODE END WHILE */
@@ -1468,6 +1481,32 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 	}
 }
 
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
+    if (huart->Instance == UART4) {
+        if (telemetry.rx_ready) {
+            // Packet waiting to be processed, ignore new bytes and keep listening
+            HAL_UART_Receive_IT(telemetry.handle, &telemetry.rx_byte, 1);
+            return;
+        }
+
+        if (telemetry.rx_byte == 0x00) {
+            // Packet end delimiter found
+            if (telemetry.rx_idx > 0) {
+                telemetry.rx_ready = 1;
+            }
+        } else {
+            // Store byte and increment index
+            if (telemetry.rx_idx < sizeof(telemetry.rx_buf)) {
+                telemetry.rx_buf[telemetry.rx_idx++] = telemetry.rx_byte;
+            } else {
+                telemetry.rx_idx = 0; // Overflow, reset
+            }
+        }
+
+        HAL_UART_Receive_IT(telemetry.handle, &telemetry.rx_byte, 1); // always listen for the next byte
+    }
+}
+
 // State
 void mode_transition_handler(enum Mode prev, enum Mode curr) {
 	printf("Mode transition from %u to %u\r\n", prev, curr);
@@ -1477,8 +1516,14 @@ void mode_transition_handler(enum Mode prev, enum Mode curr) {
 		case TEST_SERVO:
 			servo_enable(&servo, 0); // Disable servo power
 			break;
-		case TEST_BUZZER:
+		case TEST_UI:
 			buzzer_set(&buzzer, 0);  // Ensure buzzer is off on exit
+			break;
+		case TEST_SIMULINK:
+			HAL_NVIC_EnableIRQ(BARO_INT_EXTI_IRQn);
+			HAL_NVIC_EnableIRQ(IMU_INT1_EXTI_IRQn); // IMU both accel and omega
+			HAL_NVIC_EnableIRQ(MAG_INT_EXTI_IRQn);
+			servo_enable(&servo, 0); // Disable servo power
 			break;
 		default:
 			break;
@@ -1489,16 +1534,20 @@ void mode_transition_handler(enum Mode prev, enum Mode curr) {
 		case IDLE:
 //			buzzer_play_sequence(&buzzer, seq_startup_3, 3);
 			break;
-		case TEST_LEDS:
+		case TEST_UI:
 //			buzzer_play_sequence(&buzzer, seq_mode_1_1, 1);
 			break;
-		case TEST_BUZZER:
+		case TEST_SIMULINK:
 //			buzzer_play_sequence(&buzzer, seq_mode_2_3, 3);
+			HAL_NVIC_DisableIRQ(BARO_INT_EXTI_IRQn);
+			HAL_NVIC_DisableIRQ(IMU_INT1_EXTI_IRQn); // IMU both accel and omega
+			HAL_NVIC_DisableIRQ(MAG_INT_EXTI_IRQn);
+			servo_enable(&servo, 1); // Enable servo power
 			break;
 		case TEST_SERVO:
 //			buzzer_play_sequence(&buzzer, seq_mode_3_5, 5);
 			servo_enable(&servo, 1); // Enable servo power
-			servo_set(&servo, 500);
+			servo_set_duty(&servo, 500);
 			break;
 		case TEST_SENSORS:
 //			buzzer_play_sequence(&buzzer, seq_mode_4_7, 7);
@@ -1513,6 +1562,7 @@ void mode_transition_handler(enum Mode prev, enum Mode curr) {
 			break;
 		case LAUNCH_DETECT:
 //			buzzer_play_sequence(&buzzer, seq_mode_7_13, 13);
+			servo_enable(&servo, 1); // Enable servo power
 			break;
 		default:
 			break;
@@ -1523,13 +1573,46 @@ void mode_current_handler(enum Mode curr) {
 	switch (curr) {
 		case IDLE: // 0
 			break;
-		case TEST_LEDS: // 1
+		case TEST_UI: // 1
+			if (HAL_GPIO_ReadPin(BTN_0_GPIO_Port, BTN_0_Pin) == GPIO_PIN_SET)
+			{
+				buzzer_play_sequence(&buzzer, seq_startup_3, 3);
+			}
 			break;
-		case TEST_BUZZER: // 2
-			 if (HAL_GPIO_ReadPin(BTN_0_GPIO_Port, BTN_0_Pin) == GPIO_PIN_SET)
-			 {
-				 buzzer_play_sequence(&buzzer, seq_startup_3, 3);
-			 }
+		case TEST_SIMULINK: // 2
+			if (telemetry.rx_ready) {
+				simulink_sensor_data_t simulink_data;
+				uint16_t decoded_len = cobs_decode(telemetry.rx_buf, telemetry.rx_idx, (uint8_t*)&simulink_data);
+
+				if (decoded_len == sizeof(simulink_sensor_data_t)) { // data is valid
+					state.pres_pa = simulink_data.pres_pa;
+					memcpy(state.accel_ms2, simulink_data.accel_ms2, sizeof(simulink_data.accel_ms2));
+					memcpy(state.omega_rads, simulink_data.omega_rads, sizeof(simulink_data.omega_rads));
+					memcpy(state.mag_mgauss, simulink_data.mag_mgauss, sizeof(simulink_data.mag_mgauss));
+
+					imu_ready = 1;
+					mag_ready = 1;
+					baro_ready = 1;
+
+					state_estimation(0.01f); // update alt_agl vel_z and accel_b
+					control_update(0.01f); // 100Hz dt
+					servo_set_deployment(&servo, state.output);
+
+					control_output_t simulink_output; // brake command back to simulink
+					simulink_output.output = state.output;
+
+					// encode with COBS and return to simulink
+					uint16_t output_len_enc = cobs_encode((uint8_t*)&simulink_output, sizeof(simulink_output), telemetry.tx_buf);
+					telemetry.tx_buf[output_len_enc] = 0; // mark end byte
+					HAL_UART_Transmit_DMA(telemetry.handle, telemetry.tx_buf, output_len_enc + 1);
+
+				}
+
+				// Reset RX state for the next packet
+				telemetry.rx_idx = 0;
+				telemetry.rx_ready = 0;
+				// Note: HAL_UART_Receive_IT is handled exclusively by the callback now
+			}
 			break;
 		case TEST_SERVO: // 3
 			// BTN0 goes to retracted endpoint
@@ -1538,32 +1621,32 @@ void mode_current_handler(enum Mode curr) {
 			// BTN3 increases deployment of endpoint
 			if (HAL_GPIO_ReadPin(BTN_0_GPIO_Port, BTN_0_Pin))
 			{
-				servo_set(&servo, servo.duty_retracted);
+				servo_set_duty(&servo, servo.duty_retracted);
 				endpoint_selected = 0;
 			} else if (HAL_GPIO_ReadPin(BTN_1_GPIO_Port, BTN_1_Pin))
 			{
-				servo_set(&servo, servo.duty_extended);
+				servo_set_duty(&servo, servo.duty_extended);
 				endpoint_selected = 1;
 			} else if (HAL_GPIO_ReadPin(BTN_2_GPIO_Port, BTN_2_Pin))
 			{
 				if (endpoint_selected == 0) { // retracted
 					servo.duty_retracted -= 1;
-					servo_set(&servo, servo.duty_retracted);
+					servo_set_duty(&servo, servo.duty_retracted);
 					printf("retracted:%lu\r\n", servo.duty_retracted);
 				} else if (endpoint_selected == 1) { // extended
 					servo.duty_extended -= 1;
-					servo_set(&servo, servo.duty_extended);
+					servo_set_duty(&servo, servo.duty_extended);
 					printf("extended:%lu\r\n", servo.duty_extended);
 				}
 			} else if (HAL_GPIO_ReadPin(BTN_3_GPIO_Port, BTN_3_Pin))
 			{
 				if (endpoint_selected == 0) { // retracted
 					servo.duty_retracted += 1;
-					servo_set(&servo, servo.duty_retracted);
+					servo_set_duty(&servo, servo.duty_retracted);
 					printf("retracted:%lu\r\n", servo.duty_retracted);
 				} else if (endpoint_selected == 1) { // extended
 					servo.duty_extended += 1;
-					servo_set(&servo, servo.duty_extended);
+					servo_set_duty(&servo, servo.duty_extended);
 					printf("extended:%lu\r\n", servo.duty_extended);
 				}
 			}
