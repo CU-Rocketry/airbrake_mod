@@ -55,15 +55,15 @@ void state_estimation(float dt) {
 //	arm_mat_init_f32(&accel_b, 3, 1, accel_b_data);
 //	arm_mat_init_f32(&omega_b, 3, 1, omega_b_data);
 
-	get_imu_b(state.accel_b, state.omega_b);
+	get_imu_b(global_state.accel_b, global_state.omega_b);
 
-	launch_detect(state.accel_b[0]);
+	launch_detect(global_state.accel_b[0]);
 
 //	float mag_b_data[3];
 //	arm_matrix_instance_f32 mag_b;
 //	arm_mat_init_f32(&mag_b, 3, 1, mag_b_data);
 //	float mag_b[3] = {0,0,0};
-	get_mag_b(state.mag_b);
+	get_mag_b(global_state.mag_b);
 	mag_ready = 0; // disable magnetometer
 
 	// TODO
@@ -81,55 +81,55 @@ void state_estimation(float dt) {
 		imu_ready = 0;
 		if (mag_ready) {
 			mag_ready = 0;
-			MadgwickAHRSupdate(state.omega_b[0], state.omega_b[1], state.omega_b[2],
-					-state.accel_b[0], -state.accel_b[1], -state.accel_b[2],
-					state.mag_b[0], state.mag_b[1], state.mag_b[2],
+			MadgwickAHRSupdate(global_state.omega_b[0], global_state.omega_b[1], global_state.omega_b[2],
+					-global_state.accel_b[0], -global_state.accel_b[1], -global_state.accel_b[2],
+					global_state.mag_b[0], global_state.mag_b[1], global_state.mag_b[2],
 					dt);
 
 		} else {
-			MadgwickAHRSupdateIMU(state.omega_b[0], state.omega_b[1], state.omega_b[2],
-								 -state.accel_b[0], -state.accel_b[1], -state.accel_b[2],
+			MadgwickAHRSupdateIMU(global_state.omega_b[0], global_state.omega_b[1], global_state.omega_b[2],
+								 -global_state.accel_b[0], -global_state.accel_b[1], -global_state.accel_b[2],
 								 dt);
 		}
 
-		MadgwickQuaternionGet(state.quat); // output madgwick filter quaternion to state
+		MadgwickQuaternionGet(global_state.quat); // output madgwick filter quaternion to state
 
 		// Seemingly the madgwick filter already outputs the body to earth rotation
 //		float q_star[4];
 //		quat_conj(state.quat, q_star); // get conjugate of madgwick output
 		// now q_star is the body to earth rotation
 
-		quat_rot(state.accel_b, state.quat, state.accel_e); // rotate body accel by b to e rotation to get inertial acceleration
+		quat_rot(global_state.accel_b, global_state.quat, global_state.accel_e); // rotate body accel by b to e rotation to get inertial acceleration
 
-		state.accel_e[2] += GRAVITY; // get rid of gravity. TODO a constant maybe
+		global_state.accel_e[2] += GRAVITY; // get rid of gravity. TODO a constant maybe
 
-		kalman_predict(state.accel_e[2], dt); // kalman prediction
+		kalman_predict(global_state.accel_e[2], dt); // kalman prediction
 	}
 
 	if (baro_ready) {
 		baro_ready = 0;
-		kalman_update(state.pres_pa); // Kalman correction
+		kalman_update(global_state.pres_pa); // Kalman correction
 	}
 
 	// negatives to convert back from NED
-	state.alt_agl = -kalman_state.q[0];
-	state.vel_z = -kalman_state.q[1];
+	global_state.alt_agl = -kalman_state.q[0];
+	global_state.vel_z = -kalman_state.q[1];
 }
 
 void get_imu_b(float out_accel_b[3], float out_omega_b[3]) {
-	out_accel_b[0] = state.accel_ms2[2]; // body +X is now sensor +Z
-	out_accel_b[1] = -state.accel_ms2[1]; // body +Y is now sensor -Y
-	out_accel_b[2] = state.accel_ms2[0]; // body +Z is now sensor +X
+	out_accel_b[0] = global_state.accel_ms2[2]; // body +X is now sensor +Z
+	out_accel_b[1] = -global_state.accel_ms2[1]; // body +Y is now sensor -Y
+	out_accel_b[2] = global_state.accel_ms2[0]; // body +Z is now sensor +X
 
-	out_omega_b[0] = state.omega_rads[2]; // body +X is now sensor +Z
-	out_omega_b[1] = -state.omega_rads[1]; // body +Y is now sensor -Y
-	out_omega_b[2] = state.omega_rads[0]; // body +Z is now sensor +X
+	out_omega_b[0] = global_state.omega_rads[2]; // body +X is now sensor +Z
+	out_omega_b[1] = -global_state.omega_rads[1]; // body +Y is now sensor -Y
+	out_omega_b[2] = global_state.omega_rads[0]; // body +Z is now sensor +X
 }
 
 void get_mag_b(float out_mag_b[3]) {
-	out_mag_b[0] = state.mag_mgauss[2]; // body +X is now sensor +Z
-	out_mag_b[1] = -state.mag_mgauss[1]; // body +Y is now sensor -Y
-	out_mag_b[2] = -state.mag_mgauss[0]; // body +Z is now sensor +X
+	out_mag_b[0] = global_state.mag_mgauss[2]; // body +X is now sensor +Z
+	out_mag_b[1] = -global_state.mag_mgauss[1]; // body +Y is now sensor -Y
+	out_mag_b[2] = -global_state.mag_mgauss[0]; // body +Z is now sensor +X
 }
 
 //indexing starts at zero
@@ -171,7 +171,7 @@ void quat_rot(float v[3], float q[4], float v_out[3]) {
 //Connected to 500 Hz frequency
 
 void launch_detect(float accel_b_x) {
-	if (state.is_launched) { // if already launched don't keep checking bc you can't unlaunch
+	if (global_state.is_launched) { // if already launched don't keep checking bc you can't unlaunch
 		return;
 	}
 
@@ -184,8 +184,8 @@ void launch_detect(float accel_b_x) {
 		trig_cnt++;
 
 		if (trig_cnt >= MIN_TRIG_CNT) { // if acceleration above threshold for consecutive samples
-			state.is_launched = 1;
-			state.launch_t = HAL_GetTick();
+			global_state.is_launched = 1;
+			global_state.launch_t = HAL_GetTick();
 		}
 
 	} else { // accel below thresh so counter reset
@@ -194,11 +194,11 @@ void launch_detect(float accel_b_x) {
 }
 
 void launch_detect_override(uint8_t is_launched) {
-	state.is_launched = (is_launched > 0) ? 1 : 0; // force launch detect to 1 or 0
+	global_state.is_launched = (is_launched > 0) ? 1 : 0; // force launch detect to 1 or 0
 }
 
 void kalman_predict(float accel_z, float dt) {
-    if (!state.is_launched) { // if not launched, prevent drift
+    if (!global_state.is_launched) { // if not launched, prevent drift
         kalman_state.q[0] = 0.0f;
         kalman_state.q[1] = 0.0f;
         kalman_state.P[0][0] = 2.0f; kalman_state.P[0][1] = 0.0f;
@@ -235,9 +235,9 @@ void kalman_predict(float accel_z, float dt) {
 }
 
 void kalman_update(float pressure) {
-    if (!state.is_launched) { // before launch update ground pressure
+    if (!global_state.is_launched) { // before launch update ground pressure
         kalman_state.P_ground = 0.99f * kalman_state.P_ground + 0.01f * pressure; // low pass filter (LPF)
-        state.p_ground = kalman_state.P_ground;
+        global_state.p_ground = kalman_state.P_ground;
         return;
     }
 
