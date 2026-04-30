@@ -547,7 +547,7 @@
       "gencad": "",
       "idf": "",
       "netlist": "",
-      "plot": "gerbers/",
+      "plot": "tech_report/",
       "pos_files": "gerbers/",
       "specctra_dsn": "",
       "step": "airbrake_mod.step",

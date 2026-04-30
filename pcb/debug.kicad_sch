@@ -1944,6 +1944,18 @@
 		)
 		(uuid "2fa4ecb6-b2ff-4674-a159-a3d9ad88442c")
 	)
+	(text "Mistake:\nSTDC-14 footprint is numbered in reverse\nDebug header must be soldered on back"
+		(exclude_from_sim no)
+		(at 153.67 58.42 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(color 255 0 0 1)
+			)
+			(justify left top)
+		)
+		(uuid "3cff40f7-244d-477b-b7d4-d90fd14098aa")
+	)
 	(text "for STLINK-V3MINIE"
 		(exclude_from_sim no)
 		(at 135.636 47.244 0)

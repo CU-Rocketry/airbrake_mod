@@ -3130,6 +3130,18 @@
 		)
 		(uuid "f2ef08e2-d9a5-46fb-a374-6b4823bb8466")
 	)
+	(text "Mistake:\nadd electrolytic capacitor on power input\nto prevent brownout when enabling servo"
+		(exclude_from_sim no)
+		(at 16.51 54.61 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(color 255 0 0 1)
+			)
+			(justify left top)
+		)
+		(uuid "f3b2043e-a7ba-4209-855b-9259e1bd177d")
+	)
 	(junction
 		(at 165.1 38.1)
 		(diameter 0)
