@@ -8,6 +8,8 @@
 #ifndef INC_STATE_H_
 #define INC_STATE_H_
 
+#include <stdint.h>
+
 #define GRAVITY 9.80665f
 
 typedef struct {
@@ -52,6 +54,6 @@ typedef struct {
     float servo_fdbk; // [deg]
 } state_t;
 
-extern state_t state; // global instance
+extern state_t global_state; // global instance
 
 #endif /* INC_STATE_H_ */
