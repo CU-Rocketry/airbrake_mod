@@ -187,6 +187,16 @@ const buzzer_beep_t seq_mode_7_13[] = {
 		{4186, 500}
 };
 
+const buzzer_beep_t seq_launch_detect_beep[] = {
+		{4186, 100}
+};
+
+const buzzer_beep_t seq_error_3[] = {
+		{4699, 300},
+		{0, 50},
+		{4186, 600}
+};
+
 
 __attribute__((section(".bdma_buf"))) volatile uint16_t servo_dma_buf[1];
 servo_t servo = {
@@ -1567,28 +1577,28 @@ void mode_transition_handler(enum Mode prev, enum Mode curr) {
 	// Handle entry to new mode
 	switch (curr) {
 		case IDLE:
-//			buzzer_play_sequence(&buzzer, seq_startup_3, 3);
+			buzzer_play_sequence(&buzzer, seq_startup_3, 3);
 			break;
 		case TEST_UI:
-//			buzzer_play_sequence(&buzzer, seq_mode_1_1, 1);
+			buzzer_play_sequence(&buzzer, seq_mode_1_1, 1);
 			break;
 		case TEST_SIMULINK:
-//			buzzer_play_sequence(&buzzer, seq_mode_2_3, 3);
+			buzzer_play_sequence(&buzzer, seq_mode_2_3, 3);
 			HAL_NVIC_DisableIRQ(BARO_INT_EXTI_IRQn);
 			HAL_NVIC_DisableIRQ(IMU_INT1_EXTI_IRQn); // IMU both accel and omega
 			HAL_NVIC_DisableIRQ(MAG_INT_EXTI_IRQn);
 			servo_enable(&servo, 1); // Enable servo power
 			break;
 		case TEST_SERVO:
-//			buzzer_play_sequence(&buzzer, seq_mode_3_5, 5);
+			buzzer_play_sequence(&buzzer, seq_mode_3_5, 5);
 			servo_enable(&servo, 1); // Enable servo power
 			servo_set_duty(&servo, 500);
 			break;
 		case TEST_SENSORS:
-//			buzzer_play_sequence(&buzzer, seq_mode_4_7, 7);
+			buzzer_play_sequence(&buzzer, seq_mode_4_7, 7);
 			break;
 		case TEST_FLASH:
-//			buzzer_play_sequence(&buzzer, seq_mode_5_9, 9);
+			buzzer_play_sequence(&buzzer, seq_mode_5_9, 9);
 
 
 			// Turn off both LEDS
@@ -1604,6 +1614,7 @@ void mode_transition_handler(enum Mode prev, enum Mode curr) {
 			} else {
 				printf("JEDEC ID error: 0x%06lX (Expected 0x%06X)\r\n", flash_id, W25Q128JV_JEDEC_ID);
 				rgb_led_set(&led1, 0xFF0000); // operating LED red
+				buzzer_play_sequence(&buzzer, seq_error_3, 3);
 			}
 
 			HAL_Delay(1000);
@@ -1623,10 +1634,10 @@ void mode_transition_handler(enum Mode prev, enum Mode curr) {
 
 			break;
 		case TEST_CONTROL:
-//			buzzer_play_sequence(&buzzer, seq_mode_6_11, 11);
+			buzzer_play_sequence(&buzzer, seq_mode_6_11, 11);
 			break;
 		case LAUNCH_DETECT:
-//			buzzer_play_sequence(&buzzer, seq_mode_7_13, 13);
+			buzzer_play_sequence(&buzzer, seq_mode_7_13, 13);
 			servo_enable(&servo, 1); // Enable servo power
 			break;
 		default:
@@ -1786,6 +1797,7 @@ void mode_current_handler(enum Mode curr) {
 				} else {
 					printf("RW test failed with t=%lu and servo_fdbk=%f\r\n", dummy_packet_r.t, dummy_packet_r.servo_fdbk);
 					rgb_led_set(&led1, 0xFF0000);
+					buzzer_play_sequence(&buzzer, seq_error_3, 3);
 				}
 
 				HAL_Delay(1000);
@@ -1805,6 +1817,7 @@ void mode_current_handler(enum Mode curr) {
 				} else { // else not erased
 					printf("Flash is NOT erased! Must do so before flight.\r\n");
 					rgb_led_set(&led0, 0xFF0000); // status LED red to indicate needs erasing
+					buzzer_play_sequence(&buzzer, seq_error_3, 3);
 				}
 				rgb_led_set(&led1, 0x000000); // Turn off operating LED
 				HAL_Delay(1000); // basically debounce
@@ -1840,6 +1853,7 @@ void mode_current_handler(enum Mode curr) {
 						printf("Erase cancelled\r\n");
 						rgb_led_set(&led0, 0xFF0000); // status LED red
 						rgb_led_set(&led1, 0x000000);
+						buzzer_play_sequence(&buzzer, seq_error_3, 3);
 					}
 					hold_cnt = 0;
 				}
@@ -1867,6 +1881,13 @@ void mode_current_handler(enum Mode curr) {
 
 			break;
 		case LAUNCH_DETECT: // 7
+			static uint32_t last_beep_t = 0;
+
+			if (!global_state.is_launched && (global_state.t - last_beep_t >= 1000)) {
+				buzzer_play_sequence(&buzzer, seq_launch_detect_beep, 1);
+				last_beep_t = global_state.t;
+			}
+
 			if (global_state.is_launched) {
 				control_update(0.01f); // 100Hz dt
 				servo_set_deployment(&servo, global_state.output);
