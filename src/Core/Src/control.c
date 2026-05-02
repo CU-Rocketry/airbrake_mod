@@ -107,16 +107,7 @@ float pi_controller(float predicted, uint8_t enable, float Kp, float Ki, float t
 }
 
 void control_update(float dt) {
-
-    // 1. Predict
     float predicted_apogee = predict_apogee(global_state.alt_agl, global_state.vel_z, GRAVITY, ROCKET_CD, ROCKET_A_REF, ROCKET_MASS_EMPTY);
-
-    // 2. Lockout
-    // Assuming body X is your axial acceleration out of the IMU
     uint8_t brakes_enabled = airbrakes_lockout(global_state.accel_b[0], global_state.alt_agl, global_state.elapsed_t, global_state.vel_z);
-
-    // 3. Control
     global_state.output = pi_controller(predicted_apogee, brakes_enabled, Kp, Ki, TARGET_APOGEE, dt);
-
-    // TOOD brake deployment from 100hz loop
 }
