@@ -117,19 +117,19 @@ void state_estimation(float dt) {
 }
 
 void get_imu_b(float out_accel_b[3], float out_omega_b[3]) {
-	out_accel_b[0] = global_state.accel_ms2[2]; // body +X is now sensor +Z
+	out_accel_b[0] = global_state.accel_ms2[0]; // body +X is now sensor +X
 	out_accel_b[1] = -global_state.accel_ms2[1]; // body +Y is now sensor -Y
-	out_accel_b[2] = global_state.accel_ms2[0]; // body +Z is now sensor +X
+	out_accel_b[2] = -global_state.accel_ms2[2]; // body +Z is now sensor -Z
 
-	out_omega_b[0] = global_state.omega_rads[2]; // body +X is now sensor +Z
+	out_omega_b[0] = global_state.omega_rads[0]; // body +X is now sensor +X
 	out_omega_b[1] = -global_state.omega_rads[1]; // body +Y is now sensor -Y
-	out_omega_b[2] = global_state.omega_rads[0]; // body +Z is now sensor +X
+	out_omega_b[2] = -global_state.omega_rads[2]; // body +Z is now sensor -Z
 }
 
 void get_mag_b(float out_mag_b[3]) {
-	out_mag_b[0] = global_state.mag_mgauss[2]; // body +X is now sensor +Z
+	out_mag_b[0] = -global_state.mag_mgauss[0]; // body +X is now sensor -X
 	out_mag_b[1] = -global_state.mag_mgauss[1]; // body +Y is now sensor -Y
-	out_mag_b[2] = -global_state.mag_mgauss[0]; // body +Z is now sensor +X
+	out_mag_b[2] = -global_state.mag_mgauss[2]; // body +Z is now sensor -Z
 }
 
 //indexing starts at zero

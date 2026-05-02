@@ -1,4 +1,4 @@
 ../Core/Src/control.c:18:7:predict_apogee	48	static
 ../Core/Src/control.c:32:9:airbrakes_lockout	48	static
-../Core/Src/control.c:58:7:pi_controller	64	static
-../Core/Src/control.c:106:6:control_update	24	static
+../Core/Src/control.c:61:7:pi_controller	64	static
+../Core/Src/control.c:109:6:control_update	24	static
