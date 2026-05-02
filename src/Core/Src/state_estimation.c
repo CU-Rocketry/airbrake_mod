@@ -177,7 +177,7 @@ void launch_detect(float accel_b_x) {
 
 	static uint8_t trig_cnt = 0; // how many samples greater than threshold, static so it stays between function calls
 
-	const float LAUNCH_THRESH_MS2 = 5.0f * GRAVITY;
+	const float LAUNCH_THRESH_MS2 = 3.0f * GRAVITY; // lowered for testbed, half of predicted max accel
 	const uint8_t MIN_TRIG_CNT = 10; // 10 samples at 500Hz = 20ms
 
 	if (accel_b_x >= LAUNCH_THRESH_MS2) { // check if body X accel exceeds threshold
