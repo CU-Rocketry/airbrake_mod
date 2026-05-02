@@ -6,11 +6,10 @@ from backend.state import State
 ffi = FFI()
 
 ffi.cdef("""
+// Telemetry
 typedef struct {
 	// Time
 	uint32_t t; // [ms] since boot
-	uint32_t launch_t; // [ms] launch detect
-	uint32_t elapsed_t; // [ms] since launch detected
 
 	// Launch detect
 	uint32_t is_launched;
@@ -20,10 +19,6 @@ typedef struct {
 	float batt_i; // [A]
 
     // Sensors
-    float accel_ms2[3];
-    float omega_rads[3];
-    float mag_mgauss[3];
-//    float pres_hpa;
     float pres_pa;
 
     // Body frame sensors
@@ -41,16 +36,17 @@ typedef struct {
 
     // Control
     // TODO
+    float output; // 0 to 1 mapping to air brakes deployment range
 
     // Servo
     float servo_cmd; // [deg]
     float servo_fdbk; // [deg]
-} state_t;
+} telemetry_packet_t;
 """)
 
 def telemetry_worker(state: State):
     """Runs in a background thread, constantly decoding serial into app_state."""
-    struct_size = ffi.sizeof("state_t")
+    struct_size = ffi.sizeof("telemetry_packet_t")
     
     port = state.ports[state.current_port]
     baudrate = int(state.baudrates[state.current_baudrate])
@@ -80,7 +76,7 @@ def telemetry_worker(state: State):
                             decoded = cobs.decode(raw_buffer)
                             
                             if len(decoded) == struct_size:
-                                parsed_state = ffi.from_buffer("state_t *", decoded)
+                                parsed_state = ffi.from_buffer("telemetry_packet_t *", decoded)
                                 
                                 # Convert time to seconds
                                 t_sec = parsed_state.t / 1000.0 
