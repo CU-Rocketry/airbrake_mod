@@ -1,4 +1,4 @@
 ../Core/Src/control.c:18:7:predict_apogee	2
 ../Core/Src/control.c:32:9:airbrakes_lockout	7
-../Core/Src/control.c:61:7:pi_controller	6
-../Core/Src/control.c:109:6:control_update	1
+../Core/Src/control.c:58:7:pi_controller	6
+../Core/Src/control.c:106:6:control_update	1

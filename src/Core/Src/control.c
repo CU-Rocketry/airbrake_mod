@@ -34,9 +34,9 @@ uint8_t airbrakes_lockout(float accel_b_x, float alt_agl, float elapsed, float v
     static uint8_t vel_z_thresh_triggered = 0;
 
     const float ACCEL_B_X_THRESH = 0.0f; // [m/s^2] must be < to deploy
-    const float ALT_AGL_THRESH = 1000.0f; // [m] AGL must be >= to deploy
-    const float ELAPSED_THRESH = 4.0f; // [s] since launch detect, must be >=
-    const float VEL_Z_THRESH = 75.0f; // [m/s] must be >=, to disable near apogee
+    const float ALT_AGL_THRESH = 250.0f; // [m] AGL must be >= to deploy
+    const float ELAPSED_THRESH = 3.0f; // [s] since launch detect, must be >=
+    const float VEL_Z_THRESH = 20.0f; // [m/s] must be >=, to disable near apogee
 
     uint8_t airbrakes_enabled = 0;
 

@@ -35,15 +35,15 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  15 .debug_macro  0003bd34  00000000  00000000  00064b14  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_line   00033d4a  00000000  00000000  000a0848  2**0
+ 16 .debug_line   00033d56  00000000  00000000  000a0848  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_str    00181652  00000000  00000000  000d4592  2**0
+ 17 .debug_str    00181652  00000000  00000000  000d459e  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .comment      00000043  00000000  00000000  00255be4  2**0
+ 18 .comment      00000043  00000000  00000000  00255bf0  2**0
                   CONTENTS, READONLY
- 19 .debug_frame  0000dd34  00000000  00000000  00255c28  2**2
+ 19 .debug_frame  0000dd34  00000000  00000000  00255c34  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 20 .debug_line_str 0000005c  00000000  00000000  0026395c  2**0
+ 20 .debug_line_str 0000005c  00000000  00000000  00263968  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -2544,80 +2544,76 @@ uint8_t airbrakes_lockout(float accel_b_x, float alt_agl, float elapsed, float v
     const float ACCEL_B_X_THRESH = 0.0f; // [m/s^2] must be < to deploy
  80020e6:	f04f 0300 	mov.w	r3, #0
  80020ea:	623b      	str	r3, [r7, #32]
-    const float ALT_AGL_THRESH = 1000.0f; // [m] AGL must be >= to deploy
- 80020ec:	4b23      	ldr	r3, [pc, #140]	@ (800217c <airbrakes_lockout+0xac>)
+    const float ALT_AGL_THRESH = 250.0f; // [m] AGL must be >= to deploy
+ 80020ec:	4b22      	ldr	r3, [pc, #136]	@ (8002178 <airbrakes_lockout+0xa8>)
  80020ee:	61fb      	str	r3, [r7, #28]
-    const float ELAPSED_THRESH = 4.0f; // [s] since launch detect, must be >=
- 80020f0:	f04f 4381 	mov.w	r3, #1082130432	@ 0x40800000
- 80020f4:	61bb      	str	r3, [r7, #24]
-    const float VEL_Z_THRESH = 75.0f; // [m/s] must be >=, to disable near apogee
- 80020f6:	4b22      	ldr	r3, [pc, #136]	@ (8002180 <airbrakes_lockout+0xb0>)
- 80020f8:	617b      	str	r3, [r7, #20]
+    const float ELAPSED_THRESH = 3.0f; // [s] since launch detect, must be >=
+ 80020f0:	4b22      	ldr	r3, [pc, #136]	@ (800217c <airbrakes_lockout+0xac>)
+ 80020f2:	61bb      	str	r3, [r7, #24]
+    const float VEL_Z_THRESH = 20.0f; // [m/s] must be >=, to disable near apogee
+ 80020f4:	4b22      	ldr	r3, [pc, #136]	@ (8002180 <airbrakes_lockout+0xb0>)
+ 80020f6:	617b      	str	r3, [r7, #20]
 
     uint8_t airbrakes_enabled = 0;
- 80020fa:	2300      	movs	r3, #0
- 80020fc:	f887 3027 	strb.w	r3, [r7, #39]	@ 0x27
+ 80020f8:	2300      	movs	r3, #0
+ 80020fa:	f887 3027 	strb.w	r3, [r7, #39]	@ 0x27
 
-    if ((accel_b_x < ACCEL_B_X_THRESH) &&
- 8002100:	ed97 7a03 	vldr	s14, [r7, #12]
- 8002104:	edd7 7a08 	vldr	s15, [r7, #32]
- 8002108:	eeb4 7ae7 	vcmpe.f32	s14, s15
- 800210c:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
- 8002110:	d518      	bpl.n	8002144 <airbrakes_lockout+0x74>
- 8002112:	ed97 7a02 	vldr	s14, [r7, #8]
- 8002116:	edd7 7a07 	vldr	s15, [r7, #28]
- 800211a:	eeb4 7ae7 	vcmpe.f32	s14, s15
- 800211e:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
- 8002122:	db0f      	blt.n	8002144 <airbrakes_lockout+0x74>
-        (alt_agl >= ALT_AGL_THRESH) &&
- 8002124:	ed97 7a01 	vldr	s14, [r7, #4]
- 8002128:	edd7 7a06 	vldr	s15, [r7, #24]
- 800212c:	eeb4 7ae7 	vcmpe.f32	s14, s15
- 8002130:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
- 8002134:	db06      	blt.n	8002144 <airbrakes_lockout+0x74>
-        (elapsed >= ELAPSED_THRESH) &&
-        (!vel_z_thresh_triggered)) {
- 8002136:	4b13      	ldr	r3, [pc, #76]	@ (8002184 <airbrakes_lockout+0xb4>)
- 8002138:	781b      	ldrb	r3, [r3, #0]
-        (elapsed >= ELAPSED_THRESH) &&
- 800213a:	2b00      	cmp	r3, #0
- 800213c:	d102      	bne.n	8002144 <airbrakes_lockout+0x74>
+    if (((accel_b_x < ACCEL_B_X_THRESH) || (alt_agl >= ALT_AGL_THRESH) || (elapsed >= ELAPSED_THRESH)) && (!vel_z_thresh_triggered)) {
+ 80020fe:	ed97 7a03 	vldr	s14, [r7, #12]
+ 8002102:	edd7 7a08 	vldr	s15, [r7, #32]
+ 8002106:	eeb4 7ae7 	vcmpe.f32	s14, s15
+ 800210a:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
+ 800210e:	d411      	bmi.n	8002134 <airbrakes_lockout+0x64>
+ 8002110:	ed97 7a02 	vldr	s14, [r7, #8]
+ 8002114:	edd7 7a07 	vldr	s15, [r7, #28]
+ 8002118:	eeb4 7ae7 	vcmpe.f32	s14, s15
+ 800211c:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
+ 8002120:	da08      	bge.n	8002134 <airbrakes_lockout+0x64>
+ 8002122:	ed97 7a01 	vldr	s14, [r7, #4]
+ 8002126:	edd7 7a06 	vldr	s15, [r7, #24]
+ 800212a:	eeb4 7ae7 	vcmpe.f32	s14, s15
+ 800212e:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
+ 8002132:	db06      	blt.n	8002142 <airbrakes_lockout+0x72>
+ 8002134:	4b13      	ldr	r3, [pc, #76]	@ (8002184 <airbrakes_lockout+0xb4>)
+ 8002136:	781b      	ldrb	r3, [r3, #0]
+ 8002138:	2b00      	cmp	r3, #0
+ 800213a:	d102      	bne.n	8002142 <airbrakes_lockout+0x72>
         airbrakes_enabled = 1;
- 800213e:	2301      	movs	r3, #1
- 8002140:	f887 3027 	strb.w	r3, [r7, #39]	@ 0x27
+ 800213c:	2301      	movs	r3, #1
+ 800213e:	f887 3027 	strb.w	r3, [r7, #39]	@ 0x27
     }
 
     // to check vel_z vs the thresh, we should be in active control already
     if (airbrakes_enabled && (vel_z < VEL_Z_THRESH)) {
- 8002144:	f897 3027 	ldrb.w	r3, [r7, #39]	@ 0x27
- 8002148:	2b00      	cmp	r3, #0
- 800214a:	d00e      	beq.n	800216a <airbrakes_lockout+0x9a>
- 800214c:	ed97 7a00 	vldr	s14, [r7]
- 8002150:	edd7 7a05 	vldr	s15, [r7, #20]
- 8002154:	eeb4 7ae7 	vcmpe.f32	s14, s15
- 8002158:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
- 800215c:	d505      	bpl.n	800216a <airbrakes_lockout+0x9a>
+ 8002142:	f897 3027 	ldrb.w	r3, [r7, #39]	@ 0x27
+ 8002146:	2b00      	cmp	r3, #0
+ 8002148:	d00e      	beq.n	8002168 <airbrakes_lockout+0x98>
+ 800214a:	ed97 7a00 	vldr	s14, [r7]
+ 800214e:	edd7 7a05 	vldr	s15, [r7, #20]
+ 8002152:	eeb4 7ae7 	vcmpe.f32	s14, s15
+ 8002156:	eef1 fa10 	vmrs	APSR_nzcv, fpscr
+ 800215a:	d505      	bpl.n	8002168 <airbrakes_lockout+0x98>
         vel_z_thresh_triggered = 1;
- 800215e:	4b09      	ldr	r3, [pc, #36]	@ (8002184 <airbrakes_lockout+0xb4>)
- 8002160:	2201      	movs	r2, #1
- 8002162:	701a      	strb	r2, [r3, #0]
+ 800215c:	4b09      	ldr	r3, [pc, #36]	@ (8002184 <airbrakes_lockout+0xb4>)
+ 800215e:	2201      	movs	r2, #1
+ 8002160:	701a      	strb	r2, [r3, #0]
         airbrakes_enabled = 0;
- 8002164:	2300      	movs	r3, #0
- 8002166:	f887 3027 	strb.w	r3, [r7, #39]	@ 0x27
+ 8002162:	2300      	movs	r3, #0
+ 8002164:	f887 3027 	strb.w	r3, [r7, #39]	@ 0x27
         // printf("Triggered lockout\r\n"); // Optional debug
     }
 
     return airbrakes_enabled;
- 800216a:	f897 3027 	ldrb.w	r3, [r7, #39]	@ 0x27
+ 8002168:	f897 3027 	ldrb.w	r3, [r7, #39]	@ 0x27
 }
- 800216e:	4618      	mov	r0, r3
- 8002170:	372c      	adds	r7, #44	@ 0x2c
- 8002172:	46bd      	mov	sp, r7
- 8002174:	f85d 7b04 	ldr.w	r7, [sp], #4
- 8002178:	4770      	bx	lr
- 800217a:	bf00      	nop
- 800217c:	447a0000 	.word	0x447a0000
- 8002180:	42960000 	.word	0x42960000
+ 800216c:	4618      	mov	r0, r3
+ 800216e:	372c      	adds	r7, #44	@ 0x2c
+ 8002170:	46bd      	mov	sp, r7
+ 8002172:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 8002176:	4770      	bx	lr
+ 8002178:	437a0000 	.word	0x437a0000
+ 800217c:	40400000 	.word	0x40400000
+ 8002180:	41a00000 	.word	0x41a00000
  8002184:	24000504 	.word	0x24000504
 
 08002188 <pi_controller>:
@@ -15721,7 +15717,7 @@ void launch_detect(float accel_b_x) {
 
 	static uint8_t trig_cnt = 0; // how many samples greater than threshold, static so it stays between function calls
 
-	const float LAUNCH_THRESH_MS2 = 5.0f * GRAVITY;
+	const float LAUNCH_THRESH_MS2 = 3.0f * GRAVITY; // lowered for testbed, half of predicted max accel
  8007696:	4b15      	ldr	r3, [pc, #84]	@ (80076ec <launch_detect+0x68>)
  8007698:	60fb      	str	r3, [r7, #12]
 	const uint8_t MIN_TRIG_CNT = 10; // 10 samples at 500Hz = 20ms
@@ -15774,7 +15770,7 @@ void launch_detect(float accel_b_x) {
  80076e4:	46bd      	mov	sp, r7
  80076e6:	bd80      	pop	{r7, pc}
  80076e8:	240013c8 	.word	0x240013c8
- 80076ec:	4244220c 	.word	0x4244220c
+ 80076ec:	41eb5c0f 	.word	0x41eb5c0f
  80076f0:	240014ee 	.word	0x240014ee
 
 080076f4 <launch_detect_override>:
