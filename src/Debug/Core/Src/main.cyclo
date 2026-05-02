@@ -49,6 +49,6 @@
 ../Core/Src/main.c:1510:6:HAL_TIM_PeriodElapsedCallback	3
 ../Core/Src/main.c:1519:6:HAL_UART_RxCpltCallback	6
 ../Core/Src/main.c:1546:6:mode_transition_handler	11
-../Core/Src/main.c:1637:6:mode_current_handler	33
-../Core/Src/main.c:1880:6:MPU_Config	1
-../Core/Src/main.c:1911:6:Error_Handler	1
+../Core/Src/main.c:1637:6:mode_current_handler	35
+../Core/Src/main.c:1884:6:MPU_Config	1
+../Core/Src/main.c:1915:6:Error_Handler	1

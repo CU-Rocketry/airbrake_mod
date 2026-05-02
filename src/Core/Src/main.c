@@ -1867,6 +1867,10 @@ void mode_current_handler(enum Mode curr) {
 
 			break;
 		case LAUNCH_DETECT: // 7
+			if (global_state.is_launched) {
+				control_update(0.01f); // 100Hz dt
+				servo_set_deployment(&servo, global_state.output);
+			}
 			break;
 		default:
 			break;
