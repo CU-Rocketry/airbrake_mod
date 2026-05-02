@@ -92,14 +92,14 @@ rgb_led_t led0 = {
     .channel_r = TIM_CHANNEL_1,
     .channel_g = TIM_CHANNEL_2,
     .channel_b = TIM_CHANNEL_3,
-	.brightness_shift = 2
+	.brightness_shift = 0 // 0 = full, 1 = half, 2 = quarter
 };
 rgb_led_t led1 = {
     .handle = &htim4,
     .channel_r = TIM_CHANNEL_1,
     .channel_g = TIM_CHANNEL_2,
     .channel_b = TIM_CHANNEL_3,
-	.brightness_shift = 2
+	.brightness_shift = 0 // 0 = full, 1 = half, 2 = quarter
 };
 buzzer_t buzzer = {
     .handle = &htim16,
@@ -118,73 +118,73 @@ const buzzer_beep_t seq_startup_3[] = {
 };
 
 const buzzer_beep_t seq_mode_1_1[] = {
-		{4186, 500}
+		{4186, 100}
 };
 
 const buzzer_beep_t seq_mode_2_3[] = {
-		{4186, 500},
-		{0, 500},
-		{4186, 500}
+		{4186, 100},
+		{0, 100},
+		{4186, 100}
 };
 
 const buzzer_beep_t seq_mode_3_5[] = {
-		{4186, 500},
-		{0, 500},
-		{4186, 500},
-		{0, 500},
-		{4186, 500}
+		{4186, 100},
+		{0, 100},
+		{4186, 100},
+		{0, 100},
+		{4186, 100}
 };
 
 const buzzer_beep_t seq_mode_4_7[] = {
-		{4186, 500},
-		{0, 500},
-		{4186, 500},
-		{0, 500},
-		{4186, 500},
-		{0, 500},
-		{4186, 500}
+		{4186, 100},
+		{0, 100},
+		{4186, 100},
+		{0, 100},
+		{4186, 100},
+		{0, 100},
+		{4186, 100}
 };
 
 const buzzer_beep_t seq_mode_5_9[] = {
-		{4186, 500},
-		{0, 500},
-		{4186, 500},
-		{0, 500},
-		{4186, 500},
-		{0, 500},
-		{4186, 500},
-		{0, 500},
-		{4186, 500}
+		{4186, 100},
+		{0, 100},
+		{4186, 100},
+		{0, 100},
+		{4186, 100},
+		{0, 100},
+		{4186, 100},
+		{0, 100},
+		{4186, 100}
 };
 
 const buzzer_beep_t seq_mode_6_11[] = {
-		{4186, 500},
-		{0, 500},
-		{4186, 500},
-		{0, 500},
-		{4186, 500},
-		{0, 500},
-		{4186, 500},
-		{0, 500},
-		{4186, 500},
-		{0, 500},
-		{4186, 500}
+		{4186, 100},
+		{0, 100},
+		{4186, 100},
+		{0, 100},
+		{4186, 100},
+		{0, 100},
+		{4186, 100},
+		{0, 100},
+		{4186, 100},
+		{0, 100},
+		{4186, 100}
 };
 
 const buzzer_beep_t seq_mode_7_13[] = {
-		{4186, 500},
-		{0, 500},
-		{4186, 500},
-		{0, 500},
-		{4186, 500},
-		{0, 500},
-		{4186, 500},
-		{0, 500},
-		{4186, 500},
-		{0, 500},
-		{4186, 500},
-		{0, 500},
-		{4186, 500}
+		{4186, 100},
+		{0, 100},
+		{4186, 100},
+		{0, 100},
+		{4186, 100},
+		{0, 100},
+		{4186, 100},
+		{0, 100},
+		{4186, 100},
+		{0, 100},
+		{4186, 100},
+		{0, 100},
+		{4186, 100}
 };
 
 const buzzer_beep_t seq_launch_detect_beep[] = {
@@ -1563,6 +1563,19 @@ void mode_transition_handler(enum Mode prev, enum Mode curr) {
 			break;
 		case TEST_UI:
 			buzzer_set(&buzzer, 0);  // Ensure buzzer is off on exit
+			rgb_led_set(&led0, 0x000000); // Turn off LEDs
+			rgb_led_set(&led1, 0x000000);
+			break;
+		case TEST_FLASH:
+			rgb_led_set(&led0, 0x000000); // Turn off LEDs
+			rgb_led_set(&led1, 0x000000);
+		case TEST_CONTROL:
+			servo_enable(&servo, 0);
+			global_state.is_launched = 0;
+			break;
+		case LAUNCH_DETECT:
+			servo_enable(&servo, 0);
+			global_state.is_launched = 0;
 			break;
 		case TEST_SIMULINK:
 			HAL_NVIC_EnableIRQ(BARO_INT_EXTI_IRQn);
@@ -1583,24 +1596,21 @@ void mode_transition_handler(enum Mode prev, enum Mode curr) {
 			buzzer_play_sequence(&buzzer, seq_mode_1_1, 1);
 			break;
 		case TEST_SIMULINK:
-			buzzer_play_sequence(&buzzer, seq_mode_2_3, 3);
 			HAL_NVIC_DisableIRQ(BARO_INT_EXTI_IRQn);
 			HAL_NVIC_DisableIRQ(IMU_INT1_EXTI_IRQn); // IMU both accel and omega
 			HAL_NVIC_DisableIRQ(MAG_INT_EXTI_IRQn);
 			servo_enable(&servo, 1); // Enable servo power
+			buzzer_play_sequence(&buzzer, seq_mode_2_3, 3);
 			break;
 		case TEST_SERVO:
-			buzzer_play_sequence(&buzzer, seq_mode_3_5, 5);
 			servo_enable(&servo, 1); // Enable servo power
 			servo_set_duty(&servo, 500);
+			buzzer_play_sequence(&buzzer, seq_mode_3_5, 5);
 			break;
 		case TEST_SENSORS:
 			buzzer_play_sequence(&buzzer, seq_mode_4_7, 7);
 			break;
 		case TEST_FLASH:
-			buzzer_play_sequence(&buzzer, seq_mode_5_9, 9);
-
-
 			// Turn off both LEDS
 			rgb_led_set(&led0, 0x000000); // status LED
 			rgb_led_set(&led1, 0x000000); // operating LED
@@ -1632,13 +1642,16 @@ void mode_transition_handler(enum Mode prev, enum Mode curr) {
 			}
 			rgb_led_set(&led1, 0x000000); // Turn off operating LED
 
+			buzzer_play_sequence(&buzzer, seq_mode_5_9, 9);
+
 			break;
 		case TEST_CONTROL:
+			servo_enable(&servo, 1);
 			buzzer_play_sequence(&buzzer, seq_mode_6_11, 11);
 			break;
 		case LAUNCH_DETECT:
-			buzzer_play_sequence(&buzzer, seq_mode_7_13, 13);
 			servo_enable(&servo, 1); // Enable servo power
+			buzzer_play_sequence(&buzzer, seq_mode_7_13, 13);
 			break;
 		default:
 			break;
@@ -1653,6 +1666,11 @@ void mode_current_handler(enum Mode curr) {
 			if (HAL_GPIO_ReadPin(BTN_0_GPIO_Port, BTN_0_Pin) == GPIO_PIN_SET)
 			{
 				buzzer_play_sequence(&buzzer, seq_startup_3, 3);
+				rgb_led_set(&led0, 0x00FF00);
+				rgb_led_set(&led1, 0x00FF00);
+			} else {
+				rgb_led_set(&led0, 0x000000);
+				rgb_led_set(&led1, 0x000000);
 			}
 			break;
 
@@ -1718,8 +1736,8 @@ void mode_current_handler(enum Mode curr) {
 
 		case TEST_SENSORS: // 4
 
-			printf("mag_x:%f,mag_y:%f,mag_z:%f\r\n",
-								global_state.mag_mgauss[0], global_state.mag_mgauss[1], global_state.mag_mgauss[2]);
+//			printf("mag_x:%f,mag_y:%f,mag_z:%f\r\n",
+//								global_state.mag_mgauss[0], global_state.mag_mgauss[1], global_state.mag_mgauss[2]);
 			break;
 
 		case TEST_FLASH: // 5
