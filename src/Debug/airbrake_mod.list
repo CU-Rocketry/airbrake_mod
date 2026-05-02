@@ -37,9 +37,9 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  16 .debug_line   00033d8a  00000000  00000000  000a0898  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_str    00181681  00000000  00000000  000d4622  2**0
+ 17 .debug_str    00181680  00000000  00000000  000d4622  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .comment      00000043  00000000  00000000  00255ca3  2**0
+ 18 .comment      00000043  00000000  00000000  00255ca2  2**0
                   CONTENTS, READONLY
  19 .debug_frame  0000dd38  00000000  00000000  00255ce8  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
@@ -2838,7 +2838,7 @@ void control_update(float dt) {
  8002364:	411ce80a 	.word	0x411ce80a
  8002368:	3cf5c28f 	.word	0x3cf5c28f
  800236c:	3727c5ac 	.word	0x3727c5ac
- 8002370:	453e8000 	.word	0x453e8000
+ 8002370:	44548000 	.word	0x44548000
 
 08002374 <flash_read_jedec_id>:
 
