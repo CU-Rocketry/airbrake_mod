@@ -10,10 +10,9 @@
 
 #include <stdint.h>
 
-#define ROCKET_MASS_EMPTY 24.526f   // [kg]
+#define ROCKET_MASS_EMPTY 7.68f   // [kg] for testbed
 #define ROCKET_CD 0.32f // Tunable drag coefficient
-#define ROCKET_A_REF 0.013478f // [m^2] Reference area
-// #define TARGET_APOGEE 3048.0f // [m] 10,000 ft
+#define ROCKET_A_REF 0.00811f // [m^2] Reference area
 #define TARGET_APOGEE 850.0f // [m] for testbed
 
 
