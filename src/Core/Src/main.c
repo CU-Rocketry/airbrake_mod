@@ -1714,47 +1714,50 @@ void mode_current_handler(enum Mode curr) {
 		case TEST_FLASH: // 5
 			if (HAL_GPIO_ReadPin(BTN_0_GPIO_Port, BTN_0_Pin)) // if BTN0 pressed print CSV over UART
 			{
-				uint32_t read_address = 0;
-				flash_packet_t packet_r;
+//				uint32_t read_address = 0;
+//				flash_packet_t packet_r;
+//
+//				// Print CSV Header
+//				printf("t,batt_v,batt_i,accel_b[0],accel_b[1],accel_b[2],omega_b[0],omega_b[1],omega_b[2],mag_b[0],mag_b[1],mag_b[2],quat[0],quat[1],quat[2],quat[3],accel_e[0],accel_e[1],accel_e[2],p_ground,alt_agl,vel_z,output,servo_cmd,servo_fdbk\r\n");
+//
+//				// Read until we hit the current write address, or an unwritten sector (0xFFFFFFFF)
+//				while (read_address < (16 * 1024 * 1024)) {
+//
+//					// Apply page-skipping logic to find where the packet actually is
+//					if ((read_address % 256) + sizeof(flash_packet_t) > 256) {
+//						read_address = (read_address & ~0xFF) + 256;
+//					}
+//
+//					flash_read_data(&flash, read_address, (uint8_t*)&packet_r, sizeof(flash_packet_t));
+//
+////					if (packet_r.t == 0xFFFFFFFF) { // timestamp won't be 0xFFFFFFFF until 50 days so this indicates end of flash writing
+////						break;
+////					}
+//
+//					// Print as CSV row
+//					printf("%lu,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f\r\n",
+//							packet_r.t,
+//							packet_r.batt_v,
+//							packet_r.batt_i,
+//							packet_r.accel_b[0], packet_r.accel_b[1], packet_r.accel_b[2],
+//							packet_r.omega_b[0], packet_r.omega_b[1], packet_r.omega_b[2],
+//							packet_r.mag_b[0], packet_r.mag_b[1], packet_r.mag_b[2],
+//							packet_r.quat[0], packet_r.quat[1], packet_r.quat[2], packet_r.quat[3],
+//							packet_r.accel_e[0], packet_r.accel_e[1], packet_r.accel_e[2],
+//							packet_r.p_ground,
+//							packet_r.alt_agl,
+//							packet_r.vel_z,
+//							packet_r.output,
+//							packet_r.servo_cmd,
+//							packet_r.servo_fdbk);
+//
+//					read_address += sizeof(flash_packet_t);
+//
+//					HAL_Delay(1);
+//				}
+//				printf("end of flash\r\n");
 
-				// Print CSV Header
-				printf("t,batt_v,batt_i,accel_b[0],accel_b[1],accel_b[2],omega_b[0],omega_b[1],omega_b[2],mag_b[0],mag_b[1],mag_b[2],quat[0],quat[1],quat[2],quat[3],accel_e[0],accel_e[1],accel_e[2],p_ground,alt_agl,vel_z,output,servo_cmd,servo_fdbk\r\n");
-
-				// Read until we hit the current write address, or an unwritten sector (0xFFFFFFFF)
-				while (read_address < (16 * 1024 * 1024)) {
-
-					// Apply page-skipping logic to find where the packet actually is
-					if ((read_address % 256) + sizeof(flash_packet_t) > 256) {
-						read_address = (read_address & ~0xFF) + 256;
-					}
-
-					flash_read_data(&flash, read_address, (uint8_t*)&packet_r, sizeof(flash_packet_t));
-
-					if (packet_r.t == 0xFFFFFFFF) { // timestamp won't be 0xFFFFFFFF until 50 days so this indicates end of flash writing
-						break;
-					}
-
-					// Print as CSV row
-					printf("%lu,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f\r\n",
-							packet_r.t,
-							packet_r.batt_v,
-							packet_r.batt_i,
-							packet_r.accel_b[0], packet_r.accel_b[1], packet_r.accel_b[2],
-							packet_r.omega_b[0], packet_r.omega_b[1], packet_r.omega_b[2],
-							packet_r.mag_b[0], packet_r.mag_b[1], packet_r.mag_b[2],
-							packet_r.quat[0], packet_r.quat[1], packet_r.quat[2], packet_r.quat[3],
-							packet_r.accel_e[0], packet_r.accel_e[1], packet_r.accel_e[2],
-							packet_r.p_ground,
-							packet_r.alt_agl,
-							packet_r.vel_z,
-							packet_r.output,
-							packet_r.servo_cmd,
-							packet_r.servo_fdbk);
-
-					read_address += sizeof(flash_packet_t);
-
-					HAL_Delay(2);
-				}
+//				flash_scan_memory_map(&flash);
 			}
 
 			else if (HAL_GPIO_ReadPin(BTN_1_GPIO_Port, BTN_1_Pin) == GPIO_PIN_SET) { // if BTN1 pressed test R/W

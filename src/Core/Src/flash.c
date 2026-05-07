@@ -312,3 +312,49 @@ void flash_counters_reset(flash_t *flash) {
     flash->prescaler_cnt = 0;
     flash->prescaler_max = 10; // default to 10 Hz
 }
+
+void flash_scan_memory_map(flash_t *flash) {
+    uint32_t addr = 0;
+    uint8_t buf[256];
+    uint8_t current_state = 0; // 0 = start, 1 = data, 2 = empty (0xFF)
+    uint32_t block_start = 0;
+
+    printf("--- FLASH MEMORY TOPOLOGY MAP ---\r\n");
+
+    while (addr < (16 * 1024 * 1024)) {
+        flash_read_data(flash, addr, buf, 256);
+
+        // Check if the entire 256-byte page is empty (0xFF)
+        uint8_t is_empty = 1;
+        for (int i = 0; i < 256; i++) {
+            if (buf[i] != 0xFF) {
+                is_empty = 0;
+                break;
+            }
+        }
+
+        uint8_t new_state = is_empty ? 2 : 1;
+
+        if (current_state == 0) {
+            current_state = new_state;
+            block_start = addr;
+        } else if (current_state != new_state) {
+            if (current_state == 1) {
+                printf("DATA BLOCK : 0x%06lX to 0x%06lX (%lu bytes)\r\n", block_start, addr - 1, addr - block_start);
+            } else {
+                printf("EMPTY BLOCK: 0x%06lX to 0x%06lX (%lu bytes)\r\n", block_start, addr - 1, addr - block_start);
+            }
+            current_state = new_state;
+            block_start = addr;
+        }
+        addr += 256;
+    }
+
+    // Print the final block reaching the end of the chip
+    if (current_state == 1) {
+        printf("DATA BLOCK : 0x%06lX to 0x%06lX\r\n", block_start, addr - 1);
+    } else {
+        printf("EMPTY BLOCK: 0x%06lX to 0x%06lX\r\n", block_start, addr - 1);
+    }
+    printf("--- SCAN COMPLETE ---\r\n");
+}

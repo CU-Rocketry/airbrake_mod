@@ -79,23 +79,28 @@ def telemetry_worker(state: State):
                         try:
                             decoded = cobs.decode(raw_buffer)
                             
-                            if len(decoded) == struct_size:
-                                parsed_state = ffi.from_buffer("state_t *", decoded)
+                            if len(decoded) > 0:
+                                pkt_type = decoded[0] # read first byte (packet type)
                                 
-                                # Convert time to seconds
-                                t_sec = parsed_state.t / 1000.0 
-                                state.latest_time = t_sec
-                                
-                                # Dynamically route data by string name
-                                for field_name, buf in state.buffers.items():
-                                    if hasattr(parsed_state, field_name):
-                                        value = getattr(parsed_state, field_name)
-                                        
-                                        # If it's a vector, cast cdata to a python list
-                                        if buf.width > 1:
-                                            value = list(value)
+                                # telemetry packet must start with type 0x01 and match struct
+                                if pkt_type == 0x01 and len(decoded) == ffi.sizeof("telemetry_packet_t"):
+                                    parsed_state = ffi.from_buffer("telemetry_packet_t *", decoded)
+                                    
+                                    t_sec = parsed_state.t / 1000.0 
+                                    state.latest_time = t_sec
+                                    
+                                    for field_name, buf in state.buffers.items():
+                                        if hasattr(parsed_state, field_name):
+                                            value = getattr(parsed_state, field_name)
+                                            if buf.width > 1:
+                                                value = list(value)
+                                            buf.add_point(t_sec, value)
                                             
-                                        buf.add_point(t_sec, value)
+                                # log must start with 0x02 and can be variable length, null terminated
+                                elif pkt_type == 0x02:
+                                    parsed_log = ffi.from_buffer("log_packet_t *", decoded)
+                                    msg = ffi.string(parsed_log.message).decode('utf-8', errors='ignore') # convert char array to Python string
+                                    print(f"LOG: {msg}") # TODO route to GUI
                                         
                         except cobs.DecodeError:
                             pass # Silently drop corrupted frames

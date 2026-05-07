@@ -8,10 +8,21 @@
 #ifndef INC_PACKETS_H_
 #define INC_PACKETS_H_
 
+// Telemetry packet types
+typedef enum {
+	PKT_TYPE_TELEMETRY = 0x01, // telemetry data stream
+	PKT_TYPE_LOG = 0x02, // log appears on telemetry
+	PKT_TYPE_CMD = 0x03, // manual/override commands from control panel software
+
+	PKT_TYPE_HIL_DATA  = 0x10, // simulink to air brakes sensor data (return is in telemetry)
+} packet_type_t;
+
 #pragma pack(push, 1) // so that there is no padding
 
 // Telemetry
 typedef struct {
+	uint8_t pkt_type; // always 0x01 for telemetry
+
 	// Time
 	uint32_t t; // [ms] since boot
 
@@ -47,6 +58,11 @@ typedef struct {
     float servo_fdbk; // [deg]
 } telemetry_packet_t;
 
+typedef struct {
+    uint8_t pkt_type; // always 0x02 for log
+    char message[127]; // there's extra space even in just the first 254 bytes then
+} log_packet_t;
+
 // Flash
 // for 2 packets per 256 byte page we have max 128 bytes = 32 floats
 typedef struct {
@@ -67,17 +83,28 @@ typedef struct {
     // 28 bytes = 7 floats remaining
 } flash_packet_t;
 
+// Command
+typedef struct {
+    uint8_t pkt_type; // always 0x03 for cmd
+
+    uint8_t mode_en; // requests mode change (substitute for rotating selector)
+    uint8_t mode; // mode to change to
+
+    uint8_t launch_detect_en; // set to 1 to trigger launch detect
+
+    uint8_t servo_cmd_en;
+    float servo_cmd; // [deg]
+} command_packet_t;
+
 // HIL
 typedef struct {
+	uint8_t pkt_type; // always 0x10 for HIL data
+
 	float pres_pa;
 	float accel_ms2[3];
 	float omega_rads[3];
 	float mag_mgauss[3];
-} hil_rx_packet_t;
-
-typedef struct {
-	float output;
-} hil_tx_packet_t;
+} hil_packet_t;
 
 #pragma pack(pop)
 
