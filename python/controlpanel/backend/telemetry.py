@@ -5,12 +5,14 @@ from backend.state import State
 
 ffi = FFI()
 
+# ensure to paste the __attribute__((packed)) before the name of the struct after the definition
+
 ffi.cdef("""
 typedef struct {
+	uint8_t pkt_type; // always 0x01 for telemetry
+
 	// Time
 	uint32_t t; // [ms] since boot
-	uint32_t launch_t; // [ms] launch detect
-	uint32_t elapsed_t; // [ms] since launch detected
 
 	// Launch detect
 	uint32_t is_launched;
@@ -20,10 +22,6 @@ typedef struct {
 	float batt_i; // [A]
 
     // Sensors
-    float accel_ms2[3];
-    float omega_rads[3];
-    float mag_mgauss[3];
-//    float pres_hpa;
     float pres_pa;
 
     // Body frame sensors
@@ -41,11 +39,17 @@ typedef struct {
 
     // Control
     // TODO
+    float output; // 0 to 1 mapping to air brakes deployment range
 
     // Servo
     float servo_cmd; // [deg]
     float servo_fdbk; // [deg]
-} state_t;
+} __attribute__((packed)) telemetry_packet_t;
+
+typedef struct {
+    uint8_t pkt_type; // always 0x02 for log
+    char message[127]; // there's extra space even in just the first 254 bytes then
+} __attribute__((packed)) log_packet_t;
 """)
 
 def telemetry_worker(state: State):
