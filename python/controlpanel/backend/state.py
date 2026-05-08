@@ -1,6 +1,8 @@
 import threading
 from gui.scrollingbuffer import ScrollingBuffer
 import serial.tools.list_ports
+import queue
+from collections import deque
 
 class State:
     def __init__(self):
@@ -43,6 +45,9 @@ class State:
             'servo_cmd': ScrollingBuffer(max_size=self.buffer_size),
             'servo_fdbk': ScrollingBuffer(max_size=self.buffer_size),
         }
+
+        self.logs = deque(maxlen=100) # COBS logging packets added here for display in GUI
+        self.tx_queue = queue.Queue() # Packet queue for encoding and transmission
 
     def get_ports(self):
         ports = serial.tools.list_ports.comports() # get COM ports from OS
