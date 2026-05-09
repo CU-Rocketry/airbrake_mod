@@ -40,6 +40,9 @@ void servo_set_duty(servo_t* servo, uint32_t duty) {
 }
 
 void servo_set_deployment(servo_t* servo, float deployment) {
+	if (deployment < 0.0f) deployment = 0.0f;
+	if (deployment > 1.0f) deployment = 1.0f;
+
 	uint32_t duty = deployment * (float)(servo->duty_extended - servo->duty_retracted) + (float)(servo->duty_retracted);
 	servo_set_duty(servo, duty);
 }
