@@ -9,7 +9,7 @@ class State:
         self.ports = [port.device for port in serial.tools.list_ports.comports()]
         self.current_port = 0
         
-        self.baudrates = ["9600", "115200"]
+        self.baudrates = ["9600", "115200", "2000000"]
         self.current_baudrate = 1
         
         self.connected = False
