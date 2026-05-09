@@ -121,7 +121,8 @@ def get_layout_params():
     # 1. Route our complex modular windows using lambdas
     route("Serial Connection", "LeftSpace", lambda: draw_serial_connection_window(app_state, connect_cb, disconnect_cb))
     route("Commands", "LeftSpace", lambda: draw_command_window(app_state))
-    route("Logging", "LeftBottomSpace", lambda: draw_logs_window(app_state))
+    # route("Logging", "LeftBottomSpace", lambda: draw_logs_window(app_state))
+    route("Logging", "LeftBottomSpace", draw_logs_window)
     route("Servo", "MainDockSpace", lambda: draw_servo_window(app_state, plot_servo))
 
     # 2. Wrap our simple plots into mini-functions and route them

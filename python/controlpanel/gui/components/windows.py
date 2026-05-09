@@ -1,6 +1,6 @@
 from imgui_bundle import imgui
 from backend.telemetry import send_command
-import math
+from imgui_bundle import hello_imgui # type: ignore
 
 def draw_command_window(app_state):
     imgui.begin("Commands")
@@ -55,15 +55,16 @@ def draw_servo_window(app_state, plot_servo):
     imgui.end()
 
 
-def draw_logs_window(app_state):
+def draw_logs_window():
     imgui.begin("Logging")
-    imgui.begin_child("LogRegion", imgui.ImVec2(0, 0), False, imgui.WindowFlags_.horizontal_scrollbar)
+    # imgui.begin_child("LogRegion", imgui.ImVec2(0, 0), False, imgui.WindowFlags_.horizontal_scrollbar)
     
-    for log_msg in app_state.logs:
-        imgui.text_unformatted(log_msg)
+    # for log_msg in app_state.logs:
+    #     imgui.text_unformatted(log_msg)
         
-    if imgui.get_scroll_y() >= imgui.get_scroll_max_y():
-        imgui.set_scroll_here_y(1.0)
+    # if imgui.get_scroll_y() >= imgui.get_scroll_max_y():
+    #     imgui.set_scroll_here_y(1.0)
         
-    imgui.end_child()
+    # imgui.end_child()
+    hello_imgui.log_gui()
     imgui.end()

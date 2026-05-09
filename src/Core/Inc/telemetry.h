@@ -57,9 +57,12 @@ void telemetry_send(cobs_uart_t *port, telemetry_packet_t *packet) {
 	cobs_uart_send(port, packet, sizeof(telemetry_packet_t));
 }
 
-void telemetry_log(cobs_uart_t *port, const char *format, ...) {
-    log_packet_t log_pkt;
-    log_pkt.pkt_type = PKT_TYPE_LOG;
+void telemetry_log(cobs_uart_t *port, log_lvl_t lvl, const char *format, ...) {
+    static log_packet_t log_pkt; // memory for packet
+    memset(&log_pkt, 0, sizeof(log_packet_t)); // make it blank
+
+    log_pkt.pkt_type = PKT_TYPE_LOG; // indicate that its a log packet
+	log_pkt.lvl = (uint8_t)lvl; // convert level to uint8_t and apply it
 
     va_list args;
     va_start(args, format);
@@ -68,6 +71,7 @@ void telemetry_log(cobs_uart_t *port, const char *format, ...) {
 
     // Exact length + 1 for pkt_type + 1 for null terminator
     uint16_t len = 1 + strlen(log_pkt.message) + 1;
+
     cobs_uart_send(port, &log_pkt, len);
 }
 
@@ -90,12 +94,10 @@ void telemetry_parse_rx(cobs_uart_t *port, state_t *state) {
 					HAL_NVIC_DisableIRQ(BARO_INT_EXTI_IRQn);
 					HAL_NVIC_DisableIRQ(IMU_INT1_EXTI_IRQn);
 					HAL_NVIC_DisableIRQ(MAG_INT_EXTI_IRQn);
-					telemetry_log(port, "HIL Enabled: Physical sensors disabled.");
 				} else {
 					HAL_NVIC_EnableIRQ(BARO_INT_EXTI_IRQn);
 					HAL_NVIC_EnableIRQ(IMU_INT1_EXTI_IRQn);
 					HAL_NVIC_EnableIRQ(MAG_INT_EXTI_IRQn);
-					telemetry_log(port, "HIL Disabled: Physical sensors restored.");
 				}
 			}
 

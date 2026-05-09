@@ -17,6 +17,13 @@ typedef enum {
 	PKT_TYPE_HIL_DATA  = 0x10, // simulink to air brakes sensor data (return is in telemetry)
 } packet_type_t;
 
+typedef enum {
+    LOG_LVL_DEBUG = 0,
+    LOG_LVL_INFO = 1,
+    LOG_LVL_WARNING = 2,
+    LOG_LVL_ERROR = 3
+} log_lvl_t;
+
 #pragma pack(push, 1) // so that there is no padding
 
 // Telemetry
@@ -60,7 +67,8 @@ typedef struct {
 
 typedef struct {
     uint8_t pkt_type; // always 0x02 for log
-    char message[127]; // there's extra space even in just the first 254 bytes then
+    uint8_t lvl; // log_lvl_t 0 to 3 for debug, info, warning, error
+    char message[126]; // there's extra space even in just the first 254 bytes then
 } log_packet_t;
 
 // Flash

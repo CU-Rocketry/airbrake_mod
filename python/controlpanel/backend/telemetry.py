@@ -6,6 +6,8 @@ from cobs import cobs
 from cffi import FFI
 from backend.state import State
 
+from imgui_bundle import hello_imgui # type: ignore
+
 ffi = FFI()
 
 # ensure to paste the __attribute__((packed)) before the name of the struct after the definition
@@ -130,42 +132,48 @@ def telemetry_worker(state: State):
             
             # Non-blocking check so the loop can exit if stop_event is set
             if ser.in_waiting > 0:
-                byte = ser.read(1)
-                
-                if byte == b'\x00':
-                    if len(raw_buffer) > 0:
+                # Read everything available to prevent buffer overflow at 2Mbps
+                raw_buffer += ser.read(ser.in_waiting) # append everything available to buffer                
+                while b'\x00' in raw_buffer: # when there's at least one complete frame
+                    frame, _, raw_buffer = raw_buffer.partition(b'\x00') # get the frame, keep the rest in buffer
+                    
+                    if len(frame) > 0:
                         try:
-                            decoded = cobs.decode(raw_buffer)
+                            decoded = cobs.decode(frame)
                             
                             if len(decoded) > 0:
-                                pkt_type = decoded[0] # read first byte (packet type)
+                                pkt_type = decoded[0] # read packet type byte
                                 
-                                # telemetry packet must start with type 0x01 and match struct
+                                # telemetry packet is type 0x01
+                                # it should also match the length of the struct defined for it
                                 if pkt_type == 0x01 and len(decoded) == ffi.sizeof("telemetry_packet_t"):
                                     parsed_state = ffi.from_buffer("telemetry_packet_t *", decoded)
-                                    
                                     t_sec = parsed_state.t / 1000.0 
                                     state.latest_time = t_sec
                                     
-                                    for field_name, buf in state.buffers.items():
-                                        if hasattr(parsed_state, field_name):
-                                            value = getattr(parsed_state, field_name)
-                                            if buf.width > 1:
+                                    for field_name, buf in state.buffers.items(): # for each buffer from app state
+                                        if hasattr(parsed_state, field_name): # if the field was in the telemetry packet
+                                            value = getattr(parsed_state, field_name) # get that field's value
+                                            if buf.width > 1: # convert arrays to lists
                                                 value = list(value)
-                                            buf.add_point(t_sec, value)
+                                            buf.add_point(t_sec, value) # add the point to the buffer
                                             
-                                # log must start with 0x02 and can be variable length, null terminated
-                                elif pkt_type == 0x02:
-                                    parsed_log = ffi.from_buffer("log_packet_t *", decoded)
-                                    msg = ffi.string(parsed_log.message).decode('utf-8', errors='ignore') # convert char array to Python string
-                                    print(f"LOG: {msg}") # TODO route to GUI
-                                        
-                        except cobs.DecodeError:
-                            pass # Silently drop corrupted frames
-                            
-                    raw_buffer.clear()
-                else:
-                    raw_buffer.extend(byte)
+                                elif pkt_type == 0x02: # log packet
+                                    # log level handling
+                                    log_level = decoded[1] # 0-3 for debug,info,warning,error                                    
+                                    level_map = {
+                                        0: hello_imgui.LogLevel.debug,
+                                        1: hello_imgui.LogLevel.info,
+                                        2: hello_imgui.LogLevel.warning,
+                                        3: hello_imgui.LogLevel.error
+                                    }
+                                    imgui_level = level_map.get(log_level, hello_imgui.LogLevel.error) # convert from number, defaulting to error if invalid level
+
+                                    msg = decoded[2:].decode('utf-8', errors='ignore').rstrip('\x00').strip('\r\n') # decode remaining bytes into string, removing null terminator and newlines
+                                    hello_imgui.log(imgui_level, msg)
+                                    
+                        except cobs.DecodeError as e:
+                            print(f"COBS decode error: {e}")
     finally:
         ser.close()
         state.connected = False

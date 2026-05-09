@@ -7,5 +7,6 @@ if __name__ == "__main__":
     addons = immapp.AddOnsParams()
     addons.with_implot = True
     addons.with_implot3d = True
+    addons.with_markdown = True
     
     immapp.run(runner_params=runner_params, add_ons_params=addons)
