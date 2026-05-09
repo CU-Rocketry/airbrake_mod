@@ -1,3 +1,4 @@
+import math
 import queue
 
 import serial
@@ -10,6 +11,7 @@ ffi = FFI()
 # ensure to paste the __attribute__((packed)) before the name of the struct after the definition
 
 ffi.cdef("""
+// Telemetry
 typedef struct {
 	uint8_t pkt_type; // always 0x01 for telemetry
 
@@ -46,13 +48,33 @@ typedef struct {
     // Servo
     float servo_cmd; // [deg]
     float servo_fdbk; // [deg]
-} __attribute__((packed)) telemetry_packet_t;
+} telemetry_packet_t;
 
 typedef struct {
     uint8_t pkt_type; // always 0x02 for log
     char message[127]; // there's extra space even in just the first 254 bytes then
-} __attribute__((packed)) log_packet_t;
-         
+} log_packet_t;
+
+// Flash
+// for 2 packets per 256 byte page we have max 128 bytes = 32 floats
+typedef struct {
+	uint32_t t; // [ms] since boot 4 bytes
+	float batt_v; // [V] 8
+	float batt_i; // [A] 12
+	float accel_b[3]; // [m/s/s] in body frame. *proper acceleration 24
+	float omega_b[3]; // [rad/s] in body frame 36
+	float mag_b[3]; // [mgauss] in body frame 48
+    float quat[4]; // body to inertial rotation already I think 64
+    float accel_e[3]; // [m/s/s] in inertial frame 76
+    float p_ground; // [Pa] 80
+    float alt_agl; // [m] AGL with + up 84
+    float vel_z; // [m] with + up 88
+    float output; // 0 to 1 mapping to air brakes deployment range 92
+    float servo_cmd; // [deg] 96
+    float servo_fdbk; // [deg] 100
+    // 28 bytes = 7 floats remaining
+} flash_packet_t;
+
 // Command
 typedef struct {
     uint8_t pkt_type; // always 0x03 for cmd
@@ -64,7 +86,9 @@ typedef struct {
 
     uint8_t servo_cmd_en;
     float servo_cmd; // [deg]
-} __attribute__((packed)) command_packet_t;
+
+    uint8_t use_hil_data; // set to 1 to enable HIL mode else 0 sources data from real sensors
+} command_packet_t;
 
 // HIL
 typedef struct {
@@ -74,13 +98,11 @@ typedef struct {
 	float accel_ms2[3];
 	float omega_rads[3];
 	float mag_mgauss[3];
-} __attribute__((packed)) hil_packet_t;
-""")
+} hil_packet_t;
+""", pack=1)
 
 def telemetry_worker(state: State):
-    """Runs in a background thread, constantly decoding serial into app_state."""
-    struct_size = ffi.sizeof("state_t")
-    
+    """Runs in a background thread, constantly decoding serial into app_state."""    
     port = state.ports[state.current_port]
     baudrate = int(state.baudrates[state.current_baudrate])
 
@@ -93,7 +115,6 @@ def telemetry_worker(state: State):
         return
 
     raw_buffer = bytearray()
-    print("Listening for telemetry...")
     
     try:
         # Check the threading event so the GUI can stop this loop
@@ -148,41 +169,25 @@ def telemetry_worker(state: State):
     finally:
         ser.close()
         state.connected = False
-        print("Serial connection closed.")
 
-def send_command(state: State, mode=None, manual_launch_detect=False, servo_cmd=None):
-    """Sends command triggered by GUI back to MCU, helpful during testing.
-
-    Args:
-        state (State): Global state struct, used to queue tx data
-        mode (TODO, optional): Manual mode selection override. Defaults to None.
-        manual_launch_detect (bool, optional): Manual launch detect trigger. Defaults to False.
-        servo_cmd (TODO, optional): Manual servo angle [deg]. Defaults to None.
-    """
+def send_command(state: State, force_launch=False):
     if not state.connected:
         return
-
-    # blank command struct, just with packet type set to command        
+        
     cmd = ffi.new("command_packet_t *")
     cmd.pkt_type = 0x03
     
-    if mode is not None: # if a mode is specified, enable mode change and set the mode value
-        cmd.mode_en = 1
-        cmd.mode = int(mode)
-    else:
-        cmd.mode_en = 0
-        cmd.mode = 0
-        
-    cmd.launch_detect_en = 1 if manual_launch_detect else 0 # if launch detect button pressed
+    # Persistent overrides pulled directly from GUI state
+    cmd.mode_en = 1 if state.mode_override_active else 0
+    cmd.mode = int(state.selected_mode_idx)
     
-    if servo_cmd is not None: # if servo command specified, enable and set value
-        cmd.servo_cmd_en = 1
-        cmd.servo_cmd = float(servo_cmd)
-    else:
-        cmd.servo_cmd_en = 0
-        cmd.servo_cmd = 0.0
+    cmd.servo_cmd_en = 1 if state.servo_override_active else 0
+    cmd.servo_cmd = float(math.degrees(state.manual_servo_rad))
     
-    # Convert struct to bytes and queue to be sent
+    cmd.use_hil_data = 1 if state.use_hil_data else 0
+    
+    cmd.launch_detect_en = 1 if state.force_launch_detect else 0
+    
     raw_bytes = bytes(ffi.buffer(cmd))
     state.tx_queue.put(raw_bytes)
 

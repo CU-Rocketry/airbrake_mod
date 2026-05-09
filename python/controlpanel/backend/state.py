@@ -49,6 +49,19 @@ class State:
         self.logs = deque(maxlen=100) # COBS logging packets added here for display in GUI
         self.tx_queue = queue.Queue() # Packet queue for encoding and transmission
 
+        # GUI controls
+        self.servo_override_active = False
+        self.manual_servo_rad = 0.0 
+        
+        self.mode_names = ["0 IDLE", "1 TEST_UI", "2 TEST_SIMULINK", "3 TEST_SERVO", 
+                           "4 TEST_SENSORS", "5 TEST_FLASH", "6 TEST_CONTROL", "7 LAUNCH_DETECT"]
+        self.selected_mode_idx = 0
+        self.mode_override_active = False
+        
+        self.use_hil_data = False
+
+        self.force_launch_detect = False
+
     def get_ports(self):
         ports = serial.tools.list_ports.comports() # get COM ports from OS
         self.ports = [port.device for port in ports] # get port names
