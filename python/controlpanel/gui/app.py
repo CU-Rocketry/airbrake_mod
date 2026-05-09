@@ -1,14 +1,14 @@
 import threading
-from imgui_bundle import imgui
+from imgui_bundle import imgui, hello_imgui
 from backend.state import State
 from backend.telemetry import telemetry_worker
 from gui.components.connection import draw_serial_connection_window
 from gui.components.plots import LinePlot, QuatPlot
+import math
+from backend.telemetry import telemetry_worker, send_command
+from gui.components.windows import draw_command_window, draw_servo_window, draw_logs_window
 
-# 1. Initialize Global App State
 app_state = State()
-
-# 2. Setup Plot Components
 
 plot_voltage = LinePlot("Battery Voltage", "Voltage [V]")
 plot_voltage.add_line("Voltage", app_state.buffers['batt_v'])
@@ -65,7 +65,6 @@ plot_alt_agl.add_line("Altitude", app_state.buffers['alt_agl'])
 plot_vel_z = LinePlot("Vertical Velocity", "Velocity [m/s]")
 plot_vel_z.add_line("Vertical Velocity", app_state.buffers['vel_z'])
 
-# 3. Connection Callbacks
 def connect_cb(port, baud):
     app_state.stop_event.clear()
     app_state.telemetry_thread = threading.Thread(
@@ -80,39 +79,90 @@ def disconnect_cb():
     if app_state.telemetry_thread:
         app_state.telemetry_thread.join(timeout=1.0)
 
-# 4. Main GUI Layout
-def gui():
-    # Top Level Control Window
-    draw_serial_connection_window(app_state, connect_callback=connect_cb, disconnect_callback=disconnect_cb)
+def get_layout_params():
+    """Builds the HelloImGui runner parameters and default docking layout."""
+    params = hello_imgui.RunnerParams()
+    params.app_window_params.window_title = "Air Brakes Control Panel"
+    params.app_window_params.window_geometry.size = (1200, 800)
+    
+    # Enable automatic full-screen docking
+    params.imgui_window_params.default_imgui_window_type = hello_imgui.DefaultImGuiWindowType.provide_full_screen_dock_space
 
-    imgui.begin("Power")
-    plot_voltage.render(app_state.latest_time)
-    plot_current.render(app_state.latest_time)
-    imgui.end()
+    docking = hello_imgui.DockingParams()
+    docking.layout_condition = hello_imgui.DockingLayoutCondition.application_start
 
-    imgui.begin("Servo")
-    plot_servo.render(app_state.latest_time)
-    imgui.end()
+    # LeftSpace for connection, command, and logs, maindockspace for plots
+    split_left = hello_imgui.DockingSplit()
+    split_left.initial_dock = "MainDockSpace"
+    split_left.new_dock = "LeftSpace"
+    split_left.direction = imgui.Dir_.left
+    split_left.ratio = 0.25
 
-    imgui.begin("Sensors raw")
-    plot_accel_raw.render(app_state.latest_time)
-    plot_omega_raw.render(app_state.latest_time)
-    plot_pres.render(app_state.latest_time)
-    imgui.end()
+    # Left bottom split for logs
+    split_left_bottom = hello_imgui.DockingSplit()
+    split_left_bottom.initial_dock = "LeftSpace"
+    split_left_bottom.new_dock = "LeftBottomSpace"
+    split_left_bottom.direction = imgui.Dir_.down
+    split_left_bottom.ratio = 0.5
 
-    imgui.begin("Sensors body")
-    plot_accel_b.render(app_state.latest_time)
-    plot_omega_b.render(app_state.latest_time)
-    imgui.end()
+    docking.docking_splits = [split_left, split_left_bottom]
 
-    imgui.begin("Orientation")
-    plot_quat_components.render(app_state.latest_time)
-    plot_quat_orientation.render()
-    imgui.end()
+    windows = []
 
-    imgui.begin("Estimation inertial")
-    plot_accel_e.render(app_state.latest_time)
-    plot_p_ground.render(app_state.latest_time)
-    plot_alt_agl.render(app_state.latest_time)
-    plot_vel_z.render(app_state.latest_time)
-    imgui.end()
+    def route(name, space, draw_func):
+        w = hello_imgui.DockableWindow()
+        w.label = name
+        w.dock_space_name = space
+        w.call_begin_end = False # We call imgui.begin() ourselves
+        w.gui_function = draw_func
+        
+        windows.append(w)
+
+    # 1. Route our complex modular windows using lambdas
+    route("Serial Connection", "LeftSpace", lambda: draw_serial_connection_window(app_state, connect_cb, disconnect_cb))
+    route("Commands", "LeftSpace", lambda: draw_command_window(app_state))
+    route("Logging", "LeftBottomSpace", lambda: draw_logs_window(app_state))
+    route("Servo", "MainDockSpace", lambda: draw_servo_window(app_state, plot_servo))
+
+    # 2. Wrap our simple plots into mini-functions and route them
+    def draw_power():
+        imgui.begin("Power")
+        plot_voltage.render(app_state.latest_time)
+        plot_current.render(app_state.latest_time)
+        imgui.end()
+    route("Power", "MainDockSpace", draw_power)
+
+    def draw_sensors_raw():
+        imgui.begin("Sensors raw")
+        plot_accel_raw.render(app_state.latest_time)
+        plot_omega_raw.render(app_state.latest_time)
+        plot_pres.render(app_state.latest_time)
+        imgui.end()
+    route("Sensors raw", "MainDockSpace", draw_sensors_raw)
+
+    def draw_sensors_body():
+        imgui.begin("Sensors body")
+        plot_accel_b.render(app_state.latest_time)
+        plot_omega_b.render(app_state.latest_time)
+        imgui.end()
+    route("Sensors body", "MainDockSpace", draw_sensors_body)
+
+    def draw_orientation():
+        imgui.begin("Orientation")
+        plot_quat_components.render(app_state.latest_time)
+        plot_quat_orientation.render()
+        imgui.end()
+    route("Orientation", "MainDockSpace", draw_orientation)
+
+    def draw_estimation():
+        imgui.begin("Estimation inertial")
+        plot_accel_e.render(app_state.latest_time)
+        plot_p_ground.render(app_state.latest_time)
+        plot_alt_agl.render(app_state.latest_time)
+        plot_vel_z.render(app_state.latest_time)
+        imgui.end()
+    route("Estimation inertial", "MainDockSpace", draw_estimation)
+
+    docking.dockable_windows = windows
+    params.docking_params = docking
+    return params
