@@ -1,5 +1,5 @@
 import threading
-from imgui_bundle import imgui, hello_imgui
+from imgui_bundle import imgui, hello_imgui # type: ignore
 from backend.state import State
 from backend.telemetry import telemetry_worker
 from gui.components.connection import draw_serial_connection_window
