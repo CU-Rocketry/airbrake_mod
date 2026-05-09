@@ -9,6 +9,7 @@
             "type": "debugpy",
             "request": "launch",
             "program": "${workspaceFolder}/python/controlpanel/main.py",
+            "cwd": "${workspaceFolder}/python/controlpanel",
             "console": "integratedTerminal"
         }
     ]
