@@ -53,4 +53,18 @@ void telemetry_send(cobs_uart_t *port, telemetry_packet_t *packet) {
 	cobs_uart_send(port, packet, sizeof(telemetry_packet_t));
 }
 
+void telemetry_log(cobs_uart_t *port, const char *format, ...) {
+    log_packet_t log_pkt;
+    log_pkt.pkt_type = PKT_TYPE_LOG;
+
+    va_list args;
+    va_start(args, format);
+    vsnprintf(log_pkt.message, sizeof(log_pkt.message), format, args);
+    va_end(args);
+
+    // Exact length + 1 for pkt_type + 1 for null terminator
+    uint16_t len = 1 + strlen(log_pkt.message) + 1;
+    cobs_uart_send(port, &log_pkt, len);
+}
+
 #endif /* INC_TELEMETRY_H_ */
