@@ -12,8 +12,12 @@
 #include "packets.h"
 #include "cobs_uart.h"
 #include "stm32h7xx_hal.h"
+#include <stdio.h>
+#include <stdarg.h>
 
 void telemetry_packet_build(const state_t *current_state, telemetry_packet_t *packet) {
+	packet->pkt_type = PKT_TYPE_TELEMETRY;
+
 	// Time
 	packet->t = current_state->t;
 
@@ -65,6 +69,58 @@ void telemetry_log(cobs_uart_t *port, const char *format, ...) {
     // Exact length + 1 for pkt_type + 1 for null terminator
     uint16_t len = 1 + strlen(log_pkt.message) + 1;
     cobs_uart_send(port, &log_pkt, len);
+}
+
+// call when cobs_uart.rx_ready == 1
+void telemetry_parse_rx(cobs_uart_t *port, state_t *state) {
+    uint8_t decoded_buf[256]; // this buffer should be good enough as long as neither HIL nor commands get too long
+    uint16_t decoded_len = cobs_decode(port->rx_buf, port->rx_idx, decoded_buf);
+
+    if (decoded_len > 0) {
+        uint8_t pkt_type = decoded_buf[0];
+
+        if (pkt_type == PKT_TYPE_CMD && decoded_len == sizeof(command_packet_t)) {
+			command_packet_t *cmd = (command_packet_t *)decoded_buf;
+
+			// Handle HIL Enable/Disable transition
+			if (cmd->use_hil_data != global_state.use_hil_data) {
+				global_state.use_hil_data = cmd->use_hil_data;
+
+				if (global_state.use_hil_data) {
+					HAL_NVIC_DisableIRQ(BARO_INT_EXTI_IRQn);
+					HAL_NVIC_DisableIRQ(IMU_INT1_EXTI_IRQn);
+					HAL_NVIC_DisableIRQ(MAG_INT_EXTI_IRQn);
+					telemetry_log(port, "HIL Enabled: Physical sensors disabled.");
+				} else {
+					HAL_NVIC_EnableIRQ(BARO_INT_EXTI_IRQn);
+					HAL_NVIC_EnableIRQ(IMU_INT1_EXTI_IRQn);
+					HAL_NVIC_EnableIRQ(MAG_INT_EXTI_IRQn);
+					telemetry_log(port, "HIL Disabled: Physical sensors restored.");
+				}
+			}
+
+			// Map the rest of the commands
+			global_state.mode_override_en = cmd->mode_en;
+			global_state.mode_override = cmd->mode;
+
+			global_state.servo_cmd_en = cmd->servo_cmd_en;
+			global_state.servo_cmd_override = cmd->servo_cmd;
+
+			if (cmd->launch_detect_en) {
+				launch_detect_override(1);
+			}
+		}
+		else if (pkt_type == PKT_TYPE_HIL_DATA && decoded_len == sizeof(hil_packet_t)) {
+			// ONLY process HIL data if the GUI explicitly enabled it
+			if (global_state.use_hil_data) {
+				hil_packet_t *hil = (hil_packet_t *)decoded_buf;
+				global_state.pres_pa = hil->pres_pa;
+				memcpy(global_state.accel_ms2, hil->accel_ms2, sizeof(global_state.accel_ms2));
+				memcpy(global_state.omega_rads, hil->omega_rads, sizeof(global_state.omega_rads));
+				memcpy(global_state.mag_mgauss, hil->mag_mgauss, sizeof(global_state.mag_mgauss));
+			}
+		}
+    }
 }
 
 #endif /* INC_TELEMETRY_H_ */

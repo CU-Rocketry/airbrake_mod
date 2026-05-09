@@ -52,6 +52,14 @@ typedef struct {
     // Servo
     float servo_cmd; // [deg]
     float servo_fdbk; // [deg]
+
+    uint8_t use_hil_data;
+
+	uint8_t mode_override_en;
+	uint8_t mode_override;
+
+	uint8_t servo_cmd_en;
+	float servo_cmd_override; // [deg]
 } state_t;
 
 extern state_t global_state; // global instance

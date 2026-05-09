@@ -36,7 +36,6 @@
 #include "flash.h"
 #include "control.h"
 #include "packets.h"
-#include "hil.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -374,6 +373,12 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  if (cobs_uart.rx_ready) {
+		  telemetry_parse_rx(&cobs_uart, &global_state);
+		  cobs_uart.rx_idx = 0;
+		  cobs_uart.rx_ready = 0;
+	  }
+
 	  if (tick_100Hz) {
 		  tick_100Hz = 0;
 
@@ -385,24 +390,23 @@ int main(void)
 
 		  global_state.t = HAL_GetTick();
 
-//		  if (mode != TEST_SIMULINK) // as long as not in hardware in the loop testing mode
-		  if (mode == TEST_SENSORS || mode == TEST_CONTROL || mode == LAUNCH_DETECT)
-		  {
-			  telemetry_packet_t telemetry_packet;
-			  telemetry_packet_build(&global_state, &telemetry_packet);
-			  telemetry_send(&cobs_uart, &telemetry_packet); // send control panel telemetry
-		  }
+		  telemetry_packet_t telemetry_packet;
+		  telemetry_packet_build(&global_state, &telemetry_packet);
+		  telemetry_send(&cobs_uart, &telemetry_packet); // send control panel telemetry
 
-		  if (mode == LAUNCH_DETECT || mode == TEST_SIMULINK) {
+		  if (mode == LAUNCH_DETECT) {
 			  flash_packet_write(&flash, &global_state); // writes if needed only
 		  }
 
-		  // Handle mode switch
-		  mode = get_mode_switch();
-		  if (mode != mode_prev) {
-			  mode_transition_handler(mode_prev, mode);
-			  mode_prev = mode;
+		  // Mode selection
+		  enum Mode mode_switch = get_mode_switch(); // mode selection from physical switch
+		  enum Mode mode_selected = global_state.mode_override_en ? (enum Mode)global_state.mode_override : mode_switch; // choose between control panel override and switch
+
+		  if (mode_selected != mode_prev) {
+			  mode_transition_handler(mode_prev, mode_selected);
+			  mode_prev = mode_selected;
 		  }
+		  mode = mode_selected;
 		  mode_current_handler(mode);
 
 	  }
@@ -1554,12 +1558,12 @@ void mode_transition_handler(enum Mode prev, enum Mode curr) {
 		case TEST_UI:
 			buzzer_set(&buzzer, 0);  // Ensure buzzer is off on exit
 			break;
-		case TEST_SIMULINK:
-			HAL_NVIC_EnableIRQ(BARO_INT_EXTI_IRQn);
-			HAL_NVIC_EnableIRQ(IMU_INT1_EXTI_IRQn); // IMU both accel and omega
-			HAL_NVIC_EnableIRQ(MAG_INT_EXTI_IRQn);
-			servo_enable(&servo, 0); // Disable servo power
-			break;
+//		case TEST_SIMULINK:
+//			HAL_NVIC_EnableIRQ(BARO_INT_EXTI_IRQn);
+//			HAL_NVIC_EnableIRQ(IMU_INT1_EXTI_IRQn); // IMU both accel and omega
+//			HAL_NVIC_EnableIRQ(MAG_INT_EXTI_IRQn);
+//			servo_enable(&servo, 0); // Disable servo power
+//			break;
 		default:
 			break;
 	}
@@ -1572,13 +1576,13 @@ void mode_transition_handler(enum Mode prev, enum Mode curr) {
 		case TEST_UI:
 //			buzzer_play_sequence(&buzzer, seq_mode_1_1, 1);
 			break;
-		case TEST_SIMULINK:
-//			buzzer_play_sequence(&buzzer, seq_mode_2_3, 3);
-			HAL_NVIC_DisableIRQ(BARO_INT_EXTI_IRQn);
-			HAL_NVIC_DisableIRQ(IMU_INT1_EXTI_IRQn); // IMU both accel and omega
-			HAL_NVIC_DisableIRQ(MAG_INT_EXTI_IRQn);
-			servo_enable(&servo, 1); // Enable servo power
-			break;
+//		case TEST_SIMULINK:
+////			buzzer_play_sequence(&buzzer, seq_mode_2_3, 3);
+//			HAL_NVIC_DisableIRQ(BARO_INT_EXTI_IRQn);
+//			HAL_NVIC_DisableIRQ(IMU_INT1_EXTI_IRQn); // IMU both accel and omega
+//			HAL_NVIC_DisableIRQ(MAG_INT_EXTI_IRQn);
+//			servo_enable(&servo, 1); // Enable servo power
+//			break;
 		case TEST_SERVO:
 //			buzzer_play_sequence(&buzzer, seq_mode_3_5, 5);
 			servo_enable(&servo, 1); // Enable servo power
@@ -1645,27 +1649,32 @@ void mode_current_handler(enum Mode curr) {
 			}
 			break;
 
-		case TEST_SIMULINK: // 2
-			if (cobs_uart.rx_ready) {
-				if (hil_parse_rx(&cobs_uart, &global_state)) { // Parse and map data
-					imu_ready = 1;
-					mag_ready = 1;
-					baro_ready = 1;
-
-					state_estimation(0.01f); // update alt_agl vel_z and accel_b
-					control_update(0.01f); // 100Hz dt
-					servo_set_deployment(&servo, global_state.output);
-
-					hil_send(&cobs_uart, &global_state); // Encode and return to simulink
-				}
-
-				// Reset RX state for the next packet
-				cobs_uart.rx_idx = 0;
-				cobs_uart.rx_ready = 0;
-			}
-			break;
+//		case TEST_SIMULINK: // 2
+//			if (cobs_uart.rx_ready) {
+//				if (hil_parse_rx(&cobs_uart, &global_state)) { // Parse and map data
+//					imu_ready = 1;
+//					mag_ready = 1;
+//					baro_ready = 1;
+//
+//					state_estimation(0.01f); // update alt_agl vel_z and accel_b
+//					control_update(0.01f); // 100Hz dt
+//					servo_set_deployment(&servo, global_state.output);
+//
+//					hil_send(&cobs_uart, &global_state); // Encode and return to simulink
+//				}
+//
+//				// Reset RX state for the next packet
+//				cobs_uart.rx_idx = 0;
+//				cobs_uart.rx_ready = 0;
+//			}
+//			break;
 
 		case TEST_SERVO: // 3
+
+			if (global_state.servo_cmd_en) { // control panel override
+				servo_set_angle(&servo, global_state.servo_cmd_override);
+			} else
+
 			// BTN0 goes to retracted endpoint
 			// BTN1 goes to extended endpoint
 			// BTN2 decreases deployment of endpoint

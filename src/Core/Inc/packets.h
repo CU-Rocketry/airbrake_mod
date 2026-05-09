@@ -94,6 +94,8 @@ typedef struct {
 
     uint8_t servo_cmd_en;
     float servo_cmd; // [deg]
+
+    uint8_t use_hil_data; // set to 1 to enable HIL mode else 0 sources data from real sensors
 } command_packet_t;
 
 // HIL

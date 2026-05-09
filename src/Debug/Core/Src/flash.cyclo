@@ -12,3 +12,4 @@
 ../Core/Src/flash.c:252:9:flash_check_erased	4
 ../Core/Src/flash.c:271:6:flash_packet_write	9
 ../Core/Src/flash.c:309:6:flash_counters_reset	1
+../Core/Src/flash.c:316:6:flash_scan_memory_map	9
