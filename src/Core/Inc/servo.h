@@ -47,6 +47,16 @@ void servo_set_deployment(servo_t* servo, float deployment) {
 	servo_set_duty(servo, duty);
 }
 
+// angle in deg
+void servo_set_angle(servo_t* servo, float angle) {
+	if (angle < 0.0f) angle = 0.0f;
+	if (angle > 180.0f) angle = 180.0f;
+
+	uint32_t duty = (uint32_t)((angle / 180.0f) * (2500 - 500) + 500);
+
+	servo_set_duty(servo, duty);
+}
+
 // sig's mistake fixing
 void servo_enable(servo_t* servo, uint8_t state) {
 	if (state == 1) { // state 1
