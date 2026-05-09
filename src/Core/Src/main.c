@@ -36,6 +36,7 @@
 #include "flash.h"
 #include "control.h"
 #include "packets.h"
+#include "btn.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -220,6 +221,8 @@ flash_t flash = {
     .prescaler_cnt = 0
 };
 
+btn_t btns[4]; // BTN0 to BTN4 drivers
+
 extern uint8_t baro_ready;
 extern uint8_t mag_ready;
 extern uint8_t imu_ready;
@@ -366,6 +369,11 @@ int main(void)
 
     sensors_init();
 
+    btn_init(&btns[0], BTN_0_GPIO_Port, BTN_0_Pin);
+	btn_init(&btns[1], BTN_1_GPIO_Port, BTN_1_Pin);
+	btn_init(&btns[2], BTN_2_GPIO_Port, BTN_2_Pin);
+	btn_init(&btns[3], BTN_3_GPIO_Port, BTN_3_Pin);
+
     HAL_UART_Receive_IT(cobs_uart.handle, &cobs_uart.rx_byte, 1); // start hardware in the loop RX
   /* USER CODE END 2 */
 
@@ -386,13 +394,14 @@ int main(void)
 
 		  servo_get_angle(&servo); // Servo feedback
 
+		  btn_update(&btns[0]);
+		  btn_update(&btns[1]);
+		  btn_update(&btns[2]);
+		  btn_update(&btns[3]);
+
 		  buzzer_update(&buzzer); // buzzer
 
 		  global_state.t = HAL_GetTick();
-
-		  telemetry_packet_t telemetry_packet;
-		  telemetry_packet_build(&global_state, &telemetry_packet);
-		  telemetry_send(&cobs_uart, &telemetry_packet); // send control panel telemetry
 
 		  if (mode == LAUNCH_DETECT) {
 			  flash_packet_write(&flash, &global_state); // writes if needed only
@@ -409,6 +418,10 @@ int main(void)
 		  mode = mode_selected;
 		  mode_current_handler(mode);
 
+		  // Send telemetry last in case a log needs to take priority
+		  static telemetry_packet_t telemetry_packet;
+		  telemetry_packet_build(&global_state, &telemetry_packet);
+		  telemetry_send(&cobs_uart, &telemetry_packet); // send control panel telemetry
 	  }
 
 	  if (tick_500Hz) {
@@ -1548,7 +1561,8 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 
 // State
 void mode_transition_handler(enum Mode prev, enum Mode curr) {
-	printf("Mode transition from %u to %u\r\n", prev, curr);
+//	printf("Mode transition from %u to %u\r\n", prev, curr);
+	telemetry_log(&cobs_uart, LOG_LVL_INFO, "Mode transition from %u to %u\r\n", prev, curr);
 
 	// Handle exit from previous mode
 	switch (prev) {
@@ -1643,9 +1657,21 @@ void mode_current_handler(enum Mode curr) {
 		case IDLE: // 0
 			break;
 		case TEST_UI: // 1
-			if (HAL_GPIO_ReadPin(BTN_0_GPIO_Port, BTN_0_Pin) == GPIO_PIN_SET)
+
+			// buzzer test
+			if (btn_get_edge(&btns[0]) == 1)
 			{
 				buzzer_play_sequence(&buzzer, seq_startup_3, 3);
+			}
+
+			// btn driver test
+			if (btn_get_edge(&btns[1]) == 1)
+			{
+				telemetry_log(&cobs_uart, LOG_LVL_DEBUG, "BTN1 pressed");
+			}
+			if (btn_get_edge(&btns[1]) == -1)
+			{
+				telemetry_log(&cobs_uart, LOG_LVL_DEBUG, "BTN1 released");
 			}
 			break;
 
