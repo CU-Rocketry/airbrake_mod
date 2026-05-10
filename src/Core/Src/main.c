@@ -1559,6 +1559,15 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
     }
 }
 
+void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart) {
+    if (huart->Instance == UART4) {
+        // UART error and packet dropped
+        // reset index to zero and receive again
+        cobs_uart.rx_idx = 0;
+        HAL_UART_Receive_IT(cobs_uart.handle, &cobs_uart.rx_byte, 1);
+    }
+}
+
 // State
 void mode_transition_handler(enum Mode prev, enum Mode curr) {
 //	printf("Mode transition from %u to %u\r\n", prev, curr);
