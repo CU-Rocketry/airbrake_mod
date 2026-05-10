@@ -1708,45 +1708,48 @@ void mode_current_handler(enum Mode curr) {
 
 			if (global_state.servo_cmd_en) { // control panel override
 				servo_set_angle(&servo, global_state.servo_cmd_override);
-			} else
-
-			// BTN0 goes to retracted endpoint
-			// BTN1 goes to extended endpoint
-			// BTN2 decreases deployment of endpoint
-			// BTN3 increases deployment of endpoint
-			if (HAL_GPIO_ReadPin(BTN_0_GPIO_Port, BTN_0_Pin))
+			}
+			else if (btn_get_edge(&btns[0]) == 1) // BTN0 goes to retracted endpoint
 			{
 				servo_set_duty(&servo, servo.duty_retracted);
 				endpoint_selected = 0;
-			} else if (HAL_GPIO_ReadPin(BTN_1_GPIO_Port, BTN_1_Pin))
+				telemetry_log(&cobs_uart, LOG_LVL_INFO, "Retracted");
+			}
+			else if (btn_get_edge(&btns[1]) == 1) // BTN1 goes to extended endpoint
 			{
 				servo_set_duty(&servo, servo.duty_extended);
 				endpoint_selected = 1;
-			} else if (HAL_GPIO_ReadPin(BTN_2_GPIO_Port, BTN_2_Pin))
+				telemetry_log(&cobs_uart, LOG_LVL_INFO, "Extended");
+			}
+			else if (btn_get(&btns[2])) // BTN2 decreases deployment of selected endpoint
 			{
 				if (endpoint_selected == 0) { // retracted
 					servo.duty_retracted -= 1;
 					servo_set_duty(&servo, servo.duty_retracted);
-					printf("retracted:%lu\r\n", servo.duty_retracted);
+//					printf("retracted:%lu\r\n", servo.duty_retracted);
+					telemetry_log(&cobs_uart, LOG_LVL_INFO, "retracted:%lu", servo.duty_retracted);
 				} else if (endpoint_selected == 1) { // extended
 					servo.duty_extended -= 1;
 					servo_set_duty(&servo, servo.duty_extended);
-					printf("extended:%lu\r\n", servo.duty_extended);
+//					printf("extended:%lu\r\n", servo.duty_extended);
+					telemetry_log(&cobs_uart, LOG_LVL_INFO, "extended:%lu", servo.duty_extended);
 				}
-			} else if (HAL_GPIO_ReadPin(BTN_3_GPIO_Port, BTN_3_Pin))
+			}
+			else if (btn_get(&btns[3])) // BTN3 increases deployment of selected endpoint
 			{
 				if (endpoint_selected == 0) { // retracted
 					servo.duty_retracted += 1;
 					servo_set_duty(&servo, servo.duty_retracted);
-					printf("retracted:%lu\r\n", servo.duty_retracted);
+//					printf("retracted:%lu\r\n", servo.duty_retracted);
+					telemetry_log(&cobs_uart, LOG_LVL_INFO, "retracted:%lu", servo.duty_retracted);
 				} else if (endpoint_selected == 1) { // extended
 					servo.duty_extended += 1;
 					servo_set_duty(&servo, servo.duty_extended);
-					printf("extended:%lu\r\n", servo.duty_extended);
+//					printf("extended:%lu\r\n", servo.duty_extended);
+					telemetry_log(&cobs_uart, LOG_LVL_INFO, "extended:%lu", servo.duty_extended);
 				}
 			}
 
-//			printf("v:%f i:%f\r\n", state.batt_v, state.batt_i);
 			break;
 
 		case TEST_SENSORS: // 4

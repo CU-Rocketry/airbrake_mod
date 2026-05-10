@@ -53,7 +53,8 @@
 ../Core/Src/main.c:1519:6:HAL_SPI_RxCpltCallback	16	static
 ../Core/Src/main.c:1527:6:HAL_TIM_PeriodElapsedCallback	16	static
 ../Core/Src/main.c:1536:6:HAL_UART_RxCpltCallback	16	static
-../Core/Src/main.c:1563:6:mode_transition_handler	32	static
-../Core/Src/main.c:1655:6:mode_current_handler	240	static
-../Core/Src/main.c:1922:6:MPU_Config	24	static
-../Core/Src/main.c:1953:6:Error_Handler	4	static,ignoring_inline_asm
+../Core/Src/main.c:1562:6:HAL_UART_ErrorCallback	16	static
+../Core/Src/main.c:1572:6:mode_transition_handler	32	static
+../Core/Src/main.c:1664:6:mode_current_handler	240	static
+../Core/Src/main.c:1934:6:MPU_Config	24	static
+../Core/Src/main.c:1965:6:Error_Handler	4	static,ignoring_inline_asm
