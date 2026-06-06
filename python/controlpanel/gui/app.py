@@ -91,6 +91,7 @@ def get_layout_params():
     params = hello_imgui.RunnerParams()
     params.app_window_params.window_title = "Air Brakes Control Panel"
     params.app_window_params.window_geometry.size = (1200, 800)
+    params.fps_idling.fps_idle = 30
     
     # Enable automatic full-screen docking
     params.imgui_window_params.default_imgui_window_type = hello_imgui.DefaultImGuiWindowType.provide_full_screen_dock_space
