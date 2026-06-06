@@ -54,6 +54,7 @@ typedef struct {
 
 typedef struct {
     uint8_t pkt_type; // always 0x02 for log
+    uint8_t lvl;
     char message[127]; // there's extra space even in just the first 254 bytes then
 } log_packet_t;
 
@@ -212,7 +213,7 @@ def send_hil_data(state: State, pres, accel, omega, mag):
     if not state.connected:
         return
         
-    hil = ffi.new("hil_rx_packet_t *")
+    hil = ffi.new("hil_packet_t *")
     hil.pkt_type = 0x10
     hil.pres_pa = pres
     for i in range(3):

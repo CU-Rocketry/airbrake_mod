@@ -15,9 +15,12 @@ class State:
         self.connected = False
 
         # Threading control
-        self.telemetry_thread = None
+        self.telemetry_thread : threading.Thread = None
         self.stop_event = threading.Event()
         self.latest_time = 0.0 # [s]
+
+        # Simulink worker
+        self.simulink_thread : threading.Thread = None
         
         # Dictionary of buffers. 
         # Keys MUST match the C struct field names exactly.
@@ -42,6 +45,7 @@ class State:
             'alt_agl': ScrollingBuffer(max_size=self.buffer_size),
             'vel_z': ScrollingBuffer(max_size=self.buffer_size),
 
+            'output': ScrollingBuffer(max_size=self.buffer_size),
             'servo_cmd': ScrollingBuffer(max_size=self.buffer_size),
             'servo_fdbk': ScrollingBuffer(max_size=self.buffer_size),
         }

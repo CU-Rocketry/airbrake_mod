@@ -4,11 +4,18 @@ from backend.state import State
 from backend.telemetry import telemetry_worker
 from gui.components.connection import draw_serial_connection_window
 from gui.components.plots import LinePlot, QuatPlot
-import math
-from backend.telemetry import telemetry_worker, send_command
+from backend.telemetry import telemetry_worker
+from backend.simulink import simulink_worker
 from gui.components.windows import draw_command_window, draw_servo_window, draw_logs_window
 
 app_state = State()
+
+app_state.simulink_thread = threading.Thread(
+    target=simulink_worker,
+    args=(app_state,),
+    daemon=True # daemon so it will automatically close when the main app closes
+)
+app_state.simulink_thread.start()
 
 plot_voltage = LinePlot("Battery Voltage", "Voltage [V]")
 plot_voltage.add_line("Voltage", app_state.buffers['batt_v'])
