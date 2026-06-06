@@ -343,7 +343,9 @@ int main(void)
   MX_TIM7_Init();
   MX_TIM6_Init();
   /* USER CODE BEGIN 2 */
-  printf("System reset\r\n");
+  //printf("System reset\r\n");
+    telemetry_init(&cobs_uart);
+    telemetry_log(LOG_LVL_DEBUG, "System reset\r\n");
 
     black_eye_set(0, 0);
     black_eye_set(1, 0);
@@ -360,9 +362,9 @@ int main(void)
     servo_enable(&servo, 0);
 
     mode = get_mode_switch();
-    printf("Mode: %u\r\n", mode);
+    // printf("Mode: %u\r\n", mode);
 
-    HAL_TIM_Base_Start_IT(&htim7); // start 100 Hz
+  	HAL_TIM_Base_Start_IT(&htim7); // start 100 Hz
     HAL_TIM_Base_Start_IT(&htim6); // start 500 Hz
 
     batt_sense_init(&batt_sense);
@@ -382,7 +384,7 @@ int main(void)
   while (1)
   {
 	  if (cobs_uart.rx_ready) {
-		  telemetry_parse_rx(&cobs_uart, &global_state);
+		  telemetry_parse_rx(&global_state);
 		  cobs_uart.rx_idx = 0;
 		  cobs_uart.rx_ready = 0;
 	  }
@@ -394,6 +396,7 @@ int main(void)
 
 		  servo_get_angle(&servo); // Servo feedback
 
+		  // Button driver state updates for current state and edge detection
 		  btn_update(&btns[0]);
 		  btn_update(&btns[1]);
 		  btn_update(&btns[2]);
@@ -401,7 +404,7 @@ int main(void)
 
 		  buzzer_update(&buzzer); // buzzer
 
-		  global_state.t = HAL_GetTick();
+		  global_state.t = HAL_GetTick(); // t in ms seems reasonable
 
 		  if (mode == LAUNCH_DETECT) {
 			  flash_packet_write(&flash, &global_state); // writes if needed only
@@ -421,7 +424,7 @@ int main(void)
 		  // Send telemetry last in case a log needs to take priority
 		  static telemetry_packet_t telemetry_packet;
 		  telemetry_packet_build(&global_state, &telemetry_packet);
-		  telemetry_send(&cobs_uart, &telemetry_packet); // send control panel telemetry
+		  telemetry_send(&telemetry_packet); // send control panel telemetry
 	  }
 
 	  if (tick_500Hz) {
@@ -1571,7 +1574,7 @@ void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart) {
 // State
 void mode_transition_handler(enum Mode prev, enum Mode curr) {
 //	printf("Mode transition from %u to %u\r\n", prev, curr);
-	telemetry_log(&cobs_uart, LOG_LVL_INFO, "Mode transition from %u to %u\r\n", prev, curr);
+	telemetry_log(LOG_LVL_INFO, "Mode transition from %u to %u\r\n", prev, curr);
 
 	// Handle exit from previous mode
 	switch (prev) {
@@ -1595,12 +1598,15 @@ void mode_transition_handler(enum Mode prev, enum Mode curr) {
 	switch (curr) {
 		case IDLE:
 //			buzzer_play_sequence(&buzzer, seq_startup_3, 3);
+			telemetry_log(LOG_LVL_DEBUG, "Mode 0 IDLE\r\n");
 			break;
 		case TEST_UI:
 //			buzzer_play_sequence(&buzzer, seq_mode_1_1, 1);
+			telemetry_log(LOG_LVL_DEBUG, "Mode 1 TEST_UI\r\n");
 			break;
 //		case TEST_SIMULINK:
-////			buzzer_play_sequence(&buzzer, seq_mode_2_3, 3);
+//			buzzer_play_sequence(&buzzer, seq_mode_2_3, 3);
+// 			telemetry_log(LOG_LVL_DEBUG, "Mode 2 TEST_SIMULINK\r\n");
 //			HAL_NVIC_DisableIRQ(BARO_INT_EXTI_IRQn);
 //			HAL_NVIC_DisableIRQ(IMU_INT1_EXTI_IRQn); // IMU both accel and omega
 //			HAL_NVIC_DisableIRQ(MAG_INT_EXTI_IRQn);
@@ -1608,15 +1614,17 @@ void mode_transition_handler(enum Mode prev, enum Mode curr) {
 //			break;
 		case TEST_SERVO:
 //			buzzer_play_sequence(&buzzer, seq_mode_3_5, 5);
+			telemetry_log(LOG_LVL_DEBUG, "Mode 3 TEST_SERVO\r\n");
 			servo_enable(&servo, 1); // Enable servo power
 			servo_set_duty(&servo, 500);
 			break;
 		case TEST_SENSORS:
 //			buzzer_play_sequence(&buzzer, seq_mode_4_7, 7);
+			telemetry_log(LOG_LVL_DEBUG, "Mode 4 TEST_SENSORS\r\n");
 			break;
 		case TEST_FLASH:
 //			buzzer_play_sequence(&buzzer, seq_mode_5_9, 9);
-
+			telemetry_log(LOG_LVL_DEBUG, "Mode 5 TEST_FLASH\r\n");
 
 			// Turn off both LEDS
 			rgb_led_set(&led0, 0x000000); // status LED
@@ -1651,9 +1659,11 @@ void mode_transition_handler(enum Mode prev, enum Mode curr) {
 			break;
 		case TEST_CONTROL:
 //			buzzer_play_sequence(&buzzer, seq_mode_6_11, 11);
+			telemetry_log(LOG_LVL_DEBUG, "Mode 6 TEST_CONTROL\r\n");
 			break;
 		case LAUNCH_DETECT:
 //			buzzer_play_sequence(&buzzer, seq_mode_7_13, 13);
+			telemetry_log(LOG_LVL_DEBUG, "Mode 7 LAUNCH_DETECT\r\n");
 			servo_enable(&servo, 1); // Enable servo power
 			break;
 		default:
@@ -1676,11 +1686,11 @@ void mode_current_handler(enum Mode curr) {
 			// btn driver test
 			if (btn_get_edge(&btns[1]) == 1)
 			{
-				telemetry_log(&cobs_uart, LOG_LVL_DEBUG, "BTN1 pressed");
+				telemetry_log(LOG_LVL_DEBUG, "BTN1 pressed");
 			}
 			if (btn_get_edge(&btns[1]) == -1)
 			{
-				telemetry_log(&cobs_uart, LOG_LVL_DEBUG, "BTN1 released");
+				telemetry_log(LOG_LVL_DEBUG, "BTN1 released");
 			}
 			break;
 
@@ -1713,13 +1723,13 @@ void mode_current_handler(enum Mode curr) {
 			{
 				servo_set_duty(&servo, servo.duty_retracted);
 				endpoint_selected = 0;
-				telemetry_log(&cobs_uart, LOG_LVL_INFO, "Retracted");
+				telemetry_log(LOG_LVL_INFO, "Retracted");
 			}
 			else if (btn_get_edge(&btns[1]) == 1) // BTN1 goes to extended endpoint
 			{
 				servo_set_duty(&servo, servo.duty_extended);
 				endpoint_selected = 1;
-				telemetry_log(&cobs_uart, LOG_LVL_INFO, "Extended");
+				telemetry_log(LOG_LVL_INFO, "Extended");
 			}
 			else if (btn_get(&btns[2])) // BTN2 decreases deployment of selected endpoint
 			{
@@ -1727,12 +1737,12 @@ void mode_current_handler(enum Mode curr) {
 					servo.duty_retracted -= 1;
 					servo_set_duty(&servo, servo.duty_retracted);
 //					printf("retracted:%lu\r\n", servo.duty_retracted);
-					telemetry_log(&cobs_uart, LOG_LVL_INFO, "retracted:%lu", servo.duty_retracted);
+					telemetry_log(LOG_LVL_INFO, "retracted:%lu", servo.duty_retracted);
 				} else if (endpoint_selected == 1) { // extended
 					servo.duty_extended -= 1;
 					servo_set_duty(&servo, servo.duty_extended);
 //					printf("extended:%lu\r\n", servo.duty_extended);
-					telemetry_log(&cobs_uart, LOG_LVL_INFO, "extended:%lu", servo.duty_extended);
+					telemetry_log(LOG_LVL_INFO, "extended:%lu", servo.duty_extended);
 				}
 			}
 			else if (btn_get(&btns[3])) // BTN3 increases deployment of selected endpoint
@@ -1741,12 +1751,12 @@ void mode_current_handler(enum Mode curr) {
 					servo.duty_retracted += 1;
 					servo_set_duty(&servo, servo.duty_retracted);
 //					printf("retracted:%lu\r\n", servo.duty_retracted);
-					telemetry_log(&cobs_uart, LOG_LVL_INFO, "retracted:%lu", servo.duty_retracted);
+					telemetry_log(LOG_LVL_INFO, "retracted:%lu", servo.duty_retracted);
 				} else if (endpoint_selected == 1) { // extended
 					servo.duty_extended += 1;
 					servo_set_duty(&servo, servo.duty_extended);
 //					printf("extended:%lu\r\n", servo.duty_extended);
-					telemetry_log(&cobs_uart, LOG_LVL_INFO, "extended:%lu", servo.duty_extended);
+					telemetry_log(LOG_LVL_INFO, "extended:%lu", servo.duty_extended);
 				}
 			}
 
