@@ -75,6 +75,7 @@ void DMA1_Stream7_IRQHandler(void);
 void UART4_IRQHandler(void);
 void TIM6_DAC_IRQHandler(void);
 void TIM7_IRQHandler(void);
+void DMA2_Stream0_IRQHandler(void);
 void SPI4_IRQHandler(void);
 void OCTOSPI1_IRQHandler(void);
 void MDMA_IRQHandler(void);
