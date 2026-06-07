@@ -8,11 +8,11 @@
 #ifndef INC_HIL_H_
 #define INC_HIL_H_
 
+#include <cobs.h>
 #include <stdint.h>
 #include <string.h>
 #include "state.h"
 #include "packets.h"
-#include "cobs_uart.h"
 
 // Parse incoming HIL data and apply it to the state
 static inline uint8_t hil_parse_rx(cobs_uart_t *port, state_t *current_state) {

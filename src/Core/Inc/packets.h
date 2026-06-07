@@ -17,13 +17,6 @@ typedef enum {
 	PKT_TYPE_HIL_DATA  = 0x10, // simulink to air brakes sensor data (return is in telemetry)
 } packet_type_t;
 
-typedef enum {
-    LOG_LVL_DEBUG = 0,
-    LOG_LVL_INFO = 1,
-    LOG_LVL_WARNING = 2,
-    LOG_LVL_ERROR = 3
-} log_lvl_t;
-
 #pragma pack(push, 1) // so that there is no padding
 
 // Telemetry

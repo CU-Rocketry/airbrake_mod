@@ -209,8 +209,8 @@ batt_sense_t batt_sense = {
 	.dma_buf = {0, 0}
 };
 
-cobs_uart_t cobs_uart = {
-	.handle = &huart4
+telemetry_t telemetry = {
+    .handle = &huart4
 };
 
 flash_t flash = {
@@ -344,7 +344,7 @@ int main(void)
   MX_TIM6_Init();
   /* USER CODE BEGIN 2 */
   //printf("System reset\r\n");
-    telemetry_init(&cobs_uart);
+    telemetry_init(&telemetry);
     telemetry_log(LOG_LVL_DEBUG, "System reset\r\n");
 
     black_eye_set(0, 0);
@@ -376,17 +376,17 @@ int main(void)
 	btn_init(&btns[2], BTN_2_GPIO_Port, BTN_2_Pin);
 	btn_init(&btns[3], BTN_3_GPIO_Port, BTN_3_Pin);
 
-    HAL_UART_Receive_IT(cobs_uart.handle, &cobs_uart.rx_byte, 1); // start hardware in the loop RX
+    HAL_UART_Receive_IT(telemetry.handle, &telemetry.rx_byte, 1); // start hardware in the loop RX
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  if (cobs_uart.rx_ready) {
+	  if (telemetry.rx_ready) {
 		  telemetry_parse_rx(&global_state);
-		  cobs_uart.rx_idx = 0;
-		  cobs_uart.rx_ready = 0;
+		  telemetry.rx_idx = 0;
+		  telemetry.rx_ready = 0;
 	  }
 
 	  if (tick_100Hz) {
@@ -421,10 +421,7 @@ int main(void)
 		  mode = mode_selected;
 		  mode_current_handler(mode);
 
-		  // Send telemetry last in case a log needs to take priority
-		  static telemetry_packet_t telemetry_packet;
-		  telemetry_packet_build(&global_state, &telemetry_packet);
-		  telemetry_send(&telemetry_packet); // send control panel telemetry
+		  telemetry_packet(&global_state); // sending telemetry last in case a log needs to be sent before (we will drop a frame ig)
 	  }
 
 	  if (tick_500Hz) {
@@ -1538,27 +1535,27 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
     if (huart->Instance == UART4) {
-        if (cobs_uart.rx_ready) {
-            // Packet waiting to be processed, ignore new bytes and keep listening
-            HAL_UART_Receive_IT(cobs_uart.handle, &cobs_uart.rx_byte, 1);
+        if (telemetry.rx_ready) {
+            HAL_UART_Receive_IT(telemetry.handle, &telemetry.rx_byte, 1); // packet waiting still so ignore new one and keep listening
             return;
         }
 
-        if (cobs_uart.rx_byte == 0x00) {
-            // Packet end delimiter found
-            if (cobs_uart.rx_idx > 0) {
-            	cobs_uart.rx_ready = 1;
+        if (telemetry.rx_byte == 0x00) { // delimiter found, means end of packet
+            if (telemetry.rx_idx > 0) { // if there was data before this
+            	telemetry.rx_ready = 1; // ready for packet to be processed
             }
-        } else {
-            // Store byte and increment index
-            if (cobs_uart.rx_idx < sizeof(cobs_uart.rx_buf)) {
-            	cobs_uart.rx_buf[cobs_uart.rx_idx++] = cobs_uart.rx_byte;
+
+        } else { // not the end of packet, so store byte and increment write pointer for next
+            if (telemetry.rx_idx < sizeof(telemetry.rx_buf)) { // if there's space
+            	telemetry.rx_buf[telemetry.rx_idx++] = telemetry.rx_byte; // write and increment
+
             } else {
-            	cobs_uart.rx_idx = 0; // Overflow, reset
+            	telemetry.rx_idx = 0; // overflow, wrap around
+            	telemetry_log(LOG_LVL_ERROR, "Telemetry rx buffer overflow");
             }
         }
 
-        HAL_UART_Receive_IT(cobs_uart.handle, &cobs_uart.rx_byte, 1); // always listen for the next byte
+        HAL_UART_Receive_IT(telemetry.handle, &telemetry.rx_byte, 1); // always listen for the next byte
     }
 }
 
@@ -1566,8 +1563,9 @@ void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart) {
     if (huart->Instance == UART4) {
         // UART error and packet dropped
         // reset index to zero and receive again
-        cobs_uart.rx_idx = 0;
-        HAL_UART_Receive_IT(cobs_uart.handle, &cobs_uart.rx_byte, 1);
+    	telemetry.rx_idx = 0;
+        HAL_UART_Receive_IT(telemetry.handle, &telemetry.rx_byte, 1);
+        telemetry_log(LOG_LVL_ERROR, "HAL_UART_ErrorCallback UART4");
     }
 }
 
@@ -1818,7 +1816,8 @@ void mode_current_handler(enum Mode curr) {
 			}
 
 			else if (HAL_GPIO_ReadPin(BTN_1_GPIO_Port, BTN_1_Pin) == GPIO_PIN_SET) { // if BTN1 pressed test R/W
-				printf("Flash RW test\r\n");
+				// printf("Flash RW test\r\n");
+				telemetry_log(LOG_LVL_INFO, "Flash RW test\r\n");
 
 				rgb_led_set(&led1, 0x0000FF); // operating LED blue
 
@@ -1830,21 +1829,26 @@ void mode_current_handler(enum Mode curr) {
 				dummy_packet_w.t = 1234; // update write state time (first in struct)
 				dummy_packet_w.servo_fdbk = 42.0f; // update write state servo fdbk (last in struct)
 
-				printf("Erase sector 0\r\n");
+				// printf("Erase sector 0\r\n");
+				telemetry_log(LOG_LVL_DEBUG, "Erase sector 0\r\n");
 				flash_erase_sector(&flash, test_address);
 
-				printf("Write %u bytes\r\n", sizeof(flash_packet_t));
+				// printf("Write %u bytes\r\n", sizeof(flash_packet_t));
+				telemetry_log(LOG_LVL_DEBUG, "Write %u bytes\r\n", sizeof(flash_packet_t));
 				flash_write_page(&flash, test_address, (uint8_t*)&dummy_packet_w, sizeof(flash_packet_t));
 
 				printf("Read back\r\n");
+				telemetry_log(LOG_LVL_DEBUG, "Read back\r\n");
 				memset(&dummy_packet_r, 0, sizeof(flash_packet_t));
 				flash_read_data(&flash, test_address, (uint8_t*)&dummy_packet_r, sizeof(flash_packet_t));
 
 				if (dummy_packet_r.t == dummy_packet_w.t && dummy_packet_r.servo_fdbk == dummy_packet_w.servo_fdbk) {
-					printf("RW test passed with t=%lu and servo_fdbk=%f\r\n", dummy_packet_r.t, dummy_packet_r.servo_fdbk);
+//					printf("RW test passed with t=%lu and servo_fdbk=%f\r\n", dummy_packet_r.t, dummy_packet_r.servo_fdbk);
+					telemetry_log(LOG_LVL_INFO, "RW test passed with t=%lu and servo_fdbk=%f\r\n", dummy_packet_r.t, dummy_packet_r.servo_fdbk);
 					rgb_led_set(&led1, 0x00FF00);
 				} else {
-					printf("RW test failed with t=%lu and servo_fdbk=%f\r\n", dummy_packet_r.t, dummy_packet_r.servo_fdbk);
+//					printf("RW test failed with t=%lu and servo_fdbk=%f\r\n", dummy_packet_r.t, dummy_packet_r.servo_fdbk);
+					telemetry_log(LOG_LVL_ERROR, "RW test failed with t=%lu and servo_fdbk=%f\r\n", dummy_packet_r.t, dummy_packet_r.servo_fdbk);
 					rgb_led_set(&led1, 0xFF0000);
 				}
 
@@ -1861,9 +1865,11 @@ void mode_current_handler(enum Mode curr) {
 				rgb_led_set(&led1, 0x0000FF); // Turn on LED1 blue (operating LED)
 				if (flash_check_erased(&flash)) { // if erased
 					printf("Flash is blank. Ready for flight!\r\n");
+					telemetry_log(LOG_LVL_INFO, "Flash is blank. Ready for flight!\r\n");
 					rgb_led_set(&led0, 0x00FF00); // status LED green
 				} else { // else not erased
-					printf("Flash is NOT erased! Must do so before flight.\r\n");
+//					printf("Flash is NOT erased! Must do so before flight.\r\n");
+					telemetry_log(LOG_LVL_WARNING, "Flash is NOT erased! Must do so before flight.\r\n");
 					rgb_led_set(&led0, 0xFF0000); // status LED red to indicate needs erasing
 				}
 				rgb_led_set(&led1, 0x000000); // Turn off operating LED
@@ -1877,18 +1883,21 @@ void mode_current_handler(enum Mode curr) {
 					hold_cnt++;
 
 					if (hold_cnt == 1) {
-						printf("Hold BTN 3 for 2 seconds to wipe chip...\r\n");
+//						printf("Hold BTN 3 for 2 seconds to wipe chip...\r\n");
+						telemetry_log(LOG_LVL_INFO, "Hold BTN3 for 2 seconds to erase flash\r\n");
 						rgb_led_set(&led1, 0xFF0000); // Red warning
 					}
 
 					if (hold_cnt >= 200) { // 200 = 2 second hold
-						printf("Erasing flash (this will take a minute)\r\n");
+//						printf("Erasing flash (this will take a minute)\r\n");
+						telemetry_log(LOG_LVL_INFO, "Erasing flash (this will take a minute)\r\n");
 						rgb_led_set(&led1, 0x0000FF);
 
 						flash_erase_chip(&flash);
 						flash_counters_reset(&flash);
 
-						printf("Erase complete\r\n");
+//						printf("Erase complete\r\n");
+						telemetry_log(LOG_LVL_INFO, "Flash erased\r\n");
 						rgb_led_set(&led0, 0x00FF00); // status LED green
 						rgb_led_set(&led1, 0x00FF00); // op LED green
 						HAL_Delay(1000);
@@ -1897,7 +1906,8 @@ void mode_current_handler(enum Mode curr) {
 					}
 				} else {
 					if (hold_cnt > 0 && hold_cnt < 200) {
-						printf("Erase cancelled\r\n");
+//						printf("Erase cancelled\r\n");
+						telemetry_log(LOG_LVL_WARNING, "Erase cancelled\r\n");
 						rgb_led_set(&led0, 0xFF0000); // status LED red
 						rgb_led_set(&led1, 0x000000);
 					}
@@ -1909,7 +1919,7 @@ void mode_current_handler(enum Mode curr) {
 
 			if (HAL_GPIO_ReadPin(BTN_0_GPIO_Port, BTN_0_Pin))
 			{
-				launch_detect_override(1);
+				global_state.is_launched = 1;
 			}
 
 // 			Print IMU and body acceleration
@@ -1975,6 +1985,7 @@ void MPU_Config(void)
 void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
+	telemetry_log(LOG_LVL_ERROR, "Reached Error_Handler");
   /* User can add his own implementation to report the HAL error return state */
   __disable_irq();
   while (1)

@@ -1,25 +1,14 @@
 /*
- * cobs_uart.h
+ * cobs_uart.c
  *
- *  Created on: Apr 30, 2026
+ *  Created on: Jun 6, 2026
  *      Author: Sigmond
  */
 
-#ifndef INC_COBS_UART_H_
-#define INC_COBS_UART_H_
-
-typedef struct {
-    UART_HandleTypeDef *handle;
-    uint8_t tx_buf[256]; // TX buffer for non blocking. 256/4=64 words space rn
-
-    uint8_t rx_buf[256]; // incoming bytes after decoding
-	uint16_t rx_idx; // write index, needs to be uint16_t so it goes up to 256
-	uint8_t rx_byte; // buffer for UART write
-	uint8_t rx_ready; // indicates COBS packet RX ready
-} cobs_uart_t;
+#include "cobs.h"
 
 // see https://en.wikipedia.org/wiki/Consistent_Overhead_Byte_Stuffing
-static uint16_t cobs_encode(const uint8_t * input, uint32_t length, uint8_t * output) {
+uint16_t cobs_encode(const uint8_t *input, uint32_t length, uint8_t *output) {
 	uint16_t r_idx = 0; // index in input
 	uint16_t w_idx = 1; // index in output, starting at 1 for the first code
 	uint16_t code_idx = 0; // where to store code when needed
@@ -48,7 +37,7 @@ static uint16_t cobs_encode(const uint8_t * input, uint32_t length, uint8_t * ou
 	return w_idx; // equals the length of encoded data
 }
 // complement to cobs_encode for received data
-static uint16_t cobs_decode(const uint8_t *input, uint16_t length, uint8_t *output) {
+uint16_t cobs_decode(const uint8_t *input, uint16_t length, uint8_t *output) {
 	uint16_t r_idx = 0; // index in input
 	uint16_t w_idx = 0; // index in output
 	uint8_t code;
@@ -73,19 +62,3 @@ static uint16_t cobs_decode(const uint8_t *input, uint16_t length, uint8_t *outp
 	}
 	return w_idx; // equals the length of decoded data
 }
-
-void cobs_uart_send(cobs_uart_t *ctx, const void *packet, uint16_t length) {
-	if (ctx->handle->gState != HAL_UART_STATE_READY) { // if UART still transmitting something
-		return; // don't send new data
-	}
-
-    uint16_t encoded_len = cobs_encode((const uint8_t*)packet, length, ctx->tx_buf); // COBS encode
-
-    ctx->tx_buf[encoded_len] = 0x00; // final character is null terminator
-
-//    HAL_UART_Transmit_IT(ctx->handle, ctx->tx_buf, encoded_len + 1);
-//    HAL_UART_Transmit(ctx->handle, ctx->tx_buf, encoded_len + 1, 1);
-    HAL_UART_Transmit_DMA(ctx->handle, ctx->tx_buf, encoded_len + 1);
-}
-
-#endif /* INC_COBS_UART_H_ */
