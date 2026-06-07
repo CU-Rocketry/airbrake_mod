@@ -12,15 +12,13 @@ def parse_firmware_schema():
     firmware_schema = ""
 
     for filepath in header_files:
-        try:
-            with open(filepath, "r") as f:
-                code = f.read()
-            
-            clean_code = re.sub(r'^\s*#.*$', '', code, flags=re.MULTILINE) # remove preprocessor directives
-            firmware_schema += clean_code + "\n"
-        except FileNotFoundError:
-            print(f"Warning: Could not find {filepath}. Is the path correct?")
+        with open(filepath, "r") as f:
+            code = f.read()
+        
+        clean_code = re.sub(r'^\s*#.*$', '', code, flags=re.MULTILINE) # remove preprocessor directives
+        firmware_schema += clean_code + "\n"
 
     ffi.cdef(firmware_schema, pack=1)
+    return ffi
 
 ffi = parse_firmware_schema()
