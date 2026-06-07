@@ -91,15 +91,13 @@ typedef struct {
 typedef struct {
     uint8_t pkt_type; // always 0x03 for cmd
 
-    uint8_t mode_en; // requests mode change (substitute for rotating selector)
+    // mask of flags to set and clear
+    uint32_t state_flags_set;
+    uint32_t state_flags_clear;
+
+    // variables maybe paid attention to based on flags
     uint8_t mode; // mode to change to
-
-    uint8_t launch_detect_en; // set to 1 to trigger launch detect
-
-    uint8_t servo_cmd_en;
     float servo_cmd; // [deg]
-
-    uint8_t use_hil_data; // set to 1 to enable HIL mode else 0 sources data from real sensors
 } command_packet_t;
 
 // HIL
