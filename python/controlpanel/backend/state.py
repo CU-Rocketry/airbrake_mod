@@ -50,6 +50,8 @@ class State:
             'servo_fdbk': ScrollingBuffer(max_size=self.buffer_size),
         }
 
+        self.current_flags = 0 # flags is a uint32_t
+
         self.logs = deque(maxlen=100) # COBS logging packets added here for display in GUI
         self.tx_queue = queue.Queue() # Packet queue for encoding and transmission
 
