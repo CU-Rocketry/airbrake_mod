@@ -112,36 +112,28 @@ static void telemetry_handle_rx_packet(uint8_t *decoded_buf, uint16_t decoded_le
 
         command_packet_t *cmd = (command_packet_t *)decoded_buf;
 
-        // Enable or disable HIL if needed
-        if (cmd->use_hil_data != STATE_FLAG_GET(FLAG_USE_HIL_DATA)) { // if use_hil_data has changed
-            STATE_FLAG_WRITE(FLAG_USE_HIL_DATA, cmd->use_hil_data); // write new value
+        // Update state flags
+        state->flags |= cmd->state_flags_set;
+        state->flags &= ~(cmd->state_flags_clear);
 
-            if (STATE_FLAG_GET(FLAG_USE_HIL_DATA)) { // if HIL data enabled
-            	// Disable DRDY interrupts for all sensors
-                HAL_NVIC_DisableIRQ(BARO_INT_EXTI_IRQn);
-                HAL_NVIC_DisableIRQ(IMU_INT1_EXTI_IRQn);
-                HAL_NVIC_DisableIRQ(MAG_INT_EXTI_IRQn);
-                telemetry_log(LOG_LVL_INFO, "HIL data enabled, sensors disabled\r\n");
-            } else { // HIL data disabled
-            	// Enable DRDY interrupts for all sensors
-                HAL_NVIC_EnableIRQ(BARO_INT_EXTI_IRQn);
-                HAL_NVIC_EnableIRQ(IMU_INT1_EXTI_IRQn);
-                HAL_NVIC_EnableIRQ(MAG_INT_EXTI_IRQn);
-                telemetry_log(LOG_LVL_INFO, "HIL data disabled, sensors enabled\r\n");
-            }
+        // Handle HIL mode
+        if (cmd->state_flags_set & FLAG_USE_HIL_DATA) { // if HIL data enabled
+        	// Disable DRDY interrupts for all sensors
+			HAL_NVIC_DisableIRQ(BARO_INT_EXTI_IRQn);
+			HAL_NVIC_DisableIRQ(IMU_INT1_EXTI_IRQn);
+			HAL_NVIC_DisableIRQ(MAG_INT_EXTI_IRQn);
+			telemetry_log(LOG_LVL_INFO, "HIL data enabled, sensors disabled\r\n");
+        }
+        else if (cmd->state_flags_clear & FLAG_USE_HIL_DATA) { // HIL data disabled
+        	// Enable DRDY interrupts for all sensors
+            HAL_NVIC_EnableIRQ(BARO_INT_EXTI_IRQn);
+            HAL_NVIC_EnableIRQ(IMU_INT1_EXTI_IRQn);
+            HAL_NVIC_EnableIRQ(MAG_INT_EXTI_IRQn);
+            telemetry_log(LOG_LVL_INFO, "HIL data disabled, sensors enabled\r\n");
         }
 
-        // Update mode override
-        STATE_FLAG_WRITE(FLAG_MODE_OVERRIDE_EN, cmd->mode_en);
-        global_state.mode_override = cmd->mode;
-
-        // Update servo angle command
-        STATE_FLAG_WRITE(FLAG_SERVO_OVERRIDE_EN, cmd->servo_cmd_en);
-        global_state.servo_cmd_override = cmd->servo_cmd;
-
-        if (cmd->launch_detect_en) {
-            STATE_FLAG_SET(FLAG_LAUNCHED);
-        }
+        global_state.mode_override = cmd->mode; // Update mode override setting
+        global_state.servo_cmd_override = cmd->servo_cmd; // Update servo angle command
     }
     else if (pkt_type == PKT_TYPE_HIL_DATA && decoded_len == sizeof(hil_packet_t)) {
         if (STATE_FLAG_GET(FLAG_USE_HIL_DATA)) {
