@@ -172,7 +172,7 @@ void quat_rot(float v[3], float q[4], float v_out[3]) {
 //Connected to 500 Hz frequency
 
 void launch_detect(float accel_b_x) {
-	if (global_state.is_launched) { // if already launched don't keep checking bc you can't unlaunch
+	if (STATE_FLAG_GET(FLAG_LAUNCHED)) { // if already launched don't keep checking bc you can't unlaunch
 		return;
 	}
 
@@ -185,7 +185,7 @@ void launch_detect(float accel_b_x) {
 		strikes++;
 		telemetry_log(LOG_LVL_INFO, "Launch detect strike %u of %u\r\n", strikes, MIN_STRIKES);
 		if (strikes >= MIN_STRIKES) { // if acceleration above threshold for consecutive samples
-			global_state.is_launched = 1;
+			STATE_FLAG_SET(FLAG_LAUNCHED);
 			global_state.launch_t = HAL_GetTick();
 			telemetry_log(LOG_LVL_INFO, "Launch detected\r\n");
 		}
@@ -199,7 +199,7 @@ void launch_detect(float accel_b_x) {
 }
 
 void kalman_predict(float accel_z, float dt) {
-    if (!global_state.is_launched) { // if not launched, prevent drift
+    if (!STATE_FLAG_GET(FLAG_LAUNCHED)) { // if not launched, prevent drift
         kalman_state.q[0] = 0.0f;
         kalman_state.q[1] = 0.0f;
         kalman_state.P[0][0] = 2.0f; kalman_state.P[0][1] = 0.0f;
@@ -236,7 +236,7 @@ void kalman_predict(float accel_z, float dt) {
 }
 
 void kalman_update(float pressure) {
-    if (!global_state.is_launched) { // before launch update ground pressure
+    if (!STATE_FLAG_GET(FLAG_LAUNCHED)) { // before launch update ground pressure
         kalman_state.P_ground = 0.99f * kalman_state.P_ground + 0.01f * pressure; // low pass filter (LPF)
         global_state.p_ground = kalman_state.P_ground;
         return;

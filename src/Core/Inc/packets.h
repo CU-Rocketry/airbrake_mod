@@ -26,8 +26,8 @@ typedef struct {
 	// Time
 	uint32_t t; // [ms] since boot
 
-	// Launch detect
-	uint32_t is_launched;
+	// Bit flags
+	uint32_t flags;
 
 	// Power
 	float batt_v; // [V]

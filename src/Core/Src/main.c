@@ -228,9 +228,6 @@ extern uint8_t baro_ready;
 extern uint8_t mag_ready;
 extern uint8_t imu_ready;
 
-// Global state
-state_t global_state = {0};
-
 // Control system ticks
 uint8_t tick_100Hz = 0;
 uint8_t tick_500Hz = 0;
@@ -408,7 +405,7 @@ int main(void)
 
 		  // Mode selection
 		  enum Mode mode_switch = get_mode_switch(); // mode selection from physical switch
-		  enum Mode mode_selected = global_state.mode_override_en ? (enum Mode)global_state.mode_override : mode_switch; // choose between control panel override and switch
+		  enum Mode mode_selected = STATE_FLAG_GET(FLAG_MODE_OVERRIDE_EN) ? (enum Mode)global_state.mode_override : mode_switch; // choose between control panel override and switch
 
 		  if (mode_selected != mode_prev) {
 			  mode_transition_handler(mode_prev, mode_selected);
@@ -1691,7 +1688,7 @@ void mode_current_handler(enum Mode curr) {
 
 		case TEST_SERVO: // 3
 
-			if (global_state.servo_cmd_en) { // control panel override
+			if (STATE_FLAG_GET(FLAG_SERVO_OVERRIDE_EN)) { // control panel override
 				servo_set_angle(&servo, global_state.servo_cmd_override);
 			}
 			else if (btn_get_edge(&btns[0]) == 1) // BTN0 goes to retracted endpoint
@@ -1896,7 +1893,7 @@ void mode_current_handler(enum Mode curr) {
 
 			if (HAL_GPIO_ReadPin(BTN_0_GPIO_Port, BTN_0_Pin))
 			{
-				global_state.is_launched = 1;
+				STATE_FLAG_SET(FLAG_LAUNCHED);
 			}
 
 // 			Print IMU and body acceleration
@@ -1914,7 +1911,7 @@ void mode_current_handler(enum Mode curr) {
 
 			break;
 		case LAUNCH_DETECT: // 7
-			if (global_state.is_launched) {
+			if (STATE_FLAG_GET(FLAG_LAUNCHED)) {
 				control_update(0.01f); // 100Hz dt
 				servo_set_deployment(&servo, global_state.output);
 			}

@@ -272,11 +272,12 @@ uint8_t flash_check_erased(flash_t *flash) {
 void flash_packet_write(flash_t *flash, const state_t *state) {
     if (flash->full) return;
 
-    if (state->is_launched) {
+    // Determine appropriate logging rate
+    flash->prescaler_max = 10; // default to 10 Hz on the pad
+    if (STATE_FLAG_GET(FLAG_LAUNCHED))
 		flash->prescaler_max = 1; // 100 Hz in flight
-	} else {
-		flash->prescaler_max = 10; // 10 Hz on pad
-	}
+	if (STATE_FLAG_GET(FLAG_APOGEE))
+		flash->prescaler_max = 10; // 10 Hz after apogee
 
     uint8_t should_write = 0;
 

@@ -81,6 +81,7 @@ float pi_controller(float predicted, uint8_t enable, float Kp, float Ki, float t
     }
 
     float proportional = Kp * error;
+    global_state.p_contrib = proportional;
 
     // Note: Added dt multiplication here to make it a true time-based integrator
     float integral_error_raw = integral_error + (error * dt);
@@ -95,6 +96,8 @@ float pi_controller(float predicted, uint8_t enable, float Kp, float Ki, float t
     }
 
     float integral = Ki * integral_error;
+    global_state.i_contrib = integral;
+
     float output = proportional + integral;
 
     // clamp

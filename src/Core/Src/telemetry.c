@@ -35,8 +35,8 @@ void telemetry_packet(const state_t *current_state) {
 	// Time
 	packet.t = current_state->t;
 
-	// Launch detect
-	packet.is_launched = current_state->is_launched;
+	// All bit flags
+	packet.flags = current_state->flags;
 
 	// Power
 	packet.batt_v = current_state->batt_v;
@@ -112,16 +112,18 @@ static void telemetry_handle_rx_packet(uint8_t *decoded_buf, uint16_t decoded_le
 
         command_packet_t *cmd = (command_packet_t *)decoded_buf;
 
-        // Enable/disable HIL mode
-        if (cmd->use_hil_data != global_state.use_hil_data) {
-            global_state.use_hil_data = cmd->use_hil_data;
+        // Enable or disable HIL if needed
+        if (cmd->use_hil_data != STATE_FLAG_GET(FLAG_USE_HIL_DATA)) { // if use_hil_data has changed
+            STATE_FLAG_WRITE(FLAG_USE_HIL_DATA, cmd->use_hil_data); // write new value
 
-            if (global_state.use_hil_data) {
+            if (STATE_FLAG_GET(FLAG_USE_HIL_DATA)) { // if HIL data enabled
+            	// Disable DRDY interrupts for all sensors
                 HAL_NVIC_DisableIRQ(BARO_INT_EXTI_IRQn);
                 HAL_NVIC_DisableIRQ(IMU_INT1_EXTI_IRQn);
                 HAL_NVIC_DisableIRQ(MAG_INT_EXTI_IRQn);
                 telemetry_log(LOG_LVL_INFO, "HIL data enabled, sensors disabled\r\n");
-            } else {
+            } else { // HIL data disabled
+            	// Enable DRDY interrupts for all sensors
                 HAL_NVIC_EnableIRQ(BARO_INT_EXTI_IRQn);
                 HAL_NVIC_EnableIRQ(IMU_INT1_EXTI_IRQn);
                 HAL_NVIC_EnableIRQ(MAG_INT_EXTI_IRQn);
@@ -129,18 +131,20 @@ static void telemetry_handle_rx_packet(uint8_t *decoded_buf, uint16_t decoded_le
             }
         }
 
-        // Map the rest of the commands
-        global_state.mode_override_en = cmd->mode_en;
+        // Update mode override
+        STATE_FLAG_WRITE(FLAG_MODE_OVERRIDE_EN, cmd->mode_en);
         global_state.mode_override = cmd->mode;
-        global_state.servo_cmd_en = cmd->servo_cmd_en;
+
+        // Update servo angle command
+        STATE_FLAG_WRITE(FLAG_SERVO_OVERRIDE_EN, cmd->servo_cmd_en);
         global_state.servo_cmd_override = cmd->servo_cmd;
 
         if (cmd->launch_detect_en) {
-            global_state.is_launched = 1;
+            STATE_FLAG_SET(FLAG_LAUNCHED);
         }
     }
     else if (pkt_type == PKT_TYPE_HIL_DATA && decoded_len == sizeof(hil_packet_t)) {
-        if (global_state.use_hil_data) {
+        if (STATE_FLAG_GET(FLAG_USE_HIL_DATA)) {
             hil_packet_t *hil = (hil_packet_t *)decoded_buf;
 
             global_state.pres_pa = hil->pres_pa;

@@ -10,6 +10,6 @@
 ../Core/Src/flash.c:210:6:flash_read_data	1
 ../Core/Src/flash.c:234:6:flash_packet_build	1
 ../Core/Src/flash.c:253:9:flash_check_erased	4
-../Core/Src/flash.c:272:6:flash_packet_write	9
-../Core/Src/flash.c:310:6:flash_counters_reset	1
-../Core/Src/flash.c:317:6:flash_scan_memory_map	9
+../Core/Src/flash.c:272:6:flash_packet_write	10
+../Core/Src/flash.c:311:6:flash_counters_reset	1
+../Core/Src/flash.c:318:6:flash_scan_memory_map	9

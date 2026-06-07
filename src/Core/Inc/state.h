@@ -19,7 +19,7 @@ typedef struct {
 	uint32_t elapsed_t; // [ms] since launch detected
 
 	// Launch detect
-	uint32_t is_launched;
+	uint32_t flags; // state_flag_t
 
 	// Power
 	float batt_v; // [V]
@@ -48,20 +48,49 @@ typedef struct {
     // Control
     // TODO
     float output; // 0 to 1 mapping to air brakes deployment range
+    float p_contrib; // proportional term
+    float i_contrib; // integral term
 
     // Servo
     float servo_cmd; // [deg]
     float servo_fdbk; // [deg]
 
-    uint8_t use_hil_data;
-
-	uint8_t mode_override_en;
+    // Control panel overrides
+    // enabled by flags
 	uint8_t mode_override;
-
-	uint8_t servo_cmd_en;
 	float servo_cmd_override; // [deg]
 } state_t;
 
 extern state_t global_state; // global instance
+
+// Flags
+typedef enum {
+	// Flight state
+	FLAG_LAUNCHED = (1 << 0),
+	FLAG_APOGEE = (1 << 1),
+	// reserved bits thru 7
+
+	// Control system lockouts
+	FLAG_LOCKOUT_ACCEL = (1 << 8), // 1 if accel hasn't gone negative yet
+	FLAG_LOCKOUT_ALTITUDE = (1 << 9), // 1 if altitude below threshold
+	FLAG_LOCKOUT_ELAPSED = (1 << 10), // 1 if elapsed less than motor burn time
+	FLAG_LOCKOUT_APOGEE = (1 << 11), // 1 if vertical velocity low
+	FLAG_LOCKOUT_ATTITUDE = (1 << 12), // 1 if pointy end not up
+	// reserved thru 15
+
+	// Peripherals and hardware status
+	// reserved thru 23
+
+	// Control panel overrides
+	FLAG_USE_HIL_DATA = (1 << 24),
+	FLAG_MODE_OVERRIDE_EN = (1 << 25),
+	FLAG_SERVO_OVERRIDE_EN = (1 << 26)
+	// to bit 31
+} state_flag_t;
+
+#define STATE_FLAG_SET(flag) (global_state.flags |= (flag)) // sets flag bit to 1
+#define STATE_FLAG_CLEAR(flag) (global_state.flags &= ~(flag)) // sets flag bit to 0
+#define STATE_FLAG_GET(flag) ((global_state.flags & (flag)) != 0) // gets flag bit
+#define STATE_FLAG_WRITE(flag, value) ((value) ? STATE_FLAG_SET(flag) : STATE_FLAG_CLEAR(flag)) // writes flag bit to value
 
 #endif /* INC_STATE_H_ */
