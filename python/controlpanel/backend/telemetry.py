@@ -154,6 +154,8 @@ def telemetry_worker(state: State):
                                     parsed_state = ffi.from_buffer("telemetry_packet_t *", decoded)
                                     t_sec = parsed_state.t / 1000.0 
                                     state.latest_time = t_sec
+
+                                    state.current_flags = parsed_state.flags
                                     
                                     for field_name, buf in state.buffers.items(): # for each buffer from app state
                                         if hasattr(parsed_state, field_name): # if the field was in the telemetry packet
@@ -185,23 +187,19 @@ def telemetry_worker(state: State):
         ser.close()
         state.connected = False
 
-def send_command(state: State, force_launch=False):
+def send_command(state: State, state_flags_set_mask=0, state_flags_clear_mask=0):
     if not state.connected:
         return
         
     cmd = ffi.new("command_packet_t *")
     cmd.pkt_type = 0x03
-    
-    # Persistent overrides pulled directly from GUI state
-    cmd.mode_en = 1 if state.mode_en else 0
-    cmd.mode = int(state.selected_mode_idx)
-    
-    cmd.servo_cmd_en = 1 if state.servo_cmd_en else 0
+
+    # Set/clear state flags based on masks
+    cmd.state_flags_set = state_flags_set_mask
+    cmd.state_flags_clear = state_flags_clear_mask
+
+    cmd.mode = int(state.selected_mode_idx)    
     cmd.servo_cmd = float(math.degrees(state.servo_cmd_rad))
-    
-    cmd.use_hil_data = 1 if state.use_hil_data else 0
-    
-    cmd.launch_detect_en = 1 if state.force_launch_detect else 0
     
     raw_bytes = bytes(ffi.buffer(cmd))
     state.tx_queue.put(raw_bytes)
