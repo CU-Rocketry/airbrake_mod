@@ -41,7 +41,8 @@ Core/Src/sensors.o: ../Core/Src/sensors.c ../Core/Inc/sensors.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_ll_usb.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd_ex.h \
  ../Core/Inc/lps22df_reg.h ../Core/Inc/lsm6dsv80x_reg.h \
- ../Core/Inc/iis2mdc_reg.h ../Core/Inc/state.h
+ ../Core/Inc/iis2mdc_reg.h ../Core/Inc/state.h ../Core/Inc/telemetry.h \
+ ../Core/Inc/cobs.h ../Core/Inc/state.h ../Core/Inc/packets.h
 ../Core/Inc/sensors.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h:
@@ -89,3 +90,7 @@ Core/Src/sensors.o: ../Core/Src/sensors.c ../Core/Inc/sensors.h \
 ../Core/Inc/lsm6dsv80x_reg.h:
 ../Core/Inc/iis2mdc_reg.h:
 ../Core/Inc/state.h:
+../Core/Inc/telemetry.h:
+../Core/Inc/cobs.h:
+../Core/Inc/state.h:
+../Core/Inc/packets.h:

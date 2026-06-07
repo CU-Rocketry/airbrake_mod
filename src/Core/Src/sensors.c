@@ -12,6 +12,7 @@
 #include <string.h>
 #include <stdio.h>
 #include "state.h"
+#include "telemetry.h"
 
 #define MG_TO_MS2 0.009805f
 //1 g=9.805 m/s^2; 1000 mG=1 g
@@ -21,9 +22,6 @@
 #define MILIDEGREE_TO_RADS 0.00001745f
 //1/1000 degree=1 milidegree; pi/180 to convert from deg to rad
 //multiply by pi/180,000
-
-
-
 
 // SPI handles
 extern SPI_HandleTypeDef hspi1; // Baro
@@ -182,10 +180,12 @@ void baro_init() {
 	lps22df_id_t id;
 	lps22df_md_t md;
 
+	telemetry_log(LOG_LVL_DEBUG, "Baro init\r\n");
 
 	lps22df_id_get(&lps22df_ctx, &id);
 	if (id.whoami != LPS22DF_ID) {
-		printf("LPS22DF whoami failed: %u, expected %u\r\n", id.whoami, LPS22DF_ID);
+		// printf("LPS22DF whoami failed: %u, expected %u\r\n", id.whoami, LPS22DF_ID);
+		telemetry_log(LOG_LVL_ERROR, "LPS22DF whoami failed: %u, expected %u\r\n", id.whoami, LPS22DF_ID);
 		while (1);
 	}
 
@@ -208,7 +208,8 @@ void baro_init() {
 	int_route.drdy_pres = PROPERTY_ENABLE;
 	lps22df_pin_int_route_set(&lps22df_ctx, &int_route);
 
-	printf("LPS22DF init complete\r\n");
+//	printf("LPS22DF init complete\r\n");
+	telemetry_log(LOG_LVL_DEBUG, "Baro init complete\r\n");
 }
 
 void imu_init() {
@@ -218,11 +219,14 @@ void imu_init() {
 	lsm6dsv80x_ctx.mdelay = platform_delay;
 	lsm6dsv80x_ctx.handle = &hspi2;
 
+	telemetry_log(LOG_LVL_DEBUG, "IMU init\r\n");
+
 	/* Check device ID */
 	uint8_t whoami;
 	lsm6dsv80x_device_id_get(&lsm6dsv80x_ctx, &whoami);
 	if (whoami != LSM6DSV80X_ID) {
-		printf("LSM6DSV80X whoami failed: %u, expected %u\r\n", whoami, LSM6DSV80X_ID);
+//		printf("LSM6DSV80X whoami failed: %u, expected %u\r\n", whoami, LSM6DSV80X_ID);
+		telemetry_log(LOG_LVL_ERROR, "LSM6DSV80X whoami failed: %u, expected %u\r\n", whoami, LSM6DSV80X_ID);
 		while (1);
 	}
 
@@ -262,7 +266,7 @@ void imu_init() {
 	pin_int_route.drdy_xl = PROPERTY_ENABLE;
 	lsm6dsv80x_pin_int1_route_set(&lsm6dsv80x_ctx, &pin_int_route);
 
-	printf("LSM6DSV80X init complete\r\n");
+	telemetry_log(LOG_LVL_DEBUG, "IMU init complete\r\n");
 }
 
 void mag_init() {
@@ -272,10 +276,13 @@ void mag_init() {
 	iis2mdc_ctx.mdelay = platform_delay;
 	iis2mdc_ctx.handle = &hspi4;
 
+	telemetry_log(LOG_LVL_DEBUG, "Mag init\r\n");
+
 	uint8_t whoami = 0;
 	iis2mdc_device_id_get(&iis2mdc_ctx, &whoami);
 	if (whoami != IIS2MDC_ID) {
 		printf("IIS2MDC whoami failed: %u, expected %u\r\n", whoami, IIS2MDC_ID);
+		telemetry_log(LOG_LVL_ERROR, "IIS2MDC whoami failed: %u, expected %u\r\n", whoami, IIS2MDC_ID);
 		while (1);
 	}
 
@@ -300,6 +307,7 @@ void mag_init() {
 
 	iis2mdc_drdy_on_pin_set(&iis2mdc_ctx, 1);
 
-	printf("IIS2MDC init complete\r\n");
+//	printf("IIS2MDC init complete\r\n");
+	telemetry_log(LOG_LVL_DEBUG, "Mag init complete\r\n");
 }
 

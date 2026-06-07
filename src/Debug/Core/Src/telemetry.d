@@ -1,4 +1,5 @@
-Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
+Core/Src/telemetry.o: ../Core/Src/telemetry.c ../Core/Inc/cobs.h \
+ ../Core/Inc/packets.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h \
  ../Core/Inc/stm32h7xx_hal_conf.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_rcc.h \
@@ -40,15 +41,10 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_ll_usb.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd_ex.h \
- ../Core/Inc/sensors.h ../Core/Inc/black_eyes.h ../Core/Inc/main.h \
- ../Core/Inc/rgb_led.h ../Core/Inc/buzzer.h ../Core/Inc/servo.h \
- ../Core/Inc/state.h ../Core/Inc/mode_switch.h \
- ../Core/Inc/state_estimation.h ../Drivers/CMSIS/DSP/Include/arm_math.h \
- ../Drivers/CMSIS/Include/cmsis_compiler.h ../Core/Inc/state.h \
- ../Core/Inc/batt_sense.h ../Core/Inc/telemetry.h ../Core/Inc/cobs.h \
- ../Core/Inc/packets.h ../Core/Inc/flash.h ../Core/Inc/control.h \
- ../Core/Inc/packets.h ../Core/Inc/btn.h
-../Core/Inc/main.h:
+ ../Core/Inc/state.h ../Core/Inc/telemetry.h ../Core/Inc/state.h \
+ ../Core/Inc/packets.h ../Core/Inc/main.h
+../Core/Inc/cobs.h:
+../Core/Inc/packets.h:
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h:
 ../Core/Inc/stm32h7xx_hal_conf.h:
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_rcc.h:
@@ -90,23 +86,8 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd.h:
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_ll_usb.h:
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd_ex.h:
-../Core/Inc/sensors.h:
-../Core/Inc/black_eyes.h:
-../Core/Inc/main.h:
-../Core/Inc/rgb_led.h:
-../Core/Inc/buzzer.h:
-../Core/Inc/servo.h:
 ../Core/Inc/state.h:
-../Core/Inc/mode_switch.h:
-../Core/Inc/state_estimation.h:
-../Drivers/CMSIS/DSP/Include/arm_math.h:
-../Drivers/CMSIS/Include/cmsis_compiler.h:
-../Core/Inc/state.h:
-../Core/Inc/batt_sense.h:
 ../Core/Inc/telemetry.h:
-../Core/Inc/cobs.h:
+../Core/Inc/state.h:
 ../Core/Inc/packets.h:
-../Core/Inc/flash.h:
-../Core/Inc/control.h:
-../Core/Inc/packets.h:
-../Core/Inc/btn.h:
+../Core/Inc/main.h:

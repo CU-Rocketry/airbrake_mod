@@ -13,6 +13,7 @@
 #include "state.h"
 #include "math.h"
 #include "stm32h7xx_hal.h"
+#include "telemetry.h"
 
 uint16_t last_sample_time;
 uint16_t sample_time;
@@ -175,26 +176,24 @@ void launch_detect(float accel_b_x) {
 		return;
 	}
 
-	static uint8_t trig_cnt = 0; // how many samples greater than threshold, static so it stays between function calls
+	static uint8_t strikes = 0; // how many samples greater than threshold, static so it stays between function calls
 
-	const float LAUNCH_THRESH_MS2 = 5.0f * GRAVITY;
-	const uint8_t MIN_TRIG_CNT = 10; // 10 samples at 500Hz = 20ms
+	const float STRIKE_THRESH_MS2 = 4.0f * GRAVITY;
+	const uint8_t MIN_STRIKES = 10; // 10 samples at 500Hz = 20ms
 
-	if (accel_b_x >= LAUNCH_THRESH_MS2) { // check if body X accel exceeds threshold
-		trig_cnt++;
-
-		if (trig_cnt >= MIN_TRIG_CNT) { // if acceleration above threshold for consecutive samples
+	if (accel_b_x >= STRIKE_THRESH_MS2) { // check if body X accel exceeds threshold
+		strikes++;
+		telemetry_log(LOG_LVL_INFO, "Launch detect strike %u of %u\r\n", strikes, MIN_STRIKES);
+		if (strikes >= MIN_STRIKES) { // if acceleration above threshold for consecutive samples
 			global_state.is_launched = 1;
 			global_state.launch_t = HAL_GetTick();
+			telemetry_log(LOG_LVL_INFO, "Launch detected\r\n");
 		}
 
 	} else { // accel below thresh so counter reset
-		trig_cnt = 0;
+		telemetry_log(LOG_LVL_INFO, "Launch detect strikes reset from %u to 0\r\n", strikes);
+		strikes = 0;
 	}
-}
-
-void launch_detect_override(uint8_t is_launched) {
-	global_state.is_launched = (is_launched > 0) ? 1 : 0; // force launch detect to 1 or 0
 }
 
 void kalman_predict(float accel_z, float dt) {

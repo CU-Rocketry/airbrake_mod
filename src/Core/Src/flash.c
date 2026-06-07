@@ -10,6 +10,7 @@
 #include "state.h"
 #include "packets.h"
 #include <stdio.h>
+#include "telemetry.h"
 
 
 // Flash hardware driver
@@ -319,7 +320,7 @@ void flash_scan_memory_map(flash_t *flash) {
     uint8_t current_state = 0; // 0 = start, 1 = data, 2 = empty (0xFF)
     uint32_t block_start = 0;
 
-    printf("--- FLASH MEMORY TOPOLOGY MAP ---\r\n");
+    telemetry_log(LOG_LVL_INFO, "Flash map");
 
     while (addr < (16 * 1024 * 1024)) {
         flash_read_data(flash, addr, buf, 256);
@@ -340,9 +341,9 @@ void flash_scan_memory_map(flash_t *flash) {
             block_start = addr;
         } else if (current_state != new_state) {
             if (current_state == 1) {
-                printf("DATA BLOCK : 0x%06lX to 0x%06lX (%lu bytes)\r\n", block_start, addr - 1, addr - block_start);
+                telemetry_log(LOG_LVL_INFO, "Data block: 0x%06lX to 0x%06lX (%lu bytes)\r\n", block_start, addr - 1, addr - block_start);
             } else {
-                printf("EMPTY BLOCK: 0x%06lX to 0x%06lX (%lu bytes)\r\n", block_start, addr - 1, addr - block_start);
+                telemetry_log(LOG_LVL_INFO, "Empty block: 0x%06lX to 0x%06lX (%lu bytes)\r\n", block_start, addr - 1, addr - block_start);
             }
             current_state = new_state;
             block_start = addr;
@@ -352,9 +353,9 @@ void flash_scan_memory_map(flash_t *flash) {
 
     // Print the final block reaching the end of the chip
     if (current_state == 1) {
-        printf("DATA BLOCK : 0x%06lX to 0x%06lX\r\n", block_start, addr - 1);
+        telemetry_log(LOG_LVL_INFO, "Data block: 0x%06lX to 0x%06lX (%lu bytes)\r\n", block_start, addr - 1);
     } else {
-        printf("EMPTY BLOCK: 0x%06lX to 0x%06lX\r\n", block_start, addr - 1);
+        telemetry_log(LOG_LVL_INFO, "Empty block: 0x%06lX to 0x%06lX\r\n", block_start, addr - 1);
     }
-    printf("--- SCAN COMPLETE ---\r\n");
+    printf("End of flash\r\n");
 }
