@@ -24,7 +24,7 @@ class State:
         
         # Dictionary of buffers. 
         # Keys MUST match the C struct field names exactly.
-        self.buffer_size = 1000
+        self.buffer_size = 5000
         self.buffers = {
             'batt_v': ScrollingBuffer(max_size=self.buffer_size),
             'batt_i': ScrollingBuffer(max_size=self.buffer_size),
