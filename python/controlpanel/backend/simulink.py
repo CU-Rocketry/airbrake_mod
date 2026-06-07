@@ -9,6 +9,8 @@ def simulink_worker(state: State, python_port=9090, simulink_port=9091):
     while True: # this will just run until the app is closed
         try:
             data, _ = sock.recvfrom(1024) # blocks until data is received. the packet size is prob way too big
+
+            print(f"Received {len(data)} bytes from Simulink")
             
             # if connected to the MCU
             # and MCU HIL data source selected
