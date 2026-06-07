@@ -82,6 +82,7 @@ TIM_HandleTypeDef htim17;
 
 UART_HandleTypeDef huart4;
 DMA_HandleTypeDef hdma_uart4_tx;
+DMA_HandleTypeDef hdma_uart4_rx;
 
 PCD_HandleTypeDef hpcd_USB_OTG_HS;
 
@@ -355,39 +356,34 @@ int main(void)
     rgb_led_set(&led0, 0x006000);
     rgb_led_set(&led1, 0x0000A0);
 
+    btn_init(&btns[0], BTN_0_GPIO_Port, BTN_0_Pin);
+	btn_init(&btns[1], BTN_1_GPIO_Port, BTN_1_Pin);
+	btn_init(&btns[2], BTN_2_GPIO_Port, BTN_2_Pin);
+	btn_init(&btns[3], BTN_3_GPIO_Port, BTN_3_Pin);
+
+	mode = get_mode_switch();
+
+    batt_sense_init(&batt_sense);
+
     buzzer_init(&buzzer);
 
     servo_init(&servo);
     servo_set_duty(&servo, 500);
     servo_enable(&servo, 0);
 
-    mode = get_mode_switch();
-    // printf("Mode: %u\r\n", mode);
+    sensors_init();
 
   	HAL_TIM_Base_Start_IT(&htim7); // start 100 Hz
     HAL_TIM_Base_Start_IT(&htim6); // start 500 Hz
 
-    batt_sense_init(&batt_sense);
-
-    sensors_init();
-
-    btn_init(&btns[0], BTN_0_GPIO_Port, BTN_0_Pin);
-	btn_init(&btns[1], BTN_1_GPIO_Port, BTN_1_Pin);
-	btn_init(&btns[2], BTN_2_GPIO_Port, BTN_2_Pin);
-	btn_init(&btns[3], BTN_3_GPIO_Port, BTN_3_Pin);
-
-    HAL_UART_Receive_IT(telemetry.handle, &telemetry.rx_byte, 1); // start hardware in the loop RX
+	telemetry_log(LOG_LVL_DEBUG, "Init done\r\n");
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  if (telemetry.rx_ready) {
-		  telemetry_parse_rx(&global_state);
-		  telemetry.rx_idx = 0;
-		  telemetry.rx_ready = 0;
-	  }
+	  telemetry_rx_poll(&global_state);
 
 	  if (tick_100Hz) {
 		  tick_100Hz = 0;
@@ -1226,7 +1222,8 @@ static void MX_UART4_Init(void)
   huart4.Init.OverSampling = UART_OVERSAMPLING_16;
   huart4.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
   huart4.Init.ClockPrescaler = UART_PRESCALER_DIV1;
-  huart4.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+  huart4.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_DMADISABLEONERROR_INIT;
+  huart4.AdvancedInit.DMADisableonRxError = UART_ADVFEATURE_DMA_DISABLEONRXERROR;
   if (HAL_UART_Init(&huart4) != HAL_OK)
   {
     Error_Handler();
@@ -1239,7 +1236,7 @@ static void MX_UART4_Init(void)
   {
     Error_Handler();
   }
-  if (HAL_UARTEx_DisableFifoMode(&huart4) != HAL_OK)
+  if (HAL_UARTEx_EnableFifoMode(&huart4) != HAL_OK)
   {
     Error_Handler();
   }
@@ -1309,6 +1306,7 @@ static void MX_DMA_Init(void)
 
   /* DMA controller clock enable */
   __HAL_RCC_DMA1_CLK_ENABLE();
+  __HAL_RCC_DMA2_CLK_ENABLE();
 
   /* DMA interrupt init */
   /* DMA1_Stream0_IRQn interrupt configuration */
@@ -1335,6 +1333,9 @@ static void MX_DMA_Init(void)
   /* DMA1_Stream7_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(DMA1_Stream7_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(DMA1_Stream7_IRQn);
+  /* DMA2_Stream0_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA2_Stream0_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA2_Stream0_IRQn);
 
 }
 
@@ -1533,46 +1534,22 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 	}
 }
 
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
+void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart) {
     if (huart->Instance == UART4) {
-        if (telemetry.rx_ready) {
-            HAL_UART_Receive_IT(telemetry.handle, &telemetry.rx_byte, 1); // packet waiting still so ignore new one and keep listening
-            return;
-        }
-
-        if (telemetry.rx_byte == 0x00) { // delimiter found, means end of packet
-            if (telemetry.rx_idx > 0) { // if there was data before this
-            	telemetry.rx_ready = 1; // ready for packet to be processed
-            }
-
-        } else { // not the end of packet, so store byte and increment write pointer for next
-            if (telemetry.rx_idx < sizeof(telemetry.rx_buf)) { // if there's space
-            	telemetry.rx_buf[telemetry.rx_idx++] = telemetry.rx_byte; // write and increment
-
-            } else {
-            	telemetry.rx_idx = 0; // overflow, wrap around
-            	telemetry_log(LOG_LVL_ERROR, "Telemetry rx buffer overflow");
-            }
-        }
-
-        HAL_UART_Receive_IT(telemetry.handle, &telemetry.rx_byte, 1); // always listen for the next byte
+        telemetry_log(LOG_LVL_ERROR, "HAL_UART_ErrorCallback UART4: %lu", huart->ErrorCode);
     }
 }
 
-void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart) {
-    if (huart->Instance == UART4) {
-        // UART error and packet dropped
-        // reset index to zero and receive again
-    	telemetry.rx_idx = 0;
-        HAL_UART_Receive_IT(telemetry.handle, &telemetry.rx_byte, 1);
-        telemetry_log(LOG_LVL_ERROR, "HAL_UART_ErrorCallback UART4");
-    }
+void HAL_OSPI_ErrorCallback(OSPI_HandleTypeDef *hospi) {
+	if (hospi->Instance == OCTOSPI1) {
+		telemetry_log(LOG_LVL_ERROR, "HAL_OSPI_ErrorCallback OCTOSPI1: %lu", hospi->ErrorCode);
+	}
 }
 
 // State
 void mode_transition_handler(enum Mode prev, enum Mode curr) {
 //	printf("Mode transition from %u to %u\r\n", prev, curr);
-	telemetry_log(LOG_LVL_INFO, "Mode transition from %u to %u\r\n", prev, curr);
+	telemetry_log(LOG_LVL_INFO, "Mode transition from %d to %d\r\n", prev, curr);
 
 	// Handle exit from previous mode
 	switch (prev) {

@@ -20,6 +20,11 @@ static telemetry_t *ctx;
 
 void telemetry_init(telemetry_t *telemetry) {
 	ctx = telemetry;
+
+	// Setup struct fields for RX
+	ctx->rx_buf_read_idx = 0;
+	ctx->rx_pkt_len = 0;
+	HAL_UART_Receive_DMA(ctx->handle, ctx->rx_buf, TELEMETRY_RX_BUF_SIZE);
 }
 
 void telemetry_packet(const state_t *current_state) {
@@ -99,69 +104,93 @@ void telemetry_log(log_lvl_t lvl, const char *format, ...) {
     telemetry_send(&log_pkt, len);
 }
 
-// call when cobs_uart.rx_ready == 1
-void telemetry_parse_rx(state_t *state) {
-    uint8_t decoded_buf[256]; // this buffer should be good enough as long as neither HIL nor commands get too long
-    uint16_t decoded_len = cobs_decode(ctx->rx_buf, ctx->rx_idx, decoded_buf);
+static void telemetry_handle_rx_packet(uint8_t *decoded_buf, uint16_t decoded_len, state_t *state) {
+    uint8_t pkt_type = decoded_buf[0];
 
-    if (decoded_len > 0) {
-        uint8_t pkt_type = decoded_buf[0];
+    if (pkt_type == PKT_TYPE_CMD && decoded_len == sizeof(command_packet_t)) {
+        // telemetry_log(LOG_LVL_DEBUG, "Received command packet\r\n");
 
-        if (pkt_type == PKT_TYPE_CMD && decoded_len == sizeof(command_packet_t)) {
-        	telemetry_log(LOG_LVL_DEBUG, "Received command packet\r\n");
+        command_packet_t *cmd = (command_packet_t *)decoded_buf;
 
-			command_packet_t *cmd = (command_packet_t *)decoded_buf;
+        // Enable/disable HIL mode
+        if (cmd->use_hil_data != global_state.use_hil_data) {
+            global_state.use_hil_data = cmd->use_hil_data;
 
-			// Enable/disable HIL mode
-			if (cmd->use_hil_data != global_state.use_hil_data) {
-				global_state.use_hil_data = cmd->use_hil_data;
+            if (global_state.use_hil_data) {
+                HAL_NVIC_DisableIRQ(BARO_INT_EXTI_IRQn);
+                HAL_NVIC_DisableIRQ(IMU_INT1_EXTI_IRQn);
+                HAL_NVIC_DisableIRQ(MAG_INT_EXTI_IRQn);
+                telemetry_log(LOG_LVL_INFO, "HIL data enabled, sensors disabled\r\n");
+            } else {
+                HAL_NVIC_EnableIRQ(BARO_INT_EXTI_IRQn);
+                HAL_NVIC_EnableIRQ(IMU_INT1_EXTI_IRQn);
+                HAL_NVIC_EnableIRQ(MAG_INT_EXTI_IRQn);
+                telemetry_log(LOG_LVL_INFO, "HIL data disabled, sensors enabled\r\n");
+            }
+        }
 
-				if (global_state.use_hil_data) {
-					HAL_NVIC_DisableIRQ(BARO_INT_EXTI_IRQn);
-					HAL_NVIC_DisableIRQ(IMU_INT1_EXTI_IRQn);
-					HAL_NVIC_DisableIRQ(MAG_INT_EXTI_IRQn);
-					telemetry_log(LOG_LVL_INFO, "HIL data enabled, sensors disabled\r\n");
-				} else {
-					HAL_NVIC_EnableIRQ(BARO_INT_EXTI_IRQn);
-					HAL_NVIC_EnableIRQ(IMU_INT1_EXTI_IRQn);
-					HAL_NVIC_EnableIRQ(MAG_INT_EXTI_IRQn);
-					telemetry_log(LOG_LVL_INFO, "HIL data disabled, sensors enabled\r\n");
+        // Map the rest of the commands
+        global_state.mode_override_en = cmd->mode_en;
+        global_state.mode_override = cmd->mode;
+        global_state.servo_cmd_en = cmd->servo_cmd_en;
+        global_state.servo_cmd_override = cmd->servo_cmd;
+
+        if (cmd->launch_detect_en) {
+            global_state.is_launched = 1;
+        }
+    }
+    else if (pkt_type == PKT_TYPE_HIL_DATA && decoded_len == sizeof(hil_packet_t)) {
+        if (global_state.use_hil_data) {
+            hil_packet_t *hil = (hil_packet_t *)decoded_buf;
+
+            global_state.pres_pa = hil->pres_pa;
+            memcpy(global_state.accel_ms2, hil->accel_ms2, sizeof(global_state.accel_ms2));
+            memcpy(global_state.omega_rads, hil->omega_rads, sizeof(global_state.omega_rads));
+            memcpy(global_state.mag_mgauss, hil->mag_mgauss, sizeof(global_state.mag_mgauss));
+
+            extern uint8_t imu_ready;
+            extern uint8_t mag_ready;
+            extern uint8_t baro_ready;
+            imu_ready = 1;
+            mag_ready = 1;
+            baro_ready = 1;
+        } else {
+            telemetry_log(LOG_LVL_WARNING, "Received HIL data packet, but HIL mode disabled\r\n");
+        }
+    }
+}
+
+void telemetry_rx_poll(state_t *state) {
+    uint16_t dma_write_idx = TELEMETRY_RX_BUF_SIZE - __HAL_DMA_GET_COUNTER(ctx->handle->hdmarx); // get DMA write pointer from hardware
+
+    while (ctx->rx_buf_read_idx != dma_write_idx) { // loop until read pointer matches DMA write pointer
+
+        uint8_t byte = ctx->rx_buf[ctx->rx_buf_read_idx]; // extract current byte
+        ctx->rx_buf_read_idx = (ctx->rx_buf_read_idx + 1) % TELEMETRY_RX_BUF_SIZE; // increment read pointer and wrap if needed
+
+        if (byte != 0x00) { // not delimiter, so normal byte in packet
+        	if (ctx->rx_pkt_len < sizeof(ctx->rx_pkt_buf)) { // if packet doesn't yet fill buffer
+				ctx->rx_pkt_buf[ctx->rx_pkt_len++] = byte; // write byte into packet buffer
+
+			} else { // buffer full
+				ctx->rx_pkt_len = 0; // overflow wraps, resetting packet length to zero and everything is messed up
+				telemetry_log(LOG_LVL_ERROR, "Telemetry RX packet size overflow\r\n");
+			}
+        } else { // byte is COBS delimiter, handle end of packet
+        	if (ctx->rx_pkt_len > 0) { // if there was data before the delimiter
+
+				// Decode the packet
+				uint8_t decoded_buf[256];
+				uint16_t decoded_len = cobs_decode(ctx->rx_pkt_buf, ctx->rx_pkt_len, decoded_buf);
+
+				if (decoded_len > 0) {
+					telemetry_handle_rx_packet(decoded_buf, decoded_len, state);
 				}
-			}
 
-			// Map the rest of the commands
-			global_state.mode_override_en = cmd->mode_en;
-			global_state.mode_override = cmd->mode;
-
-			global_state.servo_cmd_en = cmd->servo_cmd_en;
-			global_state.servo_cmd_override = cmd->servo_cmd;
-
-			if (cmd->launch_detect_en) {
-				global_state.is_launched = 1;
-			}
-		}
-
-		else if (pkt_type == PKT_TYPE_HIL_DATA && decoded_len == sizeof(hil_packet_t)) { // incoming packet has HIL data
-			if (global_state.use_hil_data) { // if enabled in GUI then HIL data will be used in place of the sensors, which were disabled
-				hil_packet_t *hil = (hil_packet_t *)decoded_buf;
-
-				// overwrite state variables with HIL data
-				global_state.pres_pa = hil->pres_pa;
-				memcpy(global_state.accel_ms2, hil->accel_ms2, sizeof(global_state.accel_ms2));
-				memcpy(global_state.omega_rads, hil->omega_rads, sizeof(global_state.omega_rads));
-				memcpy(global_state.mag_mgauss, hil->mag_mgauss, sizeof(global_state.mag_mgauss));
-
-				// Set sensor ready flags
-				extern uint8_t imu_ready;
-				extern uint8_t mag_ready;
-				extern uint8_t baro_ready;
-				imu_ready = 1;
-				mag_ready = 1;
-				baro_ready = 1;
-
+				ctx->rx_pkt_len = 0; // Reset length for next packet assembly
 			} else {
-				telemetry_log(LOG_LVL_WARNING, "Received HIL data packet, but HIL mode disabled\r\n");
+				telemetry_log(LOG_LVL_ERROR, "Received COBS delimiter not preceded by packet\r\n");
 			}
-		}
+        }
     }
 }
