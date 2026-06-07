@@ -10,7 +10,7 @@ def simulink_worker(state: State, python_port=9090, simulink_port=9091):
         try:
             data, _ = sock.recvfrom(1024) # blocks until data is received. the packet size is prob way too big
 
-            print(f"Received {len(data)} bytes from Simulink")
+            # print(f"Received {len(data)} bytes from Simulink")
             
             # if connected to the MCU
             # and MCU HIL data source selected
@@ -29,6 +29,7 @@ def simulink_worker(state: State, python_port=9090, simulink_port=9091):
                 output = state.buffers['output'].get_latest()
                 output = float(output[0]) # cast single element numpy array to float                
                 sock.sendto(struct.pack('<f', output), ('127.0.0.1', simulink_port)) # send latest output command back to Simulink for its control input
+                # print(f"Sent output command {output} back to Simulink")
                 
         except Exception as e:
             print(f"Simulink worker error: {e}")

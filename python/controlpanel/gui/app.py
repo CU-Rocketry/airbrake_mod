@@ -87,6 +87,10 @@ plot_alt_agl.add_line("Altitude", app_state.buffers['alt_agl'])
 plot_vel_z = LinePlot("Vertical Velocity", "Velocity [m/s]")
 plot_vel_z.add_line("Vertical Velocity", app_state.buffers['vel_z'])
 
+# Control
+plot_output = LinePlot("Output", "Deployment command [0-1]")
+plot_output.add_line("Output", app_state.buffers['output'])
+
 def connect_cb(port, baud):
     app_state.stop_event.clear()
     app_state.telemetry_thread = threading.Thread(
@@ -186,6 +190,12 @@ def get_layout_params():
         plot_vel_z.render(app_state.latest_time)
         imgui.end()
     route("Estimation inertial", "MainDockSpace", draw_estimation)
+
+    def draw_control():
+        imgui.begin("Control")
+        plot_output.render(app_state.latest_time)
+        imgui.end()
+    route("Control", "MainDockSpace", draw_control)
 
     docking.dockable_windows = windows
     params.docking_params = docking

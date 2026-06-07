@@ -175,6 +175,9 @@ def telemetry_worker(state: State):
 
                                     msg = decoded[2:].decode('utf-8', errors='ignore').rstrip('\x00').strip('\r\n') # decode remaining bytes into string, removing null terminator and newlines
                                     hello_imgui.log(imgui_level, msg)
+
+                                else:
+                                    print(f"Unknown packet type of {pkt_type} or invalid length of {len(decoded)}")
                                     
                         except cobs.DecodeError as e:
                             print(f"COBS decode error: {e}")
