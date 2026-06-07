@@ -1,53 +1,59 @@
 from imgui_bundle import imgui
 from backend.telemetry import send_command
 from imgui_bundle import hello_imgui # type: ignore
+from backend.state import State
+from plots import LinePlot
 
-def draw_command_window(app_state):
+def draw_command_window(app_state: State):
     imgui.begin("Commands")
-    
-    changed_hil, app_state.use_hil_data = imgui.checkbox("Enable HIL Data Source", app_state.use_hil_data)
-    if changed_hil: send_command(app_state)
-        
-    imgui.separator()
-    imgui.text("System Mode:")
-    
-    changed_mode_en, app_state.mode_override_active = imgui.checkbox("Override Switch", app_state.mode_override_active)
-    imgui.same_line()
-    imgui.set_next_item_width(150)
-    
-    changed_mode, app_state.selected_mode_idx = imgui.combo("##ModeSelect", app_state.selected_mode_idx, app_state.mode_names)
-    if changed_mode:
-        app_state.mode_override_active = True
-        
-    if changed_mode_en or changed_mode:
+
+    imgui.text("Hardware In the Loop Testing")
+    use_hil_data_changed, app_state.use_hil_data = imgui.checkbox("Enable HIL data", app_state.use_hil_data) # outputs whether changed and new value
+    if use_hil_data_changed:
         send_command(app_state)
         
     imgui.separator()
+
+    # Mode selector
+    imgui.text("Mode")
+    mode_en_changed, app_state.mode_en = imgui.checkbox("Override Mode", app_state.mode_en)
+    imgui.same_line()
+    imgui.set_next_item_width(150)
     
+    mode_changed, app_state.selected_mode_idx = imgui.combo("##ModeSelect", app_state.selected_mode_idx, app_state.mode_names)
+    if mode_changed:
+        app_state.mode_en = True
+    if mode_en_changed or mode_changed:
+        send_command(app_state)
+        
+    imgui.separator()
+
+    # State estimation
+    imgui.text("State Estimation")
     imgui.push_style_color(imgui.Col_.button, imgui.ImColor.hsv(0, 0.6, 0.6).value)
     imgui.push_style_color(imgui.Col_.button_hovered, imgui.ImColor.hsv(0, 0.7, 0.7).value)
     imgui.push_style_color(imgui.Col_.button_active, imgui.ImColor.hsv(0, 0.8, 0.8).value)
     
     if imgui.button("FORCE LAUNCH DETECT"):
-        # Set, Sync, and instantly Clear the trigger
-        app_state.force_launch_detect = True
-        send_command(app_state)
-        app_state.force_launch_detect = False
+        app_state.force_launch_detect = True # set launch detect flag in state
+        send_command(app_state) # send command to MCU to trigger launch detect
+        app_state.force_launch_detect = False # reset so it isn't used again until next button press
         
     imgui.pop_style_color(3)
+
     imgui.end()
 
 
-def draw_servo_window(app_state, plot_servo):
+def draw_servo_window(app_state: State, plot_servo: LinePlot):
     imgui.begin("Servo")
-    changed_override, app_state.servo_override_active = imgui.checkbox("Manual Override", app_state.servo_override_active)
+    servo_cmd_en_changed, app_state.servo_cmd_en = imgui.checkbox("Manual servo command", app_state.servo_cmd_en)
     
-    if app_state.servo_override_active:
+    if app_state.servo_cmd_en: # if manual servo command enabled, show slider
         imgui.same_line()
-        changed_angle, app_state.manual_servo_rad = imgui.slider_angle("Command Angle", app_state.manual_servo_rad, 0, 180.0)
-        if changed_override or changed_angle:
+        servo_cmd_changed, app_state.servo_cmd_rad = imgui.slider_angle("Command Angle", app_state.servo_cmd_rad, 0, 180.0)
+        if servo_cmd_en_changed or servo_cmd_changed:
             send_command(app_state)
-    elif changed_override:
+    elif servo_cmd_en_changed: # if not enabled and checkbox was just changed, send command to disable
         send_command(app_state)
     
     imgui.separator()
@@ -55,7 +61,7 @@ def draw_servo_window(app_state, plot_servo):
     imgui.end()
 
 
-def draw_logs_window():
+def draw_logs_window(app_state: State):
     imgui.begin("Logging")
     # imgui.begin_child("LogRegion", imgui.ImVec2(0, 0), False, imgui.WindowFlags_.horizontal_scrollbar)
     

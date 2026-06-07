@@ -187,11 +187,11 @@ def send_command(state: State, force_launch=False):
     cmd.pkt_type = 0x03
     
     # Persistent overrides pulled directly from GUI state
-    cmd.mode_en = 1 if state.mode_override_active else 0
+    cmd.mode_en = 1 if state.mode_en else 0
     cmd.mode = int(state.selected_mode_idx)
     
-    cmd.servo_cmd_en = 1 if state.servo_override_active else 0
-    cmd.servo_cmd = float(math.degrees(state.manual_servo_rad))
+    cmd.servo_cmd_en = 1 if state.servo_cmd_en else 0
+    cmd.servo_cmd = float(math.degrees(state.servo_cmd_rad))
     
     cmd.use_hil_data = 1 if state.use_hil_data else 0
     

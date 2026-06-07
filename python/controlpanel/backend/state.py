@@ -54,13 +54,13 @@ class State:
         self.tx_queue = queue.Queue() # Packet queue for encoding and transmission
 
         # GUI controls
-        self.servo_override_active = False
-        self.manual_servo_rad = 0.0 
+        self.servo_cmd_en = False
+        self.servo_cmd_rad = 0.0 
         
         self.mode_names = ["0 IDLE", "1 TEST_UI", "2 TEST_SIMULINK", "3 TEST_SERVO", 
                            "4 TEST_SENSORS", "5 TEST_FLASH", "6 TEST_CONTROL", "7 LAUNCH_DETECT"]
         self.selected_mode_idx = 0
-        self.mode_override_active = False
+        self.mode_en = False
         
         self.use_hil_data = False
 
