@@ -39,6 +39,9 @@ void telemetry_packet(const state_t *current_state) {
 
 	// Sensors
 	packet.pres_pa = current_state->pres_pa;
+	memcpy(packet.accel_ms2, current_state->accel_ms2, sizeof(packet.accel_ms2));
+	memcpy(packet.omega_rads, current_state->omega_rads, sizeof(packet.omega_rads));
+	memcpy(packet.mag_mgauss, current_state->mag_mgauss, sizeof(packet.mag_mgauss));
 
 	// Body frame sensors
 	memcpy(packet.accel_b, current_state->accel_b, sizeof(packet.accel_b));

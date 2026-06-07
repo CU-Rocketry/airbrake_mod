@@ -35,6 +35,9 @@ typedef struct {
 
     // Sensors
     float pres_pa;
+    float accel_ms2[3]; // [m/s/s] in sensor frame
+    float omega_rads[3]; // [rad/s] in sensor frame
+    float mag_mgauss[3]; // [mgauss] in sensor frame
 
     // Body frame sensors
     float accel_b[3]; // [m/s/s] in body frame. *proper acceleration

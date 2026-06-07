@@ -4,5 +4,5 @@
 ../Core/Src/state_estimation.c:141:6:quat_conj	16	static
 ../Core/Src/state_estimation.c:151:6:quat_rot	24	static
 ../Core/Src/state_estimation.c:174:6:launch_detect	24	static
-../Core/Src/state_estimation.c:199:6:kalman_predict	48	static
-../Core/Src/state_estimation.c:236:6:kalman_update	56	static
+../Core/Src/state_estimation.c:201:6:kalman_predict	48	static
+../Core/Src/state_estimation.c:238:6:kalman_update	56	static

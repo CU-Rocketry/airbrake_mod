@@ -191,8 +191,10 @@ void launch_detect(float accel_b_x) {
 		}
 
 	} else { // accel below thresh so counter reset
-		telemetry_log(LOG_LVL_INFO, "Launch detect strikes reset from %u to 0\r\n", strikes);
-		strikes = 0;
+		if (strikes > 0) {
+			telemetry_log(LOG_LVL_INFO, "Launch detect strikes reset from %u to 0\r\n", strikes);
+			strikes = 0;
+		}
 	}
 }
 
