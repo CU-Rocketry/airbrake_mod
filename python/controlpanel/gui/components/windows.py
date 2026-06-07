@@ -2,7 +2,7 @@ from imgui_bundle import imgui
 from backend.telemetry import send_command
 from imgui_bundle import hello_imgui # type: ignore
 from backend.state import State
-from plots import LinePlot
+from gui.components.plots import LinePlot
 
 def draw_command_window(app_state: State):
     imgui.begin("Commands")
@@ -61,7 +61,7 @@ def draw_servo_window(app_state: State, plot_servo: LinePlot):
     imgui.end()
 
 
-def draw_logs_window(app_state: State):
+def draw_logs_window():
     imgui.begin("Logging")
     # imgui.begin_child("LogRegion", imgui.ImVec2(0, 0), False, imgui.WindowFlags_.horizontal_scrollbar)
     

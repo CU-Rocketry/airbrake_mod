@@ -26,19 +26,26 @@ plot_servo = LinePlot("Servo", "Angle [deg]")
 plot_servo.add_line("Command", app_state.buffers['servo_cmd'])
 plot_servo.add_line("Feedback", app_state.buffers['servo_fdbk'])
 
-plot_accel_raw = LinePlot("Raw Acceleration", "Accel [m/s^2]")
-plot_accel_raw.add_line("X", app_state.buffers['accel_ms2'], col=0)
-plot_accel_raw.add_line("Y", app_state.buffers['accel_ms2'], col=1)
-plot_accel_raw.add_line("Z", app_state.buffers['accel_ms2'], col=2)
-
-plot_omega_raw = LinePlot("Raw Angular Rate", "Omega [rad/s]")
-plot_omega_raw.add_line("X", app_state.buffers['omega_rads'], col=0)
-plot_omega_raw.add_line("Y", app_state.buffers['omega_rads'], col=1)
-plot_omega_raw.add_line("Z", app_state.buffers['omega_rads'], col=2)
-
+# Raw sensors
 plot_pres = LinePlot("Barometer", "Pressure [Pa]")
 plot_pres.add_line("Pressure", app_state.buffers['pres_pa'])
 
+plot_accel_ms2 = LinePlot("Acceleration", "Accel [m/s^2]")
+plot_accel_ms2.add_line("X", app_state.buffers['accel_ms2'], col=0)
+plot_accel_ms2.add_line("Y", app_state.buffers['accel_ms2'], col=1)
+plot_accel_ms2.add_line("Z", app_state.buffers['accel_ms2'], col=2)
+
+plot_omega_rads = LinePlot("Angular Rate", "Omega [rad/s]")
+plot_omega_rads.add_line("X", app_state.buffers['omega_rads'], col=0)
+plot_omega_rads.add_line("Y", app_state.buffers['omega_rads'], col=1)
+plot_omega_rads.add_line("Z", app_state.buffers['omega_rads'], col=2)
+
+plot_mag_mgauss = LinePlot("Magnetometer", "Flux Density [mgauss]")
+plot_mag_mgauss.add_line("X", app_state.buffers['mag_mgauss'], col=0)
+plot_mag_mgauss.add_line("Y", app_state.buffers['mag_mgauss'], col=1)
+plot_mag_mgauss.add_line("Z", app_state.buffers['mag_mgauss'], col=2)
+
+# Body frame sensors
 plot_accel_b = LinePlot("Body Acceleration", "Accel [m/s^2]")
 plot_accel_b.add_line("X", app_state.buffers['accel_b'], col=0)
 plot_accel_b.add_line("Y", app_state.buffers['accel_b'], col=1)
@@ -49,6 +56,13 @@ plot_omega_b.add_line("X", app_state.buffers['omega_b'], col=0)
 plot_omega_b.add_line("Y", app_state.buffers['omega_b'], col=1)
 plot_omega_b.add_line("Z", app_state.buffers['omega_b'], col=2)
 
+plot_mag_b = LinePlot("Body Magnetometer", "Flux Density [mgauss]")
+plot_mag_b.add_line("X", app_state.buffers['mag_b'], col=0)
+plot_mag_b.add_line("Y", app_state.buffers['mag_b'], col=1)
+plot_mag_b.add_line("Z", app_state.buffers['mag_b'], col=2)
+
+# State estimation
+# Madgwick
 plot_quat_components = LinePlot("Orientation", "Quaternion")
 plot_quat_components.add_line("W", app_state.buffers['quat'], col=0)
 plot_quat_components.add_line("X", app_state.buffers['quat'], col=1)
@@ -63,6 +77,7 @@ plot_accel_e.add_line("X", app_state.buffers['accel_e'], col=0)
 plot_accel_e.add_line("Y", app_state.buffers['accel_e'], col=1)
 plot_accel_e.add_line("Z", app_state.buffers['accel_e'], col=2)
 
+# Kalman
 plot_p_ground = LinePlot("Ground Pressure", "Pressure [Pa]")
 plot_p_ground.add_line("Ground Pressure", app_state.buffers['p_ground'])
 
@@ -141,9 +156,10 @@ def get_layout_params():
 
     def draw_sensors_raw():
         imgui.begin("Sensors raw")
-        plot_accel_raw.render(app_state.latest_time)
-        plot_omega_raw.render(app_state.latest_time)
         plot_pres.render(app_state.latest_time)
+        plot_accel_ms2.render(app_state.latest_time)
+        plot_omega_rads.render(app_state.latest_time)
+        plot_mag_mgauss.render(app_state.latest_time)
         imgui.end()
     route("Sensors raw", "MainDockSpace", draw_sensors_raw)
 
@@ -151,6 +167,7 @@ def get_layout_params():
         imgui.begin("Sensors body")
         plot_accel_b.render(app_state.latest_time)
         plot_omega_b.render(app_state.latest_time)
+        plot_mag_b.render(app_state.latest_time)
         imgui.end()
     route("Sensors body", "MainDockSpace", draw_sensors_body)
 
