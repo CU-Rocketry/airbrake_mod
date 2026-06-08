@@ -74,3 +74,5 @@ class State:
             
         if self.current_port >= len(self.ports): # if the current port index is now invalid
             self.current_port = 0
+
+app_state = State()
