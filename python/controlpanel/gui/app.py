@@ -6,15 +6,15 @@ import threading
 from backend.telemetry import telemetry_worker
 from backend.simulink import simulink_worker
 
-from components.connection import draw_serial_connection_window
-from components.windows import draw_command_window
-from components.logs import draw_logs_window
-from components.power import draw_power
-from components.servo import draw_servo_window
-from components.sensors_body import draw_sensors_body
-from components.sensors_raw import draw_sensors_raw
-from components.state_estimation import draw_state_estimation
-from components.control import draw_control
+from gui.components.connection import draw_serial_connection_window
+from gui.components.windows import draw_command_window
+from gui.components.logs import draw_logs_window
+from gui.components.power import draw_power
+from gui.components.servo import draw_servo_window
+from gui.components.sensors_body import draw_sensors_body
+from gui.components.sensors_raw import draw_sensors_raw
+from gui.components.state_estimation import draw_state_estimation
+from gui.components.control import draw_control
 
 app_state.simulink_thread = threading.Thread(
     target=simulink_worker,
@@ -77,8 +77,8 @@ def get_layout_params():
         
         windows.append(w)
 
-    route("Serial Connection", "LeftSpace", lambda: draw_serial_connection_window(app_state, connect_cb, disconnect_cb))
-    route("Commands", "LeftSpace", lambda: draw_command_window(app_state))
+    route("Serial Connection", "LeftSpace", lambda: draw_serial_connection_window(connect_cb, disconnect_cb))
+    route("Commands", "LeftSpace", draw_command_window)
     route("Logging", "LeftBottomSpace", draw_logs_window)
    
     route("Power", "MainDockSpace", draw_power)
