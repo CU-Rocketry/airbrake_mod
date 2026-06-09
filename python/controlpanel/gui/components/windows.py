@@ -1,10 +1,10 @@
 from imgui_bundle import imgui
 from backend.telemetry import send_command
 from imgui_bundle import hello_imgui # type: ignore
-from backend.state import State
-from gui.components.plots import LinePlot
+from backend.state import app_state
+from gui.components.flags import draw_state_flag_toggle, draw_state_flag_readonly, STATE_FLAGS
 
-def draw_command_window(app_state: State):
+def draw_command_window():
     imgui.begin("Commands")
 
     imgui.text("Hardware In the Loop Testing")
