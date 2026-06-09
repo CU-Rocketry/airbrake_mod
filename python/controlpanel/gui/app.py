@@ -1,15 +1,20 @@
-import threading
 from imgui_bundle import imgui, hello_imgui # type: ignore
 
 from backend.state import app_state
-from backend.telemetry import telemetry_worker
-from gui.components.connection import draw_serial_connection_window
-from gui.components.plots import LinePlot, QuatPlot
+
+import threading
 from backend.telemetry import telemetry_worker
 from backend.simulink import simulink_worker
-from gui.components.windows import draw_command_window, draw_servo_window, draw_logs_window
 
-app_state = State()
+from components.connection import draw_serial_connection_window
+from components.windows import draw_command_window
+from components.logs import draw_logs_window
+from components.power import draw_power
+from components.servo import draw_servo_window
+from components.sensors_body import draw_sensors_body
+from components.sensors_raw import draw_sensors_raw
+from components.state_estimation import draw_state_estimation
+from components.control import draw_control
 
 app_state.simulink_thread = threading.Thread(
     target=simulink_worker,
@@ -17,80 +22,6 @@ app_state.simulink_thread = threading.Thread(
     daemon=True # daemon so it will automatically close when the main app closes
 )
 app_state.simulink_thread.start()
-
-plot_voltage = LinePlot("Battery Voltage", "Voltage [V]")
-plot_voltage.add_line("Voltage", app_state.buffers['batt_v'])
-plot_current = LinePlot("Battery Current", "Current [A]")
-plot_current.add_line("Current", app_state.buffers['batt_i'])
-
-plot_servo = LinePlot("Servo", "Angle [deg]")
-plot_servo.add_line("Command", app_state.buffers['servo_cmd'])
-plot_servo.add_line("Feedback", app_state.buffers['servo_fdbk'])
-
-# Raw sensors
-plot_pres = LinePlot("Barometer", "Pressure [Pa]")
-plot_pres.add_line("Pressure", app_state.buffers['pres_pa'])
-
-plot_accel_ms2 = LinePlot("Acceleration", "Accel [m/s^2]")
-plot_accel_ms2.add_line("X", app_state.buffers['accel_ms2'], col=0)
-plot_accel_ms2.add_line("Y", app_state.buffers['accel_ms2'], col=1)
-plot_accel_ms2.add_line("Z", app_state.buffers['accel_ms2'], col=2)
-
-plot_omega_rads = LinePlot("Angular Rate", "Omega [rad/s]")
-plot_omega_rads.add_line("X", app_state.buffers['omega_rads'], col=0)
-plot_omega_rads.add_line("Y", app_state.buffers['omega_rads'], col=1)
-plot_omega_rads.add_line("Z", app_state.buffers['omega_rads'], col=2)
-
-plot_mag_mgauss = LinePlot("Magnetometer", "Flux Density [mgauss]")
-plot_mag_mgauss.add_line("X", app_state.buffers['mag_mgauss'], col=0)
-plot_mag_mgauss.add_line("Y", app_state.buffers['mag_mgauss'], col=1)
-plot_mag_mgauss.add_line("Z", app_state.buffers['mag_mgauss'], col=2)
-
-# Body frame sensors
-plot_accel_b = LinePlot("Body Acceleration", "Accel [m/s^2]")
-plot_accel_b.add_line("X", app_state.buffers['accel_b'], col=0)
-plot_accel_b.add_line("Y", app_state.buffers['accel_b'], col=1)
-plot_accel_b.add_line("Z", app_state.buffers['accel_b'], col=2)
-
-plot_omega_b = LinePlot("Body Angular Rate", "Omega [rad/s]")
-plot_omega_b.add_line("X", app_state.buffers['omega_b'], col=0)
-plot_omega_b.add_line("Y", app_state.buffers['omega_b'], col=1)
-plot_omega_b.add_line("Z", app_state.buffers['omega_b'], col=2)
-
-plot_mag_b = LinePlot("Body Magnetometer", "Flux Density [mgauss]")
-plot_mag_b.add_line("X", app_state.buffers['mag_b'], col=0)
-plot_mag_b.add_line("Y", app_state.buffers['mag_b'], col=1)
-plot_mag_b.add_line("Z", app_state.buffers['mag_b'], col=2)
-
-# State estimation
-# Madgwick
-plot_quat_components = LinePlot("Orientation", "Quaternion")
-plot_quat_components.add_line("W", app_state.buffers['quat'], col=0)
-plot_quat_components.add_line("X", app_state.buffers['quat'], col=1)
-plot_quat_components.add_line("Y", app_state.buffers['quat'], col=2)
-plot_quat_components.add_line("Z", app_state.buffers['quat'], col=3)
-
-plot_quat_orientation = QuatPlot("Vehicle Attitude")
-plot_quat_orientation.set_buffer(app_state.buffers['quat'])
-
-plot_accel_e = LinePlot("Inertial Acceleration", "Accel [m/s^2]")
-plot_accel_e.add_line("X", app_state.buffers['accel_e'], col=0)
-plot_accel_e.add_line("Y", app_state.buffers['accel_e'], col=1)
-plot_accel_e.add_line("Z", app_state.buffers['accel_e'], col=2)
-
-# Kalman
-plot_p_ground = LinePlot("Ground Pressure", "Pressure [Pa]")
-plot_p_ground.add_line("Ground Pressure", app_state.buffers['p_ground'])
-
-plot_alt_agl = LinePlot("Altitude AGL", "Altitude [m]")
-plot_alt_agl.add_line("Altitude", app_state.buffers['alt_agl'])
-
-plot_vel_z = LinePlot("Vertical Velocity", "Velocity [m/s]")
-plot_vel_z.add_line("Vertical Velocity", app_state.buffers['vel_z'])
-
-# Control
-plot_output = LinePlot("Output", "Deployment command [0-1]")
-plot_output.add_line("Output", app_state.buffers['output'])
 
 def connect_cb(port, baud):
     app_state.stop_event.clear()
@@ -148,54 +79,13 @@ def get_layout_params():
 
     route("Serial Connection", "LeftSpace", lambda: draw_serial_connection_window(app_state, connect_cb, disconnect_cb))
     route("Commands", "LeftSpace", lambda: draw_command_window(app_state))
-    # route("Logging", "LeftBottomSpace", lambda: draw_logs_window(app_state))
     route("Logging", "LeftBottomSpace", draw_logs_window)
-    route("Servo", "MainDockSpace", lambda: draw_servo_window(app_state, plot_servo))
-
-    def draw_power():
-        imgui.begin("Power")
-        plot_voltage.render(app_state.latest_time)
-        plot_current.render(app_state.latest_time)
-        imgui.end()
+   
     route("Power", "MainDockSpace", draw_power)
-
-    def draw_sensors_raw():
-        imgui.begin("Sensors raw")
-        plot_pres.render(app_state.latest_time)
-        plot_accel_ms2.render(app_state.latest_time)
-        plot_omega_rads.render(app_state.latest_time)
-        plot_mag_mgauss.render(app_state.latest_time)
-        imgui.end()
+    route("Servo", "MainDockSpace", draw_servo_window)
     route("Sensors raw", "MainDockSpace", draw_sensors_raw)
-
-    def draw_sensors_body():
-        imgui.begin("Sensors body")
-        plot_accel_b.render(app_state.latest_time)
-        plot_omega_b.render(app_state.latest_time)
-        plot_mag_b.render(app_state.latest_time)
-        imgui.end()
     route("Sensors body", "MainDockSpace", draw_sensors_body)
-
-    def draw_orientation():
-        imgui.begin("Orientation")
-        plot_quat_components.render(app_state.latest_time)
-        plot_quat_orientation.render()
-        imgui.end()
-    route("Orientation", "MainDockSpace", draw_orientation)
-
-    def draw_estimation():
-        imgui.begin("Estimation inertial")
-        plot_accel_e.render(app_state.latest_time)
-        plot_p_ground.render(app_state.latest_time)
-        plot_alt_agl.render(app_state.latest_time)
-        plot_vel_z.render(app_state.latest_time)
-        imgui.end()
-    route("Estimation inertial", "MainDockSpace", draw_estimation)
-
-    def draw_control():
-        imgui.begin("Control")
-        plot_output.render(app_state.latest_time)
-        imgui.end()
+    route("State Estimation", "MainDockSpace", draw_state_estimation)
     route("Control", "MainDockSpace", draw_control)
 
     docking.dockable_windows = windows
