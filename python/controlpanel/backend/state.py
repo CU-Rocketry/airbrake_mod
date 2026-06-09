@@ -46,6 +46,9 @@ class State:
             'vel_z': ScrollingBuffer(max_size=self.buffer_size),
 
             'output': ScrollingBuffer(max_size=self.buffer_size),
+            'p_contrib': ScrollingBuffer(max_size=self.buffer_size),
+            'i_contrib': ScrollingBuffer(max_size=self.buffer_size),
+
             'servo_cmd': ScrollingBuffer(max_size=self.buffer_size),
             'servo_fdbk': ScrollingBuffer(max_size=self.buffer_size),
         }
