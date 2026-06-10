@@ -30,7 +30,19 @@ float predict_apogee(float alt_agl, float vel_z, float g, float Cd, float a_ref,
     }
 }
 
-uint8_t airbrakes_lockout(float accel_b_x, float alt_agl, float elapsed, float vel_z) {
+void lockouts_init() {
+	// Set all lockouts that won't be cleared until burnout
+	STATE_FLAG_SET(FLAG_LOCKOUT_ACCEL);
+	STATE_FLAG_SET(FLAG_LOCKOUT_ALTITUDE);
+	STATE_FLAG_SET(FLAG_LOCKOUT_ELAPSED);
+
+	STATE_FLAG_CLEAR(FLAG_LOCKOUT_ATTITUDE); // attitude should be good on the pad
+	STATE_FLAG_CLEAR(FLAG_LOCKOUT_APOGEE); // apogee obv won't be reached yet either
+
+	STATE_FLAG_CLEAR(FLAG_CONTROL_ENABLED); // whether we can deploy air brakes
+}
+
+void lockouts_check() {
     // persistent state variable
     static uint8_t vel_z_thresh_triggered = 0;
 
@@ -39,23 +51,29 @@ uint8_t airbrakes_lockout(float accel_b_x, float alt_agl, float elapsed, float v
     const float ELAPSED_THRESH = 4.0f; // [s] since launch detect, must be >=
     const float VEL_Z_THRESH = 75.0f; // [m/s] must be >=, to disable near apogee
 
-    uint8_t airbrakes_enabled = 0;
+    if (global_state.accel_b[0] < ACCEL_B_X_THRESH)
+    	STATE_FLAG_CLEAR(FLAG_LOCKOUT_ACCEL);
 
-    if ((accel_b_x < ACCEL_B_X_THRESH) &&
-        (alt_agl >= ALT_AGL_THRESH) &&
-        (elapsed >= ELAPSED_THRESH) &&
-        (!vel_z_thresh_triggered)) {
-        airbrakes_enabled = 1;
-    }
+    if (global_state.alt_agl > ALT_AGL_THRESH)
+        STATE_FLAG_CLEAR(FLAG_LOCKOUT_ALTITUDE);
 
-    // to check vel_z vs the thresh, we should be in active control already
-    if (airbrakes_enabled && (vel_z < VEL_Z_THRESH)) {
-        vel_z_thresh_triggered = 1;
-        airbrakes_enabled = 0;
-        // printf("Triggered lockout\r\n"); // Optional debug
-    }
+    if (global_state.elapsed_t > ELAPSED_THRESH)
+    	STATE_FLAG_CLEAR(FLAG_LOCKOUT_ELAPSED);
 
-    return airbrakes_enabled;
+    // TODO
+    // attitude threshold
+
+    // to check if vertical velocity too low, we should already be in active control state
+    if (STATE_FLAG_GET(FLAG_CONTROL_ENABLED) && (global_state.vel_z < VEL_Z_THRESH))
+    	STATE_FLAG_SET(FLAG_LOCKOUT_APOGEE);
+
+    uint8_t any_lockouts = 0; // starts 0, if any lockout is set, it will become 1
+    any_lockouts |= STATE_FLAG_GET(FLAG_LOCKOUT_ACCEL);
+    any_lockouts |= STATE_FLAG_GET(FLAG_LOCKOUT_ALTITUDE);
+    any_lockouts |= STATE_FLAG_GET(FLAG_LOCKOUT_ELAPSED);
+    any_lockouts |= STATE_FLAG_GET(FLAG_LOCKOUT_ATTITUDE);
+    any_lockouts |= STATE_FLAG_GET(FLAG_LOCKOUT_APOGEE);
+    STATE_FLAG_WRITE(FLAG_CONTROL_ENABLED, !any_lockouts); // if no lockouts are set, control enabled = 1. if any lockouts are set, control enabled = 0
 }
 
 // [airbrakes, integral_error, error, error_raw, proportional, integral_error_raw, integral]
@@ -111,7 +129,7 @@ float pi_controller(float predicted, uint8_t enable, float Kp, float Ki, float t
 }
 
 void control_update(float dt) {
-    float predicted_apogee = predict_apogee(global_state.alt_agl, global_state.vel_z, GRAVITY, ROCKET_CD, ROCKET_A_REF, ROCKET_MASS_EMPTY);
+    global_state.predicted = predict_apogee(global_state.alt_agl, global_state.vel_z, GRAVITY, ROCKET_CD, ROCKET_A_REF, ROCKET_MASS_EMPTY);
     uint8_t brakes_enabled = airbrakes_lockout(global_state.accel_b[0], global_state.alt_agl, global_state.elapsed_t, global_state.vel_z);
     global_state.output = pi_controller(predicted_apogee, brakes_enabled, Kp, Ki, TARGET_APOGEE, dt);
 }

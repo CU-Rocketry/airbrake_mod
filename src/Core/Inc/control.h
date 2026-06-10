@@ -17,7 +17,8 @@
 
 void control_update(float dt);
 float predict_apogee(float alt_agl, float vel_z, float g, float Cd, float a_ref, float mass_empty);
-uint8_t airbrakes_lockout(float accel_b_x, float alt_agl, float elapsed, float vel_z);
 float pi_controller(float predicted, uint8_t enable, float Kp, float Ki, float target, float dt);
+void lockouts_init();
+void lockouts_check();
 
 #endif /* INC_CONTROL_H_ */
