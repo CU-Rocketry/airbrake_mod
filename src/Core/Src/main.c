@@ -1492,7 +1492,6 @@ PUTCHAR_PROTOTYPE
   return ch;
 }
 
-
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
 //	printf("EXTI:%u\r\n", GPIO_Pin);
@@ -1519,8 +1518,6 @@ void HAL_SPI_RxCpltCallback(SPI_HandleTypeDef *hspi) {
 		mag_spi_callback();
 	}
 }
-
-
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 	if (htim->Instance == TIM7) { // 100 Hz

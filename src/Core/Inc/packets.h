@@ -54,7 +54,10 @@ typedef struct {
 
     // Control
     // TODO
+    float predicted;
     float output; // 0 to 1 mapping to air brakes deployment range
+    float p_contrib; // proportional term
+	float i_contrib; // integral term
 
     // Servo
     float servo_cmd; // [deg]

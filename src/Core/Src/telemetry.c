@@ -62,8 +62,10 @@ void telemetry_packet(const state_t *current_state) {
 	packet.vel_z = current_state->vel_z;
 
 	// Control
-	// TODO
+	packet.predicted = current_state->predicted;
 	packet.output = current_state->output;
+	packet.p_contrib = current_state->p_contrib;
+	packet.i_contrib = current_state->i_contrib;
 
 	// Servo
 	packet.servo_cmd = current_state->servo_cmd;

@@ -1,6 +1,6 @@
 ../Core/Src/telemetry.c:21:6:telemetry_init	16	static
-../Core/Src/telemetry.c:30:6:telemetry_packet	168	static
-../Core/Src/telemetry.c:75:6:telemetry_send	24	static
-../Core/Src/telemetry.c:89:6:telemetry_log	28	static
-../Core/Src/telemetry.c:107:13:telemetry_handle_rx_packet	40	static
-../Core/Src/telemetry.c:159:6:telemetry_rx_poll	280	static
+../Core/Src/telemetry.c:30:6:telemetry_packet	176	static
+../Core/Src/telemetry.c:76:6:telemetry_send	24	static
+../Core/Src/telemetry.c:90:6:telemetry_log	28	static
+../Core/Src/telemetry.c:108:13:telemetry_handle_rx_packet	40	static
+../Core/Src/telemetry.c:161:6:telemetry_rx_poll	280	static

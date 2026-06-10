@@ -47,6 +47,7 @@ typedef struct {
 
     // Control
     // TODO
+    float predicted; // [m] predicted apogee
     float output; // 0 to 1 mapping to air brakes deployment range
     float p_contrib; // proportional term
     float i_contrib; // integral term
@@ -70,12 +71,14 @@ typedef enum {
 	FLAG_APOGEE = (1 << 1),
 	// reserved bits thru 7
 
-	// Control system lockouts
+	// Control system
 	FLAG_LOCKOUT_ACCEL = (1 << 8), // 1 if accel hasn't gone negative yet
 	FLAG_LOCKOUT_ALTITUDE = (1 << 9), // 1 if altitude below threshold
 	FLAG_LOCKOUT_ELAPSED = (1 << 10), // 1 if elapsed less than motor burn time
 	FLAG_LOCKOUT_APOGEE = (1 << 11), // 1 if vertical velocity low
 	FLAG_LOCKOUT_ATTITUDE = (1 << 12), // 1 if pointy end not up
+
+	FLAG_CONTROL_ENABLED = (1 << 13), // 1 if no lockout is asserted
 	// reserved thru 15
 
 	// Peripherals and hardware status
