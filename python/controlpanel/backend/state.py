@@ -45,6 +45,7 @@ class State:
             'alt_agl': ScrollingBuffer(max_size=self.buffer_size),
             'vel_z': ScrollingBuffer(max_size=self.buffer_size),
 
+            'predicted': ScrollingBuffer(max_size=self.buffer_size),
             'output': ScrollingBuffer(max_size=self.buffer_size),
             'p_contrib': ScrollingBuffer(max_size=self.buffer_size),
             'i_contrib': ScrollingBuffer(max_size=self.buffer_size),
@@ -59,17 +60,10 @@ class State:
         self.tx_queue = queue.Queue() # Packet queue for encoding and transmission
 
         # GUI controls
-        self.servo_cmd_en = False
-        self.servo_cmd_rad = 0.0 
-        
+        self.servo_cmd_rad = 0.0         
         self.mode_names = ["0 IDLE", "1 TEST_UI", "2 TEST_SIMULINK", "3 TEST_SERVO", 
                            "4 TEST_SENSORS", "5 TEST_FLASH", "6 TEST_CONTROL", "7 LAUNCH_DETECT"]
         self.selected_mode_idx = 0
-        self.mode_en = False
-        
-        self.use_hil_data = False
-
-        self.force_launch_detect = False
 
     def get_ports(self):
         ports = serial.tools.list_ports.comports() # get COM ports from OS
