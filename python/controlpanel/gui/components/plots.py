@@ -3,15 +3,12 @@ from gui.scrollingbuffer import ScrollingBuffer
 import numpy as np
 
 class LinePlot:
-    def __init__(self, title, y_label, history=10.0, max_points=2000):
+    def __init__(self, title, y_label, history=30.0):
         self.title = title
         self.y_label = y_label
         self.history = history
         
-        # Dictionary to hold multiple lines on the same plot
-        # e.g., {'accel_x': ScrollingBuffer, 'accel_y': ScrollingBuffer}
-        self.lines = {} 
-        self.max_points = max_points
+        self.lines = {} # multiples lines per plot, each with its own buffer {"name": ScrollingBuffer}
 
     def add_line(self, line_name, buffer_ref, col=None):
         # Store a tuple of (buffer, column_index)
