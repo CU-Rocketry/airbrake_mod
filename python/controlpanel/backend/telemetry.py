@@ -3,33 +3,33 @@ import queue
 
 import serial
 from cobs import cobs
-from backend.state import State
+from backend.state import app_state
 from backend.firmware_schema import ffi
 
 from imgui_bundle import hello_imgui # type: ignore
 
-def telemetry_worker(state: State):
-    """Runs in a background thread, constantly decoding serial into app_state."""    
-    port = state.ports[state.current_port]
-    baudrate = int(state.baudrates[state.current_baudrate])
+def telemetry_worker():
+    """Runs in a background thread, constantly decoding serial into app_app_state."""    
+    port = app_state.ports[app_state.current_port]
+    baudrate = int(app_state.baudrates[app_state.current_baudrate])
 
     try:
         ser = serial.Serial(port, baudrate)
-        state.connected = True
+        app_state.connected = True
     except serial.SerialException as e:
         print(f"Error opening serial port: {e}")
-        state.connected = False
+        app_state.connected = False
         return
 
     raw_buffer = bytearray()
     
     try:
         # Check the threading event so the GUI can stop this loop
-        while not state.stop_event.is_set():
+        while not app_state.stop_event.is_set():
 
-            while not state.tx_queue.empty(): # if packets waiting to send
+            while not app_state.tx_queue.empty(): # if packets waiting to send
                 try:
-                    packet_bytes = state.tx_queue.get_nowait() # get packet bytes non-blocking
+                    packet_bytes = app_state.tx_queue.get_nowait() # get packet bytes non-blocking
                     encoded = cobs.encode(packet_bytes) # cobs encode the packet
                     ser.write(encoded + b'\x00') # add null terminator and send
                 except queue.Empty:
@@ -54,11 +54,11 @@ def telemetry_worker(state: State):
                                 if pkt_type == 0x01 and len(decoded) == ffi.sizeof("telemetry_packet_t"):
                                     parsed_state = ffi.from_buffer("telemetry_packet_t *", decoded)
                                     t_sec = parsed_state.t / 1000.0 
-                                    state.latest_time = t_sec
+                                    app_state.latest_time = t_sec
 
-                                    state.current_flags = parsed_state.flags
+                                    app_state.current_flags = parsed_state.flags
                                     
-                                    for field_name, buf in state.buffers.items(): # for each buffer from app state
+                                    for field_name, buf in app_state.buffers.items(): # for each buffer from app state
                                         if hasattr(parsed_state, field_name): # if the field was in the telemetry packet
                                             value = getattr(parsed_state, field_name) # get that field's value
                                             if buf.width > 1: # convert arrays to lists
@@ -86,10 +86,10 @@ def telemetry_worker(state: State):
                             print(f"COBS decode error: {e}")
     finally:
         ser.close()
-        state.connected = False
+        app_state.connected = False
 
-def send_command(state: State, state_flags_set_mask=0, state_flags_clear_mask=0):
-    if not state.connected:
+def send_command(state_flags_set_mask=0, state_flags_clear_mask=0):
+    if not app_state.connected:
         return
         
     cmd = ffi.new("command_packet_t *")
@@ -99,13 +99,13 @@ def send_command(state: State, state_flags_set_mask=0, state_flags_clear_mask=0)
     cmd.state_flags_set = state_flags_set_mask
     cmd.state_flags_clear = state_flags_clear_mask
 
-    cmd.mode = int(state.selected_mode_idx)    
-    cmd.servo_cmd = float(math.degrees(state.servo_cmd_rad))
+    cmd.mode = int(app_state.selected_mode_idx)    
+    cmd.servo_cmd = float(math.degrees(app_state.servo_cmd_rad))
     
     raw_bytes = bytes(ffi.buffer(cmd))
-    state.tx_queue.put(raw_bytes)
+    app_state.tx_queue.put(raw_bytes)
 
-def send_hil_data(state: State, pres, accel, omega, mag):
+def send_hil_data(pres, accel, omega, mag):
     """Forwards hardware in the loop (HIL) sensor data from Simulink to MCU
 
     Args:
@@ -115,7 +115,7 @@ def send_hil_data(state: State, pres, accel, omega, mag):
         omega (list): Gyroscope axes data [rad/s]
         mag (list): Magnetometer axes data [mGauss]
     """
-    if not state.connected:
+    if not app_state.connected:
         return
         
     hil = ffi.new("hil_packet_t *")
@@ -127,4 +127,4 @@ def send_hil_data(state: State, pres, accel, omega, mag):
         hil.mag_mgauss[i] = mag[i]
         
     raw_bytes = bytes(ffi.buffer(hil))
-    state.tx_queue.put(raw_bytes)
+    app_state.tx_queue.put(raw_bytes)

@@ -18,7 +18,7 @@ from gui.components.control import draw_control
 
 app_state.simulink_thread = threading.Thread(
     target=simulink_worker,
-    args=(app_state,),
+    # args=(9090, 9091),
     daemon=True # daemon so it will automatically close when the main app closes
 )
 app_state.simulink_thread.start()
@@ -27,7 +27,7 @@ def connect_cb(port, baud):
     app_state.stop_event.clear()
     app_state.telemetry_thread = threading.Thread(
         target=telemetry_worker,
-        args=(app_state,),
+        #args=(app_state,),
         daemon=True
     )
     app_state.telemetry_thread.start()
