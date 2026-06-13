@@ -48,6 +48,6 @@
 ../Core/Src/main.c:1531:6:HAL_UART_ErrorCallback	2
 ../Core/Src/main.c:1537:6:HAL_OSPI_ErrorCallback	2
 ../Core/Src/main.c:1544:6:mode_transition_handler	12
-../Core/Src/main.c:1643:6:mode_current_handler	32
-../Core/Src/main.c:1925:6:MPU_Config	1
-../Core/Src/main.c:1956:6:Error_Handler	1
+../Core/Src/main.c:1644:6:mode_current_handler	32
+../Core/Src/main.c:1926:6:MPU_Config	1
+../Core/Src/main.c:1957:6:Error_Handler	1

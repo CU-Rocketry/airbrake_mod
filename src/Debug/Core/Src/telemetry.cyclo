@@ -1,6 +1,6 @@
 ../Core/Src/telemetry.c:21:6:telemetry_init	1
 ../Core/Src/telemetry.c:30:6:telemetry_packet	1
-../Core/Src/telemetry.c:76:6:telemetry_send	2
-../Core/Src/telemetry.c:90:6:telemetry_log	1
-../Core/Src/telemetry.c:108:13:telemetry_handle_rx_packet	8
+../Core/Src/telemetry.c:77:6:telemetry_send	2
+../Core/Src/telemetry.c:91:6:telemetry_log	1
+../Core/Src/telemetry.c:109:13:telemetry_handle_rx_packet	8
 ../Core/Src/telemetry.c:161:6:telemetry_rx_poll	21

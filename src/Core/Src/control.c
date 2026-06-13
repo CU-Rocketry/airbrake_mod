@@ -43,9 +43,6 @@ void lockouts_init() {
 }
 
 void lockouts_check() {
-    // persistent state variable
-    static uint8_t vel_z_thresh_triggered = 0;
-
     const float ACCEL_B_X_THRESH = 0.0f; // [m/s^2] must be < to deploy
     const float ALT_AGL_THRESH = 1000.0f; // [m] AGL must be >= to deploy
     const float ELAPSED_THRESH = 4.0f; // [s] since launch detect, must be >=
@@ -129,7 +126,7 @@ float pi_controller(float predicted, uint8_t enable, float Kp, float Ki, float t
 }
 
 void control_update(float dt) {
+	lockouts_check();
     global_state.predicted = predict_apogee(global_state.alt_agl, global_state.vel_z, GRAVITY, ROCKET_CD, ROCKET_A_REF, ROCKET_MASS_EMPTY);
-    uint8_t brakes_enabled = airbrakes_lockout(global_state.accel_b[0], global_state.alt_agl, global_state.elapsed_t, global_state.vel_z);
-    global_state.output = pi_controller(predicted_apogee, brakes_enabled, Kp, Ki, TARGET_APOGEE, dt);
+    global_state.output = pi_controller(global_state.predicted, STATE_FLAG_GET(FLAG_CONTROL_ENABLED), Kp, Ki, TARGET_APOGEE, dt);
 }

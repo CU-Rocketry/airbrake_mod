@@ -1634,6 +1634,7 @@ void mode_transition_handler(enum Mode prev, enum Mode curr) {
 //			buzzer_play_sequence(&buzzer, seq_mode_7_13, 13);
 			telemetry_log(LOG_LVL_DEBUG, "Mode 7 LAUNCH_DETECT\r\n");
 			servo_enable(&servo, 1); // Enable servo power
+			lockouts_init(); // TODO maybe also when launch is detected
 			break;
 		default:
 			break;
