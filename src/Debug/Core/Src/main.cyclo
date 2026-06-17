@@ -18,7 +18,7 @@
 ../Core/Inc/btn.h:30:6:btn_update	1
 ../Core/Inc/btn.h:36:9:btn_get	1
 ../Core/Inc/btn.h:41:8:btn_get_edge	1
-../Core/Src/main.c:299:5:main	8
+../Core/Src/main.c:295:5:main	8
 ../Core/Src/main.c:453:6:SystemClock_Config	4
 ../Core/Src/main.c:511:6:PeriphCommonClock_Config	2
 ../Core/Src/main.c:541:13:MX_ADC1_Init	5
@@ -49,5 +49,5 @@
 ../Core/Src/main.c:1593:6:HAL_OSPI_ErrorCallback	2
 ../Core/Src/main.c:1600:6:mode_transition_handler	10
 ../Core/Src/main.c:1722:6:mode_current_handler	35
-../Core/Src/main.c:2004:6:MPU_Config	1
-../Core/Src/main.c:2035:6:Error_Handler	1
+../Core/Src/main.c:2003:6:MPU_Config	1
+../Core/Src/main.c:2034:6:Error_Handler	1

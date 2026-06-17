@@ -41,6 +41,7 @@ Core/Src/flash.o: ../Core/Src/flash.c ../Core/Inc/flash.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_ll_usb.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd_ex.h \
+ ../Drivers/W25Q_STM32_HAL_Driver/Inc/w25q.h ../Core/Inc/main.h \
  ../Core/Inc/state.h ../Core/Inc/packets.h ../Core/Inc/telemetry.h \
  ../Core/Inc/cobs.h
 ../Core/Inc/flash.h:
@@ -87,6 +88,8 @@ Core/Src/flash.o: ../Core/Src/flash.c ../Core/Inc/flash.h \
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd.h:
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_ll_usb.h:
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd_ex.h:
+../Drivers/W25Q_STM32_HAL_Driver/Inc/w25q.h:
+../Core/Inc/main.h:
 ../Core/Inc/state.h:
 ../Core/Inc/packets.h:
 ../Core/Inc/telemetry.h:

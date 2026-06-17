@@ -45,3 +45,5 @@
 "./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart.o"
 "./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart_ex.o"
 "./Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_ll_usb.o"
+"./Drivers/W25Q_STM32_HAL_Driver/Src/w25q_ospi.o"
+"./Drivers/W25Q_STM32_HAL_Driver/Src/w25q_qspi.o"

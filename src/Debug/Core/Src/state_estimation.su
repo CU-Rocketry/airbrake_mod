@@ -1,9 +1,9 @@
 ../Core/Inc/timing.h:16:21:get_dt	24	static
-../Core/Src/state_estimation.c:50:6:state_estimation	16	static
-../Core/Src/state_estimation.c:122:6:get_imu_b	16	static
-../Core/Src/state_estimation.c:132:6:get_mag_b	16	static
-../Core/Src/state_estimation.c:143:6:quat_conj	16	static
-../Core/Src/state_estimation.c:153:6:quat_rot	24	static
-../Core/Src/state_estimation.c:176:6:launch_detect	24	static
-../Core/Src/state_estimation.c:203:6:kalman_predict	48	static
-../Core/Src/state_estimation.c:240:6:kalman_update	56	static
+../Core/Src/state_estimation.c:49:6:state_estimation	16	static
+../Core/Src/state_estimation.c:121:6:get_imu_b	16	static
+../Core/Src/state_estimation.c:131:6:get_mag_b	16	static
+../Core/Src/state_estimation.c:142:6:quat_conj	16	static
+../Core/Src/state_estimation.c:152:6:quat_rot	24	static
+../Core/Src/state_estimation.c:175:6:launch_detect	24	static
+../Core/Src/state_estimation.c:202:6:kalman_predict	48	static
+../Core/Src/state_estimation.c:239:6:kalman_update	56	static
