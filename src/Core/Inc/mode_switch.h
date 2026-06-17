@@ -9,18 +9,21 @@
 #define INC_MODE_SWITCH_H_
 
 #include "main.h"
-#include <stdio.h>
+#include <stdint.h>
 
-uint8_t get_mode_switch(void) {
-	HAL_GPIO_WritePin(MODE_C_GPIO_Port, MODE_C_Pin, 1);
+typedef struct {
+	uint8_t current;
+	uint8_t raw_prev;
+	uint8_t stable_cnt;
+} mode_switch_t;
 
-	uint8_t mode = HAL_GPIO_ReadPin(MODE_1_GPIO_Port, MODE_1_Pin);
-	mode |= HAL_GPIO_ReadPin(MODE_2_GPIO_Port, MODE_2_Pin) << 1;
-	mode |= HAL_GPIO_ReadPin(MODE_4_GPIO_Port, MODE_4_Pin) << 2;
+void mode_switch_init(mode_switch_t *ms);
 
-	HAL_GPIO_WritePin(MODE_C_GPIO_Port, MODE_C_Pin, 0);
+// Updates mode switch driver internal state
+// to be called in 100Hz loop
+void mode_switch_update(mode_switch_t *ms);
 
-	return mode;
-}
+// Returns the current debounced mode
+uint8_t mode_switch_get(mode_switch_t *ms);
 
 #endif /* INC_MODE_SWITCH_H_ */
