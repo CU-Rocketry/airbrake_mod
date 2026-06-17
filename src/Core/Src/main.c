@@ -218,10 +218,6 @@ telemetry_t telemetry = {
 
 flash_t flash = {
     .hospi = &hospi1,
-    .address = 0,
-    .full = 0,
-    .prescaler_max = 10, // default to 10 hz for waiting on pad
-    .prescaler_cnt = 0
 };
 
 btn_t btns[4]; // BTN0 to BTN4 drivers
@@ -376,6 +372,8 @@ int main(void)
 
     sensors_init();
 
+    flash_init(&flash);
+
   	HAL_TIM_Base_Start_IT(&htim7); // start 100 Hz
     HAL_TIM_Base_Start_IT(&htim6); // start 500 Hz
     HAL_TIM_Base_Start(&htim2); // start microsecond counter
@@ -388,6 +386,8 @@ int main(void)
   while (1)
   {
 	  telemetry_rx_poll(&global_state);
+
+	  flash_process();
 
 	  if (tick_100Hz) {
 		  tick_100Hz = 0;
@@ -405,10 +405,6 @@ int main(void)
 		  buzzer_update(&buzzer); // buzzer
 
 		  global_state.t = HAL_GetTick(); // t in ms seems reasonable
-
-		  if (mode == LAUNCH_DETECT) {
-			  flash_packet_write(&flash, &global_state); // writes if needed only
-		  }
 
 		  mode_switch_update(&mode_switch); // driver state updates
 
@@ -435,7 +431,7 @@ int main(void)
 		  global_state.elapsed_t = global_state.t - global_state.launch_t;
 
 		  if (mode != TEST_SIMULINK) {
-			  state_estimation(); // TODO get real dt from timer
+			  state_estimation();
 		  }
 	  }
 
@@ -1817,48 +1813,60 @@ void mode_current_handler(enum Mode curr) {
 			break;
 
 		case TEST_FLASH: // 5
+
 			if (HAL_GPIO_ReadPin(BTN_0_GPIO_Port, BTN_0_Pin)) // if BTN0 pressed print CSV over UART
 			{
 				uint32_t read_address = 0;
 				flash_packet_t packet_r;
 
 				// Print CSV Header
-				printf("t,flags,batt_v,batt_i,accel_b[0],accel_b[1],accel_b[2],omega_b[0],omega_b[1],omega_b[2],mag_b[0],mag_b[1],mag_b[2],quat[0],quat[1],quat[2],quat[3],accel_e[0],accel_e[1],accel_e[2],p_ground,alt_agl,vel_z,predicted,output,servo_cmd,servo_fdbk\r\n");
+				printf("t,elapsed_t,flags,batt_v,batt_i,accel_ms2[0],accel_ms2[1],accel_ms2[2],omega_rads[0],omega_rads[1],omega_rads[2],mag_mgauss[0],mag_mgauss[1],mag_mgauss[2],pres_pa,accel_b[0],accel_b[1],accel_b[2],omega_b[0],omega_b[1],omega_b[2],mag_b[0],mag_b[1],mag_b[2],quat[0],quat[1],quat[2],quat[3],accel_e[0],accel_e[1],accel_e[2],p_ground,alt_agl,vel_z,predicted,output,p_contrib,i_contrib,servo_cmd,servo_fdbk\r\n");
 
-				// Read until we hit the current write address, or an unwritten sector (0xFFFFFFFF)
-				while (read_address < (16 * 1024 * 1024)) {
-
-					// Apply page-skipping logic to find where the packet actually is
-					if ((read_address % 256) + sizeof(flash_packet_t) > 256) {
-						read_address = (read_address & ~0xFF) + 256;
-					}
-
-					flash_read_data(&flash, read_address, (uint8_t*)&packet_r, sizeof(flash_packet_t));
+				// read until end or when timestamp in packet is unwritten
+				while (read_address < W25Q128JV_SIZE) {
+					flash_read_blocking(read_address, (uint8_t*)&packet_r, sizeof(flash_packet_t));
 
 					if (packet_r.t == 0xFFFFFFFF) { // timestamp won't be 0xFFFFFFFF until 50 days so this indicates end of flash writing
-						break;
+						printf("Timestamp 0xFFFFFFFF\r\n");
+						// break;
 					}
 
 					// Print as CSV row
-					printf("%lu,%lx,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f\r\n",
+//							t   el  fla batv bati ax    ay   az   wx   wy   wz  magx magy magz pres abx  aby   abz  wbx  wby wbz  mbx  mby  mbz  q0   q1   q2   q3   aex  aey  aez  pg    alt velz pred out  p    i    cmd  fdbk
+					printf("%lu,%lu,%lx,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f\r\n",
 							packet_r.t,
+							packet_r.elapsed_t,
+
 							packet_r.flags,
+
 							packet_r.batt_v,
 							packet_r.batt_i,
+
+							packet_r.accel_ms2[0], packet_r.accel_ms2[1], packet_r.accel_ms2[2],
+							packet_r.omega_rads[0], packet_r.omega_rads[1], packet_r.omega_rads[2],
+							packet_r.mag_mgauss[0], packet_r.mag_mgauss[1], packet_r.mag_mgauss[2],
+							packet_r.pres_pa,
+
 							packet_r.accel_b[0], packet_r.accel_b[1], packet_r.accel_b[2],
 							packet_r.omega_b[0], packet_r.omega_b[1], packet_r.omega_b[2],
 							packet_r.mag_b[0], packet_r.mag_b[1], packet_r.mag_b[2],
+
 							packet_r.quat[0], packet_r.quat[1], packet_r.quat[2], packet_r.quat[3],
 							packet_r.accel_e[0], packet_r.accel_e[1], packet_r.accel_e[2],
+
 							packet_r.p_ground,
 							packet_r.alt_agl,
 							packet_r.vel_z,
+
 							packet_r.predicted,
 							packet_r.output,
+							packet_r.p_contrib,
+							packet_r.i_contrib,
+
 							packet_r.servo_cmd,
 							packet_r.servo_fdbk);
 
-					read_address += sizeof(flash_packet_t);
+					read_address += W25Q_PAGE_SIZE;
 
 					HAL_Delay(1);
 				}
@@ -1881,16 +1889,16 @@ void mode_current_handler(enum Mode curr) {
 
 				// printf("Erase sector 0\r\n");
 				telemetry_log(LOG_LVL_DEBUG, "Erase sector 0\r\n");
-				flash_erase_sector(&flash, test_address);
+				flash_erase_sector(test_address);
 
 				// printf("Write %u bytes\r\n", sizeof(flash_packet_t));
 				telemetry_log(LOG_LVL_DEBUG, "Write %u bytes\r\n", sizeof(flash_packet_t));
-				flash_write_page(&flash, test_address, (uint8_t*)&dummy_packet_w, sizeof(flash_packet_t));
+				flash_write_blocking(test_address, (uint8_t*)&dummy_packet_w, sizeof(flash_packet_t));
 
 				printf("Read back\r\n");
 				telemetry_log(LOG_LVL_DEBUG, "Read back\r\n");
 				memset(&dummy_packet_r, 0, sizeof(flash_packet_t));
-				flash_read_data(&flash, test_address, (uint8_t*)&dummy_packet_r, sizeof(flash_packet_t));
+				flash_read_blocking(test_address, (uint8_t*)&dummy_packet_r, sizeof(flash_packet_t));
 
 				if (dummy_packet_r.t == dummy_packet_w.t && dummy_packet_r.servo_fdbk == dummy_packet_w.servo_fdbk) {
 //					printf("RW test passed with t=%lu and servo_fdbk=%f\r\n", dummy_packet_r.t, dummy_packet_r.servo_fdbk);
@@ -1944,7 +1952,6 @@ void mode_current_handler(enum Mode curr) {
 						rgb_led_set(&led1, 0x0000FF);
 
 						flash_erase_chip(&flash);
-						flash_counters_reset(&flash);
 
 //						printf("Erase complete\r\n");
 						telemetry_log(LOG_LVL_INFO, "Flash erased\r\n");
@@ -1990,6 +1997,9 @@ void mode_current_handler(enum Mode curr) {
 			if (STATE_FLAG_GET(FLAG_LAUNCHED)) {
 				control_update(); // 100Hz dt
 				servo_set_deployment(&servo, global_state.output);
+			}
+			if (flash_should_add()) {
+				flash_pkt_buf_add();
 			}
 			break;
 		default:

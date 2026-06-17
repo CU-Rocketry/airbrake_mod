@@ -12,352 +12,219 @@
 #include <stdio.h>
 #include "telemetry.h"
 
+static flash_t *flash;
 
-// Flash hardware driver
+// Resets the flash and enable QSPI. Must be run after MX_OSPI_Init
+void flash_init(flash_t *handle) {
+	flash = handle;
 
-// Reads JEDEC ID with 1-1-1 standard SPI mode
-uint32_t flash_read_jedec_id(flash_t *flash) {
-    OSPI_RegularCmdTypeDef sCommand = {0};
-    uint8_t id_buf[3] = {0};
+	/* After MX_OSPI_Init(): */
 
-    // Configure the command for standard 1-bit SPI (1-1-1)
-    sCommand.OperationType      = HAL_OSPI_OPTYPE_COMMON_CFG;
-    sCommand.FlashId            = HAL_OSPI_FLASH_ID_1;
-    sCommand.Instruction        = FLASH_CMD_READ_JEDEC_ID;
-    sCommand.InstructionMode    = HAL_OSPI_INSTRUCTION_1_LINE;
-    sCommand.InstructionSize    = HAL_OSPI_INSTRUCTION_8_BITS;
-    sCommand.AddressMode        = HAL_OSPI_ADDRESS_NONE; // Read ID doesn't need an address
-    sCommand.AlternateBytesMode = HAL_OSPI_ALTERNATE_BYTES_NONE;
-    sCommand.DataMode           = HAL_OSPI_DATA_1_LINE;  // Receive data on 1 line
-    sCommand.NbData             = 3;                     // We expect 3 bytes back
-    sCommand.DummyCycles        = 0;
-    sCommand.DQSMode            = HAL_OSPI_DQS_DISABLE;
-    sCommand.SIOOMode           = HAL_OSPI_SIOO_INST_EVERY_CMD;
+	// 1. Reset the device to a known state (recover from soft resets)
+	W25Q_EnableReset(flash->hospi);
+	W25Q_ResetDevice(flash->hospi);
 
-    // Send the instruction
-    if (HAL_OSPI_Command(flash->hospi, &sCommand, HAL_OSPI_TIMEOUT_DEFAULT_VALUE) != HAL_OK) {
-        return 0; // Command failed
-    }
-
-    // Receive the data
-    if (HAL_OSPI_Receive(flash->hospi, id_buf, HAL_OSPI_TIMEOUT_DEFAULT_VALUE) != HAL_OK) {
-        return 0; // Receive failed
-    }
-
-    // Combine the 3 bytes into a 32-bit integer (Manufacturer ID << 16 | Memory Type << 8 | Capacity)
-    return (id_buf[0] << 16) | (id_buf[1] << 8) | id_buf[2];
+	// 2. Enable Quad bit (QE) in Status Register 2 for Quad I/O operations
+	// Using Volatile Write Enable to avoid wearing out the flash on every boot
+	W25Q_VolatileSrWriteEnable(flash->hospi);
+	W25Q_WriteStatusRegister(flash->hospi, W25Q_SR2, W25Q_SR2_QE);
 }
 
-uint8_t flash_read_status(flash_t *flash) {
-    OSPI_RegularCmdTypeDef sCommand = {0};
-    uint8_t status;
+//void flash_write_page(flash_t *flash, uint8_t *data)
+//{
+//  W25Q_WriteEnable(flash->hospi);
+//  // Start DMA transfer, the rest is handled in callbacks
+//  W25Q_PageProgramQuadInput_DMA(flash->hospi, flash->address, W25Q_PAGE_SIZE, flash->page_buf);
+//  flash->address += W25Q_PAGE_SIZE; // increment address for next write
+//  flash->page_buf_idx = 0; // reset buffer index to 0 for next page
+//}
 
-    sCommand.OperationType      = HAL_OSPI_OPTYPE_COMMON_CFG;
-    sCommand.FlashId            = HAL_OSPI_FLASH_ID_1;
-    sCommand.Instruction        = FLASH_CMD_READ_STATUS_1;
-    sCommand.InstructionMode    = HAL_OSPI_INSTRUCTION_1_LINE;
-    sCommand.InstructionSize    = HAL_OSPI_INSTRUCTION_8_BITS;
-    sCommand.AddressMode        = HAL_OSPI_ADDRESS_NONE;
-    sCommand.AlternateBytesMode = HAL_OSPI_ALTERNATE_BYTES_NONE;
-    sCommand.DataMode           = HAL_OSPI_DATA_1_LINE;
-    sCommand.NbData             = 1;
-    sCommand.DummyCycles        = 0;
-    sCommand.DQSMode            = HAL_OSPI_DQS_DISABLE;
-    sCommand.SIOOMode           = HAL_OSPI_SIOO_INST_EVERY_CMD;
 
-    HAL_OSPI_Command(flash->hospi, &sCommand, HAL_OSPI_TIMEOUT_DEFAULT_VALUE);
-    HAL_OSPI_Receive(flash->hospi, &status, HAL_OSPI_TIMEOUT_DEFAULT_VALUE);
 
-    return status;
-}
-
-void flash_wait_for_ready(flash_t *flash) {
-    while ((flash_read_status(flash) & FLASH_SR1_BUSY) == FLASH_SR1_BUSY) { // poll busy bit until ready
-        // TODO do we need a delay
+// 1. Called when DMA transfer (Write) is complete
+void HAL_OSPI_TxCpltCallback(OSPI_HandleTypeDef *hospi)
+{
+    if (hospi == flash->hospi) { // if caused by this peripheral
+        flash->state = FLASH_STATE_BUSY_WRITE; // DMA SPI transfer done but flash controller still writing internally
+        W25Q_BusyFlagPolling_IT(hospi); // poll with interrupts the status register until ready
     }
 }
 
-// 1 if busy, 0 if ready
-uint8_t flash_is_ready(flash_t *flash) {
-    return ((flash_read_status(flash) & FLASH_SR1_BUSY) == FLASH_SR1_BUSY);
+// 2. Called when Flash BUSY flag clears (Write finished)
+void HAL_OSPI_StatusMatchCallback(OSPI_HandleTypeDef *hospi)
+{
+    if (hospi == flash->hospi) { // if caused by this peripheral
+        flash->state = FLASH_STATE_READY; // write operation done
+    }
 }
 
-void flash_write_enable(flash_t *flash) {
-    OSPI_RegularCmdTypeDef sCommand = {0};
+// 3. Called when Read is complete
+//void HAL_OSPI_RxCpltCallback(OSPI_HandleTypeDef *hospi)
+//{
+//  // If using H7/F7: SCB_InvalidateDCache_by_Addr(rxData, W25Q_PAGE_SIZE);
+//  // Set a flag and process in the main loop
+//  isDataReady = 1;
+//}
 
-    sCommand.OperationType      = HAL_OSPI_OPTYPE_COMMON_CFG;
-    sCommand.FlashId            = HAL_OSPI_FLASH_ID_1;
-    sCommand.Instruction        = FLASH_CMD_WRITE_ENABLE;
-    sCommand.InstructionMode    = HAL_OSPI_INSTRUCTION_1_LINE;
-    sCommand.InstructionSize    = HAL_OSPI_INSTRUCTION_8_BITS;
-    sCommand.AddressMode        = HAL_OSPI_ADDRESS_NONE;
-    sCommand.AlternateBytesMode = HAL_OSPI_ALTERNATE_BYTES_NONE;
-    sCommand.DataMode           = HAL_OSPI_DATA_NONE;
-    sCommand.DummyCycles        = 0;
-    sCommand.DQSMode            = HAL_OSPI_DQS_DISABLE;
-    sCommand.SIOOMode           = HAL_OSPI_SIOO_INST_EVERY_CMD;
-
-    HAL_OSPI_Command(flash->hospi, &sCommand, HAL_OSPI_TIMEOUT_DEFAULT_VALUE);
-}
-
-void flash_erase_sector(flash_t *flash, uint32_t address) {
-    OSPI_RegularCmdTypeDef sCommand = {0};
-
-    flash_write_enable(flash);
-
-    sCommand.OperationType      = HAL_OSPI_OPTYPE_COMMON_CFG;
-    sCommand.FlashId            = HAL_OSPI_FLASH_ID_1;
-    sCommand.Instruction        = FLASH_CMD_SECTOR_ERASE_4K;
-    sCommand.InstructionMode    = HAL_OSPI_INSTRUCTION_1_LINE;
-    sCommand.InstructionSize    = HAL_OSPI_INSTRUCTION_8_BITS;
-    sCommand.AddressMode        = HAL_OSPI_ADDRESS_1_LINE;
-    sCommand.AddressSize        = HAL_OSPI_ADDRESS_24_BITS;
-    sCommand.Address            = address;
-    sCommand.AlternateBytesMode = HAL_OSPI_ALTERNATE_BYTES_NONE;
-    sCommand.DataMode           = HAL_OSPI_DATA_NONE;
-    sCommand.DummyCycles        = 0;
-    sCommand.DQSMode            = HAL_OSPI_DQS_DISABLE;
-    sCommand.SIOOMode           = HAL_OSPI_SIOO_INST_EVERY_CMD;
-
-    HAL_OSPI_Command(flash->hospi, &sCommand, HAL_OSPI_TIMEOUT_DEFAULT_VALUE);
-
-    // Wait for the erase to complete before returning
-    flash_wait_for_ready(flash);
-}
-
-void flash_erase_chip(flash_t *flash) {
-    OSPI_RegularCmdTypeDef sCommand = {0};
-
-    flash_write_enable(flash);
-
-    sCommand.OperationType      = HAL_OSPI_OPTYPE_COMMON_CFG;
-    sCommand.FlashId            = HAL_OSPI_FLASH_ID_1;
-    sCommand.Instruction        = FLASH_CMD_CHIP_ERASE;
-    sCommand.InstructionMode    = HAL_OSPI_INSTRUCTION_1_LINE;
-    sCommand.InstructionSize    = HAL_OSPI_INSTRUCTION_8_BITS;
-    sCommand.AddressMode        = HAL_OSPI_ADDRESS_NONE;
-    sCommand.AlternateBytesMode = HAL_OSPI_ALTERNATE_BYTES_NONE;
-    sCommand.DataMode           = HAL_OSPI_DATA_NONE;
-    sCommand.DummyCycles        = 0;
-    sCommand.DQSMode            = HAL_OSPI_DQS_DISABLE;
-    sCommand.SIOOMode           = HAL_OSPI_SIOO_INST_EVERY_CMD;
-
-    HAL_OSPI_Command(flash->hospi, &sCommand, HAL_OSPI_TIMEOUT_DEFAULT_VALUE);
-
-    // WARNING: Chip erase can take up to 40 seconds!
-    flash_wait_for_ready(flash);
-}
-
-void flash_write_page(flash_t *flash, uint32_t address, uint8_t *data, uint32_t length) {
-    OSPI_RegularCmdTypeDef sCommand = {0};
-
-    // Ensure we don't try to write across a page boundary (256 bytes)
-    if (length > 256) length = 256;
-
-    flash_write_enable(flash);
-
-    sCommand.OperationType      = HAL_OSPI_OPTYPE_COMMON_CFG;
-    sCommand.FlashId            = HAL_OSPI_FLASH_ID_1;
-    sCommand.Instruction        = FLASH_CMD_PAGE_PROGRAM;
-    sCommand.InstructionMode    = HAL_OSPI_INSTRUCTION_1_LINE;
-    sCommand.InstructionSize    = HAL_OSPI_INSTRUCTION_8_BITS;
-    sCommand.AddressMode        = HAL_OSPI_ADDRESS_1_LINE;
-    sCommand.AddressSize        = HAL_OSPI_ADDRESS_24_BITS;
-    sCommand.Address            = address;
-    sCommand.AlternateBytesMode = HAL_OSPI_ALTERNATE_BYTES_NONE;
-    sCommand.DataMode           = HAL_OSPI_DATA_1_LINE;
-    sCommand.NbData             = length;
-    sCommand.DummyCycles        = 0;
-    sCommand.DQSMode            = HAL_OSPI_DQS_DISABLE;
-    sCommand.SIOOMode           = HAL_OSPI_SIOO_INST_EVERY_CMD;
-
-    HAL_OSPI_Command(flash->hospi, &sCommand, HAL_OSPI_TIMEOUT_DEFAULT_VALUE);
-    HAL_OSPI_Transmit(flash->hospi, data, HAL_OSPI_TIMEOUT_DEFAULT_VALUE);
-
-    // Wait for the write to complete
-    flash_wait_for_ready(flash);
-}
-
-void flash_write_page_dma(flash_t *flash, uint32_t address, uint8_t *data, uint32_t length) {
-    OSPI_RegularCmdTypeDef sCommand = {0};
-
-    if (length > 256) length = 256;
-
-    flash_wait_for_ready(flash); // ensure write is already done
-
-    flash_write_enable(flash);
-
-    sCommand.OperationType      = HAL_OSPI_OPTYPE_COMMON_CFG;
-    sCommand.FlashId            = HAL_OSPI_FLASH_ID_1;
-    sCommand.Instruction        = FLASH_CMD_PAGE_PROGRAM;
-    sCommand.InstructionMode    = HAL_OSPI_INSTRUCTION_1_LINE;
-    sCommand.InstructionSize    = HAL_OSPI_INSTRUCTION_8_BITS;
-    sCommand.AddressMode        = HAL_OSPI_ADDRESS_1_LINE;
-    sCommand.AddressSize        = HAL_OSPI_ADDRESS_24_BITS;
-    sCommand.Address            = address;
-    sCommand.AlternateBytesMode = HAL_OSPI_ALTERNATE_BYTES_NONE;
-    sCommand.DataMode           = HAL_OSPI_DATA_1_LINE;
-    sCommand.NbData             = length;
-    sCommand.DummyCycles        = 0;
-    sCommand.DQSMode            = HAL_OSPI_DQS_DISABLE;
-    sCommand.SIOOMode           = HAL_OSPI_SIOO_INST_EVERY_CMD;
-
-    HAL_OSPI_Command(flash->hospi, &sCommand, HAL_OSPI_TIMEOUT_DEFAULT_VALUE);
-
-    HAL_OSPI_Transmit_DMA(flash->hospi, data); // start DMA transmission (non blocking)
-}
-
-void flash_read_data(flash_t *flash, uint32_t address, uint8_t *data, uint32_t length) {
-    OSPI_RegularCmdTypeDef sCommand = {0};
-
-    sCommand.OperationType      = HAL_OSPI_OPTYPE_COMMON_CFG;
-    sCommand.FlashId            = HAL_OSPI_FLASH_ID_1;
-    sCommand.Instruction        = FLASH_CMD_READ_DATA;
-    sCommand.InstructionMode    = HAL_OSPI_INSTRUCTION_1_LINE;
-    sCommand.InstructionSize    = HAL_OSPI_INSTRUCTION_8_BITS;
-    sCommand.AddressMode        = HAL_OSPI_ADDRESS_1_LINE;
-    sCommand.AddressSize        = HAL_OSPI_ADDRESS_24_BITS;
-    sCommand.Address            = address;
-    sCommand.AlternateBytesMode = HAL_OSPI_ALTERNATE_BYTES_NONE;
-    sCommand.DataMode           = HAL_OSPI_DATA_1_LINE;
-    sCommand.NbData             = length;
-    sCommand.DummyCycles        = 0;
-    sCommand.DQSMode            = HAL_OSPI_DQS_DISABLE;
-    sCommand.SIOOMode           = HAL_OSPI_SIOO_INST_EVERY_CMD;
-
-    HAL_OSPI_Command(flash->hospi, &sCommand, HAL_OSPI_TIMEOUT_DEFAULT_VALUE);
-    HAL_OSPI_Receive(flash->hospi, data, HAL_OSPI_TIMEOUT_DEFAULT_VALUE);
-}
-
-void flash_packet_build(const state_t *current_state, flash_packet_t *packet) {
-	packet->t = current_state->t;
-	packet->flags = current_state->flags;
-
-	packet->batt_v = current_state->batt_v;
-	packet->batt_i = current_state->batt_i;
-
-	memcpy(packet->accel_b, current_state->accel_b, sizeof(packet->accel_b));
-	memcpy(packet->omega_b, current_state->omega_b, sizeof(packet->omega_b));
-	memcpy(packet->mag_b, current_state->mag_b, sizeof(packet->mag_b));
-	memcpy(packet->quat, current_state->quat, sizeof(packet->quat));
-	memcpy(packet->accel_e, current_state->accel_e, sizeof(packet->accel_e));
-
-	packet->p_ground = current_state->p_ground;
-	packet->alt_agl = current_state->alt_agl;
-	packet->vel_z = current_state->vel_z;
-	packet->predicted = current_state->predicted;
-	packet->output = current_state->output;
-	packet->servo_cmd = current_state->servo_cmd;
-	packet->servo_fdbk = current_state->servo_fdbk;
-}
-
-uint8_t flash_check_erased(flash_t *flash) {
-    uint32_t total_size = 16 * 1024 * 1024; // 128 M-bit = 16 MB
-    uint8_t buffer[4096]; // Read each 4KB sector
+uint8_t flash_check_erased() {
+    uint8_t buffer[W25Q_PAGE_SIZE]; // Reduced to 256 bytes to prevent stack overflow
     uint32_t address = 0;
 
-    while (address < total_size) {
-        flash_read_data(flash, address, buffer, sizeof(buffer)); // read 4KB
+    while (address < W25Q128JV_SIZE) {
+        flash_read_blocking(address, buffer, sizeof(buffer)); // read one page
 
         for (uint16_t i = 0; i < sizeof(buffer); i++) { // check all are 0xFF
             if (buffer[i] != 0xFF) {
                 return 0; // immediately return false if non erased byte found
             }
         }
-        address += sizeof(buffer); // move to next block
+        address += sizeof(buffer); // move to next page
     }
 
     return 1; // if we make it, entire chip is erased
 }
 
-void flash_packet_write(flash_t *flash, const state_t *state) {
-    if (flash->full) return;
+uint8_t flash_should_add() {
+	if (flash->address >= W25Q128JV_SIZE) // is this right?
+		return 0;
 
-    // Determine appropriate logging rate
-    flash->prescaler_max = 10; // default to 10 Hz on the pad
+    // Logging rate based on state
+    flash->prescaler_max = 100; // default to 1 Hz on the pad
     if (STATE_FLAG_GET(FLAG_LAUNCHED))
 		flash->prescaler_max = 1; // 100 Hz in flight
 	if (STATE_FLAG_GET(FLAG_APOGEE))
-		flash->prescaler_max = 10; // 10 Hz after apogee
-
-    uint8_t should_write = 0;
+		flash->prescaler_max = 100; // 1 Hz after apogee
 
     flash->prescaler_cnt++;
     if (flash->prescaler_cnt >= flash->prescaler_max) {
-    	should_write = 1;
-    	flash->prescaler_cnt = 0;
+        flash->prescaler_cnt = 0;
+        return 1;
     }
 
-    if (should_write) {
-        if ((flash->address % 256) + sizeof(flash_packet_t) > 256) { // if next packet will cross page boundary
-        	flash->address = (flash->address & ~0xFF) + 256; // zero out lower 8 bits of address and move ahead one page
-        									                 // effectively skipping the rest of that page
-        }
+    return 0;
+}
 
-		if (flash->address + sizeof(flash_packet_t) <= (16 * 1024 * 1024)) { // if address not at end of memory yet
-			flash_packet_build(state, &(flash->dma_packet));
-			SCB_CleanDCache_by_Addr((uint32_t*)&(flash->dma_packet), sizeof(flash_packet_t));
-			flash_wait_for_ready(flash); // wait for prev write to complete. should already be done but best to be safe
-			flash_write_page_dma(flash, flash->address, (uint8_t*)&(flash->dma_packet), sizeof(flash_packet_t));
+void flash_pkt_buf_add() {
+    if (flash->address >= W25Q128JV_SIZE) return;
 
-			flash->address += sizeof(flash_packet_t);
-
-		} else { // full
-			flash->full = 1;
-			printf("Flash memory full! Logging stopped.\r\n");
-		}
+    uint8_t next_idx = (flash->pkt_buf_write_idx + 1) % FLASH_PKT_BUF_SIZE;
+    if (next_idx != flash->pkt_buf_read_idx) { // buffer is not full
+        flash_packet_build(&(flash->pkt_buf[flash->pkt_buf_write_idx]));
+        flash->pkt_buf_write_idx = next_idx;
+    } else {
+        telemetry_log(LOG_LVL_ERROR, "Flash write buffer overflow");
     }
 }
 
-void flash_counters_reset(flash_t *flash) {
+void flash_packet_build(flash_packet_t *dest) {
+	dest->t = global_state.t;
+	dest->elapsed_t = global_state.elapsed_t;
+
+	dest->flags = global_state.flags;
+
+	dest->batt_v = global_state.batt_v;
+	dest->batt_i = global_state.batt_i;
+
+	memcpy(dest->accel_ms2, global_state.accel_ms2, sizeof(dest->accel_ms2));
+	memcpy(dest->omega_rads, global_state.omega_rads, sizeof(dest->omega_rads));
+	memcpy(dest->mag_mgauss, global_state.mag_mgauss, sizeof(dest->mag_mgauss));
+	dest->pres_pa = global_state.pres_pa;
+
+	memcpy(dest->accel_b, global_state.accel_b, sizeof(dest->accel_b));
+	memcpy(dest->omega_b, global_state.omega_b, sizeof(dest->omega_b));
+	memcpy(dest->mag_b, global_state.mag_b, sizeof(dest->mag_b));
+
+	memcpy(dest->quat, global_state.quat, sizeof(dest->quat));
+	memcpy(dest->accel_e, global_state.accel_e, sizeof(dest->accel_e));
+
+	dest->p_ground = global_state.p_ground;
+	dest->alt_agl = global_state.alt_agl;
+	dest->vel_z = global_state.vel_z;
+
+	dest->predicted = global_state.predicted;
+	dest->output = global_state.output;
+	dest->p_contrib = global_state.p_contrib;
+	dest->i_contrib = global_state.i_contrib;
+
+	dest->servo_cmd = global_state.servo_cmd;
+	dest->servo_fdbk = global_state.servo_fdbk;
+}
+
+// Processes the queue and initiates DMA transfers
+// Call this repeatedly in the main loop
+void flash_process() {
+    // return if flash not ready, or there is no new data to write, or the flash is full already
+	if (flash->state != FLASH_STATE_READY || flash->pkt_buf_read_idx == flash->pkt_buf_write_idx || flash->full) {
+		return;
+	}
+
+	// check for flash full
+    if (flash->address >= W25Q128JV_SIZE) {
+		flash->full = 1;
+		telemetry_log(LOG_LVL_WARNING, "Flash memory full\r\n");
+		return;
+    }
+
+    flash_packet_t *packet = &(flash->pkt_buf[flash->pkt_buf_read_idx]); // get pointer to packet to write
+	flash->pkt_buf_read_idx = (flash->pkt_buf_read_idx + 1) % FLASH_PKT_BUF_SIZE; // pop packet by incrementing read pointer past it
+
+	memset(flash->dma_page_buf, 0, W25Q_PAGE_SIZE); // zero the buffer
+	memcpy(flash->dma_page_buf, packet, sizeof(flash_packet_t)); // write the packet into the beginning of the buffer
+
+    SCB_CleanDCache_by_Addr((uint32_t*)flash->dma_page_buf, W25Q_PAGE_SIZE); // clean D-cache before DMA reads it
+
+    flash->state = FLASH_STATE_BUSY_DMA; // advance state machine
+
+    W25Q_WriteEnable(flash->hospi);
+    // Start DMA transfer, the rest is handled in callbacks
+    W25Q_PageProgramQuadInput_DMA(flash->hospi, flash->address, W25Q_PAGE_SIZE, flash->dma_page_buf);
+
+    flash->address += W25Q_PAGE_SIZE; // next page
+}
+
+// Read data
+void flash_read_blocking(uint32_t addr, uint8_t *out, uint32_t size) {
+    while (W25Q_GetState(flash->hospi) != W25Q_STATE_READY); // Wait for any background writes
+
+    W25Q_ReadData_DMA(flash->hospi, addr, size, out);
+
+    // Wait for the DMA read to finish
+    while (W25Q_GetState(flash->hospi) != W25Q_STATE_READY); // wait for DMA reading to be done
+
+    SCB_InvalidateDCache_by_Addr((uint32_t*)out, size); // invalidate cache so CPU reads from memory not cache
+}
+
+// Write data
+void flash_write_blocking(uint32_t addr, uint8_t *data, uint16_t size) {
+    while (W25Q_GetState(flash->hospi) != W25Q_STATE_READY);
+
+    memset(flash->dma_page_buf, 0xFF, W25Q_PAGE_SIZE);
+    memcpy(flash->dma_page_buf, data, size);
+    SCB_CleanDCache_by_Addr((uint32_t*)flash->dma_page_buf, W25Q_PAGE_SIZE);
+
+    W25Q_WriteEnable(flash->hospi);
+    W25Q_PageProgramQuadInput_DMA(flash->hospi, addr, size, flash->dma_page_buf);
+
+    while (W25Q_GetState(flash->hospi) != W25Q_STATE_READY);
+}
+
+// Erase 4kb sector starting at addr
+void flash_erase_sector(uint32_t addr) {
+    while (W25Q_GetState(flash->hospi) != W25Q_STATE_READY);
+    W25Q_WriteEnable(flash->hospi);
+    W25Q_Erase4KB(flash->hospi, addr);
+    while (W25Q_GetState(flash->hospi) != W25Q_STATE_READY);
+}
+
+// Erases entire flash chip, takes a while!!
+void flash_erase_chip() {
+    while (W25Q_GetState(flash->hospi) != W25Q_STATE_READY);
+    W25Q_WriteEnable(flash->hospi);
+    W25Q_ChipErase(flash->hospi);
+    while (W25Q_GetState(flash->hospi) != W25Q_STATE_READY);
+
     flash->address = 0;
     flash->full = 0;
-    flash->prescaler_cnt = 0;
-    flash->prescaler_max = 10; // default to 10 Hz
-}
-
-void flash_scan_memory_map(flash_t *flash) {
-    uint32_t addr = 0;
-    uint8_t buf[256];
-    uint8_t current_state = 0; // 0 = start, 1 = data, 2 = empty (0xFF)
-    uint32_t block_start = 0;
-
-    telemetry_log(LOG_LVL_INFO, "Flash map");
-
-    while (addr < (16 * 1024 * 1024)) {
-        flash_read_data(flash, addr, buf, 256);
-
-        // Check if the entire 256-byte page is empty (0xFF)
-        uint8_t is_empty = 1;
-        for (int i = 0; i < 256; i++) {
-            if (buf[i] != 0xFF) {
-                is_empty = 0;
-                break;
-            }
-        }
-
-        uint8_t new_state = is_empty ? 2 : 1;
-
-        if (current_state == 0) {
-            current_state = new_state;
-            block_start = addr;
-        } else if (current_state != new_state) {
-            if (current_state == 1) {
-                telemetry_log(LOG_LVL_INFO, "Data block: 0x%06lX to 0x%06lX (%lu bytes)\r\n", block_start, addr - 1, addr - block_start);
-            } else {
-                telemetry_log(LOG_LVL_INFO, "Empty block: 0x%06lX to 0x%06lX (%lu bytes)\r\n", block_start, addr - 1, addr - block_start);
-            }
-            current_state = new_state;
-            block_start = addr;
-        }
-        addr += 256;
-    }
-
-    // Print the final block reaching the end of the chip
-    if (current_state == 1) {
-        telemetry_log(LOG_LVL_INFO, "Data block: 0x%06lX to 0x%06lX (%lu bytes)\r\n", block_start, addr - 1);
-    } else {
-        telemetry_log(LOG_LVL_INFO, "Empty block: 0x%06lX to 0x%06lX\r\n", block_start, addr - 1);
-    }
-    printf("End of flash\r\n");
+    flash->pkt_buf_read_idx = 0;
+    flash->pkt_buf_write_idx = 0;
 }

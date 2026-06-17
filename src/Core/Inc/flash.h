@@ -11,45 +11,48 @@
 #include "state.h"
 #include "packets.h"
 #include "stm32h7xx_hal.h"
-
-#define FLASH_CMD_WRITE_ENABLE       0x06
-#define FLASH_CMD_READ_STATUS_1      0x05
-#define FLASH_CMD_READ_JEDEC_ID      0x9F
-#define FLASH_CMD_READ_DATA          0x03
-#define FLASH_CMD_PAGE_PROGRAM       0x02
-#define FLASH_CMD_SECTOR_ERASE_4K    0x20
-#define FLASH_CMD_CHIP_ERASE         0xC7
-
-#define FLASH_SR1_BUSY               0x01 // Write In Progress bit
+#include "w25q.h"
 
 #define W25Q128JV_JEDEC_ID 0xEF4018 // 0xEF for Winbond, 0x40 memory type, 0x18 capacity
+#define W25Q128JV_SIZE (16*1024*1024)
+#define FLASH_PKT_BUF_SIZE 16
+
+// state machine as recommended by https://github.com/mpekurin/W25Q_STM32_HAL_Driver/tree/main
+typedef enum {
+    FLASH_STATE_READY, // ready
+    FLASH_STATE_BUSY_DMA, // SPI transfer to flash controller
+    FLASH_STATE_BUSY_WRITE // flash write data to sectors
+} flash_state_t;
 
 typedef struct {
     OSPI_HandleTypeDef *hospi;
 
-    uint32_t address; // current write address
-    uint8_t full; // 0 if flash not full, 1 if full
+    uint32_t address; // Current page address
+    uint8_t full;
+
+    // Flash write rate limiter
     uint8_t prescaler_max; // 1, 10, or 100 for 100 Hz, 10 Hz, or 1 Hz logging, respectively
     uint8_t prescaler_cnt;
-    flash_packet_t dma_packet;
+
+	volatile flash_state_t state;
+	flash_packet_t pkt_buf[FLASH_PKT_BUF_SIZE];
+	uint8_t pkt_buf_write_idx;
+	uint8_t pkt_buf_read_idx;
+	ALIGN_32BYTES(uint8_t dma_page_buf[W25Q_PAGE_SIZE]); // DMA buffer should be aligned for cortex M7
 } flash_t;
 
-// Flash hardware driver
-uint32_t flash_read_jedec_id(flash_t *flash);
-uint8_t flash_read_status(flash_t *flash);
-void flash_wait_for_ready(flash_t *flash);
-uint8_t flash_is_ready(flash_t *flash);
-void flash_write_enable(flash_t *flash);
-void flash_erase_sector(flash_t *flash, uint32_t address);
-void flash_erase_chip(flash_t *flash);
-void flash_write_page(flash_t *flash, uint32_t address, uint8_t *data, uint32_t length);
-void flash_write_page_dma(flash_t *flash, uint32_t address, uint8_t *data, uint32_t length);
-void flash_read_data(flash_t *flash, uint32_t address, uint8_t *data, uint32_t length);
+void flash_init();
 
-// Flash abstraction
-void flash_packet_build(const state_t *current_state, flash_packet_t *packet);
-uint8_t flash_check_erased(flash_t *flash);
-void flash_packet_write(flash_t *flash, const state_t *state);
-void flash_counters_reset(flash_t *flash);
+uint8_t flash_should_add();
+void flash_pkt_buf_add();
+void flash_packet_build(flash_packet_t *dest);
+void flash_process();
+
+void flash_read_blocking(uint32_t addr, uint8_t *out, uint32_t size);
+void flash_write_blocking(uint32_t addr, uint8_t *data, uint16_t size);
+void flash_erase_sector(uint32_t addr);
+void flash_erase_chip();
+
+uint8_t flash_check_erased();
 
 #endif /* INC_FLASH_H_ */
