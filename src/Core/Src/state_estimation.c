@@ -5,7 +5,6 @@
  *      Author: Sigmond
  */
 
-#include "arm_math.h"
 #include "sensors.h"
 #include "state_estimation.h"
 #include "MadgwickAHRS.h"

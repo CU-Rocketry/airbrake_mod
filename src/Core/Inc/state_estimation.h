@@ -8,8 +8,6 @@
 #ifndef INC_STATE_ESTIMATION_H_
 #define INC_STATE_ESTIMATION_H_
 
-#include "arm_math.h"
-
 void state_estimation();
 //arm_status get_imu_b(arm_matrix_instance_f32 *out_accel, arm_matrix_instance_f32 *out_omega);
 //arm_status get_mag_b(arm_matrix_instance_f32 *out_mag);
@@ -24,5 +22,6 @@ void kalman_predict(float accel_z, float dt);
 void kalman_update(float pressure);
 
 void launch_detect(float accel_b_x);
+void apogee_detect(float vel_z);
 
 #endif /* INC_STATE_ESTIMATION_H_ */
