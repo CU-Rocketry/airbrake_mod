@@ -229,10 +229,10 @@ void flash_read_data(flash_t *flash, uint32_t address, uint8_t *data, uint32_t l
     HAL_OSPI_Receive(flash->hospi, data, HAL_OSPI_TIMEOUT_DEFAULT_VALUE);
 }
 
-// Flash data packet and abstraction
-
 void flash_packet_build(const state_t *current_state, flash_packet_t *packet) {
 	packet->t = current_state->t;
+	packet->flags = current_state->flags;
+
 	packet->batt_v = current_state->batt_v;
 	packet->batt_i = current_state->batt_i;
 
@@ -245,6 +245,7 @@ void flash_packet_build(const state_t *current_state, flash_packet_t *packet) {
 	packet->p_ground = current_state->p_ground;
 	packet->alt_agl = current_state->alt_agl;
 	packet->vel_z = current_state->vel_z;
+	packet->predicted = current_state->predicted;
 	packet->output = current_state->output;
 	packet->servo_cmd = current_state->servo_cmd;
 	packet->servo_fdbk = current_state->servo_fdbk;
