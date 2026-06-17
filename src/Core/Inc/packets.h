@@ -49,6 +49,7 @@ typedef struct {
     float accel_e[3]; // [m/s/s] in inertial frame
 
     float p_ground; // [Pa]
+    float h_agl_pres; // [m]
     float alt_agl; // [m] AGL with + up
     float vel_z; // [m] with + up
 
@@ -74,20 +75,22 @@ typedef struct {
 // for 2 packets per 256 byte page we have max 128 bytes = 32 floats
 typedef struct {
 	uint32_t t; // [ms] since boot 4 bytes
-	float batt_v; // [V] 8
-	float batt_i; // [A] 12
-	float accel_b[3]; // [m/s/s] in body frame. *proper acceleration 24
-	float omega_b[3]; // [rad/s] in body frame 36
-	float mag_b[3]; // [mgauss] in body frame 48
-    float quat[4]; // body to inertial rotation already I think 64
-    float accel_e[3]; // [m/s/s] in inertial frame 76
-    float p_ground; // [Pa] 80
-    float alt_agl; // [m] AGL with + up 84
-    float vel_z; // [m] with + up 88
-    float output; // 0 to 1 mapping to air brakes deployment range 92
-    float servo_cmd; // [deg] 96
-    float servo_fdbk; // [deg] 100
-    // 28 bytes = 7 floats remaining
+	uint32_t flags; // 8
+	float batt_v; // [V] 12
+	float batt_i; // [A] 16
+	float accel_b[3]; // [m/s/s] in body frame. *proper acceleration 28
+	float omega_b[3]; // [rad/s] in body frame 40
+	float mag_b[3]; // [mgauss] in body frame 52
+    float quat[4]; // body to inertial rotation already I think 68
+    float accel_e[3]; // [m/s/s] in inertial frame 80
+    float p_ground; // [Pa] 84
+    float alt_agl; // [m] AGL with + up 88
+    float vel_z; // [m] with + up 92
+    float predicted; // [m] 96
+    float output; // 0 to 1 mapping to air brakes deployment range 100
+    float servo_cmd; // [deg] 104
+    float servo_fdbk; // [deg] 108
+    // 20 bytes = 5 floats remaining
 } flash_packet_t;
 
 // Command
