@@ -14,8 +14,9 @@
 #define ROCKET_CD 0.32f // Tunable drag coefficient
 #define ROCKET_A_REF 0.013478f // [m^2] Reference area
 #define TARGET_APOGEE 3048.0f // [m] 10,000 ft
+//#define TARGET_APOGEE 3100.0f // [m] 10,171 ft because it undershoots
 
-void control_update(float dt);
+void control_update();
 float predict_apogee(float alt_agl, float vel_z, float g, float Cd, float a_ref, float mass_empty);
 float pi_controller(float predicted, uint8_t enable, float Kp, float Ki, float target, float dt);
 void lockouts_init();

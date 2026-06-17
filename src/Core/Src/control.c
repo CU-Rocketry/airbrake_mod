@@ -10,6 +10,9 @@
 #include "state.h"
 #include <math.h>
 //#include "telemetry.h"
+#include "timing.h"
+
+uint32_t last_time_control = 0;
 
 // Tuning parameters
 static const float Kp = 0.03f;
@@ -45,7 +48,7 @@ void lockouts_init() {
 void lockouts_check() {
     const float ACCEL_B_X_THRESH = 0.0f; // [m/s^2] must be < to deploy
     const float ALT_AGL_THRESH = 1000.0f; // [m] AGL must be >= to deploy
-    const float ELAPSED_THRESH = 4.0f; // [s] since launch detect, must be >=
+    const uint32_t ELAPSED_THRESH = 4000; // [ms] since launch detect, must be >=
     const float VEL_Z_THRESH = 75.0f; // [m/s] must be >=, to disable near apogee
 
     if (global_state.accel_b[0] < ACCEL_B_X_THRESH)
@@ -125,8 +128,11 @@ float pi_controller(float predicted, uint8_t enable, float Kp, float Ki, float t
     return output;
 }
 
-void control_update(float dt) {
+void control_update() {
 	lockouts_check();
+
+	float dt = get_dt(&last_time_control, 0.01f);
+
     global_state.predicted = predict_apogee(global_state.alt_agl, global_state.vel_z, GRAVITY, ROCKET_CD, ROCKET_A_REF, ROCKET_MASS_EMPTY);
     global_state.output = pi_controller(global_state.predicted, STATE_FLAG_GET(FLAG_CONTROL_ENABLED), Kp, Ki, TARGET_APOGEE, dt);
 }

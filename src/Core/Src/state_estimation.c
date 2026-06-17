@@ -14,10 +14,9 @@
 #include "math.h"
 #include "stm32h7xx_hal.h"
 #include "telemetry.h"
+#include "timing.h"
 
-uint16_t last_sample_time;
-uint16_t sample_time;
-float dt;
+uint32_t last_time_imu = 0; // integration with timing.h
 
 extern uint8_t imu_ready;
 extern uint8_t mag_ready;
@@ -48,7 +47,7 @@ static kalman_state_t kalman_state = {
 static const float sigma_acc = 0.5f; // IMU trust
 static const float R_baro = 4.0f; // Baro trust (SD in meters, squared)
 
-void state_estimation(float dt) {
+void state_estimation() {
 
 //	float accel_b_data[3];
 //	float omega_b_data[3];
@@ -80,6 +79,9 @@ void state_estimation(float dt) {
 	if (imu_ready)
 	{
 		imu_ready = 0;
+
+		float dt = get_dt(&last_time_imu, 0.002f);
+
 		if (mag_ready) {
 			mag_ready = 0;
 			MadgwickAHRSupdate(global_state.omega_b[0], global_state.omega_b[1], global_state.omega_b[2],
@@ -236,16 +238,17 @@ void kalman_predict(float accel_z, float dt) {
 }
 
 void kalman_update(float pressure) {
+    // use ISA model to convert to a height
+    float exponent = (ISA_R * ISA_L) / GRAVITY;
+    float h_agl_pres = (ISA_T0 / ISA_L) * (1.0f - powf((pressure / kalman_state.P_ground), exponent));
+    global_state.h_agl_pres = h_agl_pres;
+    float z_meas = -h_agl_pres; // NED coordinate system
+
     if (!STATE_FLAG_GET(FLAG_LAUNCHED)) { // before launch update ground pressure
         kalman_state.P_ground = 0.99f * kalman_state.P_ground + 0.01f * pressure; // low pass filter (LPF)
         global_state.p_ground = kalman_state.P_ground;
         return;
     }
-
-    // use ISA model to convert to a height
-    float exponent = (ISA_R * ISA_L) / GRAVITY;
-    float h_agl_pres = (ISA_T0 / ISA_L) * (1.0f - powf((pressure / kalman_state.P_ground), exponent));
-    float z_meas = -h_agl_pres; // NED coordinate system
 
     // Innovation (residual) y = z_meas - H*q
     // H = [1, 0], so H*q is just q[0]

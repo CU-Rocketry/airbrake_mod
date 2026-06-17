@@ -37,6 +37,7 @@
 #include "control.h"
 #include "packets.h"
 #include "btn.h"
+#include "timing.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -73,6 +74,7 @@ DMA_HandleTypeDef hdma_spi2_tx;
 DMA_HandleTypeDef hdma_spi4_rx;
 DMA_HandleTypeDef hdma_spi4_tx;
 
+TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim3;
 TIM_HandleTypeDef htim4;
 TIM_HandleTypeDef htim6;
@@ -200,8 +202,8 @@ servo_t servo = {
 	.dma_buf = servo_dma_buf,
 //	.duty_retracted = 1000,
 //	.duty_extended = 2370
-	.duty_retracted = 550,
-	.duty_extended = 2200
+	.duty_retracted = 620,
+	.duty_extended = 1800
 };
 uint8_t endpoint_selected = 0;
 
@@ -223,14 +225,15 @@ flash_t flash = {
 };
 
 btn_t btns[4]; // BTN0 to BTN4 drivers
+mode_switch_t mode_switch;
 
 extern uint8_t baro_ready;
 extern uint8_t mag_ready;
 extern uint8_t imu_ready;
 
 // Control system ticks
-uint8_t tick_100Hz = 0;
-uint8_t tick_500Hz = 0;
+uint8_t tick_100Hz = 0; // bool
+uint8_t tick_500Hz = 0; // bool
 
 // Mode selection
 enum Mode {
@@ -270,6 +273,7 @@ static void MX_ADC1_Init(void);
 static void MX_ADC3_Init(void);
 static void MX_TIM7_Init(void);
 static void MX_TIM6_Init(void);
+static void MX_TIM2_Init(void);
 /* USER CODE BEGIN PFP */
 // printf UART
 #define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
@@ -340,6 +344,7 @@ int main(void)
   MX_ADC3_Init();
   MX_TIM7_Init();
   MX_TIM6_Init();
+  MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
   //printf("System reset\r\n");
     telemetry_init(&telemetry);
@@ -358,7 +363,8 @@ int main(void)
 	btn_init(&btns[2], BTN_2_GPIO_Port, BTN_2_Pin);
 	btn_init(&btns[3], BTN_3_GPIO_Port, BTN_3_Pin);
 
-	mode = get_mode_switch();
+	mode_switch_init(&mode_switch);
+	mode = mode_switch_get(&mode_switch);
 
     batt_sense_init(&batt_sense);
 
@@ -372,6 +378,7 @@ int main(void)
 
   	HAL_TIM_Base_Start_IT(&htim7); // start 100 Hz
     HAL_TIM_Base_Start_IT(&htim6); // start 500 Hz
+    HAL_TIM_Base_Start(&htim2); // start microsecond counter
 
 	telemetry_log(LOG_LVL_DEBUG, "Init done\r\n");
   /* USER CODE END 2 */
@@ -403,9 +410,11 @@ int main(void)
 			  flash_packet_write(&flash, &global_state); // writes if needed only
 		  }
 
+		  mode_switch_update(&mode_switch); // driver state updates
+
 		  // Mode selection
-		  enum Mode mode_switch = get_mode_switch(); // mode selection from physical switch
-		  enum Mode mode_selected = STATE_FLAG_GET(FLAG_MODE_OVERRIDE_EN) ? (enum Mode)global_state.mode_override : mode_switch; // choose between control panel override and switch
+		  enum Mode mode_switch_val = (enum Mode)mode_switch_get(&mode_switch); // mode selection from physical switch
+		  enum Mode mode_selected = STATE_FLAG_GET(FLAG_MODE_OVERRIDE_EN) ? (enum Mode)global_state.mode_override : mode_switch_val; // choose between control panel override and switch
 
 		  if (mode_selected != mode_prev) {
 			  mode_transition_handler(mode_prev, mode_selected);
@@ -414,7 +423,9 @@ int main(void)
 		  mode = mode_selected;
 		  mode_current_handler(mode);
 
-		  telemetry_packet(&global_state); // sending telemetry last in case a log needs to be sent before (we will drop a frame ig)
+		  if (mode != TEST_FLASH) {
+			  telemetry_packet(&global_state); // sending telemetry last in case a log needs to be sent before (we will drop a frame ig)
+		  }
 	  }
 
 	  if (tick_500Hz) {
@@ -424,7 +435,7 @@ int main(void)
 		  global_state.elapsed_t = global_state.t - global_state.launch_t;
 
 		  if (mode != TEST_SIMULINK) {
-			  state_estimation(0.002f); // TODO get real dt from timer
+			  state_estimation(); // TODO get real dt from timer
 		  }
 	  }
 
@@ -855,6 +866,51 @@ static void MX_SPI4_Init(void)
   /* USER CODE BEGIN SPI4_Init 2 */
 
   /* USER CODE END SPI4_Init 2 */
+
+}
+
+/**
+  * @brief TIM2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM2_Init(void)
+{
+
+  /* USER CODE BEGIN TIM2_Init 0 */
+
+  /* USER CODE END TIM2_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+
+  /* USER CODE BEGIN TIM2_Init 1 */
+
+  /* USER CODE END TIM2_Init 1 */
+  htim2.Instance = TIM2;
+  htim2.Init.Prescaler = 63;
+  htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim2.Init.Period = 4294967295;
+  htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim2, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM2_Init 2 */
+
+  /* USER CODE END TIM2_Init 2 */
 
 }
 
@@ -1563,14 +1619,47 @@ void mode_transition_handler(enum Mode prev, enum Mode curr) {
 			break;
 	}
 
+	// Play (or dont) buzzer for mode transition
+//#define BUZZER_ON_TRANSITION
+#ifdef BUZZER_ON_TRANSITION
+	switch (curr) {
+		case 0:
+			buzzer_play_sequence(&buzzer, seq_startup_3, 3);
+			break;
+		case 1:
+			buzzer_play_sequence(&buzzer, seq_mode_1_1, 1);
+			break;
+		case 2:
+			buzzer_play_sequence(&buzzer, seq_mode_2_3, 3);
+			break;
+		case 3:
+			buzzer_play_sequence(&buzzer, seq_mode_3_5, 5);
+			break;
+		case 4:
+			buzzer_play_sequence(&buzzer, seq_mode_4_7, 7);
+			break;
+		case 5:
+			buzzer_play_sequence(&buzzer, seq_mode_5_9, 9);
+			break;
+		case 6:
+			buzzer_play_sequence(&buzzer, seq_mode_6_11, 11);
+			break;
+		case 7:
+			buzzer_play_sequence(&buzzer, seq_mode_7_13, 13);
+			break;
+		default:
+			break;
+	}
+#endif
+
 	// Handle entry to new mode
 	switch (curr) {
 		case IDLE:
-//			buzzer_play_sequence(&buzzer, seq_startup_3, 3);
+			//buzzer_play_sequence(&buzzer, seq_startup_3, 3);
 			telemetry_log(LOG_LVL_DEBUG, "Mode 0 IDLE\r\n");
 			break;
 		case TEST_UI:
-//			buzzer_play_sequence(&buzzer, seq_mode_1_1, 1);
+			//buzzer_play_sequence(&buzzer, seq_mode_1_1, 1);
 			telemetry_log(LOG_LVL_DEBUG, "Mode 1 TEST_UI\r\n");
 			break;
 //		case TEST_SIMULINK:
@@ -1582,58 +1671,47 @@ void mode_transition_handler(enum Mode prev, enum Mode curr) {
 //			servo_enable(&servo, 1); // Enable servo power
 //			break;
 		case TEST_SERVO:
-//			buzzer_play_sequence(&buzzer, seq_mode_3_5, 5);
+			//buzzer_play_sequence(&buzzer, seq_mode_3_5, 5);
 			telemetry_log(LOG_LVL_DEBUG, "Mode 3 TEST_SERVO\r\n");
 			servo_enable(&servo, 1); // Enable servo power
-			servo_set_duty(&servo, 500);
+			servo_set_deployment(&servo, 0);
 			break;
 		case TEST_SENSORS:
-//			buzzer_play_sequence(&buzzer, seq_mode_4_7, 7);
+			//buzzer_play_sequence(&buzzer, seq_mode_4_7, 7);
 			telemetry_log(LOG_LVL_DEBUG, "Mode 4 TEST_SENSORS\r\n");
 			break;
 		case TEST_FLASH:
-//			buzzer_play_sequence(&buzzer, seq_mode_5_9, 9);
+			//buzzer_play_sequence(&buzzer, seq_mode_5_9, 9);
 			telemetry_log(LOG_LVL_DEBUG, "Mode 5 TEST_FLASH\r\n");
 
-			// Turn off both LEDS
-			rgb_led_set(&led0, 0x000000); // status LED
-			rgb_led_set(&led1, 0x000000); // operating LED
-
-			// Test JEDEC ID
-			rgb_led_set(&led1, 0x0000FF); // operating LED blue
-			uint32_t flash_id = flash_read_jedec_id(&flash);
-			if (flash_id == W25Q128JV_JEDEC_ID) {
-				printf("JEDEC ID good: 0x%06lX\r\n", flash_id);
-				rgb_led_set(&led1, 0x00FF00); // operating LED green
-			} else {
-				printf("JEDEC ID error: 0x%06lX (Expected 0x%06X)\r\n", flash_id, W25Q128JV_JEDEC_ID);
-				rgb_led_set(&led1, 0xFF0000); // operating LED red
-			}
-
-			HAL_Delay(1000);
-			rgb_led_set(&led1, 0x000000); // operating LED off
-			HAL_Delay(1000);
-
-			// Test flash erased
-			rgb_led_set(&led1, 0x0000FF); // Turn on LED1 blue (operating LED)
-			if (flash_check_erased(&flash)) { // if erased
-				printf("Flash is blank. Ready for flight!\r\n");
-				rgb_led_set(&led0, 0x00FF00); // status LED green
-			} else { // else not erased
-				printf("Flash is NOT erased! Must do so before flight.\r\n");
-				rgb_led_set(&led0, 0xFF0000); // status LED red to indicate needs erasing
-			}
-			rgb_led_set(&led1, 0x000000); // Turn off operating LED
+//			uint32_t flash_id = flash_read_jedec_id(&flash);
+//			if (flash_id == W25Q128JV_JEDEC_ID) {
+//				printf("JEDEC ID good: 0x%06lX\r\n", flash_id);
+//				rgb_led_set(&led0, 0x00FF00); // status LED green
+//			} else {
+//				printf("JEDEC ID error: 0x%06lX (Expected 0x%06X)\r\n", flash_id, W25Q128JV_JEDEC_ID);
+//				rgb_led_set(&led0, 0xFF0000); // status LED red
+//			}
+//
+//			// Test flash erased
+//			if (flash_check_erased(&flash)) { // if erased
+//				printf("Flash is blank. Ready for flight!\r\n");
+//				rgb_led_set(&led0, 0x00FF00); // status LED green
+//			} else { // else not erased
+//				printf("Flash is NOT erased! Must do so before flight.\r\n");
+//				rgb_led_set(&led0, 0xFF0000); // status LED red to indicate needs erasing
+//			}
 
 			break;
 		case TEST_CONTROL:
-//			buzzer_play_sequence(&buzzer, seq_mode_6_11, 11);
+			//buzzer_play_sequence(&buzzer, seq_mode_6_11, 11);
 			telemetry_log(LOG_LVL_DEBUG, "Mode 6 TEST_CONTROL\r\n");
 			break;
 		case LAUNCH_DETECT:
-//			buzzer_play_sequence(&buzzer, seq_mode_7_13, 13);
+			//buzzer_play_sequence(&buzzer, seq_mode_7_13, 13);
 			telemetry_log(LOG_LVL_DEBUG, "Mode 7 LAUNCH_DETECT\r\n");
 			servo_enable(&servo, 1); // Enable servo power
+			servo_set_deployment(&servo, 0);
 			lockouts_init(); // TODO maybe also when launch is detected
 			break;
 		default:
@@ -1741,50 +1819,50 @@ void mode_current_handler(enum Mode curr) {
 		case TEST_FLASH: // 5
 			if (HAL_GPIO_ReadPin(BTN_0_GPIO_Port, BTN_0_Pin)) // if BTN0 pressed print CSV over UART
 			{
-//				uint32_t read_address = 0;
-//				flash_packet_t packet_r;
-//
-//				// Print CSV Header
-//				printf("t,batt_v,batt_i,accel_b[0],accel_b[1],accel_b[2],omega_b[0],omega_b[1],omega_b[2],mag_b[0],mag_b[1],mag_b[2],quat[0],quat[1],quat[2],quat[3],accel_e[0],accel_e[1],accel_e[2],p_ground,alt_agl,vel_z,output,servo_cmd,servo_fdbk\r\n");
-//
-//				// Read until we hit the current write address, or an unwritten sector (0xFFFFFFFF)
-//				while (read_address < (16 * 1024 * 1024)) {
-//
-//					// Apply page-skipping logic to find where the packet actually is
-//					if ((read_address % 256) + sizeof(flash_packet_t) > 256) {
-//						read_address = (read_address & ~0xFF) + 256;
-//					}
-//
-//					flash_read_data(&flash, read_address, (uint8_t*)&packet_r, sizeof(flash_packet_t));
-//
-////					if (packet_r.t == 0xFFFFFFFF) { // timestamp won't be 0xFFFFFFFF until 50 days so this indicates end of flash writing
-////						break;
-////					}
-//
-//					// Print as CSV row
-//					printf("%lu,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f\r\n",
-//							packet_r.t,
-//							packet_r.batt_v,
-//							packet_r.batt_i,
-//							packet_r.accel_b[0], packet_r.accel_b[1], packet_r.accel_b[2],
-//							packet_r.omega_b[0], packet_r.omega_b[1], packet_r.omega_b[2],
-//							packet_r.mag_b[0], packet_r.mag_b[1], packet_r.mag_b[2],
-//							packet_r.quat[0], packet_r.quat[1], packet_r.quat[2], packet_r.quat[3],
-//							packet_r.accel_e[0], packet_r.accel_e[1], packet_r.accel_e[2],
-//							packet_r.p_ground,
-//							packet_r.alt_agl,
-//							packet_r.vel_z,
-//							packet_r.output,
-//							packet_r.servo_cmd,
-//							packet_r.servo_fdbk);
-//
-//					read_address += sizeof(flash_packet_t);
-//
-//					HAL_Delay(1);
-//				}
-//				printf("end of flash\r\n");
+				uint32_t read_address = 0;
+				flash_packet_t packet_r;
 
-//				flash_scan_memory_map(&flash);
+				// Print CSV Header
+				printf("t,flags,batt_v,batt_i,accel_b[0],accel_b[1],accel_b[2],omega_b[0],omega_b[1],omega_b[2],mag_b[0],mag_b[1],mag_b[2],quat[0],quat[1],quat[2],quat[3],accel_e[0],accel_e[1],accel_e[2],p_ground,alt_agl,vel_z,predicted,output,servo_cmd,servo_fdbk\r\n");
+
+				// Read until we hit the current write address, or an unwritten sector (0xFFFFFFFF)
+				while (read_address < (16 * 1024 * 1024)) {
+
+					// Apply page-skipping logic to find where the packet actually is
+					if ((read_address % 256) + sizeof(flash_packet_t) > 256) {
+						read_address = (read_address & ~0xFF) + 256;
+					}
+
+					flash_read_data(&flash, read_address, (uint8_t*)&packet_r, sizeof(flash_packet_t));
+
+					if (packet_r.t == 0xFFFFFFFF) { // timestamp won't be 0xFFFFFFFF until 50 days so this indicates end of flash writing
+						break;
+					}
+
+					// Print as CSV row
+					printf("%lu,%lx,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f\r\n",
+							packet_r.t,
+							packet_r.flags,
+							packet_r.batt_v,
+							packet_r.batt_i,
+							packet_r.accel_b[0], packet_r.accel_b[1], packet_r.accel_b[2],
+							packet_r.omega_b[0], packet_r.omega_b[1], packet_r.omega_b[2],
+							packet_r.mag_b[0], packet_r.mag_b[1], packet_r.mag_b[2],
+							packet_r.quat[0], packet_r.quat[1], packet_r.quat[2], packet_r.quat[3],
+							packet_r.accel_e[0], packet_r.accel_e[1], packet_r.accel_e[2],
+							packet_r.p_ground,
+							packet_r.alt_agl,
+							packet_r.vel_z,
+							packet_r.predicted,
+							packet_r.output,
+							packet_r.servo_cmd,
+							packet_r.servo_fdbk);
+
+					read_address += sizeof(flash_packet_t);
+
+					HAL_Delay(1);
+				}
+				printf("end of flash\r\n");
 			}
 
 			else if (HAL_GPIO_ReadPin(BTN_1_GPIO_Port, BTN_1_Pin) == GPIO_PIN_SET) { // if BTN1 pressed test R/W
@@ -1910,7 +1988,7 @@ void mode_current_handler(enum Mode curr) {
 			break;
 		case LAUNCH_DETECT: // 7
 			if (STATE_FLAG_GET(FLAG_LAUNCHED)) {
-				control_update(0.01f); // 100Hz dt
+				control_update(); // 100Hz dt
 				servo_set_deployment(&servo, global_state.output);
 			}
 			break;
