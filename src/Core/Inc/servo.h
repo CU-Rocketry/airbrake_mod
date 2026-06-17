@@ -58,7 +58,8 @@ void servo_set_angle(servo_t* servo, float angle) {
 }
 
 // sig's mistake fixing
-void servo_enable(servo_t* servo, uint8_t state) {
+__attribute__((optimize("-O0"))) void servo_enable(servo_t* servo, uint8_t state)
+{
 	if (state == 1) { // state 1
 		// need to ramp up voltage
 		for (uint32_t i = 0; i < 5; i++) {
