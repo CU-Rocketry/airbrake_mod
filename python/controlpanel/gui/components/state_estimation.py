@@ -22,6 +22,9 @@ plot_accel_e.add_line("Z", app_state.buffers['accel_e'], col=2)
 plot_p_ground = LinePlot("Ground Pressure", "Pressure [Pa]")
 plot_p_ground.add_line("Ground Pressure", app_state.buffers['p_ground'])
 
+plot_h_agl_pres = LinePlot("Pressure Altitude", "Altitude [m]")
+plot_h_agl_pres.add_line("Altitude", app_state.buffers['h_agl_pres'])
+
 plot_alt_agl = LinePlot("Altitude AGL", "Altitude [m]")
 plot_alt_agl.add_line("Altitude", app_state.buffers['alt_agl'])
 
@@ -37,6 +40,7 @@ def draw_state_estimation():
     imgui.text("Kalman filter")
     plot_accel_e.render(app_state.latest_time)
     plot_p_ground.render(app_state.latest_time)
+    plot_h_agl_pres.render(app_state.latest_time)
     plot_alt_agl.render(app_state.latest_time)
     plot_vel_z.render(app_state.latest_time)
     imgui.end()

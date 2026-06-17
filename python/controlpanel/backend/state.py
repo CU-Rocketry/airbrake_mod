@@ -42,6 +42,7 @@ class State:
             'accel_e': ScrollingBuffer(max_size=self.buffer_size, width=3),
 
             'p_ground': ScrollingBuffer(max_size=self.buffer_size),
+            'h_agl_pres': ScrollingBuffer(max_size=self.buffer_size),
             'alt_agl': ScrollingBuffer(max_size=self.buffer_size),
             'vel_z': ScrollingBuffer(max_size=self.buffer_size),
 
