@@ -58,6 +58,7 @@ void telemetry_packet(const state_t *current_state) {
 	memcpy(packet.accel_e, current_state->accel_e, sizeof(packet.accel_e));
 
 	packet.p_ground = current_state->p_ground;
+	packet.h_agl_pres = current_state->h_agl_pres;
 	packet.alt_agl = current_state->alt_agl;
 	packet.vel_z = current_state->vel_z;
 
@@ -147,11 +148,18 @@ static void telemetry_handle_rx_packet(uint8_t *decoded_buf, uint16_t decoded_le
             memcpy(global_state.mag_mgauss, hil->mag_mgauss, sizeof(global_state.mag_mgauss));
 
             extern uint8_t imu_ready;
-            extern uint8_t mag_ready;
-            extern uint8_t baro_ready;
-            imu_ready = 1;
-            mag_ready = 1;
-            baro_ready = 1;
+			extern uint8_t mag_ready;
+			extern uint8_t baro_ready;
+			imu_ready = 1; // this will now be 500hz
+
+			// Only update these at 100hz
+            static uint8_t mag_baro_counter = 0;
+            if (mag_baro_counter % 1 == 0) {
+            	mag_ready = 1;
+            	baro_ready = 1;
+            }
+            mag_baro_counter++;
+
         } else {
             telemetry_log(LOG_LVL_WARNING, "Received HIL data packet, but HIL mode disabled\r\n");
         }

@@ -42,6 +42,7 @@ typedef struct {
     float accel_e[3]; // [m/s/s] in inertial frame
 
     float p_ground; // [Pa]
+    float h_agl_pres; // [m] from baro only
     float alt_agl; // [m] AGL with + up
     float vel_z; // [m] with + up
 
