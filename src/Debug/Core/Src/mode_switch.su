@@ -1,0 +1,4 @@
+../Core/Src/mode_switch.c:13:16:get_mode_switch_raw	16	static
+../Core/Src/mode_switch.c:25:6:mode_switch_init	16	static
+../Core/Src/mode_switch.c:33:6:mode_switch_update	24	static
+../Core/Src/mode_switch.c:53:9:mode_switch_get	16	static

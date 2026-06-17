@@ -1,3 +1,6 @@
 [submodule "pcb/kicad-library"]
 	path = pcb/kicad-library
 	url = git@github.com:CU-Rocketry/kicad-library
+[submodule "src/Drivers/W25Q_STM32_HAL_Driver"]
+	path = src/Drivers/W25Q_STM32_HAL_Driver
+	url = https://github.com/mpekurin/W25Q_STM32_HAL_Driver

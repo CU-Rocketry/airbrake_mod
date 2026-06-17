@@ -13,6 +13,7 @@ C_SRCS += \
 ../Core/Src/lps22df_reg.c \
 ../Core/Src/lsm6dsv80x_reg.c \
 ../Core/Src/main.c \
+../Core/Src/mode_switch.c \
 ../Core/Src/sensors.c \
 ../Core/Src/state.c \
 ../Core/Src/state_estimation.c \
@@ -32,6 +33,7 @@ OBJS += \
 ./Core/Src/lps22df_reg.o \
 ./Core/Src/lsm6dsv80x_reg.o \
 ./Core/Src/main.o \
+./Core/Src/mode_switch.o \
 ./Core/Src/sensors.o \
 ./Core/Src/state.o \
 ./Core/Src/state_estimation.o \
@@ -51,6 +53,7 @@ C_DEPS += \
 ./Core/Src/lps22df_reg.d \
 ./Core/Src/lsm6dsv80x_reg.d \
 ./Core/Src/main.d \
+./Core/Src/mode_switch.d \
 ./Core/Src/sensors.d \
 ./Core/Src/state.d \
 ./Core/Src/state_estimation.d \
@@ -69,7 +72,7 @@ Core/Src/%.o Core/Src/%.su Core/Src/%.cyclo: ../Core/Src/%.c Core/Src/subdir.mk
 clean: clean-Core-2f-Src
 
 clean-Core-2f-Src:
-	-$(RM) ./Core/Src/MadgwickAHRS.cyclo ./Core/Src/MadgwickAHRS.d ./Core/Src/MadgwickAHRS.o ./Core/Src/MadgwickAHRS.su ./Core/Src/cobs.cyclo ./Core/Src/cobs.d ./Core/Src/cobs.o ./Core/Src/cobs.su ./Core/Src/control.cyclo ./Core/Src/control.d ./Core/Src/control.o ./Core/Src/control.su ./Core/Src/flash.cyclo ./Core/Src/flash.d ./Core/Src/flash.o ./Core/Src/flash.su ./Core/Src/iis2mdc_reg.cyclo ./Core/Src/iis2mdc_reg.d ./Core/Src/iis2mdc_reg.o ./Core/Src/iis2mdc_reg.su ./Core/Src/lps22df_reg.cyclo ./Core/Src/lps22df_reg.d ./Core/Src/lps22df_reg.o ./Core/Src/lps22df_reg.su ./Core/Src/lsm6dsv80x_reg.cyclo ./Core/Src/lsm6dsv80x_reg.d ./Core/Src/lsm6dsv80x_reg.o ./Core/Src/lsm6dsv80x_reg.su ./Core/Src/main.cyclo ./Core/Src/main.d ./Core/Src/main.o ./Core/Src/main.su ./Core/Src/sensors.cyclo ./Core/Src/sensors.d ./Core/Src/sensors.o ./Core/Src/sensors.su ./Core/Src/state.cyclo ./Core/Src/state.d ./Core/Src/state.o ./Core/Src/state.su ./Core/Src/state_estimation.cyclo ./Core/Src/state_estimation.d ./Core/Src/state_estimation.o ./Core/Src/state_estimation.su ./Core/Src/stm32h7xx_hal_msp.cyclo ./Core/Src/stm32h7xx_hal_msp.d ./Core/Src/stm32h7xx_hal_msp.o ./Core/Src/stm32h7xx_hal_msp.su ./Core/Src/stm32h7xx_it.cyclo ./Core/Src/stm32h7xx_it.d ./Core/Src/stm32h7xx_it.o ./Core/Src/stm32h7xx_it.su ./Core/Src/syscalls.cyclo ./Core/Src/syscalls.d ./Core/Src/syscalls.o ./Core/Src/syscalls.su ./Core/Src/sysmem.cyclo ./Core/Src/sysmem.d ./Core/Src/sysmem.o ./Core/Src/sysmem.su ./Core/Src/system_stm32h7xx.cyclo ./Core/Src/system_stm32h7xx.d ./Core/Src/system_stm32h7xx.o ./Core/Src/system_stm32h7xx.su ./Core/Src/telemetry.cyclo ./Core/Src/telemetry.d ./Core/Src/telemetry.o ./Core/Src/telemetry.su
+	-$(RM) ./Core/Src/MadgwickAHRS.cyclo ./Core/Src/MadgwickAHRS.d ./Core/Src/MadgwickAHRS.o ./Core/Src/MadgwickAHRS.su ./Core/Src/cobs.cyclo ./Core/Src/cobs.d ./Core/Src/cobs.o ./Core/Src/cobs.su ./Core/Src/control.cyclo ./Core/Src/control.d ./Core/Src/control.o ./Core/Src/control.su ./Core/Src/flash.cyclo ./Core/Src/flash.d ./Core/Src/flash.o ./Core/Src/flash.su ./Core/Src/iis2mdc_reg.cyclo ./Core/Src/iis2mdc_reg.d ./Core/Src/iis2mdc_reg.o ./Core/Src/iis2mdc_reg.su ./Core/Src/lps22df_reg.cyclo ./Core/Src/lps22df_reg.d ./Core/Src/lps22df_reg.o ./Core/Src/lps22df_reg.su ./Core/Src/lsm6dsv80x_reg.cyclo ./Core/Src/lsm6dsv80x_reg.d ./Core/Src/lsm6dsv80x_reg.o ./Core/Src/lsm6dsv80x_reg.su ./Core/Src/main.cyclo ./Core/Src/main.d ./Core/Src/main.o ./Core/Src/main.su ./Core/Src/mode_switch.cyclo ./Core/Src/mode_switch.d ./Core/Src/mode_switch.o ./Core/Src/mode_switch.su ./Core/Src/sensors.cyclo ./Core/Src/sensors.d ./Core/Src/sensors.o ./Core/Src/sensors.su ./Core/Src/state.cyclo ./Core/Src/state.d ./Core/Src/state.o ./Core/Src/state.su ./Core/Src/state_estimation.cyclo ./Core/Src/state_estimation.d ./Core/Src/state_estimation.o ./Core/Src/state_estimation.su ./Core/Src/stm32h7xx_hal_msp.cyclo ./Core/Src/stm32h7xx_hal_msp.d ./Core/Src/stm32h7xx_hal_msp.o ./Core/Src/stm32h7xx_hal_msp.su ./Core/Src/stm32h7xx_it.cyclo ./Core/Src/stm32h7xx_it.d ./Core/Src/stm32h7xx_it.o ./Core/Src/stm32h7xx_it.su ./Core/Src/syscalls.cyclo ./Core/Src/syscalls.d ./Core/Src/syscalls.o ./Core/Src/syscalls.su ./Core/Src/sysmem.cyclo ./Core/Src/sysmem.d ./Core/Src/sysmem.o ./Core/Src/sysmem.su ./Core/Src/system_stm32h7xx.cyclo ./Core/Src/system_stm32h7xx.d ./Core/Src/system_stm32h7xx.o ./Core/Src/system_stm32h7xx.su ./Core/Src/telemetry.cyclo ./Core/Src/telemetry.d ./Core/Src/telemetry.o ./Core/Src/telemetry.su
 
 .PHONY: clean-Core-2f-Src
 

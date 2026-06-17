@@ -1,0 +1,5 @@
+../Core/Src/control.c:22:7:predict_apogee	32	static
+../Core/Src/control.c:36:6:lockouts_init	0	static
+../Core/Src/control.c:48:6:lockouts_check	0	static
+../Core/Src/control.c:80:7:pi_controller	0	static
+../Core/Src/control.c:131:6:control_update	16	static

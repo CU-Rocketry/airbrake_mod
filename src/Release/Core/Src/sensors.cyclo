@@ -1,0 +1,14 @@
+../Core/Src/sensors.c:88:6:platform_delay	1
+../Core/Src/sensors.c:53:6:spi_nss	4
+../Core/Src/sensors.c:64:9:platform_write	1
+../Core/Src/sensors.c:75:9:platform_read	1
+../Core/Src/sensors.c:95:6:baro_int_drdy_handler	1
+../Core/Src/sensors.c:104:6:imu_int_drdy_handler	1
+../Core/Src/sensors.c:111:6:mag_int_drdy_handler	1
+../Core/Src/sensors.c:121:6:baro_spi_callback	1
+../Core/Src/sensors.c:130:6:imu_spi_callback	1
+../Core/Src/sensors.c:152:6:mag_spi_callback	1
+../Core/Src/sensors.c:170:6:baro_init	3
+../Core/Src/sensors.c:215:6:imu_init	2
+../Core/Src/sensors.c:272:6:mag_init	3
+../Core/Src/sensors.c:163:6:sensors_init	1
