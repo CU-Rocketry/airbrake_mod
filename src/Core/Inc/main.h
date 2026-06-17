@@ -131,7 +131,7 @@ void Error_Handler(void);
 #define SERVO_EN_GPIO_Port GPIOE
 
 /* USER CODE BEGIN Private defines */
-
+#define W25Q_TIMEOUT_VALUE 100 // [ms]
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus
