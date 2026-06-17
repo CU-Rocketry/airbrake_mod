@@ -116,6 +116,8 @@ void state_estimation() {
 	// negatives to convert back from NED
 	global_state.alt_agl = -kalman_state.q[0];
 	global_state.vel_z = -kalman_state.q[1];
+
+	apogee_detect(global_state.vel_z);
 }
 
 void get_imu_b(float out_accel_b[3], float out_omega_b[3]) {
@@ -194,6 +196,36 @@ void launch_detect(float accel_b_x) {
 	} else { // accel below thresh so counter reset
 		if (strikes > 0) {
 			telemetry_log(LOG_LVL_INFO, "Launch detect strikes reset from %u to 0\r\n", strikes);
+			strikes = 0;
+		}
+	}
+}
+
+void apogee_detect(float vel_z) {
+	if (STATE_FLAG_GET(FLAG_APOGEE)) {
+		return;
+	}
+
+	if (!STATE_FLAG_GET(FLAG_LAUNCHED)) {
+		return;
+	}
+
+	static uint16_t strikes = 0; // how many samples greater than threshold, static so it stays between function calls
+
+	const float STRIKE_THRESH = -1.0f; // [m/s]
+	const uint16_t MIN_STRIKES = 500; // 500 samples at 500Hz = 1s
+
+	if (vel_z <= STRIKE_THRESH) { // check if body X accel exceeds threshold
+		strikes++;
+		telemetry_log(LOG_LVL_INFO, "Apogee detect strike %u of %u\r\n", strikes, MIN_STRIKES);
+		if (strikes >= MIN_STRIKES) { // if acceleration above threshold for consecutive samples
+			STATE_FLAG_SET(FLAG_APOGEE);
+			telemetry_log(LOG_LVL_INFO, "Apogee detected\r\n");
+		}
+
+	} else { // accel below thresh so counter reset
+		if (strikes > 0) {
+			telemetry_log(LOG_LVL_INFO, "Apogee detect strikes reset from %u to 0\r\n", strikes);
 			strikes = 0;
 		}
 	}
