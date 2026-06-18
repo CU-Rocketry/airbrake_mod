@@ -212,10 +212,8 @@ servo_t servo = {
 	.en_pin = SERVO_EN_Pin,
 	.adc_handle = &hadc3,
 	.dma_buf = servo_dma_buf,
-//	.duty_retracted = 1000,
-//	.duty_extended = 2370
-	.duty_retracted = 620,
-	.duty_extended = 1800
+	.duty_retracted = 700,
+	.duty_extended = 1980
 };
 uint8_t endpoint_selected = 0;
 
