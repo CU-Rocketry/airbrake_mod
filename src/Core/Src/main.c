@@ -121,73 +121,87 @@ const buzzer_beep_t seq_startup_3[] = {
 };
 
 const buzzer_beep_t seq_mode_1_1[] = {
-		{4186, 500}
+		{4186, 250}
 };
 
 const buzzer_beep_t seq_mode_2_3[] = {
-		{4186, 500},
-		{0, 500},
-		{4186, 500}
+		{4186, 250},
+		{0, 250},
+		{4186, 250}
 };
 
 const buzzer_beep_t seq_mode_3_5[] = {
-		{4186, 500},
-		{0, 500},
-		{4186, 500},
-		{0, 500},
-		{4186, 500}
+		{4186, 250},
+		{0, 250},
+		{4186, 250},
+		{0, 250},
+		{4186, 250}
 };
 
 const buzzer_beep_t seq_mode_4_7[] = {
-		{4186, 500},
-		{0, 500},
-		{4186, 500},
-		{0, 500},
-		{4186, 500},
-		{0, 500},
-		{4186, 500}
+		{4186, 250},
+		{0, 250},
+		{4186, 250},
+		{0, 250},
+		{4186, 250},
+		{0, 250},
+		{4186, 250}
 };
 
 const buzzer_beep_t seq_mode_5_9[] = {
-		{4186, 500},
-		{0, 500},
-		{4186, 500},
-		{0, 500},
-		{4186, 500},
-		{0, 500},
-		{4186, 500},
-		{0, 500},
-		{4186, 500}
+		{4186, 250},
+		{0, 250},
+		{4186, 250},
+		{0, 250},
+		{4186, 250},
+		{0, 250},
+		{4186, 250},
+		{0, 250},
+		{4186, 250}
 };
 
 const buzzer_beep_t seq_mode_6_11[] = {
-		{4186, 500},
-		{0, 500},
-		{4186, 500},
-		{0, 500},
-		{4186, 500},
-		{0, 500},
-		{4186, 500},
-		{0, 500},
-		{4186, 500},
-		{0, 500},
-		{4186, 500}
+		{4186, 250},
+		{0, 250},
+		{4186, 250},
+		{0, 250},
+		{4186, 250},
+		{0, 250},
+		{4186, 250},
+		{0, 250},
+		{4186, 250},
+		{0, 250},
+		{4186, 250}
 };
 
 const buzzer_beep_t seq_mode_7_13[] = {
-		{4186, 500},
-		{0, 500},
-		{4186, 500},
-		{0, 500},
-		{4186, 500},
-		{0, 500},
-		{4186, 500},
-		{0, 500},
-		{4186, 500},
-		{0, 500},
-		{4186, 500},
-		{0, 500},
-		{4186, 500}
+		{4186, 250},
+		{0, 250},
+		{4186, 250},
+		{0, 250},
+		{4186, 250},
+		{0, 250},
+		{4186, 250},
+		{0, 250},
+		{4186, 250},
+		{0, 250},
+		{4186, 250},
+		{0, 250},
+		{4186, 250}
+};
+
+const buzzer_beep_t seq_launch_detect_beep_5[] = {
+		{4186, 100},
+		{0, 50},
+		{4186, 100},
+		{0, 50},
+		{4186, 100}
+};
+
+const buzzer_beep_t seq_apogee_detect_2[] = {
+	{4186, 200},
+//	{4435, 200},
+	{4699, 200}
 };
 
 
@@ -196,8 +210,6 @@ servo_t servo = {
 	.tim_handle = &htim17,
 	.en_gpio_port = SERVO_EN_GPIO_Port,
 	.en_pin = SERVO_EN_Pin,
-//	.en_gpio_port = EYE_0_GPIO_Port,
-//	.en_pin = EYE_0_Pin,
 	.adc_handle = &hadc3,
 	.dma_buf = servo_dma_buf,
 //	.duty_retracted = 1000,
@@ -1616,7 +1628,7 @@ void mode_transition_handler(enum Mode prev, enum Mode curr) {
 	}
 
 	// Play (or dont) buzzer for mode transition
-//#define BUZZER_ON_TRANSITION
+#define BUZZER_ON_TRANSITION
 #ifdef BUZZER_ON_TRANSITION
 	switch (curr) {
 		case 0:
@@ -1994,12 +2006,26 @@ void mode_current_handler(enum Mode curr) {
 
 			break;
 		case LAUNCH_DETECT: // 7
+			// Control
 			if (STATE_FLAG_GET(FLAG_LAUNCHED)) {
 				control_update(); // 100Hz dt
 				servo_set_deployment(&servo, global_state.output);
 			}
+
+			// Flash
 			if (flash_should_add()) {
 				flash_pkt_buf_add();
+			}
+
+			// Buzzer
+			static uint32_t last_beep_t = 0;
+			if (global_state.t - last_beep_t >= 10000) {
+				if (!STATE_FLAG_GET(FLAG_LAUNCHED)){
+					buzzer_play_sequence(&buzzer, seq_launch_detect_beep_5, 5);
+				} else if (STATE_FLAG_GET(FLAG_APOGEE)) {
+					buzzer_play_sequence(&buzzer, seq_apogee_detect_2, 2);
+				}
+				last_beep_t = global_state.t;
 			}
 			break;
 		default:
